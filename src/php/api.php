@@ -35,30 +35,36 @@ class API
                                 ));
         }
       }
+
+      if (isset($_GET['dept'])) {
+        $dept = $this->db->get('department');
+
+        echo json_encode(array('status' => 'success',
+                                  'data' => $dept,
+                                  'method' => 'GET'
+                                ));
+      }
     }
 
     public function httpPost($payload)
     {
-        $projects = (array) $payload;
+      $payload = (array) $payload;
+      print_r($payload);
 
-        if (empty($projects['project_name'])
-            || empty($projects['description'])
-            || empty($projects['deadline'])) {
-            echo json_encode(array('status' => 'fail',
-                                  'message' => 'Required field was not filled',
-                                'method' => 'POST'
-                                ));
-        } else {
-            $projects['id'] = $this->db->insert('tbl_projects', $projects);
-            if ($projects['id']) {
-                echo json_encode(array('status' => 'success',
-                                        'data' => $projects,
-                                      'method' => 'POST'
-                                      ));
-            } else {
-                echo json_encode(array('status' => 'fail'));
-            }
+        //Random Generated Password
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-@=+_';
+        $pass = array(); //remember to declare $pass as an array
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < 10; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[] = $alphabet[$n];
         }
+        $pass = implode($pass);
+
+        $username = [];
+        array_push($username, $payload['department']);
+        $username = implode($username);
+        echo $username;
     }
 
     public function httpPut($payload)

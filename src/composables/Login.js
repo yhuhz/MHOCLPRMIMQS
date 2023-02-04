@@ -18,7 +18,48 @@ let LoginUser = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log("login", response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let Departments = ref([]);
+let SetDepartments = () => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          dept: 1,
+        },
+      })
+      .then((response) => {
+        console.log("dept", response.data);
+        Departments.value = response.data.data;
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let Users = ref([]);
+let UsersList = readonly(Users);
+let AddUser = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(pathlink, payload)
+      .then((response) => {
+        if (response.data.status === "success") {
+          console.log(response.data);
+          Users.value.push(response.data.data);
+        } else {
+          console.log(response.data);
+        }
         resolve(response.data);
       })
       .catch((error) => {
@@ -30,4 +71,4 @@ let LoginUser = (payload) => {
 /**
  * Export LoginList as readonly (real time copy of Projects)
  */
-export { LoginUser };
+export { LoginUser, Departments, SetDepartments, UsersList, AddUser };
