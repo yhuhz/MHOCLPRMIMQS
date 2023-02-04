@@ -22,6 +22,7 @@
   <div class="add_user q-mt-xl">
     <q-form ref="addUserForm">
       <label>Add User</label>
+
       <q-input
         v-model="addForm.first_name"
         label="First Name"
@@ -77,6 +78,24 @@
         @click="createUser()"
       />
     </q-form>
+
+    <div class="q-pa-md">
+      <q-table
+        title="List of Users"
+        :rows="UsersList"
+        :columns="columns"
+        row-key="user_id"
+      >
+        <template v-slot:body-cell-name="props">
+          <q-td :props="props">
+            <div>
+              <q-badge color="purple" :label="props.value"></q-badge>
+              <q-btn icon="info" @click.stop="btnclick" dense flat />
+            </div>
+          </q-td>
+        </template>
+      </q-table>
+    </div>
   </div>
 </template>
 
@@ -85,6 +104,7 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { useQuasar, date } from "quasar";
 import {
+  SetUsers,
   LoginUser,
   Departments,
   SetDepartments,
@@ -96,7 +116,9 @@ export default {
   /* eslint-disable */
   name: "Login",
   setup() {
+    SetUsers();
     SetDepartments();
+
     let isPwd = ref(true);
     let loginForm = ref({
       username: ref(),
@@ -114,18 +136,10 @@ export default {
       });
     };
 
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getFullYear() +
-      "-" +
-      (currentdate.getMonth() + 1) +
-      "-" +
-      currentdate.getDate();
-
     let pl_options = [
       { id: 1, label: "Admin Access" },
       { id: 2, label: "Edit and View" },
-      { id: 1, label: "View Only" },
+      { id: 3, label: "View Only" },
     ];
 
     const addUserForm = ref(null);
@@ -149,7 +163,6 @@ export default {
             suffix: addForm.value.suffix,
             department: addForm.value.department.dept_id,
             permission_level: addForm.value.permission_level.id,
-            date_added: datetime,
           });
           console.log(form.value);
 
@@ -164,7 +177,77 @@ export default {
       });
     };
 
+    const columns = [
+      {
+        name: "user_id",
+        required: true,
+        label: "ID",
+        align: "left",
+        field: (row) => row.user_id,
+        format: (val) => `${val}`,
+        sortable: true,
+      },
+      {
+        name: "username",
+        label: "Username",
+        field: "username",
+        sortable: true,
+        align: "center",
+      },
+      {
+        name: "password",
+        label: "Password",
+        field: "password",
+        sortable: true,
+        align: "center",
+      },
+      {
+        name: "last_name",
+        label: "Last Name",
+        field: "last_name",
+        sortable: true,
+        align: "center",
+      },
+      {
+        name: "first_name",
+        label: "First Name",
+        field: "first_name",
+        sortable: true,
+        align: "center",
+      },
+      {
+        name: "middle_name",
+        label: "Middle Name",
+        field: "middle_name",
+        sortable: true,
+        align: "center",
+      },
+      { name: "suffix", label: "Suffix", field: "suffix", sortable: true },
+      {
+        name: "department",
+        label: "Department",
+        field: "department",
+        sortable: true,
+        align: "center",
+      },
+      {
+        name: "permission_level",
+        label: "Permission Level",
+        field: "permission_level",
+        sortable: true,
+        align: "center",
+      },
+      {
+        name: "date_added",
+        label: "Date Added",
+        field: "date_added",
+        sortable: true,
+        align: "center",
+      },
+    ];
+
     return {
+      UsersList,
       isPwd,
       loginForm,
       login,
@@ -173,6 +256,7 @@ export default {
       pl_options,
       createUser,
       Departments,
+      columns,
     };
   },
 };

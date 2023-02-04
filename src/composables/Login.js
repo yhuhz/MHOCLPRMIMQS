@@ -1,13 +1,29 @@
 import axios from "axios";
 import { ref, readonly } from "vue";
-// let Login = ref([]);
-// let LoginList = readonly();
+let Users = ref([]);
+let UsersList = readonly(Users);
 let pathlink = "http://localhost/MHOCLPRMIMQS/src/php/api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to Projects data.
  * @param {*} object
  */
+
+let SetUsers = () => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink)
+      .then((response) => {
+        console.log("users", response.data.data);
+        Users.value = response.data.data;
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 let LoginUser = (payload) => {
   return new Promise((resolve, reject) => {
     axios
@@ -47,8 +63,6 @@ let SetDepartments = () => {
   });
 };
 
-let Users = ref([]);
-let UsersList = readonly(Users);
 let AddUser = (payload) => {
   return new Promise((resolve, reject) => {
     axios
@@ -71,4 +85,4 @@ let AddUser = (payload) => {
 /**
  * Export LoginList as readonly (real time copy of Projects)
  */
-export { LoginUser, Departments, SetDepartments, UsersList, AddUser };
+export { SetUsers, LoginUser, Departments, SetDepartments, UsersList, AddUser };

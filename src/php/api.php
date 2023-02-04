@@ -9,6 +9,7 @@ header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type");
 
 require_once('MysqliDb.php');
+date_default_timezone_set('Asia/Manila');
 
 class API
 {
@@ -34,22 +35,29 @@ class API
                                   'method' => 'GET'
                                 ));
         }
-      }
-
-      if (isset($_GET['dept'])) {
+      } else if (isset($_GET['dept'])) {
         $dept = $this->db->get('department');
 
         echo json_encode(array('status' => 'success',
                                   'data' => $dept,
                                   'method' => 'GET'
                                 ));
+      } else {
+        $this->db->where('is_deleted', 0);
+        $users = $this->db->get('user_login');
+        if ($users) {
+          echo json_encode(array('status' => 'success',
+                                'data' => $users,
+                                'method' => 'GET'
+        ));
+        }
       }
     }
 
     public function httpPost($payload)
     {
       $payload = (array) $payload;
-      print_r($payload);
+
 
         //Random Generated Password
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-@=+_';
@@ -59,12 +67,24 @@ class API
             $n = rand(0, $alphaLength);
             $pass[] = $alphabet[$n];
         }
-        $pass = implode($pass);
+        $payload['password'] = implode($pass);
 
-        $username = [];
-        array_push($username, $payload['department']);
-        $username = implode($username);
-        echo $username;
+        $payload['username'] = trim($payload['last_name'], " ").date("ymdHi");
+
+        $payload['date_added'] = date('Y-m-d');
+
+        $payload['user_id'] = $this->db->insert('user_login', $payload);
+
+        if ($payload['user_id']) {
+          echo json_encode(array('status' => 'success',
+                                'data' => $payload,
+                                'method' => 'POST'
+                              ));
+        } else {
+          echo json_encode(array('status' => 'failed',
+                                'method' => 'POST'
+                              ));
+        }
     }
 
     public function httpPut($payload)
