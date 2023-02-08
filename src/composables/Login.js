@@ -2,6 +2,8 @@ import axios from "axios";
 import { ref, readonly } from "vue";
 let Users = ref([]);
 let UsersList = readonly(Users);
+
+let Departments = ref([]);
 let pathlink = "http://localhost/MHOCLPRMIMQS/src/php/api.php";
 /**
  * This function accepts parameters of an array then
@@ -14,7 +16,7 @@ let SetUsers = () => {
     axios
       .get(pathlink)
       .then((response) => {
-        console.log("users", response.data.data);
+        console.log("users", response.data);
         Users.value = response.data.data;
         resolve(response.data);
       })
@@ -43,7 +45,6 @@ let LoginUser = (payload) => {
   });
 };
 
-let Departments = ref([]);
 let SetDepartments = () => {
   return new Promise((resolve, reject) => {
     axios

@@ -86,13 +86,28 @@
         :columns="columns"
         row-key="user_id"
       >
-        <template v-slot:body-cell-name="props">
+        <template v-slot:body-cell-reset_password="props">
           <q-td :props="props">
             <div>
-              <q-badge color="purple" :label="props.value"></q-badge>
-              <q-btn icon="info" @click.stop="btnclick" dense flat />
+              <q-btn
+                label="Reset Password"
+                @click.stop="btnclick"
+                no-caps
+                color="red"
+              />
+              <q-btn
+                class="q-ml-xs"
+                label="Edit Record"
+                @click.stop="btnclick"
+                no-caps
+                color="green"
+              />
             </div>
           </q-td>
+        </template>
+
+        <template v-slot:body-cell-department="props">
+          <q-td :props="props"> </q-td>
         </template>
       </q-table>
     </div>
@@ -116,8 +131,36 @@ export default {
   /* eslint-disable */
   name: "Login",
   setup() {
+    const $q = useQuasar();
+
     SetUsers();
     SetDepartments();
+
+    /**NOTIFICATION**/
+    const notify = (response) => {
+      let status = Boolean(response.status === "success");
+      $q.notify({
+        position: $q.screen.width < 767 ? "top" : "bottom-right",
+        classes: "q-px-lg q-pt-none q-pb-none",
+        color: status ? "green" : "red",
+        html: true,
+        message: status
+          ? `<div class="text-bold">User added successfully!</div>
+          <div>Username: ${response.data.username}</div>
+          <div>Password: ${response.data.password}</div>`
+          : `<div class="text-bold">Failed!</div> ${response.message}.`,
+        actions: [
+          {
+            label: "Dismiss",
+            color: "white",
+            handler: () => {
+              /* ... */
+            },
+          },
+        ],
+        timeout: 500000,
+      });
+    };
 
     let isPwd = ref(true);
     let loginForm = ref({
@@ -167,8 +210,9 @@ export default {
           console.log(form.value);
 
           AddUser(form.value).then((response) => {
+            notify(response);
             if (response.status === "success") {
-              console.log("User successfully Added");
+              // console.log("User successfully Added");
             } else {
               console.log("Failed to add user");
             }
@@ -191,13 +235,6 @@ export default {
         name: "username",
         label: "Username",
         field: "username",
-        sortable: true,
-        align: "center",
-      },
-      {
-        name: "password",
-        label: "Password",
-        field: "password",
         sortable: true,
         align: "center",
       },
@@ -243,6 +280,11 @@ export default {
         field: "date_added",
         sortable: true,
         align: "center",
+      },
+      {
+        name: "reset_password",
+        label: "",
+        field: "reset_password",
       },
     ];
 
