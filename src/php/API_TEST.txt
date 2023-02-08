@@ -1,5 +1,5 @@
 MANAGE USERS
-	
+
 	Login
 		POST:
 		in
@@ -7,13 +7,13 @@ MANAGE USERS
 			"username": "grajojOPD49",
 			"password": "ny@72gz09K"
 		}
-		
+
 		{
 			"username": "basmayormbOPD54",
 			"password": "a_zIR2W3AQ"
 		}
-		
-		
+
+
 		out
 		{
 			"status": "success",
@@ -33,15 +33,15 @@ MANAGE USERS
 			],
 			"method": "POST"
 		}
-		
-	
+
+
 	View users
 		GET:
 		in
 		{
-		
+
 		}
-		
+
 		out
 		{
 			"status": "success",
@@ -71,9 +71,10 @@ MANAGE USERS
 			],
 			"method": "GET"
 		}
-	
+
 	Add users
 		POST:
+    in
 		{
 			"first_name": "Julius Albert",
 			"middle_name": null,
@@ -82,3 +83,13 @@ MANAGE USERS
 			"department": 1,
 			"permission_level": 1
 		}
+
+    out
+    {
+      "status": "success",
+      "data": {
+        "username": "grajojOPD57",
+        "password": "Cyfq3HVHfN"
+      },
+      "method": "POST"
+    }
