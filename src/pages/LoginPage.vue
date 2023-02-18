@@ -17,15 +17,27 @@
         <div class="q-px-xl q-pb-xl">
           <q-input
             class="q-mb-md"
+            v-model="loginForm.userID"
             outlined
             label="User ID"
           >
           </q-input>
           <q-input
             class="q-mb-xl"
+            v-model="loginForm.password"
             outlined
+            :type="isShowPassword ? 'password' : 'text'"
             label="Password"
           >
+            <template v-slot:append>
+              <q-icon
+                v-if="loginForm.password"
+                :name="isShowPassword ? 'eva-eye-off-outline' : 'eva-eye-outline'"
+                @click="isShowPassword = !isShowPassword"
+                class="cursor-pointer"
+              >
+              </q-icon>
+            </template>
           </q-input>
 
           <!-- Login Button -->
@@ -44,10 +56,7 @@
   </div>
 </template>
 
-<script>
-export default {
-
-}
+<script src="./script/Login/Login.js">
 </script>
 
 <style lang="scss">
