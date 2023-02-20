@@ -5,9 +5,13 @@ const routes = [
     component: () => import('pages/LoginPage.vue')
   },
   {
-    path: '/dashboard',
+    path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
+      {
+        path: '/dashboard',
+        component: () => import('pages/RHU-HEAD-Dashboard/DashboardPage.vue')
+      }
     ]
   },
 

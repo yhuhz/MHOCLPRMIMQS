@@ -77,7 +77,7 @@
           </q-item-section>
         </q-item> -->
 
-        <q-item class="q-mb-lg">
+        <q-item class="q-mb-md">
           <div class="flex">
             <q-avatar size="40px" class="q-my-lg cursor-pointer">
               <img src="https://cdn.quasar.dev/img/boy-avatar.png">
@@ -88,12 +88,14 @@
           </div>
         </q-item>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
+        <!-- <MainMenu
+          v-for="link in mainmenu"
           :key="link.title"
           v-bind="link"
           class="q-mb-md"
-        />
+        /> -->
+        <MainMenu />
+
       </q-list>
     </q-drawer>
 
@@ -105,43 +107,43 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import MainMenu from 'components/MainMenu.vue'
 
-const linksList = [
-  {
-    title: 'Dashboard',
-    icon: 'fa-solid fa-gauge-high',
-  },
-  {
-    title: "Patient's Profile",
-    icon: 'fa-solid fa-users',
-  },
-  {
-    title: 'Medicine/Supplies',
-    icon: 'fas fa-capsules',
-  },
-  {
-    title: 'Users',
-    icon: 'fa-solid fa-user',
-  },
-  {
-    title: 'Reports',
-    icon: 'fa-solid fa-file',
-  }
-]
+// const linksList = [
+//   {
+//     title: 'Dashboard',
+//     icon: 'fa-solid fa-gauge-high',
+//   },
+//   {
+//     title: "Patient's Profile",
+//     icon: 'fa-solid fa-users',
+//   },
+//   {
+//     title: 'Medicine/Supplies',
+//     icon: 'fas fa-capsules',
+//   },
+//   {
+//     title: 'Users',
+//     icon: 'fa-solid fa-user',
+//   },
+//   {
+//     title: 'Reports',
+//     icon: 'fa-solid fa-file',
+//   }
+// ]
 
 export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    EssentialLink
+    MainMenu
   },
 
   setup () {
     const leftDrawerOpen = ref(false)
 
     return {
-      essentialLinks: linksList,
+      // mainmenu: linksList,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
