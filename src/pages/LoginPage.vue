@@ -43,7 +43,8 @@
           <!-- Login Button -->
           <div class="flex justify-center">
             <q-btn
-              class="login-btn"
+              @click="loginFunction()"
+              color="primary"
               label="Login"
               no-caps
               padding="10px 48px"

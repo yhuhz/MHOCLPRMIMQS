@@ -1,6 +1,6 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh Lpr lFf">
+    <q-header elevated class="bg-primary">
       <q-toolbar>
         <q-btn
           flat
@@ -8,33 +8,91 @@
           round
           icon="menu"
           aria-label="Menu"
-          @click="toggleLeftDrawer"
+          @click="miniState = !miniState"
         />
 
         <q-toolbar-title>
-          Quasar App
+          MHO Camalig
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <!-- Signout -->
+        <q-btn-dropdown
+          label="Administrator"
+          flat
+          no-caps
+          unelevated
+          :ripple="false"
+        >
+          <div class="column items-center">
+            <q-avatar size="48px" class="q-mt-md">
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+            </q-avatar>
+
+            <div class="text-subtitle-1 q-mt-md q-mb-lg text-weight-bold">
+              Cardo "Immortal" Dalisay
+            </div>
+
+            <div class="flex justify-between q-mx-md q-mb-md">
+              <q-btn
+                class="q-mr-md"
+                label="Update"
+                size="md"
+                no-caps
+                color="primary"
+              />
+              <q-btn
+                label="Sign Out"
+                size="md"
+                no-caps
+                color="negative"
+              />
+            </div>
+
+          </div>
+        </q-btn-dropdown>
+
       </q-toolbar>
     </q-header>
 
+    <!-- Sidebar/Drawer -->
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
       bordered
+      :width="250"
+      :mini-width="100"
+      :mini="miniState"
+      class="bg-dark"
     >
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
+        <!-- <q-item>
+          <q-avatar size="40px" class="q-my-lg">
+            <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+          </q-avatar>
+          <q-item-section
+            header
+            class="text-center text-white text-weight-bold q-mt-md q-mb-xl"
+          >
+            Administrator
+          </q-item-section>
+        </q-item> -->
+
+        <q-item class="q-mb-lg">
+          <div class="flex">
+            <q-avatar size="40px" class="q-my-lg cursor-pointer">
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+            </q-avatar>
+            <q-item-section class="text-white q-ml-md">
+              Administrator
+            </q-item-section>
+          </div>
+        </q-item>
 
         <EssentialLink
           v-for="link in essentialLinks"
           :key="link.title"
           v-bind="link"
+          class="q-mb-md"
         />
       </q-list>
     </q-drawer>
@@ -51,46 +109,24 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Dashboard',
+    icon: 'fa-solid fa-gauge-high',
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: "Patient's Profile",
+    icon: 'fa-solid fa-users',
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    title: 'Medicine/Supplies',
+    icon: 'fas fa-capsules',
   },
   {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    title: 'Users',
+    icon: 'fa-solid fa-user',
   },
   {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    title: 'Reports',
+    icon: 'fa-solid fa-file',
   }
 ]
 
@@ -109,7 +145,8 @@ export default defineComponent({
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      },
+      miniState: ref(false)
     }
   }
 })
