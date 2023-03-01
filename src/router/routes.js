@@ -8,9 +8,25 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
+      // {
+      //   path: 'components',
+      //   name: 'components',
+      //   component: () => import('../components/MainMenu.vue')
+      // },
       {
-        path: '/dashboard',
-        component: () => import('pages/RHU-HEAD-Dashboard/DashboardPage.vue')
+        path: 'dashboard',
+        name: 'dashboard',
+        component: () => import('pages/Dashboard/DashboardPage.vue')
+      },
+      {
+        path: 'search-patients',
+        name: 'search-patients',
+        component: () => import('pages/SearchPatients/SearchPatients.vue')
+      },
+      {
+        path: 'add-new-patient-record',
+        name: 'add-new-patient-record',
+        component: () => import('pages/SearchPatients/NewPatientProfile.vue')
       }
     ]
   },
