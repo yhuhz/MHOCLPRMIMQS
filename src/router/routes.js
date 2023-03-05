@@ -21,7 +21,7 @@ const routes = [
       {
         path: 'search-patients',
         name: 'search-patients',
-        component: () => import('pages/SearchPatients/SearchPatients.vue')
+        component: () => import('pages/Patients-Profile/SearchPatients.vue')
       },
       {
         path: 'add-new-patient-record',
