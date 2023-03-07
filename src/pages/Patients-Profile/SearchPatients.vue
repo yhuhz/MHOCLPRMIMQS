@@ -198,7 +198,7 @@
             >
               <q-list bordered separator style="max-width: 120px">
                 <!-- View -->
-                <q-item dense clickable v-ripple>
+                <q-item dense clickable v-ripple to="patient-record-opd-view">
                   <q-item-section class="text-primary text-weight-bold">View</q-item-section>
                   <q-item-section avatar>
                     <q-icon color="primary" size="xs" name="visibility" />

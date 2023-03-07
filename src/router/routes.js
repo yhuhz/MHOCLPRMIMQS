@@ -27,6 +27,11 @@ const routes = [
         path: 'add-new-patient-record',
         name: 'add-new-patient-record',
         component: () => import('pages/Patients-Profile/NewPatientProfile.vue')
+      },
+      {
+        path: 'patient-record-opd-view',
+        name: 'patient-record-opd-view',
+        component: () => import('src/pages/Patients-Profile/PR-OPD-Details.vue')
       }
     ]
   },
