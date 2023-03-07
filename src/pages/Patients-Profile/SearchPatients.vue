@@ -4,11 +4,12 @@
       <q-btn
         round
         outline
+        dense
         icon="west"
         class="q-mr-md"
         @click="$router.go(-1)"
       />
-      <h5 class="text-weight-bold text-dark q-mr-lg">PATIENT RECORDS</h5>
+      <h5 class="text-weight-bold">PATIENT RECORDS</h5>
     </div>
 
     <div class="flex q-px-md">
@@ -228,8 +229,8 @@
   </div>
 </template>
 
-<script src="../script/SearchPatients/SearchPatients"></script>
+<script src="../script/Patients-Profile/SearchPatients"></script>
 
 <style lang="scss">
-@import "../styles/scss/search-patients/search_patients.scss";
+@import "../styles/scss/patients-profile/search_patients.scss";
 </style>

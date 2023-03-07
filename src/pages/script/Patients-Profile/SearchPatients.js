@@ -149,8 +149,8 @@ export default {
         name: "John Doe",
         household: "Doe",
         sex: "M",
-        birthDate: "02/31/1989",
-        age: 20,
+        birthDate: "02/31/2000",
+        age: 23,
         barangay: "Baligang",
         phoneNumber: "+639123456789"
       },
@@ -159,8 +159,8 @@ export default {
         name: "Jane Doe",
         household: "Doe",
         sex: "F",
-        birthDate: "02/30/1987",
-        age: 21,
+        birthDate: "02/30/2000",
+        age: 23,
         barangay: "Baligang",
         phoneNumber: "+639987654321"
       },
