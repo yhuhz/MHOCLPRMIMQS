@@ -32,6 +32,11 @@ const routes = [
         path: 'patient-record-opd-view',
         name: 'patient-record-opd-view',
         component: () => import('src/pages/Patients-Profile/PR-OPD-Details.vue')
+      },
+      {
+        path: 'patient-record-opd-edit',
+        name: 'patient-record-opd-edit',
+        component: () => import('src/pages/Patients-Profile/PR-OPD-Details-Add-Edit.vue')
       }
     ]
   },

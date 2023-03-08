@@ -166,6 +166,9 @@ export default {
       },
     ];
 
+    const openDialog = () => {
+    }
+
     return {
       searchBy,
       selectedSearchBy,
@@ -179,6 +182,7 @@ export default {
       dateAdded,
       columns,
       rows,
+      openDialog
     };
   },
 };
