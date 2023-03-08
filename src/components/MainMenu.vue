@@ -55,7 +55,7 @@
       @click="link = 'search-patients'"
     >
       <q-item-section avatar>
-        <q-icon size="xs" name="search"/>
+        <q-icon size="xs" name="fa fa-magnifying-glass"/>
       </q-item-section>
       <q-item-section>Search Patients</q-item-section>
     </q-item>
@@ -69,54 +69,52 @@
       @click="link = 'add-new-patient-record'"
     >
       <q-item-section avatar>
-        <q-icon size="xs" name="mdi-plus-box-outline"/>
+        <q-icon size="xs" name="fa fa-square-plus"/>
       </q-item-section>
       <q-item-section>Add New Patient Record</q-item-section>
     </q-item>
 
     <q-item clickable class="list-text">
       <q-item-section avatar>
-        <q-icon size="xs" name="mdi-home-outline"/>
+        <q-icon size="xs" name="fa fa-house"/>
       </q-item-section>
       <q-item-section>View Household</q-item-section>
     </q-item>
 
     <q-item clickable class="list-text">
       <q-item-section avatar>
-        <q-icon size="xs" name="mdi-home-plus-outline"/>
+        <q-icon size="xs" name="fa fa-house-medical"/>
       </q-item-section>
       <q-item-section>Add Household</q-item-section>
     </q-item>
 
     <q-item clickable class="list-text">
       <q-item-section avatar>
-        <q-icon size="xs" name="accessible"/>
+        <q-icon size="xs" name="fa fa-wheelchair"/>
       </q-item-section>
       <q-item-section>PWDs</q-item-section>
     </q-item>
 
     <q-item clickable class="list-text">
       <q-item-section avatar>
-        <q-icon size="xs" name="mdi-human-cane"/>
+        <q-icon size="xs" name="fa fa-person-cane"/>
       </q-item-section>
       <q-item-section>Senior Citizens</q-item-section>
     </q-item>
 
     <q-item clickable class="list-text">
       <q-item-section avatar>
-        <q-icon size="xs" name="mdi-human-pregnant"/>
+        <q-icon size="xs" name="fa fa-person-pregnant"/>
       </q-item-section>
       <q-item-section>Pregnant Women</q-item-section>
     </q-item>
-
-
 
    </q-list>
 
     </q-expansion-item>
 
     <!-- Medicine/Supplies -->
-    <q-item
+    <!-- <q-item
       clickable
       class="text-white"
     >
@@ -124,9 +122,48 @@
       <q-icon name="mdi-pill" />
     </q-item-section>
     <q-item-section>
-      <q-item-label>Medicine/Supplies</q-item-label>
+      <q-item-label>Meds & Supplies</q-item-label>
     </q-item-section>
+    </q-item> -->
+    <q-expansion-item
+    label="Meds & Supplies"
+    icon="fa fa-prescription-bottle-medical"
+    class="text-white"
+    >
+
+    <q-list dense separator class="dropdown-list">
+
+    <q-item clickable class="list-text">
+      <q-item-section avatar>
+        <q-icon size="xs" name="fa fa-pills"/>
+      </q-item-section>
+      <q-item-section>Medicine Inventory</q-item-section>
     </q-item>
+
+    <q-item clickable class="list-text">
+      <q-item-section avatar>
+        <q-icon size="xs" name="fa fa-hand-holding-medical"/>
+      </q-item-section>
+      <q-item-section>Medicine Release</q-item-section>
+    </q-item>
+
+    <q-item clickable class="list-text">
+      <q-item-section avatar>
+        <q-icon size="xs" name="fa fa-syringe"/>
+      </q-item-section>
+      <q-item-section>Supplies Inventory</q-item-section>
+    </q-item>
+
+    <q-item clickable class="list-text">
+      <q-item-section avatar>
+        <q-icon size="xs" name="fa fa-hand-holding-medical"/>
+      </q-item-section>
+      <q-item-section>Supplies Release</q-item-section>
+    </q-item>
+
+    </q-list>
+
+    </q-expansion-item>
 
     <!-- Users -->
     <q-item
