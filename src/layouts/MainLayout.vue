@@ -237,18 +237,18 @@
       :mini="miniState"
       class="bg-dark"
     >
-      <q-list>
+      <q-list separator>
 
-        <q-item class="q-mb-md">
-          <div class="flex">
-            <q-avatar size="40px" class="q-my-lg cursor-pointer">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-            </q-avatar>
-            <q-item-section class="text-white q-ml-md">
-              Administrator
-            </q-item-section>
-          </div>
-        </q-item>
+    <div class="q-my-lg">
+      <div class="flex justify-center items-center">
+        <q-avatar class="q-mb-md">
+          <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+        </q-avatar>
+      </div>
+      <div class="text-center" v-if="!miniState">
+        <p class="text-white text-weight-bold" style="font-size: 1.2rem;">MHO HEAD</p>
+      </div>
+    </div>
 
         <MainMenu />
 
