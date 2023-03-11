@@ -83,13 +83,6 @@
 
     <q-item clickable class="list-text">
       <q-item-section avatar>
-        <q-icon size="xs" name="fa fa-house-medical"/>
-      </q-item-section>
-      <q-item-section>Add Household</q-item-section>
-    </q-item>
-
-    <q-item clickable class="list-text">
-      <q-item-section avatar>
         <q-icon size="xs" name="fa fa-wheelchair"/>
       </q-item-section>
       <q-item-section>PWDs</q-item-section>
