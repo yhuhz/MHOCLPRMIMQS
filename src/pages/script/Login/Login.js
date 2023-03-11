@@ -18,7 +18,7 @@ export default {
       }
     }
 
-    let isShowPassword= ref('true')
+    let isShowPassword= ref(true)
 
     return {
       loginForm,

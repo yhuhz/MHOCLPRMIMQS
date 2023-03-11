@@ -32,7 +32,7 @@
             <template v-slot:append>
               <q-icon
                 v-if="loginForm.password"
-                :name="isShowPassword ? 'eva-eye-off-outline' : 'eva-eye-outline'"
+                :name="isShowPassword ? 'visibility_off' : 'visibility'"
                 @click="isShowPassword = !isShowPassword"
                 class="cursor-pointer"
               >
