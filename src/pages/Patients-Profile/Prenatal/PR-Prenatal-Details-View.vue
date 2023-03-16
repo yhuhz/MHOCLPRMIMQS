@@ -278,5 +278,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../styles/scss/patients-profile/pr_prenatal.scss'
+  @import '../../styles/scss/patients-profile/pr_prenatal.scss'
 </style>

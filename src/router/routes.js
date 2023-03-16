@@ -33,18 +33,18 @@ const routes = [
       {
         path: 'patient-record-opd-view',
         name: 'patient-record-opd-view',
-        component: () => import('src/pages/Patients-Profile/PR-OPD-Details.vue')
+        component: () => import('src/pages/Patients-Profile/OPD/PR-OPD-Details.vue')
       },
       {
         path: 'patient-record-opd-edit',
         name: 'patient-record-opd-edit',
-        component: () => import('src/pages/Patients-Profile/PR-OPD-Details-Add-Edit.vue')
+        component: () => import('src/pages/Patients-Profile/OPD/PR-OPD-Details-Add-Edit.vue')
       },
       // Prenatal
       {
         path: 'patient-record-prenatal-view',
         name: 'patient-record-prenatal-view',
-        component: () => import('src/pages/Patients-Profile/PR-Prenatal-Details-View.vue')
+        component: () => import('src/pages/Patients-Profile/Prenatal/PR-Prenatal-Details-View.vue')
       },
       // Meds & supplies
       {

@@ -18,14 +18,14 @@
 
         <div class="col-3 q-pa-md first-col">
           <div>
-          <q-btn
-          class="float-right cursor-pointer q-mt-sm"
-          icon="edit"
-          size="xs"
-          padding="3px"
-          outline
-          color="primary"
-          />
+            <q-btn
+            class="float-right q-mt-sm"
+            size="xs"
+            padding="3px"
+            icon="edit"
+            color="primary"
+            outline
+            />
           <p class="text-primary text-center text-weight-bold" style="font-size: 22px;">
             Jose Francisco Sinta Perez Sr.
           </p>
@@ -52,7 +52,7 @@
 
           <div class="row q-mb-sm">
             <div class="col q-mr-xl text-center">
-              <q-input dense />
+              <q-input dense class="q-mb-xs" />
               <q-label>Birth date</q-label>
             </div>
             <div class="col text-center">
@@ -84,14 +84,13 @@
           <div class="row q-my-lg">
             <div class="col">
               <q-btn
-              dense
               color="primary"
               outline
               label="Create New Record"
               no-caps
+              icon="create_new_folder"
               size="sm"
               padding="4px 8px"
-              icon="create_new_folder"
               class="create-btn"
             />
             </div>
@@ -119,7 +118,7 @@
           </div>
         </div>
 
-        <q-separator vertical size="2px" color="primary" />
+        <q-separator vertical color="primary" size="2px"/>
 
         <!-- OPD Number -->
         <div class="opd-number">
@@ -131,70 +130,116 @@
         <div class="action-btn">
           <q-btn
             dense
-            label="Edit"
-            icon="edit"
+            label="Submit"
             no-caps
             color="primary"
             style="width: 120px"
           />
           <q-btn
             dense
-            label="Delete"
-            icon="delete"
+            outline
+            label="Cancel"
             no-caps
-            color="negative"
+            color="primary"
             style="width: 120px"
             class="q-ml-md"
           />
         </div>
 
-        <div class="col q-ml-md second-col">
+        <div class="col q-ml-md second-col fit">
           <!-- Preliminary Checkup -->
           <div class="preliminary-checkup">
             <div>
               <p class="bg-primary text-white text-center pc-heading">Preliminary Checkup</p>
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between items-center q-px-md q-mb-md">
               <p class="text-primary text-weight-bold">Done by</p>
-              <p class="text-primary">John Doe</p>
+              <q-input
+              dense
+              outlined
+              hide-bottom-space
+              autogrow
+              style="width: 130px;"
+              />
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between items-center q-px-md q-mb-md">
               <p class="text-primary text-weight-bold">Temperature</p>
-              <p class="text-primary">27C</p>
+              <q-input
+              dense
+              outlined
+              style="width: 130px"
+              />
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between items-center q-px-md q-mb-md">
               <p class="text-primary text-weight-bold">Blood Presuure</p>
-              <p class="text-primary">120/80</p>
+              <q-input
+              dense
+              outlined
+              style="width: 130px"
+              />
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between items-center q-px-md q-mb-md">
               <p class="text-primary text-weight-bold">Height</p>
-              <p class="text-primary">172cm</p>
+              <q-input
+              dense
+              outlined
+              style="width: 130px"
+              />
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between items-center q-px-md q-mb-md">
               <p class="text-primary text-weight-bold">Weight</p>
-              <p class="text-primary">78kgs</p>
+              <q-input
+              dense
+              outlined
+              style="width: 130px"
+              />
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between items-center q-px-md q-mb-md">
               <p class="text-primary text-weight-bold">Pulse Rate</p>
-              <p class="text-primary">60 bpm</p>
+              <q-input
+              dense
+              outlined
+              style="width: 130px"
+              />
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between items-center q-px-md q-mb-md">
               <p class="text-primary text-weight-bold">Oxygen Saturation</p>
-              <p class="text-primary">88%</p>
+              <q-input
+              dense
+              outlined
+              style="width: 130px"
+              />
             </div>
           </div>
 
           <!-- Findings -->
-          <div class="findings q-mt-lg">
+          <div class="findings q-my-lg">
             <div>
-              <p class="bg-primary text-white text-center findings-heading">Findings</p>
+                <p class="bg-primary text-white text-center findings-heading q-pl-md">
+                  Findings
+                  <q-btn
+                  unelevated
+                  size="xs"
+                  color="white"
+                  icon="add"
+                  text-color="primary"
+                  round
+                  class="float-right q-mr-md" />
+                </p>
             </div>
             <div class="q-ma-md">
               <q-input
                 dense
                 outlined
-                class="q-mb-sm"
-              />
+              >
+              <template v-slot:prepend>
+                <q-icon name="edit" color="primary" class="cursor-pointer" />
+              </template>
+
+              <template v-slot:append>
+                <q-icon name="delete" color="negative" class="cursor-pointer" />
+              </template>
+              </q-input>
             </div>
           </div>
         </div>
@@ -202,13 +247,33 @@
         <!-- Laboratory Results -->
         <div class="col q-mx-md third-col">
           <div class="laboratory-results fit">
-            <p class="bg-primary text-center text-white lr-heading">Laboratory Results</p>
+            <p class="bg-primary text-center text-white lr-heading q-pl-md">
+              Laboratory Results
+
+            <q-btn
+              unelevated
+              size="xs"
+              color="white"
+              icon="add"
+              text-color="primary"
+              round
+              class="float-right q-mr-md"
+            />
+            </p>
             <div class="q-px-md q-mb-md">
               <q-input
               dense
               outlined
               class="q-mb-md"
-              />
+              >
+              <template v-slot:prepend>
+                <q-icon name="edit" color="primary" class="cursor-pointer" />
+              </template>
+
+              <template v-slot:append>
+                <q-icon name="delete" color="negative" class="cursor-pointer" />
+              </template>
+              </q-input>
             </div>
           </div>
         </div>
@@ -219,24 +284,69 @@
             <p class="bg-primary text-white text-center dn-heading">Doctors Notes</p>
             <div class="q-px-md">
 
-              <div class="flex justify-between items-center">
+              <div class="flex justify-between items-center q-mb-md">
                 <p class="text-primary text-weight-bold">Doctor:</p>
-                <p class="text-primary">Juan Dela Cruz</p>
+                <q-input
+                dense
+                outlined
+                autogrow
+                style="width: 130px"
+                />
               </div>
 
-              <div class="flex justify-between items-center">
+              <div class="flex justify-between items-center q-mb-md">
                 <p class="text-primary text-weight-bold">Complaint:</p>
-                <p class="text-primary">Diarrhea</p>
+                <q-input
+                dense
+                outlined
+                autogrow
+                style="width: 130px"
+                />
               </div>
 
-              <div class="flex justify-between items-center">
+              <div class="flex justify-between items-center q-mb-md">
                 <p class="text-primary text-weight-bold">Checkup Date:</p>
-                <p class="text-primary">02/02/2023</p>
+                <q-input
+                v-model="checkupDate"
+                dense
+                outlined
+                style="width: 130px"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="event" color="primary" size="xs" class="cursor-pointer" >
+                      <q-popup-proxy transition-show="scale" transition-hide="scale">
+                        <q-date v-model="checkupDate">
+                          <div class="row justify-end items-center">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+
               </div>
 
-              <div class="flex justify-between items-center">
+              <div class="flex justify-between items-center q-mb-md">
                 <p class="text-primary text-weight-bold">Next Checkup:</p>
-                <p class="text-primary">02/10/2023</p>
+                <q-input
+                v-model="nextCheckupDate"
+                dense
+                outlined
+                style="width: 130px"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="event" color="primary" size="xs" class="cursor-pointer" >
+                      <q-popup-proxy transition-show="scale" transition-hide="scale">
+                        <q-date v-model="nextCheckupDate">
+                          <div class="row justify-end items-center">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
               </div>
             </div>
 
@@ -258,9 +368,9 @@
   </div>
 </template>
 
-<script src="../script/Patients-Profile/PR-OPD-Details">
+<script src="../../script/Patients-Profile/PR-OPD-Details-Edit.js">
 </script>
 
 <style lang="scss" scoped>
-  @import "../styles/scss/patients-profile/pr_opd_details.scss"
+  @import "../../styles/scss/patients-profile/pr_opd_details.scss"
 </style>
