@@ -17,7 +17,19 @@
       <div class="row">
 
         <div class="col-3 q-pa-md first-col">
-          <p class="text-primary text-center text-weight-bold" style="font-size: 24px;">Jose Francisco Sinta Perez Sr.</p>
+          <div>
+            <q-btn
+            class="float-right q-mt-sm"
+            size="xs"
+            padding="3px"
+            icon="edit"
+            color="primary"
+            outline
+            />
+          <p class="text-primary text-center text-weight-bold" style="font-size: 22px;">
+            Jose Francisco Sinta Perez Sr.
+          </p>
+          </div>
           <div class="flex justify-between items-center">
             <p>12A</p>
             <p>Active</p>
@@ -40,7 +52,7 @@
 
           <div class="row q-mb-sm">
             <div class="col q-mr-xl text-center">
-              <q-input dense />
+              <q-input dense class="q-mb-xs" />
               <q-label>Birth date</q-label>
             </div>
             <div class="col text-center">
@@ -72,12 +84,13 @@
           <div class="row q-my-lg">
             <div class="col">
               <q-btn
-              dense
               color="primary"
               outline
               label="Create New Record"
               no-caps
               icon="create_new_folder"
+              size="sm"
+              padding="4px 8px"
               class="create-btn"
             />
             </div>
@@ -105,7 +118,35 @@
           </div>
         </div>
 
-        <div class="col q-ml-md second-col">
+        <q-separator vertical color="primary" size="2px"/>
+
+        <!-- OPD Number -->
+        <div class="opd-number">
+          <p class="text-primary text-weight-bold" style="font-size: 34px;">
+            OPD186
+          </p>
+        </div>
+        <!-- Action Button -->
+        <div class="action-btn">
+          <q-btn
+            dense
+            label="Submit"
+            no-caps
+            color="primary"
+            style="width: 120px"
+          />
+          <q-btn
+            dense
+            outline
+            label="Cancel"
+            no-caps
+            color="primary"
+            style="width: 120px"
+            class="q-ml-md"
+          />
+        </div>
+
+        <div class="col q-ml-md second-col fit">
           <!-- Preliminary Checkup -->
           <div class="preliminary-checkup">
             <div>
@@ -178,7 +219,6 @@
                   Findings
                   <q-btn
                   unelevated
-                  push
                   size="xs"
                   color="white"
                   icon="add"
@@ -205,18 +245,13 @@
         </div>
 
         <!-- Laboratory Results -->
-        <div class="col q-mx-md q-mt-xl q-mb-lg">
-          <div class="q-gutter-lg">
-            <!-- OPD Number -->
-            <h5 class="text-primary text-center text-weight-bold q-mt-none q-mb-lg heading-number">OPD186</h5>
-          </div>
-          <div class="laboratory-results">
+        <div class="col q-mx-md third-col">
+          <div class="laboratory-results fit">
             <p class="bg-primary text-center text-white lr-heading q-pl-md">
               Laboratory Results
 
             <q-btn
               unelevated
-              push
               size="xs"
               color="white"
               icon="add"
@@ -244,28 +279,8 @@
         </div>
 
         <!-- Doctors Notes -->
-        <div class="col q-mr-md q-mt-xl q-mb-lg">
-          <!-- Edit and Delete Button -->
-          <div class="q-gutter-lg">
-            <q-btn
-            dense
-            color="primary"
-            label="Submit"
-            no-caps
-            style="width: 120px"
-            class="q-mt-none q-mb-lg"
-            />
-            <q-btn
-            dense
-            outline
-            color="primary"
-            label="Cancel"
-            no-caps
-            style="width: 120px"
-            class="q-mt-none q-mb-lg"
-          />
-          </div>
-          <div class="doctors-notes">
+        <div class="col q-mr-md fourth-col">
+          <div class="doctors-notes fit">
             <p class="bg-primary text-white text-center dn-heading">Doctors Notes</p>
             <div class="q-px-md">
 

@@ -9,7 +9,7 @@
         class="q-mr-md"
         @click="$router.go(-1)"
       />
-      <h5 class="text-weight-bold">PATIENT RECORDS</h5>
+      <h5 class="text-weight-bold">MEDICINE INVENTORY</h5>
     </div>
 
     <div class="flex q-px-md">
@@ -114,6 +114,7 @@
                   </q-input>
                   <p>From</p>
                 </div>
+              </div>
 
                 <div style="max-width: 150px">
                   <q-input outlined dense v-model="dateAdded.to" mask="date">
@@ -132,7 +133,7 @@
                   <p>To</p>
                 </div>
               </div>
-            </div>
+
 
             <!-- Barangay List -->
             <p class="q-px-md q-mt-lg text-primary text-weight-bold">Barangay</p>
@@ -165,13 +166,11 @@
 
       <q-btn
         class="add-new-patient-btn"
-        icon="person_add_alt"
         outline
         :ripple="false"
         color="primary"
         no-caps
-        label="Create New Patient Profile"
-        @click="$router.push('add-new-patient-record')"
+        label="Add New Medicine Stock"
       />
 
       <!-- Table -->
@@ -195,31 +194,31 @@
             <q-menu
               transition-show="jump-down"
               transition-hide="jump-up"
-              style="width: 250px"
+              style="max-width: 250px"
             >
-              <q-list separator dense>
+              <q-list dense separator>
                 <!-- View -->
                 <q-item
                 clickable
-                to="patient-record-opd-view"
                 class="drop-list"
-                >
-                  <q-item-section>View Patient Details</q-item-section>
+                to="patient-record-opd-view">
+                  <q-item-section>View Details</q-item-section>
                   <q-item-section avatar>
                     <q-icon size="xs" name="visibility" />
                   </q-item-section>
                 </q-item>
+
                 <!-- Edit -->
                 <q-item
                 clickable
-                to="patient-record-opd-edit"
                 class="drop-list"
-                >
-                  <q-item-section>Edit Patient Details</q-item-section>
+                to="patient-record-opd-edit">
+                  <q-item-section>Edit Details</q-item-section>
                   <q-item-section avatar>
                     <q-icon size="xs" name="mdi-account-edit-outline" />
                   </q-item-section>
                 </q-item>
+
                 <!-- Delete -->
                 <q-item
                 clickable
@@ -241,11 +240,13 @@
   </div>
 </template>
 
-<script src="../script/Patients-Profile/SearchPatients"></script>
+<script>
+export default {
+
+}
+</script>
 
 <style scoped lang="scss">
-  @import url("../styles/scss/patients-profile/search_patients.scss");
-
   .drop-list {
     color: #5f8d4e;
   }

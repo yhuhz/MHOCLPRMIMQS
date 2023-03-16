@@ -17,7 +17,19 @@
       <div class="row">
 
         <div class="col-3 q-pa-md first-col">
-          <p class="text-primary text-center text-weight-bold" style="font-size: 24px;">Jose Francisco Sinta Perez Sr.</p>
+          <div>
+          <q-btn
+          class="float-right cursor-pointer q-mt-sm"
+          icon="edit"
+          size="xs"
+          padding="3px"
+          outline
+          color="primary"
+          />
+          <p class="text-primary text-center text-weight-bold" style="font-size: 22px;">
+            Jose Francisco Sinta Perez Sr.
+          </p>
+          </div>
           <div class="flex justify-between items-center">
             <p>12A</p>
             <p>Active</p>
@@ -77,6 +89,8 @@
               outline
               label="Create New Record"
               no-caps
+              size="sm"
+              padding="4px 8px"
               icon="create_new_folder"
               class="create-btn"
             />
@@ -103,6 +117,35 @@
               />
             </div>
           </div>
+        </div>
+
+        <q-separator vertical size="2px" color="primary" />
+
+        <!-- OPD Number -->
+        <div class="opd-number">
+          <p class="text-primary text-weight-bold" style="font-size: 34px;">
+            OPD186
+          </p>
+        </div>
+        <!-- Action Button -->
+        <div class="action-btn">
+          <q-btn
+            dense
+            label="Edit"
+            icon="edit"
+            no-caps
+            color="primary"
+            style="width: 120px"
+          />
+          <q-btn
+            dense
+            label="Delete"
+            icon="delete"
+            no-caps
+            color="negative"
+            style="width: 120px"
+            class="q-ml-md"
+          />
         </div>
 
         <div class="col q-ml-md second-col">
@@ -142,7 +185,7 @@
           </div>
 
           <!-- Findings -->
-          <div class="findings q-my-lg">
+          <div class="findings q-mt-lg">
             <div>
               <p class="bg-primary text-white text-center findings-heading">Findings</p>
             </div>
@@ -150,18 +193,15 @@
               <q-input
                 dense
                 outlined
+                class="q-mb-sm"
               />
             </div>
           </div>
         </div>
 
         <!-- Laboratory Results -->
-        <div class="col q-mx-md q-mt-xl q-mb-lg">
-          <div class="q-gutter-lg">
-            <!-- OPD Number -->
-            <h5 class="text-primary text-center text-weight-bold q-mt-none q-mb-lg heading-number">OPD186</h5>
-          </div>
-          <div class="laboratory-results">
+        <div class="col q-mx-md third-col">
+          <div class="laboratory-results fit">
             <p class="bg-primary text-center text-white lr-heading">Laboratory Results</p>
             <div class="q-px-md q-mb-md">
               <q-input
@@ -174,29 +214,8 @@
         </div>
 
         <!-- Doctors Notes -->
-        <div class="col q-mr-md q-mt-xl q-mb-lg">
-          <!-- Edit and Delete Button -->
-          <div class="q-gutter-lg">
-            <q-btn
-            dense
-            color="primary"
-            label="Edit"
-            icon="edit"
-            no-caps
-            style="width: 120px"
-            class="q-mt-none q-mb-lg"
-            />
-            <q-btn
-            dense
-            color="negative"
-            label="Delete"
-            icon="delete"
-            no-caps
-            style="width: 120px"
-            class="q-mt-none q-mb-lg"
-          />
-          </div>
-          <div class="doctors-notes">
+        <div class="col q-mr-md fourth-col">
+          <div class="doctors-notes fit">
             <p class="bg-primary text-white text-center dn-heading">Doctors Notes</p>
             <div class="q-px-md">
 

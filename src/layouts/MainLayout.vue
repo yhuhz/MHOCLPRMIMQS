@@ -23,7 +23,11 @@
             Juan Dela Cruz
           </q-toolbar-title>
 
-          <q-menu style="width: 230px">
+          <q-menu
+          transition-show="jump-down"
+          transition-hide="jump-up"
+          style="width: 230px"
+          >
             <q-list separator dense>
               <q-item clickable class="drop-list" @click="editUser = true">
                 <q-item-section>
@@ -245,7 +249,7 @@
           <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
         </q-avatar>
       </div>
-      <div class="text-center" v-if="!miniState">
+      <div class="text-center" v-show="!miniState">
         <p class="text-white text-weight-bold" style="font-size: 1.2rem;">MHO HEAD</p>
       </div>
     </div>

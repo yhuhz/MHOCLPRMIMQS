@@ -2,20 +2,29 @@
   .card-box {
     border: 2px solid #5F8D4E;
     border-radius: 5px;
+    position: relative;
   }
 
-  .first-col {
-    border-right: 2px solid #5F8D4E;
+  .opd-number {
+    position: absolute;
+    right: 35%;
+    top: 10px;
+  }
+
+  .action-btn {
+    position: absolute;
+    right: 3%;
+    top: 20px;
+  }
+
+  .second-col, .third-col, .fourth-col {
+    margin-top: 70px;
+    margin-bottom: 20px;
   }
 
   .create-btn {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 11px;
-  }
-
-  .second-col {
-    margin-top: 80px;
+    height: 40px;
+    font-size: 12px;
   }
 
   .preliminary-checkup {

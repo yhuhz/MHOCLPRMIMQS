@@ -88,18 +88,7 @@
 
     </q-expansion-item>
 
-    <!-- Medicine/Supplies -->
-    <!-- <q-item
-      clickable
-      class="text-white"
-    >
-    <q-item-section avatar>
-      <q-icon name="mdi-pill" />
-    </q-item-section>
-    <q-item-section>
-      <q-item-label>Meds & Supplies</q-item-label>
-    </q-item-section>
-    </q-item> -->
+    <!-- Meds and Supplies -->
     <q-expansion-item
     label="Meds & Supplies"
     icon="fa fa-prescription-bottle-medical"
@@ -108,7 +97,7 @@
 
     <q-list dense separator class="dropdown-list">
 
-    <q-item clickable class="list-text">
+    <q-item clickable class="list-text" to="medicine-inventory">
       <q-item-section avatar>
         <q-icon size="xs" name="fa fa-pills"/>
       </q-item-section>
@@ -117,23 +106,9 @@
 
     <q-item clickable class="list-text">
       <q-item-section avatar>
-        <q-icon size="xs" name="fa fa-hand-holding-medical"/>
-      </q-item-section>
-      <q-item-section>Medicine Release</q-item-section>
-    </q-item>
-
-    <q-item clickable class="list-text">
-      <q-item-section avatar>
         <q-icon size="xs" name="fa fa-syringe"/>
       </q-item-section>
       <q-item-section>Supplies Inventory</q-item-section>
-    </q-item>
-
-    <q-item clickable class="list-text">
-      <q-item-section avatar>
-        <q-icon size="xs" name="fa fa-hand-holding-medical"/>
-      </q-item-section>
-      <q-item-section>Supplies Release</q-item-section>
     </q-item>
 
     </q-list>

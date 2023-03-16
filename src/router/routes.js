@@ -18,6 +18,7 @@ const routes = [
         name: 'dashboard',
         component: () => import('pages/Dashboard/DashboardPage.vue')
       },
+      // Patients Profile
       {
         path: 'search-patients',
         name: 'search-patients',
@@ -28,6 +29,7 @@ const routes = [
         name: 'add-new-patient-record',
         component: () => import('pages/Patients-Profile/NewPatientProfile.vue')
       },
+      // OPD
       {
         path: 'patient-record-opd-view',
         name: 'patient-record-opd-view',
@@ -37,6 +39,18 @@ const routes = [
         path: 'patient-record-opd-edit',
         name: 'patient-record-opd-edit',
         component: () => import('src/pages/Patients-Profile/PR-OPD-Details-Add-Edit.vue')
+      },
+      // Prenatal
+      {
+        path: 'patient-record-prenatal-view',
+        name: 'patient-record-prenatal-view',
+        component: () => import('src/pages/Patients-Profile/PR-Prenatal-Details-View.vue')
+      },
+      // Meds & supplies
+      {
+        path: 'medicine-inventory',
+        name: 'medicine-inventory',
+        component: () => import('src/pages/Meds&Supplies/MedicineInventory.vue')
       }
     ]
   },
