@@ -159,7 +159,6 @@ export default defineComponent({
     const router = useRouter();
 
     let link = ref(route.name)
-    console.log(link)
 
     return {
       link,

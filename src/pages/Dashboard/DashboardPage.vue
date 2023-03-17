@@ -87,5 +87,5 @@
 </script>
 
 <style lang="scss">
-  @import '../styles/scss/dashboard/dashboard.scss'
+  @import '../styles/dashboard/dashboard.scss'
 </style>

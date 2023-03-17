@@ -46,6 +46,11 @@ const routes = [
         name: 'patient-record-prenatal-view',
         component: () => import('src/pages/Patients-Profile/Prenatal/PR-Prenatal-Details-View.vue')
       },
+      {
+        path: 'patient-record-prenatal-edit',
+        name: 'patient-record-prenatal-edit',
+        component: () => import('src/pages/Patients-Profile/Prenatal/PR-Prenatal-Details-Edit.vue')
+      },
       // Meds & supplies
       {
         path: 'medicine-inventory',

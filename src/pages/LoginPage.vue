@@ -61,5 +61,5 @@
 </script>
 
 <style lang="scss">
-  @import "./styles/scss/login/login.scss"
+  @import "./styles/login/login.scss"
 </style>

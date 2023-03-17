@@ -305,5 +305,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../styles/scss/patients-profile/new_patient_profile.scss"
+  @import "../styles/patients-profile/new_patient_profile.scss"
 </style>

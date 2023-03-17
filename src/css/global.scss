@@ -1,0 +1,9 @@
+// Custom style for input field
+.mhc-input-field {
+  width: 120px;
+  font-size: 12px;
+  margin-bottom: 10px;
+  &.q-field--dense .q-field__control {
+      height: 28px;
+  }
+}

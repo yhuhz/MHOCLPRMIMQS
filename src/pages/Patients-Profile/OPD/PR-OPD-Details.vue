@@ -130,6 +130,7 @@
         <!-- Action Button -->
         <div class="action-btn">
           <q-btn
+            @click="$router.push('patient-record-opd-edit')"
             dense
             label="Edit"
             icon="edit"
@@ -258,9 +259,9 @@
   </div>
 </template>
 
-<script src="../../script/Patients-Profile/PR-OPD-Details">
+<script src="../../script/Patients-Profile/OPD/PR-OPD-Details">
 </script>
 
 <style lang="scss" scoped>
-  @import '../../styles/scss/patients-profile/pr_opd_details.scss'
+  @import '../../styles/patients-profile/opd/pr_opd_details.scss'
 </style>

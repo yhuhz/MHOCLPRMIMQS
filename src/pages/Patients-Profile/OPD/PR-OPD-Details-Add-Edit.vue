@@ -152,62 +152,67 @@
             <div>
               <p class="bg-primary text-white text-center pc-heading">Preliminary Checkup</p>
             </div>
-            <div class="flex justify-between items-center q-px-md q-mb-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Done by</p>
               <q-input
               dense
               outlined
-              hide-bottom-space
-              autogrow
-              style="width: 130px;"
+              :input-style="{color: '#5f8d4e', fontWeight: '500'}"
+              class="mhc-input-field"
               />
             </div>
-            <div class="flex justify-between items-center q-px-md q-mb-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Temperature</p>
               <q-input
               dense
               outlined
-              style="width: 130px"
+              :input-style="{color: '#5f8d4e', fontWeight: '500'}"
+              class="mhc-input-field"
               />
             </div>
-            <div class="flex justify-between items-center q-px-md q-mb-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Blood Presuure</p>
               <q-input
               dense
               outlined
-              style="width: 130px"
+              :input-style="{color: '#5f8d4e', fontWeight: '500'}"
+              class="mhc-input-field"
               />
             </div>
-            <div class="flex justify-between items-center q-px-md q-mb-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Height</p>
               <q-input
               dense
               outlined
-              style="width: 130px"
+              :input-style="{color: '#5f8d4e', fontWeight: '500'}"
+              class="mhc-input-field"
               />
             </div>
-            <div class="flex justify-between items-center q-px-md q-mb-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Weight</p>
               <q-input
               dense
               outlined
-              style="width: 130px"
+              :input-style="{color: '#5f8d4e', fontWeight: '500'}"
+              class="mhc-input-field"
               />
             </div>
-            <div class="flex justify-between items-center q-px-md q-mb-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Pulse Rate</p>
               <q-input
               dense
               outlined
-              style="width: 130px"
+              :input-style="{color: '#5f8d4e', fontWeight: '500'}"
+              class="mhc-input-field"
               />
             </div>
-            <div class="flex justify-between items-center q-px-md q-mb-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Oxygen Saturation</p>
               <q-input
               dense
               outlined
-              style="width: 130px"
+              :input-style="{color: '#5f8d4e', fontWeight: '500'}"
+              class="mhc-input-field"
               />
             </div>
           </div>
@@ -231,13 +236,14 @@
               <q-input
                 dense
                 outlined
+                :input-style="{color: '#5f8d4e', fontWeight: '500'}"
               >
               <template v-slot:prepend>
                 <q-icon name="edit" color="primary" class="cursor-pointer" />
               </template>
 
               <template v-slot:append>
-                <q-icon name="delete" color="negative" class="cursor-pointer" />
+                <q-icon name="delete" color="primary" class="cursor-pointer" />
               </template>
               </q-input>
             </div>
@@ -264,6 +270,7 @@
               <q-input
               dense
               outlined
+              :input-style="{color: '#5f8d4e', fontWeight: '500'}"
               class="q-mb-md"
               >
               <template v-slot:prepend>
@@ -271,7 +278,7 @@
               </template>
 
               <template v-slot:append>
-                <q-icon name="delete" color="negative" class="cursor-pointer" />
+                <q-icon name="delete" color="primary" class="cursor-pointer" />
               </template>
               </q-input>
             </div>
@@ -284,35 +291,40 @@
             <p class="bg-primary text-white text-center dn-heading">Doctors Notes</p>
             <div class="q-px-md">
 
-              <div class="flex justify-between items-center q-mb-md">
+              <div class="flex justify-between">
                 <p class="text-primary text-weight-bold">Doctor:</p>
                 <q-input
                 dense
                 outlined
-                autogrow
-                style="width: 130px"
+                :input-style="{color: '#5f8d4e', fontWeight: '500'}"
+                class="mhc-input-field"
                 />
               </div>
 
-              <div class="flex justify-between items-center q-mb-md">
+              <div class="flex justify-between items-center">
                 <p class="text-primary text-weight-bold">Complaint:</p>
                 <q-input
                 dense
                 outlined
+                type="textarea"
                 autogrow
-                style="width: 130px"
+                :input-style="{color: '#5f8d4e', fontWeight: '500'}"
+                class="q-mb-sm"
+                style="width: 120px"
                 />
               </div>
 
-              <div class="flex justify-between items-center q-mb-md">
+              <div class="flex justify-between items-center">
                 <p class="text-primary text-weight-bold">Checkup Date:</p>
                 <q-input
                 v-model="checkupDate"
                 dense
                 outlined
-                style="width: 130px"
+                type="date"
+                :input-style="{color: '#5f8d4e', fontWeight: '500'}"
+                class="mhc-input-field"
                 >
-                  <template v-slot:prepend>
+                  <!-- <template v-slot:prepend>
                     <q-icon name="event" color="primary" size="xs" class="cursor-pointer" >
                       <q-popup-proxy transition-show="scale" transition-hide="scale">
                         <q-date v-model="checkupDate">
@@ -322,7 +334,7 @@
                         </q-date>
                       </q-popup-proxy>
                     </q-icon>
-                  </template>
+                  </template> -->
                 </q-input>
 
               </div>
@@ -333,9 +345,11 @@
                 v-model="nextCheckupDate"
                 dense
                 outlined
-                style="width: 130px"
+                type="date"
+                :input-style="{color: '#5f8d4e', fontWeight: '500'}"
+                class="mhc-input-field"
                 >
-                  <template v-slot:prepend>
+                  <!-- <template v-slot:prepend>
                     <q-icon name="event" color="primary" size="xs" class="cursor-pointer" >
                       <q-popup-proxy transition-show="scale" transition-hide="scale">
                         <q-date v-model="nextCheckupDate">
@@ -345,7 +359,7 @@
                         </q-date>
                       </q-popup-proxy>
                     </q-icon>
-                  </template>
+                  </template> -->
                 </q-input>
               </div>
             </div>
@@ -368,9 +382,9 @@
   </div>
 </template>
 
-<script src="../../script/Patients-Profile/PR-OPD-Details-Edit.js">
+<script src="../../script/Patients-Profile/OPD/PR-OPD-Details-Edit">
 </script>
 
 <style lang="scss" scoped>
-  @import "../../styles/scss/patients-profile/pr_opd_details.scss"
+  @import "../../styles/patients-profile/opd/pr_opd_details.scss"
 </style>

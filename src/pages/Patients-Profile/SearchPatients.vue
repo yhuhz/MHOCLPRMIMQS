@@ -244,7 +244,7 @@
 <script src="../script/Patients-Profile/SearchPatients"></script>
 
 <style scoped lang="scss">
-  @import url("../styles/scss/patients-profile/search_patients.scss");
+  @import url("../styles/patients-profile/search_patients.scss");
 
   .drop-list {
     color: #5f8d4e;
