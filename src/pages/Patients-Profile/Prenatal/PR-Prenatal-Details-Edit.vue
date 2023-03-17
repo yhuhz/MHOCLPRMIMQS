@@ -292,13 +292,16 @@
 
         <!-- New Checkup -->
         <div class="col q-mr-md fourth-col">
-            <div class="new-checkup fit">
+            <div class="new-checkup fit"
+            :style="{backgroundColor: toggleNewCheckup ? '#fff' : '#ccc'}"
+            >
               <p class="bg-primary text-white text-weight-bol text-center nc-heading">
                 New Checkup
               </p>
-              <div class="new-checkup-field fit">
+              <div class="new-checkup-field fit" v-if="!toggleNewCheckup">
                 <div class="text-center">
                   <q-btn
+                  @click="toggleNewCheckup = true"
                   icon="add"
                   color="primary"
                   size="30px"
@@ -307,6 +310,79 @@
                   <p class="text-primary text-weight-bold q-mt-sm">
                     Add new checkup
                   </p>
+                </div>
+              </div>
+
+              <!-- Field -->
+              <div class="field fit" v-else>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Done by</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Temperature</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Blood Pressure</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Height</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Weight</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Pulse Rate</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Oxygen Saturation</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+
+                <q-separator class="separator-2" />
+
+
+                <!-- Save-btn -->
+                <div class="bg-primary text-white text-center save-field">
+                  <q-btn
+                  flat
+                  label="Save"
+                  no-caps
+                  style="width: 100%"
+                  />
                 </div>
               </div>
             </div>
@@ -320,7 +396,7 @@
   </div>
 </template>
 
-<script>
+<script src="../../script/Patients-Profile/Prenatal/PR-Prenatal-Details-Edit">
 
 </script>
 

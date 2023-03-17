@@ -52,7 +52,7 @@
   .new-checkup {
     border: 2px solid #5f8d4e;
     border-radius: 5px;
-    background-color: #ccc;
+    position: relative;
 
     .nc-heading {
       font-size: 18px;
@@ -78,11 +78,19 @@
 
   .separator-1 {
     margin-top: 100px;
-    background-color: rgba(0, 0, 0, 0.5);
   }
 
   .separator-2 {
   margin-top: 25px;
-  background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .separator-3 {
+    margin-top: 18px;
+  }
+
+  .save-field {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 }

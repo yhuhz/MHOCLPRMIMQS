@@ -80,7 +80,7 @@
             </div>
           </div>
 
-          <q-separator class="q-my-lg" color="dark" />
+          <q-separator class="q-my-lg" color="primary" />
 
           <!-- Create New Record -->
           <div class="row q-my-lg">
@@ -102,7 +102,6 @@
               dense
               outlined
               color="primary"
-              class="mhc-select-field"
             />
             </div>
           </div>
@@ -128,17 +127,17 @@
             @click="$router.push('patient-record-prenatal-edit')"
             dense
             label="Edit"
-            icon="edit"
             no-caps
             color="primary"
+            icon="edit"
             style="width: 120px"
           />
           <q-btn
             dense
             label="Delete"
-            icon="delete"
             no-caps
             color="negative"
+            icon="delete"
             style="width: 120px"
             class="q-ml-md"
           />
@@ -153,28 +152,28 @@
                 Midwife's Notes
               </p>
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Midwife:</p>
               <p class="text-primary">Ma. Juana Santos</p>
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Prev. Full Term:</p>
-              <p class="text-primary">2</p>
-            </div>
-            <div class="flex justify-between items-center q-px-md">
-              <p class="text-primary text-weight-bold">Prev. Premature:</p>
               <p class="text-primary">1</p>
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between q-px-md">
+              <p class="text-primary text-weight-bold">Prev. Premature:</p>
+              <p class="text-primary">2</p>
+            </div>
+            <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">1st Checkup Date:</p>
               <p class="text-primary">02/02/2023</p>
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Last Menstruation:</p>
               <p class="text-primary">12/25/2022</p>
             </div>
 
-            <q-separator class="separator-1" />
+            <q-separator color="primary" class="separator-1" />
 
             <div>
               <ul>
@@ -201,36 +200,36 @@
             <p class="bg-primary text-center text-white date-heading">
               02/02/2023
             </p>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Done by</p>
               <p class="text-primary">John Doe</p>
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Temperature</p>
               <p class="text-primary">27C</p>
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Blood Pressure</p>
               <p class="text-primary">120/80</p>
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Height</p>
               <p class="text-primary">172 cm</p>
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Weight</p>
               <p class="text-primary">78 kgs</p>
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Pulse Rate</p>
-              <p class="text-primary">60 bpm</p>
+              <p class="text-primary">60bpm</p>
             </div>
-            <div class="flex justify-between items-center q-px-md">
+            <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Oxygen Saturation</p>
               <p class="text-primary">88%</p>
             </div>
 
-            <q-separator class="separator-2" />
+            <q-separator class="separator-2" color="primary" />
 
             <div>
               <ul>
@@ -247,13 +246,16 @@
 
         <!-- New Checkup -->
         <div class="col q-mr-md fourth-col">
-            <div class="new-checkup fit">
+            <div class="new-checkup fit"
+            :style="{backgroundColor: toggleNewCheckup ? '#fff' : '#ccc'}"
+            >
               <p class="bg-primary text-white text-weight-bol text-center nc-heading">
                 New Checkup
               </p>
-              <div class="new-checkup-field fit">
+              <div class="new-checkup-field fit" v-if="!toggleNewCheckup">
                 <div class="text-center">
                   <q-btn
+                  @click="toggleNewCheckup = true"
                   icon="add"
                   color="primary"
                   size="30px"
@@ -262,6 +264,79 @@
                   <p class="text-primary text-weight-bold q-mt-sm">
                     Add new checkup
                   </p>
+                </div>
+              </div>
+
+              <!-- Field -->
+              <div class="field fit" v-else>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Done by</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Temperature</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Blood Pressure</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Height</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Weight</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Pulse Rate</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+                <div class="flex justify-between q-mx-md">
+                  <p class="text-primary text-weight-bold">Oxygen Saturation</p>
+                  <q-input
+                  dense
+                  outlined
+                  class="mhc-input-field"
+                  />
+                </div>
+
+                <q-separator class="separator-3" color="primary" />
+
+
+                <!-- Save-btn -->
+                <div class="bg-primary text-white text-center save-field">
+                  <q-btn
+                  flat
+                  label="Save"
+                  no-caps
+                  style="width: 100%"
+                  />
                 </div>
               </div>
             </div>
@@ -275,7 +350,7 @@
   </div>
 </template>
 
-<script>
+<script src="../../script/Patients-Profile/Prenatal/PR-Prenatal-Details-View">
 
 </script>
 
