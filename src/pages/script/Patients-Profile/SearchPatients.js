@@ -5,7 +5,7 @@ export default {
   },
   setup() {
     let selectedSearchBy = ref(null);
-    let searchBy = ref(["Patient ID", "Household ID", "Household Name"]);
+    let searchBy = ref(['Name', "Patient ID", "Household ID", "Phone Number"]);
 
     let showFilterModal = ref(false);
 
