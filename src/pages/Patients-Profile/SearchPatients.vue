@@ -247,7 +247,7 @@
           no-caps
           size="sm"
           padding="5px 10px"
-          class="q-mr-xl"
+          class="q-mr-lg"
           />
         </template>
 
