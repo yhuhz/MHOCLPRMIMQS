@@ -154,7 +154,7 @@
             </div>
 
             <div class="row padding">
-              <div class="col-4 q-px-md">
+              <div class="col-5 q-px-md">
               <div class="flex justify-between items-center">
                 <p class="text-primary text-weight-bold">Midwife:</p>
                 <p class="text-primary">Ma. Juana Santos</p>
