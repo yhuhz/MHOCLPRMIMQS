@@ -25,17 +25,17 @@
             color="primary"
             outline
             />
-            <p class="text-primary text-center text-weight-bold" style="font-size: 22px;">
+            <p class="text-primary text-center text-weight-bold p-name">
               Clarisa Magat Calanas
             </p>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex justify-between items-center q-mt-sm">
             <p>36B</p>
             <p>Active</p>
           </div>
           <!-- Address -->
           <div>
-            <p class="text-center text-primary" style="font-size: 14px;">
+            <p class="text-center text-primary address-details">
               45, Aroma St., Tagaytay, Camalig, Albay
             </p>
           </div>
@@ -106,6 +106,7 @@
             </div>
           </div>
 
+          <!-- Table -->
           <div class="row q-my-md">
             <div class="col">
               <q-table dense  />
@@ -117,7 +118,7 @@
 
         <!-- Prenatal Number -->
          <div class="prenatal-number">
-          <p class="text-primary text-weight-bold" style="font-size: 34px;">
+          <p class="text-primary text-weight-bold queue-number">
             PNL34
           </p>
         </div>

@@ -9,7 +9,7 @@
       @click="$router.go(-1)"
       class="q-mr-md"
       />
-      <h5 class="text-weight-bold">PATIENTS RECORD</h5>
+      <h5 class="text-weight-bold">PATIENTS RECORDS</h5>
     </div>
 
     <!-- Card -->
@@ -26,17 +26,19 @@
             color="primary"
             outline
             />
-          <p class="text-primary text-center text-weight-bold" style="font-size: 22px;">
+          <p class="text-primary text-center text-weight-bold p-name">
             Jose Francisco Sinta Perez Sr.
           </p>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex justify-between items-center q-mt-sm">
             <p>12A</p>
             <p>Active</p>
           </div>
           <div>
             <!-- Address -->
-            <p class="text-center text-primary" style="font-size: 14px">136, West St. Baligang, Camalig, Albay</p>
+            <p class="text-center text-primary address-style">
+              136, West St. Baligang, Camalig, Albay
+            </p>
           </div>
 
           <div class="row q-mb-sm">
@@ -122,7 +124,7 @@
 
         <!-- OPD Number -->
         <div class="opd-number">
-          <p class="text-primary text-weight-bold" style="font-size: 34px;">
+          <p class="text-primary text-weight-bold queue-number">
             OPD186
           </p>
         </div>
@@ -310,7 +312,7 @@
                 autogrow
                 :input-style="{color: '#5f8d4e', fontWeight: '500'}"
                 class="q-mb-sm"
-                style="width: 120px"
+                style="width: 125px"
                 />
               </div>
 

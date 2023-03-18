@@ -1,0 +1,47 @@
+.pr-immunization-view {
+
+  .card-box {
+    border: 2px solid #5f8d4e;
+    border-radius: 5px;
+    position: relative;
+  }
+
+  .create-btn {
+    height: 40px;
+    font-size: 12px;
+  }
+
+  .immunization-number {
+    position: absolute;
+    right: 35%;
+    top: 10px;
+  }
+
+  .action-btn {
+    position: absolute;
+    right: 3%;
+    top: 20px;
+  }
+
+  .second-col {
+    margin-top: 70px;
+    margin-bottom: 20px;
+  }
+
+  .midwifes-notes {
+    border: 2px solid #5f8d4e;
+    border-radius: 5px;
+
+    .mn-heading {
+      font-size: 18px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+
+    .line {
+      min-height: 72vh;
+      margin-top: -25px;
+    }
+
+  }
+}

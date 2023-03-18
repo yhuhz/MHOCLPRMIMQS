@@ -51,6 +51,17 @@ const routes = [
         name: 'patient-record-prenatal-edit',
         component: () => import('src/pages/Patients-Profile/Prenatal/PR-Prenatal-Details-Edit.vue')
       },
+      // Immunization
+      {
+        path: 'patient-record-immunization-view',
+        name: 'patient-record-immunization-view',
+        component: () => import('src/pages/Patients-Profile/Immunization/PR-Immunization-Details-View.vue')
+      },
+      {
+        path: 'patient-record-immunization-edit',
+        name: 'patient-record-immunization-edit',
+        component: () => import('src/pages/Patients-Profile/Immunization/PR-Immunization-Details-Edit.vue')
+      },
       // Meds & supplies
       {
         path: 'medicine-inventory',
