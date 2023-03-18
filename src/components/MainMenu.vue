@@ -5,9 +5,7 @@
       clickable
       exact
       class="text-white"
-      :active="link === 'dashboard'"
       active-class="active-style"
-      @click="link = 'dashboard'"
       to="dashboard"
     >
     <q-item-section avatar>
@@ -32,9 +30,7 @@
       exact
       class="list-text text-white"
       to="search-patients"
-      :active="link === 'search-patients'"
       active-class="active-style"
-      @click="link = 'search-patients'"
     >
       <q-item-section avatar>
         <q-icon size="xs" name="fa fa-magnifying-glass"/>
@@ -46,9 +42,7 @@
       clickable
       class="list-text text-white"
       to="add-new-patient-record"
-      :active="link === 'add-new-patient-record'"
       active-class="active-style"
-      @click="link = 'add-new-patient-record'"
     >
       <q-item-section avatar>
         <q-icon size="xs" name="fa fa-square-plus"/>
@@ -155,15 +149,7 @@ export default defineComponent({
 
   setup() {
 
-    const route = useRoute();
-    const router = useRouter();
-
-    let link = ref(route.name)
-
     return {
-      link,
-      route,
-      router
     }
   }
 })

@@ -178,6 +178,8 @@
         <q-table
           :columns="columns"
           :rows="rows"
+          flat
+          class="mhc-table"
         >
         <template v-slot:body-cell-action>
           <q-td>
@@ -234,6 +236,20 @@
             </q-btn>
           </q-td>
         </template>
+
+        <template v-slot:top-right>
+          <q-btn
+          color="primary"
+          icon-right="download"
+          dense
+          label="Download"
+          no-caps
+          size="sm"
+          padding="5px 10px"
+          class="q-mr-xl"
+          />
+        </template>
+
         </q-table>
       </div>
     </div>
