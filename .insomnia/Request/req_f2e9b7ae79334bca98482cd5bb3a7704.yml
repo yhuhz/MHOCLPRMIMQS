@@ -1,25 +1,25 @@
-_id: req_04c35cb7ea46475cba925b527defeacf
+_id: req_f2e9b7ae79334bca98482cd5bb3a7704
 type: Request
-parentId: fld_80e625f13488488b822d41e5a101ffe2
-modified: 1679204504575
-created: 1679203837876
-url: http://localhost/MHOCLPRMIMQS/src/php/department_api.php
-name: Add Department
+parentId: fld_1ba4a1f8914348b4a70acf6e51541e61
+modified: 1679204696964
+created: 1679204692294
+url: http://localhost/MHOCLPRMIMQS/src/php/manage_user_api.php
+name: Forget Password
 description: ""
-method: POST
+method: PUT
 body:
   mimeType: application/json
   text: |-
     {
-    	"dept_code": "FD",
-    	"dept_name": "Front Desk"
+    	"mode": "forget_password",
+    	"user_id": 70
     }
 parameters: []
 headers:
   - name: Content-Type
     value: application/json
 authentication: {}
-metaSortKey: -1679203837876
+metaSortKey: -1679203865479
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true

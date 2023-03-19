@@ -1,0 +1,37 @@
+_id: req_ba08193c16564404a22933c3e46c8512
+type: Request
+parentId: fld_1ba4a1f8914348b4a70acf6e51541e61
+modified: 1679204631235
+created: 1679204400456
+url: http://localhost/MHOCLPRMIMQS/src/php/manage_user_api.php
+name: Add Users
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"first_name": "Juan",
+    	"middle_name": "Santos",
+    	"last_name": "De La Cruz",
+    	"suffix": null,
+    	"birthdate": "1998-05-05",
+    	"phone_number": "09488561235",
+    	"sex": 0,
+    	"department": 5,
+    	"job_title": "Front Desk Staff",
+    	"permission_level": 2
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679203948288
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,25 +1,25 @@
-_id: req_04c35cb7ea46475cba925b527defeacf
+_id: req_d23ea1cec314484489fa9451bf36a8ed
 type: Request
-parentId: fld_80e625f13488488b822d41e5a101ffe2
-modified: 1679204504575
-created: 1679203837876
-url: http://localhost/MHOCLPRMIMQS/src/php/department_api.php
-name: Add Department
+parentId: fld_1ba4a1f8914348b4a70acf6e51541e61
+modified: 1679204661972
+created: 1679204647886
+url: http://localhost/MHOCLPRMIMQS/src/php/manage_user_api.php
+name: Edit Users
 description: ""
-method: POST
+method: PUT
 body:
   mimeType: application/json
   text: |-
     {
-    	"dept_code": "FD",
-    	"dept_name": "Front Desk"
+    	"user_id": 69,
+    	"username": "pogingAdmin69"
     }
 parameters: []
 headers:
   - name: Content-Type
     value: application/json
 authentication: {}
-metaSortKey: -1679203837876
+metaSortKey: -1679203893082
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true
