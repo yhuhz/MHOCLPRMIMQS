@@ -24,7 +24,6 @@ class API
 
         //SEARCH PATIENT BY ID
         $this->db->where('patient_id', $_GET['patient_id']);
-        $this->db->where('is_deleted', 0);
         $patient = $this->db->get('tbl_patient_info');
 
         if ($patient) {
@@ -38,7 +37,7 @@ class API
 
         //SEARCH PATIENT BY HOUSEHOLD
         $this->db->where('household_id', $_GET['household_id']);
-        $this->db->where('is_deleted', 0);
+        // $this->db->where('status', 0);
         $patient = $this->db->get('tbl_patient_info');
 
         if ($patient) {
@@ -50,7 +49,7 @@ class API
 
       } else {
         //GET PATIENT INFOS
-        $this->db->where('is_deleted', 0);
+        // $this->db->where('status', 0);
         $patient = $this->db->get('tbl_patient_info');
 
         if ($patient) {
@@ -111,7 +110,7 @@ class API
         $payload = (array) $payload;
 
         $this->db->where('patient_id', $payload['patient_id']);
-        $payload['is_deleted'] = 1;
+        $payload['status'] = 1;
         $delete_user = $this->db->update('tbl_patient_info', $payload);
 
         if ($delete_user) {

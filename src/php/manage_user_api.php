@@ -20,25 +20,15 @@ class API
 
     public function httpGet($payload)
     {
-      //GET DEPARTMENTS
-      if (isset($_GET['dept'])) {
-        $dept = $this->db->get('tbl_department');
+        // $this->db->where('status', 0);
+        $users = $this->db->get('tbl_users');
 
-        echo json_encode(array('status' => 'success',
-                                  'data' => $dept,
-                                  'method' => 'GET'
-                                ));
-
-      //GET ALL USERS
-      } else {
-        $this->db->where('is_deleted', 0);
-        $users = $this->db->get('tbl_users', null, 'user_id, username, last_name, first_name, middle_name, suffix, department, permission_level, date_added');
         if ($users) {
           echo json_encode(array('status' => 'success',
                                 'data' => $users,
                                 'method' => 'GET'
         ));
-        }
+
       }
     }
 
@@ -205,7 +195,7 @@ class API
         $payload = (array) $payload;
 
         $this->db->where('user_id', $payload['user_id']);
-        $payload['is_deleted'] = 1;
+        $payload['status'] = 1;
         $delete_user = $this->db->update('tbl_users', $payload);
 
         if ($delete_user) {

@@ -73,7 +73,7 @@ class API
         $payload = (array) $payload;
 
         $this->db->where('household_id', $payload['household_id']);
-        $payload['is_deleted'] = 1;
+        $payload['status'] = 1;
         $delete_user = $this->db->update('tbl_household', $payload);
 
         if ($delete_user) {

@@ -21,7 +21,7 @@ class API
     public function httpGet($payload)
     {
       //GET DEPARTMENTS
-        $this->db->where('is_deleted', 0);
+        // $this->db->where('status', 0);
         $dept = $this->db->get('tbl_department');
 
         echo json_encode(array('status' => 'success',
@@ -80,7 +80,7 @@ class API
 
         //DELETE DEPARTMENT
         $this->db->where('dept_id', $payload['dept_id']);
-        $payload['is_deleted'] = 1;
+        $payload['status'] = 1;
         $delete_user = $this->db->update('tbl_department', $payload);
 
         if ($delete_user) {

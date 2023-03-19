@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2023 at 05:55 AM
+-- Generation Time: Mar 19, 2023 at 07:02 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -75,10 +75,11 @@ CREATE TABLE `tbl_department` (
 
 INSERT INTO `tbl_department` (`dept_id`, `dept_code`, `dept_name`, `status`) VALUES
 (1, 'OPD', 'Outpatient Department', 0),
-(2, 'DNTL', 'Dental', 1),
+(2, 'DNTL', 'Dental', 0),
 (3, 'PNI', 'Prenatal and Immunization', 0),
 (4, 'PHM', 'Pharmacy', 0),
-(5, 'ADMIN', 'Admin Office', 0);
+(5, 'FD', 'Front Desk', 0),
+(6, 'ADMIN', 'Admin Office', 0);
 
 -- --------------------------------------------------------
 
@@ -99,7 +100,8 @@ CREATE TABLE `tbl_household` (
 INSERT INTO `tbl_household` (`household_id`, `household_name`, `status`) VALUES
 (1, 'Grajo', 0),
 (2, 'Basmayor', 0),
-(3, 'Boco', 0);
+(3, 'Boco', 0),
+(4, 'Grajo', 0);
 
 -- --------------------------------------------------------
 
@@ -378,10 +380,11 @@ CREATE TABLE `tbl_users` (
 INSERT INTO `tbl_users` (`user_id`, `username`, `password`, `last_name`, `first_name`, `middle_name`, `suffix`, `birthdate`, `phone_number`, `sex`, `department`, `job_title`, `permission_level`, `date_added`, `status`) VALUES
 (67, 'basmayormbOPD67', '$2y$10$5yE/uCGotKWaf9WYBH/qNeG9BZhQl9rsTevsxGwgrAEzOHgyj7R8m', 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, '1998-05-05', '09488561235', 0, 1, 'Assistant', 2, '2023-03-18', 0),
 (68, 'bocornDNTL68', '$2y$10$rbeyU7K7Y7hkWhuDsvMI1eHIu24ZZO1ugsSyco2eYLePZYlWEj.aS', 'Boco', 'Roseler', 'Nasol', 'Jr', '1998-05-05', '09488561235', 0, 2, 'Doctor', 2, '2023-03-18', 0),
-(69, 'pogingAdmin69', '$2y$10$UuVBa0/rMd4qXgP0GhsLvOO0l1GFrA.1DvaRTkgz6FWWFjLIzU7ea', 'Grajo', 'Julius Albert', 'Areola', NULL, '1998-05-05', '09488561235', 0, 5, 'Office Staff', 8, '2023-03-18', 0),
-(70, 'ardaleseOPD70', '$2y$10$awwbioJqeSROh.oDfnBC9Ot5.ODWlt6vLnT9kYDHXmYZEydQ646ee', 'Ardales', 'Edmel', NULL, NULL, '1998-05-05', '09488561235', 0, 1, 'Doctor', 2, '2023-03-18', 0),
+(69, 'pogingAdmin69', '$2y$10$Hm2Y.fiN1kGYB1Ye.gDgbOBm1OC4IHGIcN3YnouWTm5lEu3F14NoS', 'Grajo', 'Julius Albert', 'Areola', NULL, '1998-05-05', '09488561235', 0, 6, 'Office Staff', 8, '2023-03-18', 0),
+(70, 'ardaleseOPD70', '$2y$10$zcinjgZNSCPgsXHgHO/3Z.lXzG7s10mYtgvcExPP8497OA3lf3p6a', 'Ardales', 'Edmel', NULL, NULL, '1998-05-05', '09488561235', 0, 1, 'Doctor', 2, '2023-03-18', 0),
 (71, 'aperinlOPD71', '$2y$10$djgAWdpYRa9n2ALt/qMdCeAmkYvKvzNmjWzHPVYOBHQvpvq41DZte', 'Aperin', 'Lynnette', NULL, NULL, '1998-05-05', '09488561235', 0, 1, 'Midwife', 3, '2023-03-18', 0),
-(72, 'esplanasADMIN72', '$2y$10$IULIcy.DfQDA4je.5hQXR.n0EBgVu8pOMTeQ87msXbv2QqrDAVmAy', 'Esplana', 'Samuel', NULL, NULL, '1998-05-05', '09488561235', 0, 5, 'Office Staff', 1, '2023-03-18', 0);
+(72, 'esplanasADMIN72', '$2y$10$IULIcy.DfQDA4je.5hQXR.n0EBgVu8pOMTeQ87msXbv2QqrDAVmAy', 'Esplana', 'Samuel', NULL, NULL, '1998-05-05', '09488561235', 0, 6, 'Office Staff', 1, '2023-03-18', 0),
+(73, 'de la cruzjsFD73', '$2y$10$A3H06BTjwU1dTNZaGR12Mue7o3Zp.uc1TNat99CHoCqrHHH3OjKT.', 'De La Cruz', 'Juan', 'Santos', NULL, '1998-05-05', '09488561235', 0, 5, 'Front Desk Staff', 2, '2023-03-19', 0);
 
 --
 -- Indexes for dumped tables
@@ -550,13 +553,13 @@ ALTER TABLE `tbl_dental_chart`
 -- AUTO_INCREMENT for table `tbl_department`
 --
 ALTER TABLE `tbl_department`
-  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_household`
 --
 ALTER TABLE `tbl_household`
-  MODIFY `household_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `household_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_lab_results`
@@ -598,7 +601,7 @@ ALTER TABLE `tbl_supply_release`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- Constraints for dumped tables
@@ -710,7 +713,7 @@ ALTER TABLE `tbl_supply_release`
 -- Constraints for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  ADD CONSTRAINT `fk_dept_id` FOREIGN KEY (`department`) REFERENCES `tbl_department` (`dept_id`);
+  ADD CONSTRAINT `fk_dept_id` FOREIGN KEY (`department`) REFERENCES `tbl_department` (`dept_id`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
