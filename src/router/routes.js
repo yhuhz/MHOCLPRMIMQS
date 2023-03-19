@@ -3,7 +3,21 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", component: () => import("pages/Capstone/login.vue") },
+      {
+        path: "login",
+        name: "login",
+        component: () => import("pages/Capstone/login.vue"),
+      },
+      {
+        path: "doctor",
+        name: "doctor",
+        component: () => import("pages/Capstone/doctor_test.vue"),
+      },
+      {
+        path: "front-desk",
+        name: "front-desk",
+        component: () => import("pages/Capstone/front_desk_test.vue"),
+      },
     ],
   },
 

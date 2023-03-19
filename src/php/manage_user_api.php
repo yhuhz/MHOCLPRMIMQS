@@ -8,7 +8,7 @@ header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE");
 // Used in response to a preflight request which includes the Access-Control-Request-Headers to indicate which HTTP headers can be used during the actual request
 header("Access-Control-Allow-Headers: Content-Type");
 
-require_once('MysqliDb.php');
+require_once('./include/MysqliDb.php');
 date_default_timezone_set('Asia/Manila');
 
 class API
@@ -32,7 +32,7 @@ class API
       //GET ALL USERS
       } else {
         $this->db->where('is_deleted', 0);
-        $users = $this->db->get('tbl_user_login', null, 'user_id, username, last_name, first_name, middle_name, suffix, department, permission_level, date_added');
+        $users = $this->db->get('tbl_users', null, 'user_id, username, last_name, first_name, middle_name, suffix, department, permission_level, date_added');
         if ($users) {
           echo json_encode(array('status' => 'success',
                                 'data' => $users,
@@ -51,7 +51,7 @@ class API
 
         $this->db->where('username', $payload['username']);
         $this->db->where('is_deleted', 0);
-        $attempt = $this->db->get('tbl_user_login');
+        $attempt = $this->db->get('tbl_users');
 
 
         if ($attempt === []) {
@@ -92,27 +92,32 @@ class API
 
         $payload['date_added'] = date('Y-m-d');
 
-        $this->db->orderBy('user_id', 'Desc');
-        $lastID = $this->db->get('tbl_user_login', null, 'user_id');
-        $user_id = $lastID[0]['user_id'] + 1;
-
         $this->db->where('dept_id', $payload['department']);
-        $dept = $this->db->get('tbl_department', null, 'dept_name');
-        $dept = $dept[0]['dept_name'];
+        $dept = $this->db->get('tbl_department', null, 'dept_code');
+        $dept = $dept[0]['dept_code'];
 
-        $payload['username'] = strtolower(trim($payload['last_name'].substr($payload['first_name'], 0, 1).(isset($payload['middle_name']) ? substr($payload['middle_name'], 0, 1) : null), " ")) . strtoupper(trim($dept)) . $user_id;
 
-        $payload['user_id'] = $this->db->insert('tbl_user_login', $payload);
+
+        $payload['user_id'] = $this->db->insert('tbl_users', $payload);
 
         if ($payload['user_id']) {
-          $response = ['username'=>$payload['username'], 'password'=>$password];
+
+          //set username
+          $username = array('username' => strtolower(trim($payload['last_name'].substr($payload['first_name'], 0, 1).(isset($payload['middle_name']) ? substr($payload['middle_name'], 0, 1) : null), " ")) . strtoupper(trim($dept)) . $payload['user_id']);
+
+          //update username based on user_id
+          $this->db->where('user_id', $payload['user_id']);
+          $update_username = $this->db->update('tbl_users', $username);
+
+          //response message
+          $response = ['username'=>$username['username'], 'password'=>$password];
           echo json_encode(array('status' => 'success',
                                 'data' => $response,
                                 'method' => 'POST'
                               ));
         } else {
           $this->db->where('user_id', $user_id);
-          $this->db->delete('tbl_user_login');
+          $this->db->delete('tbl_users');
           echo json_encode(array('status' => 'failed',
                                 'method' => 'POST'
                               ));
@@ -125,25 +130,11 @@ class API
         $payload = (array) $payload;
         $user_id = $payload['user_id'];
 
-        //EDIT USER ACCOUNT
-        if (isset($payload['last_name'])) {
-
-          $this->db->where('user_id', $user_id);
-          $update_user = $this->db->update('tbl_user_login', $payload);
-
-          if ($update_user) {
-            echo json_encode(array('status' => 'success',
-                                'data' => $payload,
-                                'method' => 'PUT'
-                              ));
-          } else {
-            echo json_encode(array('status' => 'failed',
-                                'method' => 'PUT'
-                              ));
-          }
-
         //FORGET PASSWORD
-        } else if (isset($payload['user_id'])) {
+        if (isset($payload['mode'])) {
+
+          unset($payload['mode']);
+
           //Random Generated Password
           $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-@=+_';
           $pass = array(); //remember to declare $pass as an array
@@ -156,18 +147,55 @@ class API
           $payload['password'] = password_hash($password, PASSWORD_DEFAULT);
 
           $this->db->where('user_id', $user_id);
-          $update_pass = $this->db->update('tbl_user_login', $payload);
+          $update_pass = $this->db->update('tbl_users', $payload);
 
           if ($update_pass) {
               echo json_encode(array('status' => 'success',
-                                      'data' => $password,
+                                      'data' => 'Password has been reset to ' . $password,
                                       'method' => 'PUT'
                       ));
           } else {
             echo json_encode(array('status' => 'failed',
+                                    'message' => 'Password reset failed',
                                     'method' => 'PUT'
                       ));
           }
+
+        //SET PASSWORD
+        } else if (isset($payload['password'])) {
+
+          $password = array('password' => password_hash($payload['password'], PASSWORD_DEFAULT));
+          $this->db->where('user_id', $user_id);
+          $set_password = $this->db->update('tbl_users', $password);
+
+          if ($set_password) {
+            echo json_encode(array('status' => 'success',
+                                'message' => 'Password has been changed to ' . $payload['password'],
+                                'method' => 'PUT'
+                              ));
+          } else {
+            echo json_encode(array('status' => 'fail',
+                                'message' => 'Error changing password',
+                                'method' => 'PUT'
+                              ));
+          }
+
+        //EDIT USER ACCOUNT
+        } else {
+          $this->db->where('user_id', $user_id);
+          $update_user = $this->db->update('tbl_users', $payload);
+
+          if ($update_user) {
+            echo json_encode(array('status' => 'success',
+                                'data' => $payload,
+                                'method' => 'PUT'
+                              ));
+          } else {
+            echo json_encode(array('status' => 'failed',
+                                'method' => 'PUT'
+                              ));
+          }
+
         }
 
     }
@@ -178,7 +206,7 @@ class API
 
         $this->db->where('user_id', $payload['user_id']);
         $payload['is_deleted'] = 1;
-        $delete_user = $this->db->update('tbl_user_login', $payload);
+        $delete_user = $this->db->update('tbl_users', $payload);
 
         if ($delete_user) {
             echo json_encode(array('status' => 'success',

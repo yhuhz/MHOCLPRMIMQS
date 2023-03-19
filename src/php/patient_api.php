@@ -8,7 +8,7 @@ header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE");
 // Used in response to a preflight request which includes the Access-Control-Request-Headers to indicate which HTTP headers can be used during the actual request
 header("Access-Control-Allow-Headers: Content-Type");
 
-require_once('MysqliDb.php');
+require_once('./include/MysqliDb.php');
 date_default_timezone_set('Asia/Manila');
 
 class API
@@ -68,7 +68,7 @@ class API
     {
       $payload = (array) $payload;
 
-      //ADD HOUSEHOLD
+      //ADD TO HOUSEHOLD
       $this->db->where('household_id', $payload['household_id']);
       $count = $this->db->getValue ("tbl_patient_info", "count(*)");
 
