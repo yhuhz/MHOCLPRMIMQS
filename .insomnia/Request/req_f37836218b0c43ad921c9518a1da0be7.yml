@@ -1,0 +1,29 @@
+_id: req_f37836218b0c43ad921c9518a1da0be7
+type: Request
+parentId: fld_80e625f13488488b822d41e5a101ffe2
+modified: 1679203930960
+created: 1679203906784
+url: http://localhost/MHOCLPRMIMQS/src/php/department_api.php
+name: Edit Department
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"dept_id": 9,
+    	"dept_name": "Aministrator Office"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679203752716
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

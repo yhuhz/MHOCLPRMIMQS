@@ -1,0 +1,28 @@
+_id: req_0e7687701a924626a1fdf1ea0b5dfd18
+type: Request
+parentId: fld_80e625f13488488b822d41e5a101ffe2
+modified: 1679204019251
+created: 1679203961478
+url: http://localhost/MHOCLPRMIMQS/src/php/department_api.php
+name: Delete Department
+description: ""
+method: DELETE
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"dept_id": 9
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679203710136
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
