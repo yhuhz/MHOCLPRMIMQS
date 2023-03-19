@@ -1,0 +1,25 @@
+_id: req_750ef002ea054e7eae4c13368ed2428e
+type: Request
+parentId: fld_dbe4f9bf593c4fd4897729a7647ede28
+modified: 1679205277492
+created: 1679205266021
+url: http://localhost/MHOCLPRMIMQS/src/php/household_api.php
+name: Get Households
+description: ""
+method: GET
+body:
+  mimeType: application/json
+  text: ""
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679205266021
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
