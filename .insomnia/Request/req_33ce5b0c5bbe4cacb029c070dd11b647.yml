@@ -1,7 +1,7 @@
 _id: req_33ce5b0c5bbe4cacb029c070dd11b647
 type: Request
 parentId: fld_d4303c27795a486e960b619b9e6d3bcc
-modified: 1679205585224
+modified: 1679216681944
 created: 1679205573833
 url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
 name: Search Patient by ID
@@ -9,11 +9,17 @@ description: ""
 method: GET
 body:
   mimeType: application/json
-  text: |-
-    {
-    	"patient_id": 1
-    }
-parameters: []
+  text: ""
+parameters:
+  - id: pair_3a592acfcbd94593b1b6257a1f5d4751
+    name: params
+    value: |-
+      {
+      	"patient_id": "03191"
+      }
+    description: ""
+    type: text
+    multiline: application/json
 headers:
   - name: Content-Type
     value: application/json
