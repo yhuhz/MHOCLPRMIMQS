@@ -1,0 +1,28 @@
+_id: req_32801919e0c34e1eae43d06a6d2df3fa
+type: Request
+parentId: fld_d4303c27795a486e960b619b9e6d3bcc
+modified: 1679205610494
+created: 1679205606626
+url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
+name: Search Patient by Household ID
+description: ""
+method: GET
+body:
+  mimeType: application/json
+  text: |
+    {
+    	"household_id": 1
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679205326131.25
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,28 @@
+_id: req_33ce5b0c5bbe4cacb029c070dd11b647
+type: Request
+parentId: fld_d4303c27795a486e960b619b9e6d3bcc
+modified: 1679205585224
+created: 1679205573833
+url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
+name: Search Patient by ID
+description: ""
+method: GET
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"patient_id": 1
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679205386241.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

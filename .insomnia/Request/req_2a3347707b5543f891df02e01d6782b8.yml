@@ -1,0 +1,37 @@
+_id: req_2a3347707b5543f891df02e01d6782b8
+type: Request
+parentId: fld_d4303c27795a486e960b619b9e6d3bcc
+modified: 1679205645893
+created: 1679205618520
+url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
+name: Add Patient
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"household_id": 2,
+    	"last_name": "Basmayor",
+    	"first_name": "Mark Kenneth",
+    	"middle_name": "Bataller",
+    	"sex": 1,
+    	"birthdate": "1996-09-09",
+    	"barangay_id": 1,
+    	"address": "Camalig",
+    	"phone_number": "09269851328",
+    	"added_by": 49	
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679205296076.125
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

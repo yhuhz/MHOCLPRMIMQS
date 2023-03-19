@@ -1,0 +1,28 @@
+_id: req_c0cd597c86ce450eb511e90ca2491d36
+type: Request
+parentId: fld_d4303c27795a486e960b619b9e6d3bcc
+modified: 1679205682213
+created: 1679205676599
+url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
+name: Delete Patient
+description: ""
+method: DELETE
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"patient_id": "1D"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679205273534.7812
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,25 @@
+_id: req_a0dbd77cbe5540c4b11638dbbffc99cb
+type: Request
+parentId: fld_d4303c27795a486e960b619b9e6d3bcc
+modified: 1679205670380
+created: 1679205660537
+url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
+name: Edit Patient
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: ""
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679205281048.5625
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
