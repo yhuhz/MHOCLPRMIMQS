@@ -18,8 +18,12 @@ class API
         $this->db = new MysqliDB('localhost', 'root', '', 'capstone');
     }
 
-    public function httpGet($payload)
+    public function httpGet()
     {
+
+      $payload = (array) $_GET['params'];
+      print_r($payload); return;
+
       if (isset($_GET['patient_id'])) {
 
         //SEARCH PATIENT BY ID
@@ -67,15 +71,22 @@ class API
     {
       $payload = (array) $payload;
 
-      //ADD TO HOUSEHOLD
-      $this->db->where('household_id', $payload['household_id']);
-      $count = $this->db->getValue ("tbl_patient_info", "count(*)");
+      // //ADD TO HOUSEHOLD
+      // $this->db->where('household_id', $payload['household_id']);
+      // $count = $this->db->getValue ("tbl_patient_info", "count(*)");
 
-      $id_array = range('A', 'Z');
-      $payload['patient_id'] = $payload['household_id'].$id_array[$count];
+      // $id_array = range('A', 'Z');
+      // $payload['patient_id'] = $payload['household_id'].$id_array[$count];
 
       $payload['date_added'] = date("Y-m-d");
+
+      //ID number = date added + number of patients added that day +1
+      $this->db->where('date_added', $payload['date_added']);
+      $count = $this->db->getValue ("tbl_patient_info", "count(*)");
+      $payload['patient_id'] = date("md") . $count + 1;
+
       $patient = $this->db->insert('tbl_patient_info', $payload);
+
 
       if ($patient) {
         echo json_encode(array('status' => 'success',
