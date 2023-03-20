@@ -1,7 +1,7 @@
 _id: req_33ce5b0c5bbe4cacb029c070dd11b647
 type: Request
 parentId: fld_d4303c27795a486e960b619b9e6d3bcc
-modified: 1679216681944
+modified: 1679325056179
 created: 1679205573833
 url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
 name: Search Patient by ID
@@ -12,7 +12,7 @@ body:
   text: ""
 parameters:
   - id: pair_3a592acfcbd94593b1b6257a1f5d4751
-    name: params
+    name: search_by
     value: |-
       {
       	"patient_id": "03191"
@@ -20,6 +20,37 @@ parameters:
     description: ""
     type: text
     multiline: application/json
+    disabled: true
+  - id: pair_938c395ba4fd4970b74d523928eb26e2
+    name: search_by
+    value: |-
+      {
+      	"household_id": 1
+      }
+    description: ""
+    type: text
+    multiline: application/json
+    disabled: true
+  - id: pair_55c57cb2c8154a6f8a698696f1cf96d0
+    name: search_by
+    value: |-
+      {
+      	"name": "j"
+      }
+    description: ""
+    type: text
+    multiline: application/json
+    disabled: true
+  - id: pair_a2e1131d0bfc43aaae72912faf79e212
+    name: search_by
+    value: |-
+      {
+      	"phone_number": "69851328"
+      }
+    description: ""
+    type: text
+    multiline: true
+    disabled: true
 headers:
   - name: Content-Type
     value: application/json
