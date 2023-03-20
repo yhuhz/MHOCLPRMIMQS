@@ -5,11 +5,12 @@
       round
       dense
       outline
-      icon="west"
+      icon="eva-arrow-back-outline"
+      color="dark"
       @click="$router.go(-1)"
       class="q-mr-md"
       />
-      <h5 class="text-weight-bold">PATIENT RECORDS</h5>
+      <h5 class="text-weight-bold text-dark">PATIENT RECORDS</h5>
     </div>
 
     <!-- Card -->
@@ -29,8 +30,8 @@
               Jerome Jose Magat Calanas
             </p>
             <div class="flex justify-between items-center q-mt-sm">
-              <p>36E</p>
-              <p>Active</p>
+              <p class="text-dark">36E</p>
+              <p class="text-dark">Active</p>
             </div>
             <!-- Address -->
             <div>
@@ -42,40 +43,40 @@
             <div class="row q-mb-sm">
               <div class="col q-mr-xl text-center">
                 <q-input dense class="q-mb-xs" />
-                <q-label>Phone Number</q-label>
+                <label class="text-dark">Phone Number</label>
               </div>
               <div class="col q-mr-xl text-center">
                 <q-input dense class="q-mb-xs" />
-                <q-label>Sex</q-label>
-              </div>
-            </div>
-
-            <div class="row q-mb-sm">
-              <div class="col q-mr-xl text-center">
-                <q-input dense class="q-mb-xs" />
-                <q-label>Birth date</q-label>
-              </div>
-              <div class="col q-mr-xl text-center">
-                <q-input dense class="q-mb-xs" />
-                <q-label>Age</q-label>
+                <label class="text-dark">Sex</label>
               </div>
             </div>
 
             <div class="row q-mb-sm">
               <div class="col q-mr-xl text-center">
                 <q-input dense class="q-mb-xs" />
-                <q-label>PWD ID</q-label>
+                <label class="text-dark">Birth date</label>
               </div>
               <div class="col q-mr-xl text-center">
                 <q-input dense class="q-mb-xs" />
-                <q-label>Type of Disability</q-label>
+                <label class="text-dark">Age</label>
+              </div>
+            </div>
+
+            <div class="row q-mb-sm">
+              <div class="col q-mr-xl text-center">
+                <q-input dense class="q-mb-xs" />
+                <label class="text-dark">PWD ID</label>
+              </div>
+              <div class="col q-mr-xl text-center">
+                <q-input dense class="q-mb-xs" />
+                <label class="text-dark">Type of Disability</label>
               </div>
             </div>
 
             <div class="row justify-center q-mb-sm">
             <div class="col-6 text-center">
               <q-input dense class="q-mb-xs" />
-              <q-label>Senior Citizen ID</q-label>
+              <label class="text-dark">Senior Citizen ID</label>
             </div>
           </div>
 

@@ -29,13 +29,14 @@
 .q-table__top,
   thead tr:first-child th {
     font-size: 14px;
+    color: #525252;
   }
   // FOR TBODY
     tbody tr td {
     text-align: left;
     font-weight: 500;
     font-size: 14px;
-    color: #252c3e;
+    color: #525252;
   }
   tr:nth-child(even) {
     background-color: #f5f5f5;
@@ -48,8 +49,23 @@
   }
 
   // Router Link Active
-  .q-item.q-router-link--active,
-  .q-item--active {
+  .q-item.q-router-link--active{
     background-color: #5f8d4e;
-    color: #fff;
+  }
+
+  .width-300 {
+    width: 300px;
+  }
+
+  .m-width-250 {
+    max-width: 250px;
+    margin: 10px auto;
+  }
+
+  .button-100 {
+    width: 100px;
+  }
+
+  .button-120 {
+    width: 120px;
   }

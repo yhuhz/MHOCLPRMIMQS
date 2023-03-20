@@ -5,7 +5,6 @@
       clickable
       exact
       class="text-white"
-      active-class="active-style"
       to="dashboard"
     >
     <q-item-section avatar>
@@ -30,7 +29,6 @@
       exact
       class="list-text text-white"
       to="search-patients"
-      active-class="active-style"
     >
       <q-item-section avatar>
         <q-icon size="xs" name="fa fa-magnifying-glass"/>
@@ -42,7 +40,6 @@
       clickable
       class="list-text text-white"
       to="add-new-patient-record"
-      active-class="active-style"
     >
       <q-item-section avatar>
         <q-icon size="xs" name="fa fa-square-plus"/>
@@ -50,7 +47,11 @@
       <q-item-section>Add New Patient Record</q-item-section>
     </q-item>
 
-    <q-item clickable class="list-text">
+    <q-item
+    clickable
+    class="list-text"
+    to="household-records"
+    >
       <q-item-section avatar>
         <q-icon size="xs" name="fa fa-house"/>
       </q-item-section>

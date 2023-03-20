@@ -6,10 +6,11 @@
       dense
       outline
       icon="west"
+      color="dark"
       @click="$router.go(-1)"
       class="q-mr-md"
       />
-      <h5 class="text-weight-bold">CREATE NEW PATIENT PROFILE</h5>
+      <h5 class="text-weight-bold text-dark">CREATE NEW PATIENT PROFILE</h5>
     </div>
 
     <!-- Columns -->
@@ -24,7 +25,7 @@
           </p>
           <div class="row">
             <div class="col">
-              <q-label>Patient ID</q-label>
+              <q-label class="text-dark">Patient ID</q-label>
               <q-input
               v-model="patientIDHousehold.patientID"
               dense
@@ -34,7 +35,7 @@
               <p class="col-details">Patient ID is auto generated based on the Household ID. you can still edit the Patient ID</p>
             </div>
             <div class="col q-ml-md">
-              <q-label>Household ID <span class="text-negative">*</span></q-label>
+              <q-label class="text-dark">Household ID <span class="text-negative">*</span></q-label>
               <q-input
               v-model="patientIDHousehold.householdID"
               dense
@@ -49,7 +50,7 @@
           <!-- Second Row -->
           <div class="row">
             <div class="col-6">
-              <q-label>Status <span class="text-negative">*</span></q-label>
+              <q-label class="text-dark">Status <span class="text-negative">*</span></q-label>
               <q-select
               v-model="patientIDHousehold.status"
               dense
@@ -73,7 +74,7 @@
           <div class="row">
             <!-- Municipality -->
             <div class="col">
-              <q-label>Municipality <span class="text-negative">*</span></q-label>
+              <q-label class="text-dark">Municipality <span class="text-negative">*</span></q-label>
               <div>
                 <q-radio
                 v-model="municipality"
@@ -81,7 +82,7 @@
                 unchecked-icon="panorama_fish_eye"
                 val="Camalig"
                 label="Camalig"
-                class="q-mr-md"
+                class="q-mr-md text-dark"
                 />
                 <q-radio
                 v-model="municipality"
@@ -89,12 +90,13 @@
                 unchecked-icon="panorama_fish_eye"
                 val="Outside Camalig"
                 label="Outside Camalig"
+                class="text-dark"
                 />
               </div>
             </div>
             <!-- Barangay -->
             <div class="col">
-              <q-label>Barangay <span class="text-negative">*</span></q-label>
+              <q-label class="text-dark">Barangay <span class="text-negative">*</span></q-label>
               <q-select
               dense
               outlined
@@ -108,7 +110,7 @@
 
           <div class="row">
             <div class="col">
-              <q-label>
+              <q-label class="text-dark">
                 Complete Address <span class="text-negative q-mr-md">*</span>
                 <span class="col-details">House No., Street Name, Barangay, Municipality/City, Province</span>
               </q-label>
@@ -134,7 +136,7 @@
           <div class="row">
             <!-- Last Name -->
             <div class="col">
-              <q-label>Last Name <span class="text-negative">*</span></q-label>
+              <q-label class="text-dark">Last Name <span class="text-negative">*</span></q-label>
               <q-input
               v-model="personalInformation.lastName"
               dense
@@ -144,7 +146,7 @@
             </div>
             <!-- First Name -->
             <div class="col">
-              <q-label>First Name <span class="text-negative">*</span></q-label>
+              <q-label class="text-dark">First Name <span class="text-negative">*</span></q-label>
               <q-input
               v-model="personalInformation.firstName"
               dense
@@ -157,7 +159,7 @@
           <div class="row q-mt-md">
             <div class="col">
               <!-- Middle Name -->
-              <q-label>Middle Name <span class="text-negative">*</span></q-label>
+              <q-label class="text-dark">Middle Name <span class="text-negative">*</span></q-label>
               <q-input
               v-model="personalInformation.middleName"
               dense
@@ -167,7 +169,7 @@
             </div>
             <div class="col-2 q-mx-md">
               <!-- Suffix -->
-              <q-label>Suffix</q-label>
+              <q-label class="text-dark">Suffix</q-label>
               <q-input
               v-model="personalInformation.suffix"
               dense
@@ -177,7 +179,7 @@
             </div>
             <div class="col">
               <!-- Date of Birth -->
-              <q-label>Date of Birth<span class="text-negative">*</span></q-label>
+              <q-label class="text-dark">Date of Birth<span class="text-negative">*</span></q-label>
               <q-input outlined dense v-model="personalInformation.dateOfBirth" class="q-mt-sm">
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
@@ -196,7 +198,7 @@
           <div class="row q-mt-md">
             <div class="col q-mr-md">
               <!-- Phone Number -->
-              <q-label>Phone Number <span class="text-negative">*</span></q-label>
+              <q-label class="text-dark">Phone Number <span class="text-negative">*</span></q-label>
               <q-input
               v-model="personalInformation.phoneNumber"
               dense
@@ -204,7 +206,7 @@
               />
             </div>
             <div class="col">
-              <q-label>Sex <span class="text-negative">*</span></q-label>
+              <q-label class="text-dark">Sex <span class="text-negative">*</span></q-label>
               <div>
                 <q-radio
                 v-model="personalInformation.sex"
@@ -212,6 +214,7 @@
                 unchecked-icon="panorama_fish_eye"
                 val="Male"
                 label="Male"
+                class="text-dark"
                 />
                 <q-radio
                 v-model="personalInformation.sex"
@@ -219,6 +222,7 @@
                 unchecked-icon="panorama_fish_eye"
                 val="Female"
                 label="Female"
+                class="text-dark"
                 />
               </div>
             </div>
@@ -232,11 +236,11 @@
             PWD & SENIOR CITIZENS
           </p>
           <q-checkbox v-model="isPWD" size="xs">
-            <span>I am <span class="text-primary">Person with Disability (PWD)</span></span>
+            <span class="text-dark">I am <span class="text-primary">Person with Disability (PWD)</span></span>
           </q-checkbox>
           <div class="row q-pa-md">
             <div class="col-4">
-              <q-label>PWD ID</q-label>
+              <q-label class="text-dark">PWD ID</q-label>
               <q-input
               v-model="pwd.pwdID"
               dense
@@ -245,7 +249,7 @@
               />
             </div>
             <div class="col q-ml-md">
-              <q-label>Type of Disability</q-label>
+              <q-label class="text-dark">Type of Disability</q-label>
               <q-input
               v-model="pwd.typeOfDisability"
               dense
@@ -257,11 +261,11 @@
           </div>
 
           <q-checkbox v-model="isSeniorCitizen" size="xs">
-            <span>I am a <span class="text-primary">Senior Citizen</span></span>
+            <span class="text-dark">I am a <span class="text-primary">Senior Citizen</span></span>
           </q-checkbox>
           <div class="row q-pa-md">
             <div class="col-4">
-              <q-label>Senior Citizen ID</q-label>
+              <q-label class="text-dark">Senior Citizen ID</q-label>
               <q-input
               v-model="seniorCitizenID"
               dense
@@ -275,7 +279,7 @@
 
       <div class="q-py-xl text-center">
         <p class="text-primary text-weight-bold q-mb-sm bottom-text">Please check if you have any missing details from the patient</p>
-        <p style="opacity: 0.7" class="q-mb-md">
+        <p class="q-mb-md text-dark">
           Should there be any missing or incorrect information after creating the patient profile, please search the patient by his/her <span class="text-primary">ID</span> or <span class="text-warning">name</span>, then edit his/her information.
         </p>
         <div>

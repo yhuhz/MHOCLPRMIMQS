@@ -5,16 +5,16 @@
         round
         outline
         dense
-        icon="west"
         color="dark"
+        icon="eva-arrow-back-outline"
         class="q-mr-md"
         @click="$router.go(-1)"
       />
-      <h5 class="text-weight-bold text-dark">PATIENTS RECORDS</h5>
+      <h5 class="text-weight-bold text-dark">HOUSEHOLD RECORDS</h5>
     </div>
 
     <div class="flex q-px-md">
-      <q-input class="account-name-field" outlined dense square>
+      <q-input class="account-name-field" outlined dense>
         <template v-slot:prepend>
           <q-icon name="mdi-account-search-outline" />
         </template>
@@ -24,7 +24,6 @@
         class="q-mr-none search-by-btn"
         outlined
         dense
-        square
         v-model="selectedSearchBy"
         options-dense
         :options="searchBy"
@@ -166,14 +165,51 @@
 
       <q-btn
         class="add-new-patient-btn"
-        icon="person_add_alt"
+        icon-right="fa fa-house"
         outline
         :ripple="false"
         color="primary"
         no-caps
-        label="Create New Patient Profile"
-        @click="$router.push('add-new-patient-record')"
+        label="Add Household"
+        @click="isAddHousehold = true"
       />
+
+      <!-- Modal -->
+      <q-dialog v-model="isAddHousehold" persistent>
+        <q-card bordered class="q-pa-lg" style="width: 350px;">
+          <p class="text-center text-primary text-weight-bold q-mb-lg">
+            <q-icon name="fa fa-house" class="q-mr-md" />
+            ADD HOUSEHOLD
+          </p>
+          <div>
+            <q-label>Household Name</q-label>
+            <q-input
+            dense
+            outlined
+            placeholder="eg. Perez"
+            class="q-mt-sm"
+            />
+          </div>
+          <div class="flex justify-between q-mt-md">
+            <q-btn
+            dense
+            color="primary"
+            label="Submit"
+            no-caps
+            style="width: 120px"
+            />
+            <q-btn
+            dense
+            outline
+            color="primary"
+            label="Cancel"
+            no-caps
+            style="width: 120px"
+            v-close-popup
+            />
+          </div>
+        </q-card>
+      </q-dialog>
 
       <!-- Table -->
       <div class="full-width q-mt-xl">
@@ -204,7 +240,7 @@
                 <!-- View -->
                 <q-item
                 clickable
-                to="patient-record-opd-view"
+                v-close-popup
                 class="drop-list"
                 >
                   <q-item-section>View Patient Details</q-item-section>
@@ -212,21 +248,25 @@
                     <q-icon size="xs" name="visibility" />
                   </q-item-section>
                 </q-item>
+
                 <!-- Edit -->
                 <q-item
                 clickable
-                to="patient-record-opd-edit"
+                v-close-popup
                 class="drop-list"
                 >
-                  <q-item-section>Edit Patient Details</q-item-section>
+                  <q-item-section>Edit Household</q-item-section>
                   <q-item-section avatar>
                     <q-icon size="xs" name="mdi-account-edit-outline" />
                   </q-item-section>
                 </q-item>
+
                 <!-- Delete -->
                 <q-item
                 clickable
+                v-close-popup
                 class="drop-list-delete"
+                @click="openDialog()"
                 >
                   <q-item-section>Delete Record</q-item-section>
                   <q-item-section avatar>
@@ -255,13 +295,15 @@
         </q-table>
       </div>
     </div>
+    <MHCDialog :content="$options.components.DeleteConfirmation" />
   </div>
 </template>
 
-<script src="../script/Patients-Profile/SearchPatients"></script>
+<script src="../../script/Patients-Profile/Household/HouseholdRecords">
+</script>
 
 <style scoped lang="scss">
-  @import url("../styles/patients-profile/search_patients.scss");
+  // @import url("../styles/patients-profile/search_patients.scss");
 
   .drop-list {
     color: #5f8d4e;

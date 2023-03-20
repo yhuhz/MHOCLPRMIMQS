@@ -51,7 +51,7 @@
                     </p>
                   </div>
 
-                  <q-label>Username</q-label>
+                  <label>Username</label>
                   <div class="row">
                     <div class="col">
                       <q-input outlined dense class="q-mt-xs" />
@@ -60,26 +60,26 @@
 
                   <div class="row">
                     <div class="col-5 q-mt-md">
-                      <q-label>Last Name</q-label>
+                      <label>Last Name</label>
                     <q-input outlined dense class="q-mt-xs" />
                     </div>
                     <div class="col q-mt-md q-ml-md">
-                    <q-label>First Name <span class="text-negative">*</span></q-label>
+                    <label>First Name <span class="text-negative">*</span></label>
                     <q-input outlined dense class="q-mt-xs" />
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="col-5 q-mt-md">
-                      <q-label>Middle Name</q-label>
+                      <label>Middle Name</label>
                     <q-input outlined dense class="q-mt-xs" />
                     </div>
                     <div class="col-2 q-mt-md q-mx-md">
-                    <q-label>Suffix</q-label>
+                    <label>Suffix</label>
                     <q-input outlined dense class="q-mt-xs" />
                     </div>
                     <div class="col q-mt-md">
-                    <q-label>Date of Birth <span class="text-negative">*</span></q-label>
+                    <label>Date of Birth <span class="text-negative">*</span></label>
                     <q-input v-model="dateOfBirth" outlined dense class="q-mt-xs">
                       <template v-slot:append>
                         <q-icon name="event" class="cursor-pointer">
@@ -98,11 +98,11 @@
 
                   <div class="row">
                     <div class="col-5 q-mt-md">
-                      <q-label>Phone Number <span class="text-negative">*</span></q-label>
+                      <label>Phone Number <span class="text-negative">*</span></label>
                     <q-input outlined dense class="q-mt-xs" />
                     </div>
                     <div class="col q-mt-md q-ml-md">
-                    <q-label>Sex <span class="text-negative">*</span></q-label>
+                    <label>Sex <span class="text-negative">*</span></label>
                     <div>
                       <q-radio v-model="sex" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="Male" label="Male" />
                       <q-radio v-model="sex" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="Female" label="Female" />
@@ -150,7 +150,7 @@
 
                 <div class="row">
                   <div class="col">
-                    <q-label>New Password</q-label>
+                    <label>New Password</label>
                     <q-input
                     v-model="newPassword"
                     dense
@@ -173,7 +173,7 @@
 
                 <div class="row q-mt-md">
                   <div class="col">
-                    <q-label>Confirm Password</q-label>
+                    <label>Confirm Password</label>
                     <q-input
                     v-model="confirmPassword"
                     dense
