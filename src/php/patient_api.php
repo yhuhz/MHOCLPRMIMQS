@@ -21,49 +21,47 @@ class API
     public function httpGet()
     {
 
-      $payload = (array) $_GET['params'];
-      print_r($payload); return;
-
-      if (isset($_GET['patient_id'])) {
-
-        //SEARCH PATIENT BY ID
-        $this->db->where('patient_id', $_GET['patient_id']);
-        $patient = $this->db->get('tbl_patient_info');
-
-        if ($patient) {
-          echo json_encode(array('status' => 'success',
-                                    'data' => $patient,
-                                    'method' => 'GET'
-                                  ));
-        }
-
-      } else if (isset($_GET['household_id'])) {
-
-        //SEARCH PATIENT BY HOUSEHOLD
-        $this->db->where('household_id', $_GET['household_id']);
-        // $this->db->where('status', 0);
-        $patient = $this->db->get('tbl_patient_info');
-
-        if ($patient) {
-          echo json_encode(array('status' => 'success',
-                                    'data' => $patient,
-                                    'method' => 'GET'
-                                  ));
-        }
-
-      } else {
-        //GET PATIENT INFOS
-        // $this->db->where('status', 0);
-        $patient = $this->db->get('tbl_patient_info');
-
-        if ($patient) {
-          echo json_encode(array('status' => 'success',
-                                    'data' => $patient,
-                                    'method' => 'GET'
-                                  ));
-        }
+      //check if there are parameters
+      if (isset($_GET['search_by'])) {
+        $search_by = (array) json_decode($_GET['search_by']);
       }
 
+      $filter = (array) json_decode($_GET['filter']);
+
+
+      if (isset($search_by)) {
+
+        //SEARCH BY
+        if (array_keys($search_by)[0] === 'name') {
+
+          //suffix not working
+          $this->db->where('concat_ws(first_name, middle_name, last_name, suffix)', '%'.$search_by[array_keys($search_by)[0]].'%', 'like');
+
+        } else if (array_keys($search_by)[0] === 'phone_number') {
+
+          $this->db->where(array_keys($search_by)[0], '%'.$search_by[array_keys($search_by)[0]].'%', 'like');
+
+        } else {
+
+          $this->db->where(array_keys($search_by)[0], $search_by[array_keys($search_by)[0]]);
+
+        }
+
+      }
+
+        $patients = $this->db->get('tbl_patient_info');
+        $patient_output = [];
+
+        foreach ($patients as $patient) {
+
+        }
+
+        if ($patient) {
+          echo json_encode(array('status' => 'success',
+                                    'data' => $patients,
+                                    'method' => 'GET'
+                                  ));
+        }
 
     }
 
