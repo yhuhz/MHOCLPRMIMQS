@@ -49,6 +49,12 @@ class API
         //Age filter
         $this->db->where('DATEDIFF(CURRENT_DATE, birthdate)', Array (($filter['age_from']*365), ($filter['age_to']*365)), 'BETWEEN');
 
+        //Date Added filter
+        if (isset($filter['date_added'])) {
+          $this->db->where('date_added', $filter['date_added'], 'BETWEEN');
+        }
+
+
         //Sex filter
         $this->db->where('sex', $filter['sex'], 'IN');
 
