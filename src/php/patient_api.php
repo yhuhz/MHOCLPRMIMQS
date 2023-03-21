@@ -26,17 +26,14 @@ class API
         $search_by = (array) json_decode($_GET['search_by']);
       }
 
-      $filter = (array) json_decode($_GET['filter']);
-
-
       if (isset($search_by)) {
 
-        //SEARCH BY
+        //SEARCH BY NAME
         if (array_keys($search_by)[0] === 'name') {
 
-          //suffix not working
           $this->db->where('concat_ws(first_name, middle_name, last_name, suffix)', '%'.$search_by[array_keys($search_by)[0]].'%', 'like');
 
+        //SEARCH BY PHONE NUMBER
         } else if (array_keys($search_by)[0] === 'phone_number') {
 
           $this->db->where(array_keys($search_by)[0], '%'.$search_by[array_keys($search_by)[0]].'%', 'like');
@@ -49,19 +46,37 @@ class API
 
       }
 
-        $patients = $this->db->get('tbl_patient_info');
-        $patient_output = [];
 
-        foreach ($patients as $patient) {
+      $filter = (array) json_decode($_GET['filter']);
 
-        }
+      //Age filter
+      $this->db->where('DATEDIFF(CURRENT_DATE, birthdate)', Array (($filter['age_from']*365), ($filter['age_to']*365)), 'BETWEEN');
 
-        if ($patient) {
-          echo json_encode(array('status' => 'success',
-                                    'data' => $patients,
-                                    'method' => 'GET'
-                                  ));
-        }
+      //Sex filter
+      foreach($filter['sex'] as $sex) {
+        $this->db->where('sex', $sex);
+      }
+
+      //Status filter
+      foreach($filter['status'] as $status) {
+        $this->db->where('status', $status);
+      }
+
+      //Barangays filter
+      // if ($filter['barangay'][0] != 'all') {
+      //   foreach($filter['barangay'] as $barangay) {
+      //     $this->db->where('barangay', $barangay);
+      //   }
+      // }
+
+      $patients = $this->db->get('tbl_patient_info');
+
+      if ($patients) {
+        echo json_encode(array('status' => 'success',
+                                  'data' => $patients,
+                                  'method' => 'GET'
+                                ));
+      }
 
     }
 
