@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog v-model="DialogState">
-      <q-card class="text-center q-pa-md">
+      <q-card flat class="text-center q-pa-md dialog-card">
         <div>
           <component :is="component" />
         </div>

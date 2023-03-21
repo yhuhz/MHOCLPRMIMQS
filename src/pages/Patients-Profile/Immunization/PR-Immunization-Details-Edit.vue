@@ -22,7 +22,7 @@
             class="float-right q-mt-sm"
             size="xs"
             padding="3px"
-            icon="edit"
+            icon="eva-edit-outline"
             color="primary"
             outline
             />
@@ -42,40 +42,40 @@
 
             <div class="row q-mb-sm">
               <div class="col q-mr-xl text-center">
-                <q-input dense class="q-mb-xs" />
+                <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
                 <label class="text-dark">Phone Number</label>
               </div>
               <div class="col q-mr-xl text-center">
-                <q-input dense class="q-mb-xs" />
+                <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
                 <label class="text-dark">Sex</label>
               </div>
             </div>
 
             <div class="row q-mb-sm">
               <div class="col q-mr-xl text-center">
-                <q-input dense class="q-mb-xs" />
+                <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
                 <label class="text-dark">Birth date</label>
               </div>
               <div class="col q-mr-xl text-center">
-                <q-input dense class="q-mb-xs" />
+                <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
                 <label class="text-dark">Age</label>
               </div>
             </div>
 
             <div class="row q-mb-sm">
               <div class="col q-mr-xl text-center">
-                <q-input dense class="q-mb-xs" />
+                <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
                 <label class="text-dark">PWD ID</label>
               </div>
               <div class="col q-mr-xl text-center">
-                <q-input dense class="q-mb-xs" />
+                <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
                 <label class="text-dark">Type of Disability</label>
               </div>
             </div>
 
             <div class="row justify-center q-mb-sm">
             <div class="col-6 text-center">
-              <q-input dense class="q-mb-xs" />
+              <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
               <label class="text-dark">Senior Citizen ID</label>
             </div>
           </div>
@@ -90,7 +90,7 @@
               outline
               label="Create New Record"
               no-caps
-              icon="create_new_folder"
+              icon="eva-folder-add-outline"
               size="sm"
               padding="4px 8px"
               class="create-btn"
@@ -130,7 +130,7 @@
           label="Submit"
           no-caps
           color="primary"
-          style="width: 120px"
+          class="button-120"
           />
           <q-btn
           dense
@@ -138,8 +138,7 @@
           label="Cancel"
           no-caps
           color="primary"
-          style="width: 120px"
-          class="q-ml-md"
+          class="q-ml-md button-120"
           />
         </div>
 

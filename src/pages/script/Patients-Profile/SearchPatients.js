@@ -1,8 +1,10 @@
 import { ref } from "vue";
+import MHCDialog from '../../../components/MHCDialog.vue'
+import DeletePatientConfirmation from '../../Components/DeletePatientConfirmation'
+import { ToggleDialogState } from "../../../composables/Triggers";
 
 export default {
-  components: {
-  },
+  components: { MHCDialog, DeletePatientConfirmation },
   setup() {
     let selectedSearchBy = ref(null);
     let searchBy = ref(['Name', "Patient ID", "Household ID", "Phone Number"]);
@@ -167,6 +169,7 @@ export default {
     ];
 
     const openDialog = () => {
+      ToggleDialogState()
     }
 
     return {

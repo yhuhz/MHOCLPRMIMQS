@@ -31,7 +31,7 @@
       to="search-patients"
     >
       <q-item-section avatar>
-        <q-icon size="xs" name="fa fa-magnifying-glass"/>
+        <q-icon size="xs" name="eva-search-outline"/>
       </q-item-section>
       <q-item-section>Search Patients</q-item-section>
     </q-item>
@@ -42,37 +42,37 @@
       to="add-new-patient-record"
     >
       <q-item-section avatar>
-        <q-icon size="xs" name="fa fa-square-plus"/>
+        <q-icon size="xs" name="eva-plus-square-outline"/>
       </q-item-section>
       <q-item-section>Add New Patient Record</q-item-section>
     </q-item>
 
     <q-item
     clickable
-    class="list-text"
+    class="list-text text-white"
     to="household-records"
     >
       <q-item-section avatar>
-        <q-icon size="xs" name="fa fa-house"/>
+        <q-icon size="xs" name="eva-home-outline"/>
       </q-item-section>
       <q-item-section>View Household</q-item-section>
     </q-item>
 
-    <q-item clickable class="list-text">
+    <q-item clickable class="list-text text-white">
       <q-item-section avatar>
         <q-icon size="xs" name="fa fa-wheelchair"/>
       </q-item-section>
       <q-item-section>PWDs</q-item-section>
     </q-item>
 
-    <q-item clickable class="list-text">
+    <q-item clickable class="list-text text-white">
       <q-item-section avatar>
         <q-icon size="xs" name="fa fa-person-cane"/>
       </q-item-section>
       <q-item-section>Senior Citizens</q-item-section>
     </q-item>
 
-    <q-item clickable class="list-text">
+    <q-item clickable class="list-text text-white">
       <q-item-section avatar>
         <q-icon size="xs" name="fa fa-person-pregnant"/>
       </q-item-section>
@@ -119,7 +119,7 @@
       <q-icon name="account_circle" />
     </q-item-section>
     <q-item-section>
-      <q-item-label>Users</q-item-label>
+      <q-item-label>Administrator</q-item-label>
     </q-item-section>
     </q-item>
 

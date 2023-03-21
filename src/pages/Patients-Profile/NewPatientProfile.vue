@@ -20,7 +20,7 @@
         <!-- Patient ID and Household -->
         <q-card class="col col-box q-pa-md">
           <p class="text-primary text-center text-weight-bold">
-            <q-icon name="mdi-card-text-outline" size="xs" class="q-mx-sm" />
+            <q-icon name="mdi-card-text-outline" size="xs" class="q-mx-sm q-gutter-xs" />
             PATIENT ID AND HOUSEHOLD
           </p>
           <div class="row">
@@ -49,7 +49,7 @@
           </div>
           <!-- Second Row -->
           <div class="row">
-            <div class="col-6">
+            <div class="col-6 q-gutter-x-sm">
               <q-label class="text-dark">Status <span class="text-negative">*</span></q-label>
               <q-select
               v-model="patientIDHousehold.status"
@@ -68,7 +68,7 @@
         <!-- Address -->
         <q-card class="col col-box q-pa-md">
           <p class="text-primary text-center text-weight-bold">
-          <q-icon name="location_on" size="xs" class="q-mx-sm" />
+          <q-icon name="location_on" size="xs" class="q-mx-sm q-gutter-xs" />
             ADDRESS
           </p>
           <div class="row">
@@ -130,7 +130,7 @@
         <!-- Personal Information -->
         <q-card class="col col-box q-pa-md">
           <p class="text-primary text-weight-bold text-center">
-            <q-icon name="person" size="sm" class="q-mx-sm" />
+            <q-icon name="person" size="sm" class="q-mx-sm q-gutter-xs" />
             PERSONAL INFORMATION
           </p>
           <div class="row">
@@ -232,7 +232,7 @@
         <!-- PWD & Senior CITIZENS -->
         <q-card class="col col-box q-pa-md">
           <p class="text-primary text-weight-bold text-center">
-            <q-icon name="accessible" size="sm" class="q-mx-sm" />
+            <q-icon name="accessible" size="sm" class="q-mx-sm q-gutter-xs" />
             PWD & SENIOR CITIZENS
           </p>
           <q-checkbox v-model="isPWD" size="xs">

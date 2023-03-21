@@ -14,7 +14,7 @@
     </div>
 
     <div class="flex q-px-md">
-      <q-input class="account-name-field" outlined dense square>
+      <q-input class="account-name-field" outlined dense>
         <template v-slot:prepend>
           <q-icon name="mdi-account-search-outline" />
         </template>
@@ -24,7 +24,6 @@
         class="q-mr-none search-by-btn"
         outlined
         dense
-        square
         v-model="selectedSearchBy"
         options-dense
         :options="searchBy"
@@ -38,7 +37,7 @@
         color="primary"
         outline
         label="Filters"
-        icon-right="mdi-filter-menu-outline"
+        icon-right="eva-funnel-outline"
         no-caps
         @click="showFilterModal = true"
       >
@@ -56,7 +55,7 @@
                     style="width: 60px"
                     class="q-mr-lg"
                     />
-                    <p>From</p>
+                    <p class="text-dark">From</p>
                   </div>
 
                   <div>
@@ -65,7 +64,7 @@
                     dense
                     style="width: 60px"
                     />
-                    <p>To</p>
+                    <p class="text-dark">To</p>
                   </div>
                 </div>
               </div>
@@ -78,6 +77,7 @@
                     v-model="gender_array_model"
                     :val="genderList[index]"
                     :label="gender"
+                    class="text-dark"
                   />
                 </div>
               </div>
@@ -90,6 +90,7 @@
                     v-model="status_array_model"
                     :val="statusList[index]"
                     :label="status"
+                    class="text-dark"
                   />
                 </div>
               </div>
@@ -113,7 +114,7 @@
                       </q-icon>
                     </template>
                   </q-input>
-                  <p>From</p>
+                  <p class="text-dark">From</p>
                 </div>
 
                 <div style="max-width: 150px">
@@ -130,7 +131,7 @@
                       </q-icon>
                     </template>
                   </q-input>
-                  <p>To</p>
+                  <p class="text-dark">To</p>
                 </div>
               </div>
             </div>
@@ -147,8 +148,17 @@
                   v-model="brgy_array_model"
                   :label="brgy"
                   :val="barangayList[index]"
+                  class="text-dark"
                 />
               </div>
+            </div>
+            <div class="flex justify-center items-center">
+              <q-btn
+              label="Done"
+              no-caps
+              color="primary"
+              class="button-100 q-my-md"
+              />
             </div>
           </q-card>
         </q-dialog>
@@ -159,14 +169,14 @@
         dense
         color="primary"
         label="Search"
-        icon-right="search"
+        icon-right="eva-search-outline"
         no-caps
         style="width: 120px; margin-right: 10rem"
       />
 
       <q-btn
         class="add-new-patient-btn"
-        icon="person_add_alt"
+        icon="eva-person-add-outline"
         outline
         :ripple="false"
         color="primary"
@@ -181,6 +191,8 @@
           :columns="columns"
           :rows="rows"
           flat
+          :pagination="{rowsPerPage: 10}"
+          :rows-per-page-options="[5, 10, 15, 0]"
           class="mhc-table"
         >
         <template v-slot:body-cell-action>
@@ -192,8 +204,9 @@
               icon-right="more_vert"
               color="primary"
               size="sm"
-              padding="5px 12px"
+              padding="6px 0"
               unelevated
+              class="button-80"
             >
             <q-menu
               transition-show="jump-down"
@@ -209,7 +222,7 @@
                 >
                   <q-item-section>View Patient Details</q-item-section>
                   <q-item-section avatar>
-                    <q-icon size="xs" name="visibility" />
+                    <q-icon size="xs" name="eva-eye-outline" />
                   </q-item-section>
                 </q-item>
                 <!-- Edit -->
@@ -225,12 +238,13 @@
                 </q-item>
                 <!-- Delete -->
                 <q-item
+                @click="openDialog"
                 clickable
                 class="drop-list-delete"
                 >
                   <q-item-section>Delete Record</q-item-section>
                   <q-item-section avatar>
-                    <q-icon size="xs" name="mdi-trash-can-outline" />
+                    <q-icon size="xs" name="eva-trash-2-outline" />
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -239,22 +253,27 @@
           </q-td>
         </template>
 
-        <template v-slot:top-right>
+        <template #header-cell-action="props">
+          <q-th :props="props">
           <q-btn
           color="primary"
-          icon-right="download"
+          icon-right="eva-download-outline"
           dense
           label="Download"
           no-caps
           size="sm"
-          padding="5px 10px"
-          class="q-mr-lg"
+          padding="8px 0"
+          class="button-80"
           />
+          </q-th>
         </template>
 
         </q-table>
       </div>
     </div>
+
+    <MHCDialog :content="$options.components.DeletePatientConfirmation" />
+
   </div>
 </template>
 

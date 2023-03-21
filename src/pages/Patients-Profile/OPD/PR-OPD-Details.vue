@@ -21,7 +21,7 @@
           <div>
           <q-btn
           class="float-right cursor-pointer q-mt-sm"
-          icon="edit"
+          icon="eva-edit-outline"
           size="xs"
           padding="3px"
           outline
@@ -44,29 +44,29 @@
 
           <div class="row q-mb-sm">
             <div class="col q-mr-xl text-center">
-              <q-input dense class="q-mb-xs" />
+              <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
               <label class="text-dark">Phone Number</label>
             </div>
             <div class="col text-center">
-              <q-input dense class="q-mb-xs" />
+              <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
               <label class="text-dark">Sex</label>
             </div>
           </div>
 
           <div class="row q-mb-sm">
             <div class="col q-mr-xl text-center">
-              <q-input dense />
+              <q-input dense :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
               <label class="text-dark">Birth date</label>
             </div>
             <div class="col text-center">
-              <q-input dense class="q-mb-xs" />
+              <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
               <label class="text-dark">Age</label>
             </div>
           </div>
 
           <div class="row q-mb-sm">
             <div class="col q-mr-xl text-center">
-              <q-input dense class="q-mb-xs" />
+              <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
               <label class="text-dark">PWD ID</label>
             </div>
             <div class="col text-center">
@@ -77,7 +77,7 @@
 
           <div class="row justify-center q-mb-sm">
             <div class="col-6 text-center">
-              <q-input dense class="q-mb-xs" />
+              <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
               <label class="text-dark">Senior Citizen ID</label>
             </div>
           </div>
@@ -94,7 +94,7 @@
               no-caps
               size="sm"
               padding="4px 8px"
-              icon="create_new_folder"
+              icon="eva-folder-add-outline"
               class="create-btn"
             />
             </div>
@@ -136,18 +136,17 @@
             @click="$router.push('patient-record-opd-edit')"
             dense
             label="Edit"
-            icon="edit"
+            icon="eva-edit-outline"
             no-caps
             color="primary"
-            style="width: 120px"
+            class="button-120"
           />
           <q-btn
             dense
             label="Delete"
-            icon="delete"
+            icon="eva-trash-2-outline"
             no-caps
-            color="negative"
-            style="width: 120px"
+            color="negative button-120"
             class="q-ml-md"
           />
         </div>

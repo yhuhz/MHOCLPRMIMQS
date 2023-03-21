@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 import MHCDialog from '../../../../components/MHCDialog.vue'
-import DeleteConfirmation from '../../../Components/DeleteConfirmation.vue'
+import DeleteHouseholdConfirmation from '../../../Components/DeleteHouseholdConfirmation.vue'
 import { ToggleDialogState } from '../../../../composables/Triggers'
 
 export default {
-  components: { MHCDialog, DeleteConfirmation },
+  components: { MHCDialog, DeleteHouseholdConfirmation },
   setup() {
 
     let searchBy = ref(['Household Name', 'Household ID'])
@@ -12,7 +12,7 @@ export default {
 
     let isAddHousehold = ref(false)
 
-    const columns = [
+    const columns = ref([
       {
         name: "id",
         align: "left",
@@ -41,9 +41,9 @@ export default {
         field: "",
         sortable: false,
       },
-    ];
+    ]);
 
-    const rows = [
+    const rows = ref([
       {
         id: 12,
         householdName: 'Perez',
@@ -59,7 +59,7 @@ export default {
         householdName: 'Reyes',
         numberOfPatients: 8
       }
-    ]
+    ])
 
     const openDialog = () => {
       ToggleDialogState()
@@ -71,7 +71,7 @@ export default {
       isAddHousehold,
       columns,
       rows,
-      openDialog
+      openDialog,
     }
   }
 }
