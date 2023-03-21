@@ -1,7 +1,7 @@
 _id: req_2a3347707b5543f891df02e01d6782b8
 type: Request
 parentId: fld_d4303c27795a486e960b619b9e6d3bcc
-modified: 1679211765683
+modified: 1679411266573
 created: 1679205618520
 url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
 name: Add Patient
@@ -11,16 +11,16 @@ body:
   mimeType: application/json
   text: |-
     {
-    	"household_id": 1,
-    	"last_name": "Grajo",
-    	"first_name": "Julius Albert",
-    	"middle_name": "Areola",
-    	"suffix": null,
+    	"household_id": 3,
+    	"last_name": "Boco",
+    	"first_name": "Roseler",
+    	"middle_name": "Nasol",
+    	"suffix": "Jr",
     	"sex": 1,
-    	"birthdate": "1996-09-09",
+    	"birthdate": "1969-02-10",
     	"barangay": "Tagaytay",
-    	"address": "Camalig",
-    	"phone_number": "09269851328",
+    	"address": " Tagaytay, Camalig, Albay",
+    	"phone_number": "09269874567",
     	"added_by": 69
     }
 parameters: []
