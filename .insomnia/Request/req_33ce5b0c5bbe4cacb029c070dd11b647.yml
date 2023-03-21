@@ -1,7 +1,7 @@
 _id: req_33ce5b0c5bbe4cacb029c070dd11b647
 type: Request
 parentId: fld_d4303c27795a486e960b619b9e6d3bcc
-modified: 1679325056179
+modified: 1679380447130
 created: 1679205573833
 url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
 name: Search Patient by ID
@@ -51,6 +51,19 @@ parameters:
     type: text
     multiline: true
     disabled: true
+  - id: pair_bc105195d0a5463e98785e5849492fe0
+    name: filter
+    value: |-
+      {
+      	"age_from": 0,
+      	"age_to": 100,
+      	"sex": [1,2],
+      	"status": [0,1,2]
+
+      }
+    description: ""
+    type: text
+    multiline: application/json
 headers:
   - name: Content-Type
     value: application/json
