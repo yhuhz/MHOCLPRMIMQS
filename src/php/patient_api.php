@@ -28,12 +28,12 @@ class API
          //SEARCH BY NAME
          if (array_keys($search_by)[0] === 'name') {
 
-          $this->db->where('concat_ws(first_name, middle_name, last_name, suffix)', '%'.$search_by[array_keys($search_by)[0]].'%', 'like');
+          $this->db->where('concat_ws(first_name, middle_name, last_name, suffix)', '%'.$search_by[array_keys($search_by)[0]].'%', 'LIKE');
 
         //SEARCH BY PHONE NUMBER
         } else if (array_keys($search_by)[0] === 'phone_number') {
 
-          $this->db->where(array_keys($search_by)[0], '%'.$search_by[array_keys($search_by)[0]].'%', 'like');
+          $this->db->where(array_keys($search_by)[0], '%'.$search_by[array_keys($search_by)[0]].'%', 'LIKE');
 
         } else {
 
@@ -50,7 +50,7 @@ class API
         $this->db->where('DATEDIFF(CURRENT_DATE, birthdate)', Array (($filter['age_from']*365), ($filter['age_to']*365)), 'BETWEEN');
 
         //Sex filter
-        $this->db->where('sex', $filter['sex'], 'in');
+        $this->db->where('sex', $filter['sex'], 'IN');
 
         //Status filter
         $this->db->where('status', $filter['status'], 'IN');
