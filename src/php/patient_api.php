@@ -24,12 +24,9 @@ class API
       //check if there are parameters
       if (isset($_GET['search_by'])) {
         $search_by = (array) json_decode($_GET['search_by']);
-      }
 
-      if (isset($search_by)) {
-
-        //SEARCH BY NAME
-        if (array_keys($search_by)[0] === 'name') {
+         //SEARCH BY NAME
+         if (array_keys($search_by)[0] === 'name') {
 
           $this->db->where('concat_ws(first_name, middle_name, last_name, suffix)', '%'.$search_by[array_keys($search_by)[0]].'%', 'like');
 
@@ -43,31 +40,27 @@ class API
           $this->db->where(array_keys($search_by)[0], $search_by[array_keys($search_by)[0]]);
 
         }
-
       }
 
+      //FILTER
+      if (isset($_GET['filter'])) {
+        $filter = (array) json_decode($_GET['filter']);
 
-      $filter = (array) json_decode($_GET['filter']);
+        //Age filter
+        $this->db->where('DATEDIFF(CURRENT_DATE, birthdate)', Array (($filter['age_from']*365), ($filter['age_to']*365)), 'BETWEEN');
 
-      //Age filter
-      $this->db->where('DATEDIFF(CURRENT_DATE, birthdate)', Array (($filter['age_from']*365), ($filter['age_to']*365)), 'BETWEEN');
+        //Sex filter
+        $this->db->where('sex', $filter['sex'], 'in');
 
-      //Sex filter
-      foreach($filter['sex'] as $sex) {
-        $this->db->where('sex', $sex);
+        //Status filter
+        $this->db->where('status', $filter['status'], 'IN');
+
+        //Barangays filter
+        if ($filter['barangay'][0] !== 'all') {
+          $this->db->where('barangay', $filter['barangay'], 'IN');
+        }
       }
 
-      //Status filter
-      foreach($filter['status'] as $status) {
-        $this->db->where('status', $status);
-      }
-
-      //Barangays filter
-      // if ($filter['barangay'][0] != 'all') {
-      //   foreach($filter['barangay'] as $barangay) {
-      //     $this->db->where('barangay', $barangay);
-      //   }
-      // }
 
       $patients = $this->db->get('tbl_patient_info');
 
