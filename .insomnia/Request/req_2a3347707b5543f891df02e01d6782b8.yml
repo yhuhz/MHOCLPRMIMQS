@@ -1,7 +1,7 @@
 _id: req_2a3347707b5543f891df02e01d6782b8
 type: Request
 parentId: fld_d4303c27795a486e960b619b9e6d3bcc
-modified: 1679411266573
+modified: 1679559505843
 created: 1679205618520
 url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
 name: Add Patient
@@ -10,19 +10,695 @@ method: POST
 body:
   mimeType: application/json
   text: |-
+    [
     {
-    	"household_id": 3,
-    	"last_name": "Boco",
-    	"first_name": "Roseler",
-    	"middle_name": "Nasol",
+    	"household_id": 2,
+    	"last_name": "Basmayor",
+    	"first_name": "Pia",
+    	"middle_name": "Areola",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1997-12-05",
+    	"barangay": "Bantonan",
+    	"address": "Bantonan, Camalig, Albay",
+    	"phone_number": "09812251321",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 4,
+    	"last_name": "Abaranto",
+    	"first_name": "Cecillo",
+    	"middle_name": "Romulo",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1996-09-09",
+    	"barangay": "Tagaytay",
+    	"address": "Tagaytay, Camalig, Albay",
+    	"phone_number": "09269851328",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 4,
+    	"last_name": "Abaranto",
+    	"first_name": "Elsie",
+    	"middle_name": "Azuela",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1995-06-09",
+    	"barangay": "Outside Camalig",
+    	"address": "Daraga, Albay",
+    	"phone_number": "09268151356",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 5,
+    	"last_name": "Melgar",
+    	"first_name": "Layla",
+    	"middle_name": "Poland",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1999-10-03",
+    	"barangay": "Salugan",
+    	"address": "Salugan, Camalig, Albay",
+    	"phone_number": "09471924505",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 5,
+    	"last_name": "Melgar",
+    	"first_name": "Roldan",
+    	"middle_name": "Abrique",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1995-09-10",
+    	"barangay": "Taloto",
+    	"address": "Taloto, Camalig, Albay",
+    	"phone_number": "09260051398",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 5,
+    	"last_name": "Melgar",
+    	"first_name": "Jennifer",
+    	"middle_name": "Abisado",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "2000-12-30",
+    	"barangay": "Gotob",
+    	"address": "Gotob, Camalig, Albay",
+    	"phone_number": "09461805143",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 6,
+    	"last_name": "Bas",
+    	"first_name": "Ederson",
+    	"middle_name": "Abuela",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "2004-08-03",
+    	"barangay": "Outside Camalig",
+    	"address": "Pawa, Albay",
+    	"phone_number": "09269952365",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 6,
+    	"last_name": "Bas",
+    	"first_name": "Shenna Marie",
+    	"middle_name": "Moya",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1998-06-04",
+    	"barangay": "Miti",
+    	"address": "Miti, Camalig, Albay",
+    	"phone_number": "09269761328",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 6,
+    	"last_name": "Bas",
+    	"first_name": "Regina",
+    	"middle_name": "Abiera",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1994-11-13",
+    	"barangay": "Bongabong",
+    	"address": "Bongabong, Camalig, Albay",
+    	"phone_number": "09267743557",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 7,
+    	"last_name": "Malaya",
+    	"first_name": "Mercy",
+    	"middle_name": "Abad",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "2000-10-17",
+    	"barangay": "Outside Camalig",
+    	"address": "Maroroy, Albay",
+    	"phone_number": "09819858325",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 7,
+    	"last_name": "Malaya",
+    	"first_name": "Hannah Mae",
+    	"middle_name": "Villa",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "2000-01-15",
+    	"barangay": "Binitayan",
+    	"address": "Binitayan, Camalig, Albay",
+    	"phone_number": "09260733629",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 8,
+    	"last_name": "Arena",
+    	"first_name": "Marissa Joy",
+    	"middle_name": "Nueva",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1992-01-07",
+    	"barangay": "Binitayan",
+    	"address": "Binitayan, Camalig, Albay",
+    	"phone_number": "09269899328",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 8,
+    	"last_name": "Arena",
+    	"first_name": "Maricel",
+    	"middle_name": "Abes",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1998-11-22",
+    	"barangay": "Binitayan",
+    	"address": "Binitayan, Camalig, Albay",
+    	"phone_number": "09818851324",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 8,
+    	"last_name": "Arena",
+    	"first_name": "Joselito",
+    	"middle_name": "Pascual",
     	"suffix": "Jr",
     	"sex": 1,
-    	"birthdate": "1969-02-10",
-    	"barangay": "Tagaytay",
-    	"address": " Tagaytay, Camalig, Albay",
-    	"phone_number": "09269874567",
+    	"birthdate": "1993-06-09",
+    	"barangay": "Binitayan",
+    	"address": "Binitayan, Camalig, Albay",
+    	"phone_number": "09260091325",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 8,
+    	"last_name": "Arena",
+    	"first_name": "Rofino",
+    	"middle_name": "Abra",
+    	"suffix": "Sr",
+    	"sex": 1,
+    	"birthdate": "1938-06-07",
+    	"barangay": "Comun",
+    	"address": "Comun, Camalig, Albay",
+    	"phone_number": "09268824369",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 9,
+    	"last_name": "Cabala",
+    	"first_name": "Francis",
+    	"middle_name": "Escudero",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1992-04-06",
+    	"barangay": "Outside Camalig",
+    	"address": "Legazpi, City",
+    	"phone_number": "09267851355",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 9,
+    	"last_name": "Cabala",
+    	"first_name": "Albert",
+    	"middle_name": "Balbin",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1995-11-08",
+    	"barangay": "Caguiba",
+    	"address": "Caguiba, Camalig, Albay",
+    	"phone_number": "09260081356",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 9,
+    	"last_name": "Cabala",
+    	"first_name": "John Paul",
+    	"middle_name": "Masarate",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1998-10-05",
+    	"barangay": "Caguiba",
+    	"address": "Caguiba, Camalig, Albay",
+    	"phone_number": "09817544359",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 9,
+    	"last_name": "Cabala",
+    	"first_name": "Joel",
+    	"middle_name": "Asejo",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1997-05-03",
+    	"barangay": "Outside Camalig",
+    	"address": "Oas, Albay",
+    	"phone_number": "09260045524",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 10,
+    	"last_name": "Dalit",
+    	"first_name": "Ruby",
+    	"middle_name": "Reales",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1999-09-17",
+    	"barangay": "Bariw",
+    	"address": "Bariw, Camalig, Albay",
+    	"phone_number": "09266851395",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 10,
+    	"last_name": "Dalit",
+    	"first_name": "Maribel",
+    	"middle_name": "Asignado",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1983-10-18",
+    	"barangay": "Outside Camalig",
+    	"address": "Matnog, Albay",
+    	"phone_number": "09260051324",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 10,
+    	"last_name": "Dalit",
+    	"first_name": "Peralta",
+    	"middle_name": "Perez",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1997-09-05",
+    	"barangay": "Outside Camalig",
+    	"address": "Malilipot, Albay",
+    	"phone_number": "09268853421",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 11,
+    	"last_name": "Ronda",
+    	"first_name": "Roselyn",
+    	"middle_name": "Agnote",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1998-03-24",
+    	"barangay": "Outside Camalig",
+    	"address": "Polangui, Albay",
+    	"phone_number": "09268951322",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 11,
+    	"last_name": "Ronda",
+    	"first_name": "Julius",
+    	"middle_name": "Arnaldo",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1998-04-09",
+    	"barangay": "Calabidongan",
+    	"address": "Calabidongan, Camalig, Albay",
+    	"phone_number": "09266651323",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 11,
+    	"last_name": "Ronda",
+    	"first_name": "Francia",
+    	"middle_name": "Panalo",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1999-03-24",
+    	"barangay": "Ilawod",
+    	"address": "Ilawod, Camalig, Albay",
+    	"phone_number": "09260043224",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 12,
+    	"last_name": "Alcala",
+    	"first_name": "Roberto",
+    	"middle_name": "Abraham",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1998-09-02",
+    	"barangay": "Ilawod",
+    	"address": "Ilawod, Camalig, Albay",
+    	"phone_number": "09264151325",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 12,
+    	"last_name": "Alcala",
+    	"first_name": "Ruffa Mae",
+    	"middle_name": "Israel",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1999-11-26",
+    	"barangay": "Outside Camalig",
+    	"address": "Ligao, Albay",
+    	"phone_number": "09260895432",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 12,
+    	"last_name": "Alcala",
+    	"first_name": "Rafael",
+    	"middle_name": "Bola",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1995-12-28",
+    	"barangay": "Magogon",
+    	"address": "Magogon, Camalig, Albay",
+    	"phone_number": "09269851355",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 12,
+    	"last_name": "Alcala",
+    	"first_name": "Alexa",
+    	"middle_name": "Esplana",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1999-09-11",
+    	"barangay": "Magogon",
+    	"address": "Magogon, Camalig, Albay",
+    	"phone_number": "09260081906",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 13,
+    	"last_name": "Andes",
+    	"first_name": "John",
+    	"middle_name": "Arena",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1991-12-05",
+    	"barangay": "Magogon",
+    	"address": "Magogon, Camalig, Albay",
+    	"phone_number": "09812756436",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 13,
+    	"last_name": "Andes",
+    	"first_name": "Lizbit",
+    	"middle_name": "Reblando",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1990-08-13",
+    	"barangay": "Maninila",
+    	"address": "Maninila, Camalig, Albay",
+    	"phone_number": "09268851356",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 13,
+    	"last_name": "Andes",
+    	"first_name": "Mary Rose",
+    	"middle_name": "Montega",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1999-12-15",
+    	"barangay": "Outside Camalig",
+    	"address": "Pioduran, Albay",
+    	"phone_number": "09815567432",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 13,
+    	"last_name": "Andes",
+    	"first_name": "Raul",
+    	"middle_name": "Almayda",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1996-11-02",
+    	"barangay": "Gotob",
+    	"address": "Gotob, Camalig, Albay",
+    	"phone_number": "09268889421",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 13,
+    	"last_name": "Andes",
+    	"first_name": "Leandro",
+    	"middle_name": "Alagaban",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1997-01-08",
+    	"barangay": "Gotob",
+    	"address": "Gotob, Camalig, Albay",
+    	"phone_number": "09265851355",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 14,
+    	"last_name": "Armenta",
+    	"first_name": "Celest Emarie",
+    	"middle_name": "Areola",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "2000-05-19",
+    	"barangay": "Palanog",
+    	"address": "Palanog, Camalig, Albay",
+    	"phone_number": "09816643521",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 14,
+    	"last_name": "Armenta",
+    	"first_name": "Robert",
+    	"middle_name": "Umayan",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1997-10-09",
+    	"barangay": "Palanog",
+    	"address": "Palanog, Camalig, Albay",
+    	"phone_number": "09266455137",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 14,
+    	"last_name": "Armenta",
+    	"first_name": "Jared Leonard",
+    	"middle_name": "Ariel",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "2000-07-03",
+    	"barangay": "Cotmon",
+    	"address": "Cotmon, Camalig, Albay",
+    	"phone_number": "09264891376",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 15,
+    	"last_name": "Miralles",
+    	"first_name": "Jonalyn",
+    	"middle_name": "Azupardo",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1986-10-06",
+    	"barangay": "Cotmon",
+    	"address": "Cotmon, Camalig, Albay",
+    	"phone_number": "09269856751",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 15,
+    	"last_name": "Miralles",
+    	"first_name": "Jairus Lim",
+    	"middle_name": "Barcebal",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1996-09-09",
+    	"barangay": "Manawan",
+    	"address": "Manawan, Camalig, Albay",
+    	"phone_number": "09260042321",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 15,
+    	"last_name": "Miralles",
+    	"first_name": "Michell",
+    	"middle_name": "Ayala",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1999-12-27",
+    	"barangay": "Manawan",
+    	"address": "Manawan, Camalig, Albay",
+    	"phone_number": "09263351358",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 16,
+    	"last_name": "Cruz",
+    	"first_name": "Jose Rolando",
+    	"middle_name": "Bente",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1994-04-08",
+    	"barangay": "Quitinday",
+    	"address": "Quitinday, Camalig, Albay",
+    	"phone_number": "09812265324",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 16,
+    	"last_name": "Cruz",
+    	"first_name": "Lilibeth",
+    	"middle_name": "Berces",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1990-05-21",
+    	"barangay": "Quitinday",
+    	"address": "Quitinday, Camalig, Albay",
+    	"phone_number": "09264532221 ",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 16,
+    	"last_name": "Cruz",
+    	"first_name": "Veronica",
+    	"middle_name": "Gonzales",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1991-05-29",
+    	"barangay": "Outside Camalig",
+    	"address": "Malinaw, Albay",
+    	"phone_number": "09265551384",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 16,
+    	"last_name": "Cruz",
+    	"first_name": "Josephine",
+    	"middle_name": "Abaranto",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1990-08-20",
+    	"barangay": "Gapo",
+    	"address": "Gapo, Camalig, Albay",
+    	"phone_number": "09819954324",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 17,
+    	"last_name": "Hiram",
+    	"first_name": "Demetrio",
+    	"middle_name": "Abonda",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1990-10-22",
+    	"barangay": "Gapo",
+    	"address": "Gapo, Camalig, Albay",
+    	"phone_number": "09267746432",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 17,
+    	"last_name": "Hiram",
+    	"first_name": "Jomar",
+    	"middle_name": "Banalnal",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "2000-09-04",
+    	"barangay": "Anoling",
+    	"address": "Anoling, Camalig, Albay",
+    	"phone_number": "09263351384",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 18,
+    	"last_name": "Reolo",
+    	"first_name": "Marelyn",
+    	"middle_name": "Lucio",
+    	"suffix": null,
+    	"sex": 2,
+    	"birthdate": "1991-11-23",
+    	"barangay": "Anoling",
+    	"address": "Anoling, Camalig, Albay",
+    	"phone_number": "09817745632",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 18,
+    	"last_name": "Reolo",
+    	"first_name": "Samuel",
+    	"middle_name": "Israel",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1992-05-30",
+    	"barangay": "Mabunga",
+    	"address": "Mabunga, Camalig, Albay",
+    	"phone_number": "09260084532",
+    	"added_by": 69
+    },
+
+    {
+    	"household_id": 18,
+    	"last_name": "Reolo",
+    	"first_name": "Arnold",
+    	"middle_name": "Arnulfo",
+    	"suffix": null,
+    	"sex": 1,
+    	"birthdate": "1999-04-03",
+    	"barangay": "Mabunga",
+    	"address": "Mabunga, Camalig, Albay",
+    	"phone_number": "09815649642",
     	"added_by": 69
     }
+
+
+    ]
 parameters: []
 headers:
   - name: Content-Type

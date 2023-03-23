@@ -1,7 +1,7 @@
 _id: req_749062714a72423189032bed49c8138f
 type: Request
 parentId: fld_dbe4f9bf593c4fd4897729a7647ede28
-modified: 1679205294429
+modified: 1679559213882
 created: 1679205285047
 url: http://localhost/MHOCLPRMIMQS/src/php/household_api.php
 name: Add Household
@@ -11,7 +11,7 @@ body:
   mimeType: application/json
   text: |-
     {
-    	"household_name": "Grajo"
+    	"household_name": "Santos"
     }
 parameters: []
 headers:
