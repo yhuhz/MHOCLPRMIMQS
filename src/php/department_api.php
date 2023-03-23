@@ -15,7 +15,7 @@ class API
 {
     public function __construct()
     {
-        $this->db = new MysqliDB('localhost', 'root', '', 'capstone');
+        $this->db = new MysqliDB('localhost', 'root', '', 'mhoclprmimqs');
     }
 
     public function httpGet($payload)

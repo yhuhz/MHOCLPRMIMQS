@@ -15,7 +15,7 @@ class API
 {
     public function __construct()
     {
-        $this->db = new MysqliDB('localhost', 'root', '', 'capstone');
+        $this->db = new MysqliDB('localhost', 'root', '', 'mhoclprmimqs');
     }
 
     public function httpGet()
@@ -67,7 +67,6 @@ class API
         }
       }
 
-
       $patients = $this->db->get('tbl_patient_info');
 
       if ($patients) {
@@ -81,31 +80,39 @@ class API
 
     public function httpPost($payload)
     {
-      $payload = (array) $payload;
+      // print_r($payload); return;
+      foreach($payload as $patient_info) {
+        $patient_info = (array) $patient_info;
 
-      // //ADD TO HOUSEHOLD
-      // $this->db->where('household_id', $payload['household_id']);
-      // $count = $this->db->getValue ("tbl_patient_info", "count(*)");
+        $patient_info['date_added'] = date("Y-m-d");
 
-      // $id_array = range('A', 'Z');
-      // $payload['patient_id'] = $payload['household_id'].$id_array[$count];
-
-      $payload['date_added'] = date("Y-m-d");
-
-      //ID number = date added + number of patients added that day +1
-      $this->db->where('date_added', $payload['date_added']);
-      $count = $this->db->getValue ("tbl_patient_info", "count(*)");
-      $payload['patient_id'] = date("md") . $count + 1;
-
-      $patient = $this->db->insert('tbl_patient_info', $payload);
+        //ID number = date added + number of patients added that day +1
+        $this->db->where('date_added', $patient_info['date_added']);
+        $count = $this->db->getValue ("tbl_patient_info", "count(*)");
+        if ($count >= 9) {
+          $patient_info['patient_id'] = date("mdy") . $count + 1;
+        } else {
+          $patient_info['patient_id'] = date("mdy") . '0' . $count + 1;
+        }
 
 
-      if ($patient) {
-        echo json_encode(array('status' => 'success',
-                                  'data' => $payload,
-                                  'method' => 'POST'
-                                ));
+        $patient = $this->db->insert('tbl_patient_info', $patient_info);
+
+
+        if ($patient) {
+          echo json_encode(array('status' => 'success',
+                                    'data' => $patient_info,
+                                    'method' => 'POST'
+                                  ));
+        } else {
+          echo json_encode(array('status' => 'fail',
+                                    'message' => 'Failed to add patient info',
+                                    'method' => 'POST'
+                                  ));
+          return;
+        }
       }
+
 
     }
 

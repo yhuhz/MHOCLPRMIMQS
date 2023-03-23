@@ -15,7 +15,7 @@ class API
 {
     public function __construct()
     {
-        $this->db = new MysqliDB('localhost', 'root', '', 'capstone');
+        $this->db = new MysqliDB('localhost', 'root', '', 'mhoclprmimqs');
     }
 
     public function httpGet($payload)
@@ -35,18 +35,25 @@ class API
 
     public function httpPost($payload)
     {
-      $household = (array) $payload;
+      foreach($payload as $household) {
+        $household = (array) $household;
 
-      //ADD HOUSEHOLD
-      $household['household_id'] = $this->db->insert('tbl_household', $household);
+        //RESET AUTO INCREMENT
+        // $this->db->query("SET  @num := 0");
+        // $this->db->query("UPDATE tbl_household SET household_id = @num := (@num+1)");
+        // $this->db->query("ALTER TABLE tbl_household AUTO_INCREMENT = 1");
+        // return;
 
-      if ($household['household_id']) {
-        echo json_encode(array('status' => 'success',
-                                  'data' => $household,
-                                  'method' => 'POST'
-                                ));
+        //ADD HOUSEHOLD
+        $household['household_id'] = $this->db->insert('tbl_household', $household);
+
+        if ($household['household_id']) {
+          echo json_encode(array('status' => 'success',
+                                    'data' => $household,
+                                    'method' => 'POST'
+                                  ));
+        }
       }
-
     }
 
     public function httpPut($payload)
