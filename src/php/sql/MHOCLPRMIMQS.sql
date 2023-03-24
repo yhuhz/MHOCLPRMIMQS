@@ -3,12 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2023 at 09:26 AM
+-- Generation Time: Mar 24, 2023 at 09:39 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
-
-CREATE DATABASE MHOCLPRMIMQS;
-USE MHOCLPRMIMQS;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -21,8 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `capstone`
+-- Database: `mhoclprmimqs`
 --
+CREATE DATABASE IF NOT EXISTS `mhoclprmimqs` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `mhoclprmimqs`;
 
 -- --------------------------------------------------------
 
@@ -160,10 +159,14 @@ CREATE TABLE `tbl_medicine_inventory` (
   `generic_name` varchar(500) NOT NULL,
   `brand_name` varchar(500) DEFAULT NULL,
   `med_classification` int(11) NOT NULL,
+  `dosage_strength` varchar(200) DEFAULT NULL COMMENT 'ex. 500mg / 2mg',
+  `dosage_form` varchar(200) NOT NULL,
+  `ptr_number` varchar(200) DEFAULT NULL,
+  `batch_lot_number` varchar(200) DEFAULT NULL,
   `mfg_date` date NOT NULL,
   `exp_date` date NOT NULL,
   `quantity` int(11) NOT NULL,
-  `quantity_type` varchar(200) NOT NULL,
+  `procured_by` varchar(200) NOT NULL COMMENT 'ex. DOH, LGU, Private Individual',
   `date_added` date NOT NULL,
   `added_by` int(11) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
@@ -264,58 +267,58 @@ CREATE TABLE `tbl_patient_info` (
 --
 
 INSERT INTO `tbl_patient_info` (`patient_id`, `household_id`, `last_name`, `first_name`, `middle_name`, `suffix`, `sex`, `birthdate`, `barangay`, `address`, `phone_number`, `added_by`, `date_added`, `status`) VALUES
-('0321231', 1, 'Grajo', 'Julius Albert', 'Areola', NULL, 1, '1996-09-09', 'Tagaytay', 'Camalig', '09269851328', 69, '2023-03-21', 0),
-('0321232', 2, 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, 1, '1978-10-10', 'Outside Camalig', 'Bacacay, Albay', '09269851328', 69, '2023-03-22', 0),
-('0321233', 3, 'Boco', 'Roseler', 'Nasol', 'Jr', 1, '1969-02-10', 'Tagaytay', ' Tagaytay, Camalig, Albay', '09269874567', 69, '2023-03-23', 0),
-('03232310', 6, 'Bas', 'Regina', 'Abiera', NULL, 2, '1994-11-13', 'Bongabong', 'Bongabong, Camalig, Albay', '09267743557', 69, '2023-03-23', 0),
-('03232311', 7, 'Malaya', 'Mercy', 'Abad', NULL, 2, '2000-10-17', 'Outside Camalig', 'Maroroy, Albay', '09819858325', 69, '2023-03-23', 0),
-('03232312', 7, 'Malaya', 'Hannah Mae', 'Villa', NULL, 2, '2000-01-15', 'Binitayan', 'Binitayan, Camalig, Albay', '09260733629', 69, '2023-03-23', 0),
-('03232313', 8, 'Arena', 'Marissa Joy', 'Nueva', NULL, 2, '1992-01-07', 'Binitayan', 'Binitayan, Camalig, Albay', '09269899328', 69, '2023-03-23', 0),
-('03232314', 8, 'Arena', 'Maricel', 'Abes', NULL, 2, '1998-11-22', 'Binitayan', 'Binitayan, Camalig, Albay', '09818851324', 69, '2023-03-23', 0),
-('03232315', 8, 'Arena', 'Joselito', 'Pascual', 'Jr', 1, '1993-06-09', 'Binitayan', 'Binitayan, Camalig, Albay', '09260091325', 69, '2023-03-23', 0),
-('03232316', 8, 'Arena', 'Rofino', 'Abra', 'Sr', 1, '1938-06-07', 'Comun', 'Comun, Camalig, Albay', '09268824369', 69, '2023-03-23', 0),
-('03232317', 9, 'Cabala', 'Francis', 'Escudero', NULL, 1, '1992-04-06', 'Outside Camalig', 'Legazpi, City', '09267851355', 69, '2023-03-23', 0),
-('03232318', 9, 'Cabala', 'Albert', 'Balbin', NULL, 1, '1995-11-08', 'Caguiba', 'Caguiba, Camalig, Albay', '09260081356', 69, '2023-03-23', 0),
-('03232319', 9, 'Cabala', 'John Paul', 'Masarate', NULL, 1, '1998-10-05', 'Caguiba', 'Caguiba, Camalig, Albay', '09817544359', 69, '2023-03-23', 0),
-('0323232', 2, 'Basmayor', 'Pia', 'Areola', NULL, 2, '1997-12-05', 'Bantonan', 'Bantonan, Camalig, Albay', '09812251321', 69, '2023-03-23', 0),
-('03232320', 9, 'Cabala', 'Joel', 'Asejo', NULL, 1, '1997-05-03', 'Outside Camalig', 'Oas, Albay', '09260045524', 69, '2023-03-23', 0),
-('03232321', 10, 'Dalit', 'Ruby', 'Reales', NULL, 2, '1999-09-17', 'Bariw', 'Bariw, Camalig, Albay', '09266851395', 69, '2023-03-23', 0),
-('03232322', 10, 'Dalit', 'Maribel', 'Asignado', NULL, 2, '1983-10-18', 'Outside Camalig', 'Matnog, Albay', '09260051324', 69, '2023-03-23', 0),
-('03232323', 10, 'Dalit', 'Peralta', 'Perez', NULL, 2, '1997-09-05', 'Outside Camalig', 'Malilipot, Albay', '09268853421', 69, '2023-03-23', 0),
-('03232324', 11, 'Ronda', 'Roselyn', 'Agnote', NULL, 2, '1998-03-24', 'Outside Camalig', 'Polangui, Albay', '09268951322', 69, '2023-03-23', 0),
-('03232325', 11, 'Ronda', 'Julius', 'Arnaldo', NULL, 1, '1998-04-09', 'Calabidongan', 'Calabidongan, Camalig, Albay', '09266651323', 69, '2023-03-23', 0),
-('03232326', 11, 'Ronda', 'Francia', 'Panalo', NULL, 2, '1999-03-24', 'Ilawod', 'Ilawod, Camalig, Albay', '09260043224', 69, '2023-03-23', 0),
-('03232327', 12, 'Alcala', 'Roberto', 'Abraham', NULL, 1, '1998-09-02', 'Ilawod', 'Ilawod, Camalig, Albay', '09264151325', 69, '2023-03-23', 0),
-('03232328', 12, 'Alcala', 'Ruffa Mae', 'Israel', NULL, 2, '1999-11-26', 'Outside Camalig', 'Ligao, Albay', '09260895432', 69, '2023-03-23', 0),
-('03232329', 12, 'Alcala', 'Rafael', 'Bola', NULL, 1, '1995-12-28', 'Magogon', 'Magogon, Camalig, Albay', '09269851355', 69, '2023-03-23', 0),
-('0323233', 4, 'Abaranto', 'Cecillo', 'Romulo', NULL, 1, '1996-09-09', 'Tagaytay', 'Tagaytay, Camalig, Albay', '09269851328', 69, '2023-03-23', 0),
-('03232330', 12, 'Alcala', 'Alexa', 'Esplana', NULL, 2, '1999-09-11', 'Magogon', 'Magogon, Camalig, Albay', '09260081906', 69, '2023-03-23', 0),
-('03232331', 13, 'Andes', 'John', 'Arena', NULL, 1, '1991-12-05', 'Magogon', 'Magogon, Camalig, Albay', '09812756436', 69, '2023-03-23', 0),
-('03232332', 13, 'Andes', 'Lizbit', 'Reblando', NULL, 2, '1990-08-13', 'Maninila', 'Maninila, Camalig, Albay', '09268851356', 69, '2023-03-23', 0),
-('03232333', 13, 'Andes', 'Mary Rose', 'Montega', NULL, 2, '1999-12-15', 'Outside Camalig', 'Pioduran, Albay', '09815567432', 69, '2023-03-23', 0),
-('03232334', 13, 'Andes', 'Raul', 'Almayda', NULL, 1, '1996-11-02', 'Gotob', 'Gotob, Camalig, Albay', '09268889421', 69, '2023-03-23', 0),
-('03232335', 13, 'Andes', 'Leandro', 'Alagaban', NULL, 1, '1997-01-08', 'Gotob', 'Gotob, Camalig, Albay', '09265851355', 69, '2023-03-23', 0),
-('03232336', 14, 'Armenta', 'Celest Emarie', 'Areola', NULL, 2, '2000-05-19', 'Palanog', 'Palanog, Camalig, Albay', '09816643521', 69, '2023-03-23', 0),
-('03232337', 14, 'Armenta', 'Robert', 'Umayan', NULL, 1, '1997-10-09', 'Palanog', 'Palanog, Camalig, Albay', '09266455137', 69, '2023-03-23', 0),
-('03232338', 14, 'Armenta', 'Jared Leonard', 'Ariel', NULL, 1, '2000-07-03', 'Cotmon', 'Cotmon, Camalig, Albay', '09264891376', 69, '2023-03-23', 0),
-('03232339', 15, 'Miralles', 'Jonalyn', 'Azupardo', NULL, 2, '1986-10-06', 'Cotmon', 'Cotmon, Camalig, Albay', '09269856751', 69, '2023-03-23', 0),
-('0323234', 4, 'Abaranto', 'Elsie', 'Azuela', NULL, 2, '1995-06-09', 'Outside Camalig', 'Daraga, Albay', '09268151356', 69, '2023-03-23', 0),
-('03232340', 15, 'Miralles', 'Jairus Lim', 'Barcebal', NULL, 1, '1996-09-09', 'Manawan', 'Manawan, Camalig, Albay', '09260042321', 69, '2023-03-23', 0),
-('03232341', 15, 'Miralles', 'Michell', 'Ayala', NULL, 2, '1999-12-27', 'Manawan', 'Manawan, Camalig, Albay', '09263351358', 69, '2023-03-23', 0),
-('03232342', 16, 'Cruz', 'Jose Rolando', 'Bente', NULL, 1, '1994-04-08', 'Quitinday', 'Quitinday, Camalig, Albay', '09812265324', 69, '2023-03-23', 0),
-('03232343', 16, 'Cruz', 'Lilibeth', 'Berces', NULL, 2, '1990-05-21', 'Quitinday', 'Quitinday, Camalig, Albay', '09264532221 ', 69, '2023-03-23', 0),
-('03232344', 16, 'Cruz', 'Veronica', 'Gonzales', NULL, 2, '1991-05-29', 'Outside Camalig', 'Malinaw, Albay', '09265551384', 69, '2023-03-23', 0),
-('03232345', 16, 'Cruz', 'Josephine', 'Abaranto', NULL, 2, '1990-08-20', 'Gapo', 'Gapo, Camalig, Albay', '09819954324', 69, '2023-03-23', 0),
-('03232346', 17, 'Hiram', 'Demetrio', 'Abonda', NULL, 1, '1990-10-22', 'Gapo', 'Gapo, Camalig, Albay', '09267746432', 69, '2023-03-23', 0),
-('03232347', 17, 'Hiram', 'Jomar', 'Banalnal', NULL, 1, '2000-09-04', 'Anoling', 'Anoling, Camalig, Albay', '09263351384', 69, '2023-03-23', 0),
-('03232348', 18, 'Reolo', 'Marelyn', 'Lucio', NULL, 2, '1991-11-23', 'Anoling', 'Anoling, Camalig, Albay', '09817745632', 69, '2023-03-23', 0),
-('03232349', 18, 'Reolo', 'Samuel', 'Israel', NULL, 1, '1992-05-30', 'Mabunga', 'Mabunga, Camalig, Albay', '09260084532', 69, '2023-03-23', 0),
-('0323235', 5, 'Melgar', 'Layla', 'Poland', NULL, 2, '1999-10-03', 'Salugan', 'Salugan, Camalig, Albay', '09471924505', 69, '2023-03-23', 0),
-('03232350', 18, 'Reolo', 'Arnold', 'Arnulfo', NULL, 1, '1999-04-03', 'Mabunga', 'Mabunga, Camalig, Albay', '09815649642', 69, '2023-03-23', 0),
-('0323236', 5, 'Melgar', 'Roldan', 'Abrique', NULL, 1, '1995-09-10', 'Taloto', 'Taloto, Camalig, Albay', '09260051398', 69, '2023-03-23', 0),
-('0323237', 5, 'Melgar', 'Jennifer', 'Abisado', NULL, 2, '2000-12-30', 'Gotob', 'Gotob, Camalig, Albay', '09461805143', 69, '2023-03-23', 0),
-('0323238', 6, 'Bas', 'Ederson', 'Abuela', NULL, 1, '2004-08-03', 'Outside Camalig', 'Pawa, Albay', '09269952365', 69, '2023-03-23', 0),
-('0323239', 6, 'Bas', 'Shenna Marie', 'Moya', NULL, 1, '1998-06-04', 'Miti', 'Miti, Camalig, Albay', '09269761328', 69, '2023-03-23', 0);
+('03212301', 1, 'Grajo', 'Julius Albert', 'Areola', NULL, 1, '1996-09-09', 'Tagaytay', 'Camalig', '09269851328', 69, '2023-03-21', 0),
+('03212302', 2, 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, 1, '1978-10-10', 'Outside Camalig', 'Bacacay, Albay', '09269851328', 69, '2023-03-21', 0),
+('03212303', 3, 'Boco', 'Roseler', 'Nasol', 'Jr', 1, '1969-02-10', 'Tagaytay', ' Tagaytay, Camalig, Albay', '09269874567', 69, '2023-03-21', 0),
+('03232301', 2, 'Basmayor', 'Pia', 'Areola', NULL, 2, '1997-12-05', 'Bantonan', 'Bantonan, Camalig, Albay', '09812251321', 69, '2023-03-23', 0),
+('03232302', 4, 'Abaranto', 'Cecillo', 'Romulo', NULL, 1, '1996-09-09', 'Tagaytay', 'Tagaytay, Camalig, Albay', '09269851328', 69, '2023-03-23', 0),
+('03232303', 4, 'Abaranto', 'Elsie', 'Azuela', NULL, 2, '1995-06-09', 'Outside Camalig', 'Daraga, Albay', '09268151356', 69, '2023-03-23', 0),
+('03232304', 5, 'Melgar', 'Layla', 'Poland', NULL, 2, '1999-10-03', 'Salugan', 'Salugan, Camalig, Albay', '09471924505', 69, '2023-03-23', 0),
+('03232305', 5, 'Melgar', 'Roldan', 'Abrique', NULL, 1, '1995-09-10', 'Taloto', 'Taloto, Camalig, Albay', '09260051398', 69, '2023-03-23', 0),
+('03232306', 5, 'Melgar', 'Jennifer', 'Abisado', NULL, 2, '2000-12-30', 'Gotob', 'Gotob, Camalig, Albay', '09461805143', 69, '2023-03-23', 0),
+('03232307', 6, 'Bas', 'Ederson', 'Abuela', NULL, 1, '2004-08-03', 'Outside Camalig', 'Pawa, Albay', '09269952365', 69, '2023-03-23', 0),
+('03232308', 6, 'Bas', 'Shenna Marie', 'Moya', NULL, 1, '1998-06-04', 'Miti', 'Miti, Camalig, Albay', '09269761328', 69, '2023-03-23', 0),
+('03232309', 6, 'Bas', 'Regina', 'Abiera', NULL, 2, '1994-11-13', 'Bongabong', 'Bongabong, Camalig, Albay', '09267743557', 69, '2023-03-23', 0),
+('03232310', 7, 'Malaya', 'Mercy', 'Abad', NULL, 2, '2000-10-17', 'Outside Camalig', 'Maroroy, Albay', '09819858325', 69, '2023-03-23', 0),
+('03232311', 7, 'Malaya', 'Hannah Mae', 'Villa', NULL, 2, '2000-01-15', 'Binitayan', 'Binitayan, Camalig, Albay', '09260733629', 69, '2023-03-23', 0),
+('03232312', 8, 'Arena', 'Marissa Joy', 'Nueva', NULL, 2, '1992-01-07', 'Binitayan', 'Binitayan, Camalig, Albay', '09269899328', 69, '2023-03-23', 0),
+('03232313', 8, 'Arena', 'Maricel', 'Abes', NULL, 2, '1998-11-22', 'Binitayan', 'Binitayan, Camalig, Albay', '09818851324', 69, '2023-03-23', 0),
+('03232314', 8, 'Arena', 'Joselito', 'Pascual', 'Jr', 1, '1993-06-09', 'Binitayan', 'Binitayan, Camalig, Albay', '09260091325', 69, '2023-03-23', 0),
+('03232315', 8, 'Arena', 'Rofino', 'Abra', 'Sr', 1, '1938-06-07', 'Comun', 'Comun, Camalig, Albay', '09268824369', 69, '2023-03-23', 0),
+('03232316', 9, 'Cabala', 'Francis', 'Escudero', NULL, 1, '1992-04-06', 'Outside Camalig', 'Legazpi, City', '09267851355', 69, '2023-03-23', 0),
+('03232317', 9, 'Cabala', 'Albert', 'Balbin', NULL, 1, '1995-11-08', 'Caguiba', 'Caguiba, Camalig, Albay', '09260081356', 69, '2023-03-23', 0),
+('03232318', 9, 'Cabala', 'John Paul', 'Masarate', NULL, 1, '1998-10-05', 'Caguiba', 'Caguiba, Camalig, Albay', '09817544359', 69, '2023-03-23', 0),
+('03232319', 9, 'Cabala', 'Joel', 'Asejo', NULL, 1, '1997-05-03', 'Outside Camalig', 'Oas, Albay', '09260045524', 69, '2023-03-23', 0),
+('03232320', 10, 'Dalit', 'Ruby', 'Reales', NULL, 2, '1999-09-17', 'Bariw', 'Bariw, Camalig, Albay', '09266851395', 69, '2023-03-23', 0),
+('03232321', 10, 'Dalit', 'Maribel', 'Asignado', NULL, 2, '1983-10-18', 'Outside Camalig', 'Matnog, Albay', '09260051324', 69, '2023-03-23', 0),
+('03232322', 10, 'Dalit', 'Peralta', 'Perez', NULL, 2, '1997-09-05', 'Outside Camalig', 'Malilipot, Albay', '09268853421', 69, '2023-03-23', 0),
+('03232323', 11, 'Ronda', 'Roselyn', 'Agnote', NULL, 2, '1998-03-24', 'Outside Camalig', 'Polangui, Albay', '09268951322', 69, '2023-03-23', 0),
+('03232324', 11, 'Ronda', 'Julius', 'Arnaldo', NULL, 1, '1998-04-09', 'Calabidongan', 'Calabidongan, Camalig, Albay', '09266651323', 69, '2023-03-23', 0),
+('03232325', 11, 'Ronda', 'Francia', 'Panalo', NULL, 2, '1999-03-24', 'Ilawod', 'Ilawod, Camalig, Albay', '09260043224', 69, '2023-03-23', 0),
+('03232326', 12, 'Alcala', 'Roberto', 'Abraham', NULL, 1, '1998-09-02', 'Ilawod', 'Ilawod, Camalig, Albay', '09264151325', 69, '2023-03-23', 0),
+('03232327', 12, 'Alcala', 'Ruffa Mae', 'Israel', NULL, 2, '1999-11-26', 'Outside Camalig', 'Ligao, Albay', '09260895432', 69, '2023-03-23', 0),
+('03232328', 12, 'Alcala', 'Rafael', 'Bola', NULL, 1, '1995-12-28', 'Magogon', 'Magogon, Camalig, Albay', '09269851355', 69, '2023-03-23', 0),
+('03232329', 12, 'Alcala', 'Alexa', 'Esplana', NULL, 2, '1999-09-11', 'Magogon', 'Magogon, Camalig, Albay', '09260081906', 69, '2023-03-23', 0),
+('03232330', 13, 'Andes', 'John', 'Arena', NULL, 1, '1991-12-05', 'Magogon', 'Magogon, Camalig, Albay', '09812756436', 69, '2023-03-23', 0),
+('03232331', 13, 'Andes', 'Lizbit', 'Reblando', NULL, 2, '1990-08-13', 'Maninila', 'Maninila, Camalig, Albay', '09268851356', 69, '2023-03-23', 0),
+('03232332', 13, 'Andes', 'Mary Rose', 'Montega', NULL, 2, '1999-12-15', 'Outside Camalig', 'Pioduran, Albay', '09815567432', 69, '2023-03-23', 0),
+('03232333', 13, 'Andes', 'Raul', 'Almayda', NULL, 1, '1996-11-02', 'Gotob', 'Gotob, Camalig, Albay', '09268889421', 69, '2023-03-23', 0),
+('03232334', 13, 'Andes', 'Leandro', 'Alagaban', NULL, 1, '1997-01-08', 'Gotob', 'Gotob, Camalig, Albay', '09265851355', 69, '2023-03-23', 0),
+('03232335', 14, 'Armenta', 'Celest Emarie', 'Areola', NULL, 2, '2000-05-19', 'Palanog', 'Palanog, Camalig, Albay', '09816643521', 69, '2023-03-23', 0),
+('03232336', 14, 'Armenta', 'Robert', 'Umayan', NULL, 1, '1997-10-09', 'Palanog', 'Palanog, Camalig, Albay', '09266455137', 69, '2023-03-23', 0),
+('03232337', 14, 'Armenta', 'Jared Leonard', 'Ariel', NULL, 1, '2000-07-03', 'Cotmon', 'Cotmon, Camalig, Albay', '09264891376', 69, '2023-03-23', 0),
+('03232338', 15, 'Miralles', 'Jonalyn', 'Azupardo', NULL, 2, '1986-10-06', 'Cotmon', 'Cotmon, Camalig, Albay', '09269856751', 69, '2023-03-23', 0),
+('03232339', 15, 'Miralles', 'Jairus Lim', 'Barcebal', NULL, 1, '1996-09-09', 'Manawan', 'Manawan, Camalig, Albay', '09260042321', 69, '2023-03-23', 0),
+('03232340', 15, 'Miralles', 'Michell', 'Ayala', NULL, 2, '1999-12-27', 'Manawan', 'Manawan, Camalig, Albay', '09263351358', 69, '2023-03-23', 0),
+('03232341', 16, 'Cruz', 'Jose Rolando', 'Bente', NULL, 1, '1994-04-08', 'Quitinday', 'Quitinday, Camalig, Albay', '09812265324', 69, '2023-03-23', 0),
+('03232342', 16, 'Cruz', 'Lilibeth', 'Berces', NULL, 2, '1990-05-21', 'Quitinday', 'Quitinday, Camalig, Albay', '09264532221 ', 69, '2023-03-23', 0),
+('03232343', 16, 'Cruz', 'Veronica', 'Gonzales', NULL, 2, '1991-05-29', 'Outside Camalig', 'Malinaw, Albay', '09265551384', 69, '2023-03-23', 0),
+('03232344', 16, 'Cruz', 'Josephine', 'Abaranto', NULL, 2, '1990-08-20', 'Gapo', 'Gapo, Camalig, Albay', '09819954324', 69, '2023-03-23', 0),
+('03232345', 17, 'Hiram', 'Demetrio', 'Abonda', NULL, 1, '1990-10-22', 'Gapo', 'Gapo, Camalig, Albay', '09267746432', 69, '2023-03-23', 0),
+('03232346', 17, 'Hiram', 'Jomar', 'Banalnal', NULL, 1, '2000-09-04', 'Anoling', 'Anoling, Camalig, Albay', '09263351384', 69, '2023-03-23', 0),
+('03232347', 18, 'Reolo', 'Marelyn', 'Lucio', NULL, 2, '1991-11-23', 'Anoling', 'Anoling, Camalig, Albay', '09817745632', 69, '2023-03-23', 0),
+('03232348', 18, 'Reolo', 'Samuel', 'Israel', NULL, 1, '1992-05-30', 'Mabunga', 'Mabunga, Camalig, Albay', '09260084532', 69, '2023-03-23', 0),
+('03232349', 18, 'Reolo', 'Arnold', 'Arnulfo', NULL, 1, '1999-04-03', 'Mabunga', 'Mabunga, Camalig, Albay', '09815649642', 69, '2023-03-23', 0);
 
 -- --------------------------------------------------------
 
