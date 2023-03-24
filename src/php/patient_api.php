@@ -119,13 +119,12 @@ class API
     public function httpPut($payload)
     {
         $payload = (array) $payload;
-        // $user_id = $payload['user_id'];
 
-        //EDIT HOUSEHOLD INFO
-        $this->db->where('household_id', $payload['household_id']);
-        $household = $this->db->update('tbl_household', $payload);
+        //EDIT PATIENT INFO
+        $this->db->where('patient_id', $payload['patient_id']);
+        $patient = $this->db->update('tbl_patient_info', $payload);
 
-        if ($household) {
+        if ($patient) {
           echo json_encode(array('status' => 'success',
                                   'data' => $payload,
                                   'method' => 'PUT'
@@ -140,8 +139,7 @@ class API
         $payload = (array) $payload;
 
         $this->db->where('patient_id', $payload['patient_id']);
-        $payload['status'] = 1;
-        $delete_user = $this->db->update('tbl_patient_info', $payload);
+        $delete_user = $this->db->update('tbl_patient_info', array('status' => 2));
 
         if ($delete_user) {
             echo json_encode(array('status' => 'success',

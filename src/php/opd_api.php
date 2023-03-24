@@ -26,10 +26,10 @@ class API
 
       foreach ($opd_records as $opd) {
         $this->db->where('opd_id', $opd['opd_id']);
-        $opd['disease'] = $this->db->get('tbl_opd_disease', null, 'opd_disease_id, opd_disease, status');
+        $opd['disease'] = $this->db->get('tbl_opd_disease', null, 'opd_disease_id, opd_disease');
 
         $this->db->where('opd_id', $opd['opd_id']);
-        $opd['lab_results'] = $this->db->get('tbl_lab_results', null, 'lab_result_id, lab_result, status');
+        $opd['lab_results'] = $this->db->get('tbl_opd_lab_results', null, 'lab_result_id, lab_result');
 
         array_push($opd_array, $opd);
       }
@@ -49,48 +49,77 @@ class API
       foreach($payload as $opd_record) {
         $opd_record = (array) $opd_record;
 
-        $disease = $this->db->insert('tbl_disease', array('disease' => $opd_record['disease']));
-        unset($opd['disease']);
+        $opd_record['opd_id'] = $this->db->insert('tbl_opd', $opd_record);
 
-        $lab_results = $this->db->insert('tbl_lab_results', array());
-        unset('lab_results')
-
-        $opd_record['date_added'] = date("Y-m-d");
-        $opd = $this->db->insert('tbl_patient_info', $patient_info);
-
-
-        if ($opd) {
+        if ($opd_record['opd_id']) {
           echo json_encode(array('status' => 'success',
-                                    'data' => $opd,
+                                    'data' => $opd_record,
                                     'method' => 'POST'
                                   ));
         } else {
           echo json_encode(array('status' => 'fail',
-                                    'message' => 'Failed to add patient info',
+                                    'message' => 'Failed to add record',
                                     'method' => 'POST'
                                   ));
           return;
         }
       }
-
-
     }
 
     public function httpPut($payload)
     {
-        $payload = (array) $payload;
-        // $user_id = $payload['user_id'];
+      $payload = (array) $payload;
 
-        //EDIT HOUSEHOLD INFO
-        $this->db->where('household_id', $payload['household_id']);
-        $household = $this->db->update('tbl_household', $payload);
+      //EDIT OPD RECORD
 
-        if ($household) {
-          echo json_encode(array('status' => 'success',
-                                  'data' => $payload,
-                                  'method' => 'PUT'
-                                ));
+      $disease_array = [];
+      if (isset($opd_record['disease'])) {
+        //Remove existing disease records
+        $this->db->where('opd_id', $payload['opd_id']);
+        $this->db->delete('tbl_disease');
+
+        //Replace records
+        foreach ($payload['disease'] as $disease) {
+          $disease['opd_id'] = $payload['opd_id'];
+          $disease['opd_disease_id'] = $this->db->insert('tbl_disease', $disease);
+
+          if ($disease['opd_disease_id']) {
+            array_push($disease_array, $disease);
+          }
         }
+        unset($payload['disease']);
+      }
+
+      $lab_results_array = [];
+      if (isset($payload['lab_results'])) {
+        //Remove existing disease records
+        $this->db->where('opd_id', $payload['opd_id']);
+        $this->db->delete('tbl_opd_disease');
+
+        //Replace records
+        foreach ($payload['lab_results'] as $lab_result) {
+          $lab_result['opd_id'] = $payload['opd_id'];
+          $lab_result['lab_result_id'] = $this->db->insert('tbl_opd_lab_results', $lab_result);
+
+          if ($lab_result['lab_result_id']) {
+            array_push($lab_result_array, $lab_result);
+          }
+        }
+        unset($payload['lab_results']);
+      }
+
+      $this->db->where('opd_id', $payload['opd_id']);
+      $opd_record = $this->db->update('tbl_opd', $payload);
+
+      if ($opd_record) {
+        $payload['lab_results'] = $lab_results_array;
+        $payload['disease'] = $disease_array;
+
+        echo json_encode(array('status' => 'success',
+                                'data' => $payload,
+                                'method' => 'PUT'
+                              ));
+      }
 
 
     }
