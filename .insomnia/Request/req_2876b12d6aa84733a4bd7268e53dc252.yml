@@ -1,0 +1,32 @@
+_id: req_2876b12d6aa84733a4bd7268e53dc252
+type: Request
+parentId: fld_46507b59eaf541669c29e04172a852e9
+modified: 1679658991259
+created: 1679658986560
+url: http://localhost/MHOCLPRMIMQS/src/php/opd_records.php
+name: Add OPD Record
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	
+    }
+parameters:
+  - id: pair_c77dc17d3da24ac892b8dbc668572f11
+    name: patient_id
+    value: "03212301"
+    description: ""
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679431496530.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
