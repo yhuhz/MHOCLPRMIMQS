@@ -7,13 +7,24 @@ export default {
     const router = useRouter()
 
     let loginForm = ref({
-      userID: null,
-      password: null,
+      userID: '',
+      password: '',
     })
 
+    const usersList = [
+      {
+        userID: 'Admin',
+        password: 'admin123'
+      },
+      {
+        userID: 'Staff',
+        password: 'staff123'
+      }
+    ]
 
     const loginFunction = () => {
-      if(loginForm.value.userID === 'admin' && loginForm.value.password === 'admin123') {
+      const user = usersList.find((u) => u.userID.toLocaleLowerCase() === loginForm.value.userID.toLowerCase() && u.password.toLocaleLowerCase() === loginForm.value.password.toLowerCase())
+      if(user) {
         router.push('dashboard')
       }
     }

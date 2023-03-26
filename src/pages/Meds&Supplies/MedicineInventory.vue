@@ -1,280 +1,533 @@
 <template>
-  <div class="search-patients">
+  <div class="medicine-inventory">
     <div class="flex items-center q-px-md q-pt-none">
       <q-btn
         round
         outline
         dense
-        icon="west"
+        icon="eva-arrow-back-outline"
+        color="dark"
         class="q-mr-md"
         @click="$router.go(-1)"
       />
-      <h5 class="text-weight-bold">MEDICINE INVENTORY</h5>
+      <h5 class="text-dark text-weight-bold">MEDICINE INVENTORY</h5>
     </div>
 
-    <div class="flex q-px-md">
-      <q-input class="account-name-field" outlined dense square>
-        <template v-slot:prepend>
-          <q-icon name="mdi-account-search-outline" />
-        </template>
-      </q-input>
+    <div class="q-px-md">
+      <div class="flex justify-between items-center">
+        <div class="flex">
+          <q-input outlined dense :input-style="{ color: '#525252' }">
+            <template v-slot:prepend>
+              <q-icon name="mdi-account-search-outline" />
+            </template>
+          </q-input>
 
-      <q-select
-        class="q-mr-none search-by-btn"
-        outlined
-        dense
-        square
-        v-model="selectedSearchBy"
-        options-dense
-        :options="searchBy"
-        label="Search By:"
-        style="width: 180px; background-color: #c7e8aa"
-      />
-
-      <!-- FILTER MODAL -->
-      <q-btn
-        class="q-mx-md filter-btn"
-        color="primary"
-        outline
-        label="Filters"
-        icon-right="mdi-filter-menu-outline"
-        no-caps
-        @click="showFilterModal = true"
-      >
-        <q-dialog v-model="showFilterModal" square>
-          <q-card class="q-px-md q-py-sm">
-            <div class="row q-px-md q-pt-md">
-              <!-- Age -->
-              <div class="col">
-                <p class="text-primary text-weight-bold">Age</p>
-                <div class="flex items-center">
+          <!-- Search By -->
+          <q-select
+            v-model="selectedSearchBy"
+            :options="searchBy"
+            outlined
+            dense
+            label="Search By:"
+            class="mhc-select-200"
+          />
+          <!-- Filters -->
+          <q-btn
+            outline
+            label="Filters"
+            no-caps
+            icon-right="eva-funnel-outline"
+            color="primary"
+            class="q-mx-lg button-120"
+            @click="showFilterModal = true"
+          >
+            <!-- Filters Modal -->
+            <q-dialog v-model="showFilterModal">
+              <q-card class="width-450 dialog-card q-pa-lg">
+                <div class="flex justify-between q-px-sm">
                   <div>
-                    <q-input
-                    outlined
-                    dense
-                    style="width: 60px"
-                    class="q-mr-lg"
-                    />
-                    <p>From</p>
+                    <p class="text-primary text-weight-bold q-mb-sm">
+                      In Stock
+                    </p>
+                    <q-input dense outlined style="width: 5rem" />
                   </div>
-
                   <div>
-                    <q-input
-                    outlined
-                    dense
-                    style="width: 60px"
-                    />
-                    <p>To</p>
+                    <p class="text-primary text-weight-bold q-mb-sm">Status</p>
+                    <div>
+                      <q-checkbox size="xs" label="Active" class="text-dark" />
+                    </div>
+                    <div>
+                      <q-checkbox size="xs" label="Deleted" class="text-dark" />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Sex -->
-              <div class="col">
-                <p class="text-primary text-weight-bold">Sex</p>
-                <div v-for="(gender, index) in genderList" :key="index">
-                  <q-checkbox
-                    v-model="gender_array_model"
-                    :val="genderList[index]"
-                    :label="gender"
+                <!-- Manufacturing Date -->
+                <div class="q-mt-lg">
+                  <label class="text-primary text-weight-bold"
+                    >Manufacturing Date</label
+                  >
+                  <div class="flex justify-between items-center q-mt-sm">
+                    <!-- From -->
+                    <q-input dense outlined hint="From" class="width-150">
+                      <template v-slot:append>
+                        <q-icon
+                          name="eva-calendar-outline"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            cover
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+
+                    <div class="line"></div>
+
+                    <!-- TO -->
+                    <q-input dense outlined hint="To" class="width-150">
+                      <template v-slot:append>
+                        <q-icon
+                          name="eva-calendar-outline"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            cover
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                </div>
+
+                <!-- Expiry Date -->
+                <div class="q-mt-lg">
+                  <label class="text-primary text-weight-bold"
+                    >Expiry Date</label
+                  >
+                  <div class="flex justify-between items-center q-mt-sm">
+                    <!-- From -->
+                    <q-input dense outlined hint="From" class="width-150">
+                      <template v-slot:append>
+                        <q-icon
+                          name="eva-calendar-outline"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            cover
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+
+                    <div class="line"></div>
+
+                    <!-- TO -->
+                    <q-input dense outlined hint="To" class="width-150">
+                      <template v-slot:append>
+                        <q-icon
+                          name="eva-calendar-outline"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            cover
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                </div>
+
+                <!-- Date Added -->
+                <div class="q-mt-lg">
+                  <label class="text-primary text-weight-bold"
+                    >Date Added</label
+                  >
+                  <div class="flex justify-between items-center q-mt-sm">
+                    <!-- From -->
+                    <q-input dense outlined hint="From" class="width-150">
+                      <template v-slot:append>
+                        <q-icon
+                          name="eva-calendar-outline"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            cover
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+
+                    <div class="line"></div>
+
+                    <!-- TO -->
+                    <q-input dense outlined hint="To" class="width-150">
+                      <template v-slot:append>
+                        <q-icon
+                          name="eva-calendar-outline"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            cover
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                </div>
+
+                <!-- Done Button -->
+                <div class="flex justify-center items-center q-mt-lg q-mb-md">
+                  <q-btn
+                    dense
+                    color="primary"
+                    label="Done"
+                    no-caps
+                    class="button-80"
                   />
                 </div>
+              </q-card>
+            </q-dialog>
+          </q-btn>
+
+          <!-- Search -->
+          <q-btn
+            color="primary"
+            label="Search"
+            no-caps
+            icon-right="eva-search-outline"
+            class="button-120"
+          />
+        </div>
+
+        <!-- Add New Medicine Stock -->
+        <div>
+          <q-btn
+            @click="isAddNewMedicineStock = true"
+            outline
+            label="Add New Medicine Stock"
+            icon-right="bi-capsule-pill"
+            no-caps
+            color="primary"
+          />
+        </div>
+
+        <!-- Modals for Add New Medicine Stock -->
+        <q-dialog v-model="isAddNewMedicineStock" persistent>
+          <q-card style="min-width: 750px">
+            <div class="q-pa-lg">
+              <div class="flex justify-end">
+                <q-btn
+                  v-close-popup
+                  dense
+                  color="negative"
+                  size="0.375rem"
+                  icon="eva-close-outline"
+                />
               </div>
-
-              <!-- Status -->
-              <div class="col">
-                <p class="text-primary text-weight-bold">Status</p>
-                <div v-for="(status, index) in statusList" :key="index">
-                  <q-checkbox
-                    v-model="status_array_model"
-                    :val="statusList[index]"
-                    :label="status"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- Date Added -->
-            <div class="q-px-md">
-              <p class="text-primary text-weight-bold">Date Added</p>
-              <div class="flex">
-                <div class="q-mr-lg" style="max-width: 150px">
-                  <q-input outlined dense v-model="dateAdded.from">
-                    <template v-slot:append>
-                      <q-icon name="event" class="cursor-pointer" >
-                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                          <q-date v-model="dateAdded.from">
-                            <div class="row items-center justify-end">
-                              <q-btn v-close-popup label="Close" color="primary" dense flat />
-                            </div>
-                          </q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
-                  <p>From</p>
-                </div>
-              </div>
-
-                <div style="max-width: 150px">
-                  <q-input outlined dense v-model="dateAdded.to" mask="date">
-                    <template v-slot:append>
-                      <q-icon name="event" class="cursor-pointer" >
-                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                          <q-date v-model="dateAdded.to">
-                            <div class="row items-center justify-end">
-                              <q-btn v-close-popup label="Close" color="primary" dense flat />
-                            </div>
-                          </q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
-                  <p>To</p>
-                </div>
-              </div>
-
-
-            <!-- Barangay List -->
-            <p class="q-px-md q-mt-lg text-primary text-weight-bold">Barangay</p>
-            <div class="q-px-md q-mt-md row">
-              <div
-                v-for="(brgy, index) in barangayList"
-                :key="index"
-                class="brgy col-4"
+              <p
+                class="text-primary text-weight-bold text-24 text-center q-mb-xl"
               >
-                <q-checkbox
-                  v-model="brgy_array_model"
-                  :label="brgy"
-                  :val="barangayList[index]"
+                <q-icon name="bi-capsule-pill" class="q-mr-xs q-gutter-xs" />
+                ADD MEDICINE RECORD
+              </p>
+
+              <!-- First Row -->
+              <div class="row q-mb-md">
+                <div class="col">
+                  <label class="text-dark"
+                    >Generic Name <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. Paracetamol"
+                    class="q-mr-md q-mt-xs"
+                  />
+                </div>
+                <div class="col">
+                  <label class="text-dark"
+                    >Brand Name <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. Biogesic"
+                    class="q-mt-xs"
+                  />
+                </div>
+              </div>
+
+              <!-- Second Row -->
+              <div class="row q-mt-lg q-mb-md">
+                <div class="col">
+                  <label class="text-dark"
+                    >Therapeutic Classification
+                    <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. Analgesic"
+                    class="q-mt-xs q-mr-md"
+                  />
+                </div>
+                <div class="col">
+                  <label class="text-dark"
+                    >Manufacturing Date
+                    <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="YYYY-MM-DD"
+                    class="q-mt-xs q-mr-md"
+                  >
+                    <template v-slot:append>
+                      <q-icon
+                        name="eva-calendar-outline"
+                        class="cursor-pointer"
+                      >
+                        <q-popup-proxy
+                          cover
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date />
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
+                <div class="col">
+                  <label class="text-dark"
+                    >Expiry Date <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="YYYY-MM-DD"
+                    class="q-mt-xs"
+                  >
+                    <template v-slot:append>
+                      <q-icon
+                        name="eva-calendar-outline"
+                        class="cursor-pointer"
+                      >
+                        <q-popup-proxy
+                          cover
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date />
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
+              </div>
+
+              <!-- Third Row -->
+              <div class="row q-mt-lg q-mb-md">
+                <div class="col">
+                  <label class="text-dark"
+                    >Quantity Received
+                    <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. 350"
+                    class="q-mr-md q-mt-xs"
+                  />
+                </div>
+                <div class="col">
+                  <label class="text-dark"
+                    >Dosage Form <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. Tablet"
+                    class="q-mt-xs q-mr-md"
+                  />
+                </div>
+                <div class="col">
+                  <label class="text-dark">Dosage Strength</label>
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. 500mg"
+                    class="q-mt-xs"
+                  />
+                </div>
+              </div>
+
+              <!-- Fourth Row -->
+              <div class="row q-mt-lg q-mb-md">
+                <div class="col">
+                  <label class="text-dark"
+                    >Batch/Lot Number
+                    <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. 13-08-713"
+                    class="q-mr-md q-mt-xs"
+                  />
+                </div>
+                <div class="col">
+                  <label class="text-dark">PTR Number</label>
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. 22-11-2101"
+                    class="q-mt-xs q-mr-md"
+                  />
+                </div>
+                <div class="col">
+                  <label class="text-dark"
+                    >Source <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. DOH"
+                    class="q-mt-xs"
+                  />
+                </div>
+              </div>
+
+              <!-- Button for Modals -->
+              <div class="flex justify-center items-center q-mt-xl q-mb-lg">
+                <!-- Submit -->
+                <q-btn
+                  color="primary"
+                  label="Submit"
+                  no-caps
+                  class="button-120 q-mr-xl"
+                />
+                <q-btn
+                  outline
+                  color="primary"
+                  label="Reset"
+                  no-caps
+                  class="button-120"
                 />
               </div>
             </div>
           </q-card>
         </q-dialog>
-      </q-btn>
-
-      <!-- Search Button -->
-      <q-btn
-        dense
-        color="primary"
-        label="Search"
-        icon-right="search"
-        no-caps
-        style="width: 120px; margin-right: 10rem"
-      />
-
-      <q-btn
-        class="add-new-patient-btn"
-        outline
-        :ripple="false"
-        color="primary"
-        no-caps
-        label="Add New Medicine Stock"
-      />
+      </div>
 
       <!-- Table -->
-      <div class="full-width q-mt-xl">
+      <div class="q-my-xl table">
         <q-table
           :columns="columns"
           :rows="rows"
+          :pagination="{ rowsPerPage: 10 }"
+          :rows-per-page-options="[5, 10, 15, 20, 0]"
           flat
           class="mhc-table"
         >
-        <template v-slot:body-cell-action>
-          <q-td>
-            <q-btn
-              dense
-              label="Action"
-              no-caps
-              icon-right="more_vert"
-              color="primary"
-              size="sm"
-              padding="5px 12px"
-              unelevated
-            >
-            <q-menu
-              transition-show="jump-down"
-              transition-hide="jump-up"
-              style="max-width: 250px"
-            >
-              <q-list dense separator>
-                <!-- View -->
-                <q-item
-                clickable
-                class="drop-list"
-                to="patient-record-opd-view">
-                  <q-item-section>View Details</q-item-section>
-                  <q-item-section avatar>
-                    <q-icon size="xs" name="visibility" />
-                  </q-item-section>
-                </q-item>
-
-                <!-- Edit -->
-                <q-item
-                clickable
-                class="drop-list"
-                to="patient-record-opd-edit">
-                  <q-item-section>Edit Details</q-item-section>
-                  <q-item-section avatar>
-                    <q-icon size="xs" name="mdi-account-edit-outline" />
-                  </q-item-section>
-                </q-item>
-
-                <!-- Delete -->
-                <q-item
-                clickable
-                class="drop-list-delete"
+          <!-- Table Row Slots -->
+          <template #body-cell-action>
+            <q-td>
+              <q-btn
+                dense
+                color="primary"
+                label="Action"
+                icon-right="more_vert"
+                no-caps
+                unelevated
+                class="button-100 action-btn"
+              >
+                <q-menu
+                  transition-show="jump-down"
+                  transition-hide="jump-up"
+                  class="width-200"
                 >
-                  <q-item-section>Delete Record</q-item-section>
-                  <q-item-section avatar>
-                    <q-icon size="xs" name="mdi-trash-can-outline" />
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-            </q-btn>
-          </q-td>
-        </template>
+                  <q-list separator dense>
+                    <!-- View -->
+                    <q-item
+                      clickable
+                      to="medicine-inventory-details"
+                      class="drop-list"
+                    >
+                      <q-item-section>View Details</q-item-section>
+                      <q-item-section avatar>
+                        <q-icon size="xs" name="eva-eye-outline" />
+                      </q-item-section>
+                    </q-item>
 
-        <template v-slot:top-right>
-          <q-btn
-          color="primary"
-          icon-right="download"
-          dense
-          label="Download"
-          no-caps
-          size="sm"
-          padding="5px 10px"
-          class="q-mr-xl"
-          />
-        </template>
+                    <!-- Edit -->
+                    <q-item clickable class="drop-list">
+                      <q-item-section>Edit Details</q-item-section>
+                      <q-item-section avatar>
+                        <q-icon size="xs" name="eva-edit-outline" />
+                      </q-item-section>
+                    </q-item>
 
+                    <!-- Delete -->
+                    <q-item clickable class="drop-list-delete">
+                      <q-item-section>Delete Record</q-item-section>
+                      <q-item-section avatar>
+                        <q-icon size="xs" name="eva-trash-2-outline" />
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
+              </q-btn>
+            </q-td>
+          </template>
+
+          <!-- Table Header Slots -->
+          <template #header-cell-action="props">
+            <q-th :props="props">
+              <q-btn
+                dense
+                label="Download"
+                icon-right="eva-download-outline"
+                no-caps
+                color="primary"
+                unelevated
+                class="button-100 download-btn"
+              />
+            </q-th>
+          </template>
         </q-table>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-
-}
-</script>
+<script src="../script/Meds&Supplies/MedicineInventory"></script>
 
 <style scoped lang="scss">
-  .drop-list {
-    color: #5f8d4e;
-  }
-  .drop-list:hover {
-    background-color: #5f8d4e;
-    color: #fff;
-  }
-  .drop-list-delete {
-    color: #D75555
-  }
-  .drop-list-delete:hover {
-    background-color: #D75555;
-    color: #fff
-  }
+@import "../styles/meds&supplies/medicine_inventory.scss";
 </style>

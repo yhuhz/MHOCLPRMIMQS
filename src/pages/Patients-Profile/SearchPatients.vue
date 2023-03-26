@@ -5,295 +5,262 @@
         round
         outline
         dense
-        icon="west"
+        icon="eva-arrow-back-outline"
         color="dark"
         class="q-mr-md"
         @click="$router.go(-1)"
       />
-      <h5 class="text-weight-bold text-dark">PATIENTS RECORDS</h5>
+      <h5 class="text-weight-bold text-dark">PATIENT RECORDS</h5>
     </div>
 
-    <div class="flex q-px-md">
-      <q-input class="account-name-field" outlined dense>
-        <template v-slot:prepend>
-          <q-icon name="mdi-account-search-outline" />
-        </template>
-      </q-input>
+    <div class="q-px-md">
+      <div class="flex justify-between items-center">
+        <div class="flex">
+          <q-input outlined dense :input-style="{ color: '#525252' }">
+            <template v-slot:prepend>
+              <q-icon name="mdi-account-search-outline" />
+            </template>
+          </q-input>
 
-      <q-select
-        class="q-mr-none search-by-btn"
-        outlined
-        dense
-        v-model="selectedSearchBy"
-        options-dense
-        :options="searchBy"
-        label="Search By:"
-        style="width: 180px; background-color: #c7e8aa"
-      />
+          <!-- Search By -->
+          <q-select
+            v-model="selectedSearchBy"
+            :options="searchBy"
+            outlined
+            dense
+            label="Search By:"
+            class="mhc-select-200"
+          />
 
-      <!-- FILTER MODAL -->
-      <q-btn
-        class="q-mx-md filter-btn"
-        color="primary"
-        outline
-        label="Filters"
-        icon-right="eva-funnel-outline"
-        no-caps
-        @click="showFilterModal = true"
-      >
-        <q-dialog v-model="showFilterModal" square>
-          <q-card class="q-px-md q-py-sm">
-            <div class="row q-px-md q-pt-md">
-              <!-- Age -->
-              <div class="col">
-                <p class="text-primary text-weight-bold">Age</p>
-                <div class="flex items-center">
+          <!-- Filters -->
+          <q-btn
+            outline
+            label="Filters"
+            no-caps
+            icon-right="eva-funnel-outline"
+            color="primary"
+            class="q-mx-lg button-120"
+            @click="showFilterModal = true"
+          >
+            <!-- Filters Modal -->
+            <q-dialog v-model="showFilterModal">
+              <q-card class="q-pa-md width-700">
+                <div class="flex justify-between">
+                  <!-- Age -->
                   <div>
-                    <q-input
-                    outlined
-                    dense
-                    style="width: 60px"
-                    class="q-mr-lg"
-                    />
-                    <p class="text-dark">From</p>
+                    <label class="text-primary text-weight-bold">Age</label>
+                    <div class="flex justify-between q-mt-sm">
+                      <q-input
+                        dense
+                        outlined
+                        hint="From"
+                        class="q-mr-lg"
+                        style="width: 60px"
+                      />
+
+                      <div class="line"></div>
+
+                      <q-input dense outlined hint="To" style="width: 60px" />
+                    </div>
                   </div>
 
+                  <!-- Sex -->
                   <div>
-                    <q-input
-                    outlined
-                    dense
-                    style="width: 60px"
-                    />
-                    <p class="text-dark">To</p>
+                    <label class="text-primary text-weight-bold">Sex</label>
+                    <div v-for="(gender, index) in genderList" :key="index">
+                      <q-checkbox
+                        v-model="gender_array_model"
+                        :val="genderList[index]"
+                        :label="gender"
+                        class="text-dark"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Status -->
+                  <div>
+                    <label class="text-primary text-weight-bold">Status</label>
+                    <div v-for="(status, index) in statusList" :key="index">
+                      <q-checkbox
+                        v-model="status_array_model"
+                        :val="statusList[index]"
+                        :label="status"
+                        class="text-dark"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Sex -->
-              <div class="col">
-                <p class="text-primary text-weight-bold">Sex</p>
-                <div v-for="(gender, index) in genderList" :key="index">
-                  <q-checkbox
-                    v-model="gender_array_model"
-                    :val="genderList[index]"
-                    :label="gender"
-                    class="text-dark"
-                  />
-                </div>
-              </div>
+                <!-- Date Added -->
+                <div class="q-mt-xl date-added">
+                  <label class="text-primary text-weight-bold"
+                    >Date Added</label
+                  >
+                  <div class="flex q-mt-sm">
+                    <!-- From -->
+                    <q-input dense outlined hint="From" class="width-150">
+                      <template v-slot:append>
+                        <q-icon
+                          name="eva-calendar-outline"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            cover
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date />
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
 
-              <!-- Status -->
-              <div class="col">
-                <p class="text-primary text-weight-bold">Status</p>
-                <div v-for="(status, index) in statusList" :key="index">
-                  <q-checkbox
-                    v-model="status_array_model"
-                    :val="statusList[index]"
-                    :label="status"
-                    class="text-dark"
-                  />
-                </div>
-              </div>
-            </div>
+                    <div class="line"></div>
 
-            <!-- Date Added -->
-            <div class="q-px-md">
-              <p class="text-primary text-weight-bold">Date Added</p>
-              <div class="flex">
-                <div class="q-mr-lg" style="max-width: 150px">
-                  <q-input outlined dense v-model="dateAdded.from">
-                    <template v-slot:append>
-                      <q-icon name="event" class="cursor-pointer" >
-                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                          <q-date v-model="dateAdded.from">
-                            <div class="row items-center justify-end">
-                              <q-btn v-close-popup label="Close" color="primary" dense flat />
-                            </div>
-                          </q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
-                  <p class="text-dark">From</p>
+                    <!-- To -->
+                    <q-input dense outlined hint="To" class="width-150">
+                      <template v-slot:append>
+                        <q-icon
+                          name="eva-calendar-outline"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            cover
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date />
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
                 </div>
 
-                <div style="max-width: 150px">
-                  <q-input outlined dense v-model="dateAdded.to" mask="date">
-                    <template v-slot:append>
-                      <q-icon name="event" class="cursor-pointer" >
-                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                          <q-date v-model="dateAdded.to">
-                            <div class="row items-center justify-end">
-                              <q-btn v-close-popup label="Close" color="primary" dense flat />
-                            </div>
-                          </q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
-                  <p class="text-dark">To</p>
+                <!-- Barangays -->
+                <div class="q-mt-xl">
+                  <label class="text-primary text-weight-bold">Barangay</label>
+                  <div class="brgy q-mt-sm">
+                    <div v-for="(brgy, index) in barangayList" :key="index">
+                      <q-checkbox
+                        v-model="brgy_array_model"
+                        :val="barangayList[index]"
+                        :label="brgy"
+                        class="text-dark"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <!-- Barangay List -->
-            <p class="q-px-md q-mt-lg text-primary text-weight-bold">Barangay</p>
-            <div class="q-px-md q-mt-md row">
-              <div
-                v-for="(brgy, index) in barangayList"
-                :key="index"
-                class="brgy col-4"
-              >
-                <q-checkbox
-                  v-model="brgy_array_model"
-                  :label="brgy"
-                  :val="barangayList[index]"
-                  class="text-dark"
-                />
-              </div>
-            </div>
-            <div class="flex justify-center items-center">
-              <q-btn
-              label="Done"
-              no-caps
-              color="primary"
-              class="button-100 q-my-md"
-              />
-            </div>
-          </q-card>
-        </q-dialog>
-      </q-btn>
+                <!-- Button -->
+              </q-card>
+            </q-dialog>
+          </q-btn>
 
-      <!-- Search Button -->
-      <q-btn
-        dense
-        color="primary"
-        label="Search"
-        icon-right="eva-search-outline"
-        no-caps
-        style="width: 120px; margin-right: 10rem"
-      />
+          <!-- Search -->
+          <q-btn
+            color="primary"
+            label="Search"
+            no-caps
+            icon-right="eva-search-outline"
+            class="button-120"
+          />
+        </div>
 
-      <q-btn
-        class="add-new-patient-btn"
-        icon="eva-person-add-outline"
-        outline
-        :ripple="false"
-        color="primary"
-        no-caps
-        label="Create New Patient Profile"
-        @click="$router.push('add-new-patient-record')"
-      />
+        <!-- Create New Patient Profile -->
+        <div class="flex justify-end">
+          <q-btn
+            @click="$router.push('add-new-patient-record')"
+            outline
+            label="Create New Patient Profile"
+            icon-right="bi-person-add"
+            no-caps
+            color="primary"
+          />
+        </div>
+      </div>
 
       <!-- Table -->
-      <div class="full-width q-mt-xl">
+      <div class="q-my-xl table">
         <q-table
           :columns="columns"
           :rows="rows"
+          :pagination="{ rowsPerPage: 10 }"
+          :rows-per-page-options="[5, 10, 15, 20, 0]"
           flat
-          :pagination="{rowsPerPage: 10}"
-          :rows-per-page-options="[5, 10, 15, 0]"
           class="mhc-table"
         >
-        <template v-slot:body-cell-action>
-          <q-td>
-            <q-btn
-              dense
-              label="Action"
-              no-caps
-              icon-right="more_vert"
-              color="primary"
-              size="sm"
-              padding="6px 0"
-              unelevated
-              class="button-80"
-            >
-            <q-menu
-              transition-show="jump-down"
-              transition-hide="jump-up"
-              style="width: 250px"
-            >
-              <q-list separator dense>
-                <!-- View -->
-                <q-item
-                clickable
-                to="patient-record-opd-view"
-                class="drop-list"
+          <!-- Table Row Slots -->
+          <template #body-cell-action>
+            <q-td>
+              <q-btn
+                dense
+                color="primary"
+                label="Action"
+                icon-right="more_vert"
+                no-caps
+                unelevated
+                class="button-100 action-btn"
+              >
+                <q-menu
+                  transition-show="jump-down"
+                  transition-hide="jump-up"
+                  class="width-200"
                 >
-                  <q-item-section>View Patient Details</q-item-section>
-                  <q-item-section avatar>
-                    <q-icon size="xs" name="eva-eye-outline" />
-                  </q-item-section>
-                </q-item>
-                <!-- Edit -->
-                <q-item
-                clickable
-                to="patient-record-opd-edit"
-                class="drop-list"
-                >
-                  <q-item-section>Edit Patient Details</q-item-section>
-                  <q-item-section avatar>
-                    <q-icon size="xs" name="mdi-account-edit-outline" />
-                  </q-item-section>
-                </q-item>
-                <!-- Delete -->
-                <q-item
-                @click="openDialog"
-                clickable
-                class="drop-list-delete"
-                >
-                  <q-item-section>Delete Record</q-item-section>
-                  <q-item-section avatar>
-                    <q-icon size="xs" name="eva-trash-2-outline" />
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-            </q-btn>
-          </q-td>
-        </template>
+                  <q-list separator dense>
+                    <!-- View -->
+                    <q-item clickable class="drop-list">
+                      <q-item-section>View Details</q-item-section>
+                      <q-item-section avatar>
+                        <q-icon size="xs" name="eva-eye-outline" />
+                      </q-item-section>
+                    </q-item>
 
-        <template #header-cell-action="props">
-          <q-th :props="props">
-          <q-btn
-          color="primary"
-          icon-right="eva-download-outline"
-          dense
-          label="Download"
-          no-caps
-          size="sm"
-          padding="8px 0"
-          class="button-80"
-          />
-          </q-th>
-        </template>
+                    <!-- Edit -->
+                    <q-item clickable class="drop-list">
+                      <q-item-section>Edit Details</q-item-section>
+                      <q-item-section avatar>
+                        <q-icon size="xs" name="eva-edit-outline" />
+                      </q-item-section>
+                    </q-item>
 
+                    <!-- Delete -->
+                    <q-item clickable class="drop-list-delete">
+                      <q-item-section>Delete Record</q-item-section>
+                      <q-item-section avatar>
+                        <q-icon size="xs" name="eva-trash-2-outline" />
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
+              </q-btn>
+            </q-td>
+          </template>
+
+          <!-- Table Header Slots -->
+          <template #header-cell-action="props">
+            <q-th :props="props">
+              <q-btn
+                dense
+                label="Download"
+                icon-right="eva-download-outline"
+                no-caps
+                color="primary"
+                unelevated
+                class="button-100 download-btn"
+              />
+            </q-th>
+          </template>
         </q-table>
       </div>
     </div>
 
     <MHCDialog :content="$options.components.DeletePatientConfirmation" />
-
   </div>
 </template>
 
 <script src="../script/Patients-Profile/SearchPatients"></script>
 
 <style scoped lang="scss">
-  @import url("../styles/patients-profile/search_patients.scss");
-
-  .drop-list {
-    color: #5f8d4e;
-  }
-  .drop-list:hover {
-    background-color: #5f8d4e;
-    color: #fff;
-  }
-  .drop-list-delete {
-    color: #D75555
-  }
-  .drop-list-delete:hover {
-    background-color: #D75555;
-    color: #fff
-  }
+@import "../styles/patients-profile/search_patients.scss";
 </style>

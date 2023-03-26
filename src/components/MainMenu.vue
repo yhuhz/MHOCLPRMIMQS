@@ -92,14 +92,14 @@
 
     <q-list dense separator class="dropdown-list">
 
-    <q-item clickable class="list-text" to="medicine-inventory">
+    <q-item clickable class="list-text text-white" to="medicine-inventory">
       <q-item-section avatar>
         <q-icon size="xs" name="fa fa-pills"/>
       </q-item-section>
       <q-item-section>Medicine Inventory</q-item-section>
     </q-item>
 
-    <q-item clickable class="list-text">
+    <q-item clickable class="list-text text-white">
       <q-item-section avatar>
         <q-icon size="xs" name="fa fa-syringe"/>
       </q-item-section>

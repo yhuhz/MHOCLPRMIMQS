@@ -93,6 +93,12 @@ const routes = [
         component: () =>
           import("src/pages/Meds&Supplies/MedicineInventory.vue"),
       },
+      {
+        path: "medicine-inventory-details",
+        name: "medicine-inventory-details",
+        component: () =>
+          import("src/pages/Meds&Supplies/MedicineInventoryDetails.vue"),
+      },
     ],
   },
 
