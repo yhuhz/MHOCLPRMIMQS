@@ -21,6 +21,7 @@ class API
     public function httpGet()
     {
       $this->db->where('patient_id', $_GET['patient_id']);
+      $this->db->where('status', 0);
       $dental_records = $this->db->get('tbl_dental');
       $dental_array = [];
 
