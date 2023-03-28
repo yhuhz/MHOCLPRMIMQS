@@ -73,15 +73,16 @@ class API
       //EDIT OPD RECORD
 
       $disease_array = [];
-      if (isset($opd_record['disease'])) {
+      if (isset($payload['disease'])) {
         //Remove existing disease records
         $this->db->where('opd_id', $payload['opd_id']);
-        $this->db->delete('tbl_disease');
+        $this->db->delete('tbl_opd_disease');
 
         //Replace records
         foreach ($payload['disease'] as $disease) {
+          $disease = (array) $disease;
           $disease['opd_id'] = $payload['opd_id'];
-          $disease['opd_disease_id'] = $this->db->insert('tbl_disease', $disease);
+          $disease['opd_disease_id'] = $this->db->insert('tbl_opd_disease', $disease);
 
           if ($disease['opd_disease_id']) {
             array_push($disease_array, $disease);
@@ -94,15 +95,16 @@ class API
       if (isset($payload['lab_results'])) {
         //Remove existing disease records
         $this->db->where('opd_id', $payload['opd_id']);
-        $this->db->delete('tbl_opd_disease');
+        $this->db->delete('tbl_opd_lab_results');
 
         //Replace records
         foreach ($payload['lab_results'] as $lab_result) {
+          $lab_result = (array) $lab_result;
           $lab_result['opd_id'] = $payload['opd_id'];
           $lab_result['lab_result_id'] = $this->db->insert('tbl_opd_lab_results', $lab_result);
 
           if ($lab_result['lab_result_id']) {
-            array_push($lab_result_array, $lab_result);
+            array_push($lab_results_array, $lab_result);
           }
         }
         unset($payload['lab_results']);
@@ -128,13 +130,13 @@ class API
     {
         $payload = (array) $payload;
 
-        $this->db->where('patient_id', $payload['patient_id']);
+        $this->db->where('opd_id', $payload['opd_id']);
         $payload['status'] = 1;
-        $delete_user = $this->db->update('tbl_patient_info', $payload);
+        $delete_user = $this->db->update('tbl_opd', $payload);
 
         if ($delete_user) {
             echo json_encode(array('status' => 'success',
-                                'message' => 'User successfully removed',
+                                'message' => 'Record successfully removed',
                                 'method' => 'DELETE'
           ));
         } else {
