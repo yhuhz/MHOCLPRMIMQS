@@ -119,8 +119,8 @@ class API
         $dental_record = $this->db->update('tbl_dental', array('status' => 1));
 
         echo json_encode(array('status' => 'success',
-                                'data' => $payload,
-                                'method' => 'PUT'
+                                'data' => 'Record successfully deleted',
+                                'method' => 'DELETE'
                               ));
       }
     }
