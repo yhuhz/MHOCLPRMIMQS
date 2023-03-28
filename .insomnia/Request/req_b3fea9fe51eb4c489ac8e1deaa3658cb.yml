@@ -1,7 +1,7 @@
 _id: req_b3fea9fe51eb4c489ac8e1deaa3658cb
 type: Request
 parentId: fld_46507b59eaf541669c29e04172a852e9
-modified: 1679680071942
+modified: 1679761249862
 created: 1679679808540
 url: http://localhost/MHOCLPRMIMQS/src/php/opd_api.php
 name: Edit OPD Record
@@ -12,7 +12,6 @@ body:
   text: >-
     {
     	"opd_id": 2,
-    	"phone_number": "09468512312",
     	"doctor_id": 69,
     	"checkup_results": "Patient has UTI. Prescribed antibiotics. Patient should drink lots of fluids.",
     	"next_checkup": "2023-03-25",

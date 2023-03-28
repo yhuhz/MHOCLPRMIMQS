@@ -1,0 +1,31 @@
+_id: req_a57666c88c1f485d82cb498892eeda6e
+type: Request
+parentId: fld_91e34d98471e44bfbce02b9449f4166c
+modified: 1679998791053
+created: 1679998560527
+url: http://localhost/MHOCLPRMIMQS/src/php/dental_api.php
+name: Update Dental Chart Record
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    	{
+    		"dental_chart_id": 34,
+    		"patient_id": "03212302",
+    		"tooth_score": 2,
+    		"comments": "Tooth is decayed"
+    	}
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679740844889.75
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

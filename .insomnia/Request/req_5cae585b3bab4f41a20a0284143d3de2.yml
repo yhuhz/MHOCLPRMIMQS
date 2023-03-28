@@ -1,0 +1,32 @@
+_id: req_5cae585b3bab4f41a20a0284143d3de2
+type: Request
+parentId: fld_91e34d98471e44bfbce02b9449f4166c
+modified: 1679990997303
+created: 1679990919812
+url: http://localhost/MHOCLPRMIMQS/src/php/dental_api.php
+name: Get Dental Records
+description: ""
+method: GET
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	
+    }
+parameters:
+  - id: pair_30867bb9c7f94aad989fc8b2fd8b451c
+    name: patient_id
+    value: "03212301"
+    description: ""
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679990919812
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

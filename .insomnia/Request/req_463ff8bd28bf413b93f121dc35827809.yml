@@ -1,0 +1,31 @@
+_id: req_463ff8bd28bf413b93f121dc35827809
+type: Request
+parentId: fld_91e34d98471e44bfbce02b9449f4166c
+modified: 1679998508706
+created: 1679998153194
+url: http://localhost/MHOCLPRMIMQS/src/php/dental_api.php
+name: Update Dental Record
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    	{
+    		"dental_id": 8,
+    		"doctor_id": 68,
+    		"patient_id": "03212302",
+    		"checkup_date": "2023-03-28"
+    	}
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679824203180.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

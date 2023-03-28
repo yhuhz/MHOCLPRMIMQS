@@ -1,0 +1,28 @@
+_id: req_93c5ce7072c84759aa99f4cfa2f6e5e9
+type: Request
+parentId: fld_46507b59eaf541669c29e04172a852e9
+modified: 1679763041950
+created: 1679762131319
+url: http://localhost/MHOCLPRMIMQS/src/php/opd_api.php
+name: Edit OPD Record
+description: ""
+method: DELETE
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"opd_id": 2
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679262003979.125
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
