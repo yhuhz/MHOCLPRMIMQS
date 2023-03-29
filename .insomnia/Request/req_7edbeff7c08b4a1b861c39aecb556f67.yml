@@ -1,9 +1,9 @@
 _id: req_7edbeff7c08b4a1b861c39aecb556f67
 type: Request
 parentId: fld_d4303c27795a486e960b619b9e6d3bcc
-modified: 1679205583587
+modified: 1680048319008
 created: 1679205506462
-url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
+url: http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/patient_api.php
 name: Get Patients
 description: ""
 method: GET

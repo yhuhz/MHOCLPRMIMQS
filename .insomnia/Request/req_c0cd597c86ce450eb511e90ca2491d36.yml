@@ -1,9 +1,9 @@
 _id: req_c0cd597c86ce450eb511e90ca2491d36
 type: Request
 parentId: fld_d4303c27795a486e960b619b9e6d3bcc
-modified: 1679205682213
+modified: 1680048350040
 created: 1679205676599
-url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
+url: http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/patient_api.php
 name: Delete Patient
 description: ""
 method: DELETE

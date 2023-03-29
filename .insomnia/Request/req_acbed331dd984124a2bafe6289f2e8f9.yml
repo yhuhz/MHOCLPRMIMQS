@@ -1,0 +1,35 @@
+_id: req_acbed331dd984124a2bafe6289f2e8f9
+type: Request
+parentId: fld_ec65d1beda3943e1affaecc2969b7adf
+modified: 1680051291064
+created: 1680049994455
+url: http://localhost/MHOCLPRMIMQS/src/PHP/Patient Records/prenatal_api.php
+name: Add Prenatal Record
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    [
+    	{
+    		"midwife_id": 71,
+    		"patient_id": "03232303",
+    		"last_menstruation": "2023-02-03",
+    		"previous_full_term": 1,
+    		"previous_premature": 1,
+    		"midwifes_notes": "All seems good"
+    	}
+    ]
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679990919762
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

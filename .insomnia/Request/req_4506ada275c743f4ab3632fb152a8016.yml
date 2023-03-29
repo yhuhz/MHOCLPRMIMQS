@@ -1,10 +1,10 @@
-_id: req_5cae585b3bab4f41a20a0284143d3de2
+_id: req_4506ada275c743f4ab3632fb152a8016
 type: Request
-parentId: fld_91e34d98471e44bfbce02b9449f4166c
-modified: 1680046610819
-created: 1679990919812
-url: http://localhost/MHOCLPRMIMQS/src/PHP/Patient Records/dental_api.php
-name: Get Dental Records
+parentId: fld_ec65d1beda3943e1affaecc2969b7adf
+modified: 1680050177849
+created: 1680049994449
+url: http://localhost/MHOCLPRMIMQS/src/PHP/Patient Records/prenatal_api.php
+name: Get Prenatal Records
 description: ""
 method: GET
 body:
@@ -16,7 +16,7 @@ body:
 parameters:
   - id: pair_30867bb9c7f94aad989fc8b2fd8b451c
     name: patient_id
-    value: "03212301"
+    value: "03232301"
     description: ""
 headers:
   - name: Content-Type

@@ -1,10 +1,10 @@
 _id: req_33ce5b0c5bbe4cacb029c070dd11b647
 type: Request
 parentId: fld_d4303c27795a486e960b619b9e6d3bcc
-modified: 1679560374185
+modified: 1680051128976
 created: 1679205573833
-url: http://localhost/MHOCLPRMIMQS/src/php/patient_api.php
-name: Search Patient by ID
+url: http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/patient_api.php
+name: Search Patient by Filter
 description: ""
 method: GET
 body:
@@ -58,9 +58,9 @@ parameters:
       	"age_from": 0,
       	"age_to": 100,
       	"date_added": ["2023-03-01", "2024-12-31"],
-      	"sex": [1,2],
+      	"sex": [2],
       	"status": [0,1,2],
-      	"barangay": ["Outside Camalig", "Tagaytay"]
+      	"barangay": ["all"]
       }
     description: ""
     type: text

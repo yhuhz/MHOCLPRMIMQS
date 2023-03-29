@@ -1,24 +1,24 @@
-_id: req_93c5ce7072c84759aa99f4cfa2f6e5e9
+_id: req_c9ef460c1abe471a9c7d801ccf0d9500
 type: Request
-parentId: fld_46507b59eaf541669c29e04172a852e9
-modified: 1680046964215
-created: 1679762131319
-url: http://localhost/MHOCLPRMIMQS/src/PHP/Patient Records/opd_api.php
-name: Edit OPD Record
+parentId: fld_ec65d1beda3943e1affaecc2969b7adf
+modified: 1680056462655
+created: 1680049994470
+url: http://localhost/MHOCLPRMIMQS/src/PHP/Patient Records/prenatal_api.php
+name: Delete Prenatal Record
 description: ""
 method: DELETE
 body:
   mimeType: application/json
   text: |-
-    {
-    	"opd_id": 2
-    }
+    	{
+    		"prenatal_id": 1
+    	}
 parameters: []
 headers:
   - name: Content-Type
     value: application/json
 authentication: {}
-metaSortKey: -1679262003979.125
+metaSortKey: -1679740844839.75
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true

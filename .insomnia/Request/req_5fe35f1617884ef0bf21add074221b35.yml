@@ -1,0 +1,36 @@
+_id: req_5fe35f1617884ef0bf21add074221b35
+type: Request
+parentId: fld_ec65d1beda3943e1affaecc2969b7adf
+modified: 1680054741253
+created: 1680049994461
+url: http://localhost/MHOCLPRMIMQS/src/PHP/Patient Records/prenatal_api.php
+name: Update Prenatal Record
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: >-
+    	{
+    		"prenatal_id": 1,
+    		"midwifes_notes": "Pregnancy is normal.",
+    		"prenatal_checkup": [
+    			{
+    				"prenatal_checkup_id": 1,
+    				"next_checkup": "2023-05-18",
+    				"comments": "Pregnancy is normal. Patients needs lot of bed rest and vitamins."
+    			}
+    		]
+    	}
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679824203180.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

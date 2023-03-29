@@ -1,0 +1,63 @@
+_id: req_76472785cbbe49d8aca5cd0527c5120c
+type: Request
+parentId: fld_ec65d1beda3943e1affaecc2969b7adf
+modified: 1680052092377
+created: 1680051307510
+url: http://localhost/MHOCLPRMIMQS/src/PHP/Patient Records/prenatal_api.php
+name: Add Prenatal Checkup Record
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    [
+    	{
+    		"prenatal_id": 2,
+    		"height": 175,
+    		"weight": 58,
+    		"temperature": 37,
+    		"blood_pressure": "120/60",
+    		"pulse_rate": 77,
+    		"oxygen_sat": 77,
+    		"checkup_date": "2023-03-29",
+    		"next_checkup": "2023-05-01",
+    		"comments": "Pregnancy is okay. Patient needs to drink some vitamins."
+    	},
+    	{
+    		"prenatal_id": 2,
+    		"height": 175,
+    		"weight": 58,
+    		"temperature": 37,
+    		"blood_pressure": "120/60",
+    		"pulse_rate": 77,
+    		"oxygen_sat": 77,
+    		"checkup_date": "2023-05-01",
+    		"next_checkup": "2023-07-08",
+    		"comments": "Pregnancy is okay."
+    	},
+    	{
+    		"prenatal_id": 2,
+    		"height": 175,
+    		"weight": 58,
+    		"temperature": 37,
+    		"blood_pressure": "120/60",
+    		"pulse_rate": 77,
+    		"oxygen_sat": 77,
+    		"checkup_date": "2023-07-08",
+    		"next_checkup": "2023-08-02",
+    		"comments": "Pregnancy is okay."
+    	}	
+    ]
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1679907561471.25
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
