@@ -1,7 +1,7 @@
 _id: req_c9ef460c1abe471a9c7d801ccf0d9500
 type: Request
 parentId: fld_ec65d1beda3943e1affaecc2969b7adf
-modified: 1680056462655
+modified: 1680185275504
 created: 1680049994470
 url: http://localhost/MHOCLPRMIMQS/src/PHP/Patient Records/prenatal_api.php
 name: Delete Prenatal Record
@@ -11,7 +11,7 @@ body:
   mimeType: application/json
   text: |-
     	{
-    		"prenatal_id": 1
+    		"prenatal_id": 2
     	}
 parameters: []
 headers:
