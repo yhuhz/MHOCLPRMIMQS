@@ -34,23 +34,21 @@ class API
         $filter = (array) json_decode($_GET['filter']);
 
         //Stock filter
-        $this->db->where('quantity', Array (($filter['age_from']*365), ($filter['age_to']*365)), 'BETWEEN');
+        // $this->db->where('quantity', $filter['in_stock'], 'BETWEEN');
 
         //Date Added filter
         if (isset($filter['date_added'])) {
           $this->db->where('date_added', $filter['date_added'], 'BETWEEN');
         }
 
+        //Manufacturing Date filter
+        if (isset($filter['mfg_date'])) {
+          $this->db->where('mfg_date', $filter['mfg_date'], 'BETWEEN');
+        }
 
-        //Sex filter
-        $this->db->where('sex', $filter['sex'], 'IN');
-
-        //Status filter
-        $this->db->where('status', $filter['status'], 'IN');
-
-        //Barangays filter
-        if ($filter['barangay'][0] !== 'all') {
-          $this->db->where('barangay', $filter['barangay'], 'IN');
+        //Expiry Date filter
+        if (isset($filter['exp_date'])) {
+          $this->db->where('exp_date', $filter['exp_date'], 'BETWEEN');
         }
       }
 
