@@ -1,3 +1,5 @@
+@import '../css/quasar.variables.scss';
+
 // Custom style for input field
 .mhc-input-field {
   width: 125px;
@@ -10,7 +12,7 @@
 
 /**** Style for Select ****/
 .q-select .q-field__native {
-  color: #525252;
+  color: $dark;
 }
 
 .p-name {
@@ -28,21 +30,21 @@
 }
 
 .mhc-table {
-  border: 2px solid #5f8d4e
+  border: 2px solid $primary;
 }
 // For THEAD
 .q-table__top,
   thead tr:first-child th {
     font-size: 1rem;
     font-weight: 600;
-    color: #525252;
+    color: $dark;
   }
   // FOR TBODY
     tbody tr td {
     text-align: left;
     font-weight: 500;
     font-size: 0.875rem;
-    color: #525252;
+    color: $dark;
   }
 
   tr:nth-child(even) {
@@ -57,7 +59,7 @@
 
   // Router Link Active
   .q-item.q-router-link--active{
-    background-color: #5f8d4e;
+    background-color: $primary;
   }
 
   .width-700 {
@@ -110,23 +112,23 @@
   }
 
   .dialog-card {
-    border: 2px solid #5f8d4e;
+    border: 2px solid $primary;
   }
 
   .mhc-select-200 {
     width: 12.5rem;
     .q-field__inner {
-      background-color: #C7E8AA;
+      background-color: $primary-2;
       border-radius: 5px;
     }
     .q-field__native {
-      color: #525252;
+      color: $dark;
     }
   }
 
   /*** Style for input icon ***/
   .q-input .q-field__inner .q-icon {
-    color: #5f8d4e;
+    color: $primary;
     font-size: 1.25rem;
   }
 
