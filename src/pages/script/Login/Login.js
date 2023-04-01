@@ -1,41 +1,57 @@
-import {useRouter} from "vue-router"
-import { ref } from "vue"
+import { useRouter } from "vue-router";
+import { ref } from "vue";
+import { LoginCredential, Login } from "src/composables/Login";
 
 export default {
   data() {
+    const router = useRouter();
 
-    const router = useRouter()
+    let loginDetails = ref({
+      username: "",
+      password: "",
+    });
 
-    let loginForm = ref({
-      userID: '',
-      password: '',
-    })
+    const loginForm = ref(null);
 
     const usersList = [
       {
-        userID: 'Admin',
-        password: 'admin123'
+        userID: "Admin",
+        password: "admin123",
       },
       {
-        userID: 'Staff',
-        password: 'staff123'
-      }
-    ]
+        userID: "Staff",
+        password: "staff123",
+      },
+    ];
 
     const loginFunction = () => {
-      const user = usersList.find((u) => u.userID.toLocaleLowerCase() === loginForm.value.userID.toLowerCase() && u.password.toLocaleLowerCase() === loginForm.value.password.toLowerCase())
-      if(user) {
-        router.push('dashboard')
-      }
-    }
+      // loginForm.value.validate().then((success) => {
+      Login(loginDetails.value).then((response) => {
+        if (response.status === "success") {
+          if (LoginCredential.value[0].status === 0) {
+            router.push({
+              name: "dashboard",
+              params: {
+                id: LoginCredential.value[0].user_id,
+              },
+            });
+          } else if (LoginCredential.value[0].status === 1) {
+            console.log("User account has been suspended");
+          } else if (LoginCredential.value[0].status === 2) {
+            console.log("User account has been deleted");
+          }
+        }
+      });
+      // });
+    };
 
-    let isShowPassword= ref(true)
+    let isShowPassword = ref(true);
 
     return {
+      loginDetails,
       loginForm,
       isShowPassword,
-      loginFunction
-    }
-
-  }
-}
+      loginFunction,
+    };
+  },
+};

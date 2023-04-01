@@ -1,4 +1,3 @@
-
 const routes = [
   {
     path: "/",
@@ -14,7 +13,7 @@ const routes = [
       //   component: () => import('../components/MainMenu.vue')
       // },
       {
-        path: "dashboard",
+        path: "dashboard/:id",
         name: "dashboard",
         component: () => import("pages/Dashboard/DashboardPage.vue"),
       },
@@ -81,9 +80,7 @@ const routes = [
         path: "household-records",
         name: "household-records",
         component: () =>
-          import(
-            "src/pages/Patients-Profile/Household/HouseholdRecords.vue"
-          ),
+          import("src/pages/Patients-Profile/Household/HouseholdRecords.vue"),
       },
 
       // Meds & supplies
@@ -110,4 +107,4 @@ const routes = [
   },
 ];
 
-export default routes
+export default routes;
