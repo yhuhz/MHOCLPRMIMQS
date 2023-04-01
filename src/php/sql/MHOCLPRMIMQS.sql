@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2023 at 04:22 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Apr 01, 2023 at 08:09 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,7 +40,7 @@ CREATE TABLE `tbl_dental` (
   `checkup_results` varchar(5000) NOT NULL,
   `next_checkup` date NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_dental`
@@ -62,7 +62,7 @@ CREATE TABLE `tbl_dental_chart` (
   `tooth_number` varchar(200) NOT NULL,
   `tooth_score` int(11) NOT NULL DEFAULT 0,
   `comments` varchar(5000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_dental_chart`
@@ -113,7 +113,7 @@ CREATE TABLE `tbl_department` (
   `dept_code` varchar(200) NOT NULL,
   `dept_name` varchar(200) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = suspended, 2 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_department`
@@ -138,7 +138,7 @@ CREATE TABLE `tbl_household` (
   `household_id` int(11) NOT NULL,
   `household_name` varchar(200) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_household`
@@ -171,14 +171,23 @@ INSERT INTO `tbl_household` (`household_id`, `household_name`, `status`) VALUES
 --
 
 CREATE TABLE `tbl_immunization` (
-  `immunization_id` varchar(200) NOT NULL,
+  `immunization_id` int(11) NOT NULL,
   `immunizer_id` int(11) NOT NULL,
   `patient_id` varchar(200) NOT NULL,
   `immunization_date` date NOT NULL,
   `next_immunization_date` date DEFAULT NULL,
+  `vaccine_used` varchar(5000) NOT NULL,
   `comments` varchar(5000) DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_immunization`
+--
+
+INSERT INTO `tbl_immunization` (`immunization_id`, `immunizer_id`, `patient_id`, `immunization_date`, `next_immunization_date`, `vaccine_used`, `comments`, `status`) VALUES
+(1, 71, '03232307', '2023-03-29', '2023-06-25', 'MMR Vaccine', 'No allergic reactions', 0),
+(2, 71, '03232306', '2023-03-29', '2023-05-16', 'MMR Vaccine', 'No allergic reactions', 0);
 
 -- --------------------------------------------------------
 
@@ -187,10 +196,10 @@ CREATE TABLE `tbl_immunization` (
 --
 
 CREATE TABLE `tbl_medicine_inventory` (
-  `medicine_id` varchar(200) NOT NULL,
+  `medicine_id` int(11) NOT NULL,
   `generic_name` varchar(500) NOT NULL,
   `brand_name` varchar(500) DEFAULT NULL,
-  `med_classification` int(11) NOT NULL,
+  `med_classification` varchar(200) NOT NULL,
   `dosage_strength` varchar(200) DEFAULT NULL COMMENT 'ex. 500mg / 2mg',
   `dosage_form` varchar(200) NOT NULL,
   `ptr_number` varchar(200) DEFAULT NULL,
@@ -202,7 +211,14 @@ CREATE TABLE `tbl_medicine_inventory` (
   `date_added` date NOT NULL,
   `added_by` int(11) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_medicine_inventory`
+--
+
+INSERT INTO `tbl_medicine_inventory` (`medicine_id`, `generic_name`, `brand_name`, `med_classification`, `dosage_strength`, `dosage_form`, `ptr_number`, `batch_lot_number`, `mfg_date`, `exp_date`, `quantity`, `procured_by`, `date_added`, `added_by`, `status`) VALUES
+(1, 'Paracetamol', 'Biogesic', 'Analgesic', '500mg/2mg', 'Tablet', '22-11-2101', '13-08-713', '2023-03-01', '2026-03-01', 500, 'DOH', '2023-03-29', 69, 0);
 
 -- --------------------------------------------------------
 
@@ -215,12 +231,12 @@ CREATE TABLE `tbl_medicine_release` (
   `patient_id` varchar(200) DEFAULT NULL,
   `doctor_id` int(11) DEFAULT NULL,
   `department` int(11) DEFAULT NULL,
-  `medicine_id` varchar(200) NOT NULL,
+  `medicine_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `release_date` date NOT NULL,
   `released_by` int(11) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -244,7 +260,7 @@ CREATE TABLE `tbl_opd` (
   `checkup_results` varchar(5000) DEFAULT NULL,
   `next_checkup` date DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_opd`
@@ -265,7 +281,7 @@ CREATE TABLE `tbl_opd_disease` (
   `opd_disease_id` int(11) NOT NULL,
   `opd_id` int(11) NOT NULL,
   `opd_disease` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_opd_disease`
@@ -285,7 +301,7 @@ CREATE TABLE `tbl_opd_lab_results` (
   `lab_result_id` int(11) NOT NULL,
   `opd_id` int(11) NOT NULL,
   `lab_result` varchar(5000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_opd_lab_results`
@@ -317,7 +333,7 @@ CREATE TABLE `tbl_patient_info` (
   `added_by` int(11) NOT NULL,
   `date_added` date NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deceased, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_patient_info`
@@ -332,11 +348,11 @@ INSERT INTO `tbl_patient_info` (`patient_id`, `household_id`, `last_name`, `firs
 ('03232303', 4, 'Abaranto', 'Elsie', 'Azuela', NULL, 2, '1995-06-09', 'Outside Camalig', 'Daraga, Albay', '09268151356', 69, '2023-03-23', 0),
 ('03232304', 5, 'Melgar', 'Layla', 'Poland', NULL, 2, '1999-10-03', 'Salugan', 'Salugan, Camalig, Albay', '09471924505', 69, '2023-03-23', 0),
 ('03232305', 5, 'Melgar', 'Roldan', 'Abrique', NULL, 1, '1995-09-10', 'Taloto', 'Taloto, Camalig, Albay', '09260051398', 69, '2023-03-23', 0),
-('03232306', 5, 'Melgar', 'Jennifer', 'Abisado', NULL, 2, '2000-12-30', 'Gotob', 'Gotob, Camalig, Albay', '09461805143', 69, '2023-03-23', 0),
-('03232307', 6, 'Bas', 'Ederson', 'Abuela', NULL, 1, '2004-08-03', 'Outside Camalig', 'Pawa, Albay', '09269952365', 69, '2023-03-23', 0),
+('03232306', 5, 'Melgar', 'Jennifer', 'Abisado', NULL, 2, '2022-12-30', 'Gotob', 'Gotob, Camalig, Albay', '09461805143', 69, '2023-03-23', 0),
+('03232307', 6, 'Bas', 'Ederson', 'Abuela', NULL, 1, '2022-08-03', 'Outside Camalig', 'Pawa, Albay', '09269952365', 69, '2023-03-23', 0),
 ('03232308', 6, 'Bas', 'Shenna Marie', 'Moya', NULL, 1, '1998-06-04', 'Miti', 'Miti, Camalig, Albay', '09269761328', 69, '2023-03-23', 0),
 ('03232309', 6, 'Bas', 'Regina', 'Abiera', NULL, 2, '1994-11-13', 'Bongabong', 'Bongabong, Camalig, Albay', '09267743557', 69, '2023-03-23', 0),
-('03232310', 7, 'Malaya', 'Mercy', 'Abad', NULL, 2, '2000-10-17', 'Outside Camalig', 'Maroroy, Albay', '09819858325', 69, '2023-03-23', 0),
+('03232310', 7, 'Malaya', 'Mercy', 'Abad', NULL, 2, '2023-01-04', 'Outside Camalig', 'Maroroy, Albay', '09819858325', 69, '2023-03-23', 0),
 ('03232311', 7, 'Malaya', 'Hannah Mae', 'Villa', NULL, 2, '2000-01-15', 'Binitayan', 'Binitayan, Camalig, Albay', '09260733629', 69, '2023-03-23', 0),
 ('03232312', 8, 'Arena', 'Marissa Joy', 'Nueva', NULL, 2, '1992-01-07', 'Binitayan', 'Binitayan, Camalig, Albay', '09269899328', 69, '2023-03-23', 0),
 ('03232313', 8, 'Arena', 'Maricel', 'Abes', NULL, 2, '1998-11-22', 'Binitayan', 'Binitayan, Camalig, Albay', '09818851324', 69, '2023-03-23', 0),
@@ -392,7 +408,7 @@ CREATE TABLE `tbl_prenatal` (
   `previous_premature` int(11) NOT NULL,
   `midwifes_notes` varchar(5000) DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_prenatal`
@@ -421,7 +437,7 @@ CREATE TABLE `tbl_prenatal_checkup` (
   `next_checkup` date DEFAULT NULL,
   `comments` varchar(5000) DEFAULT NULL,
   `status` int(3) NOT NULL COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_prenatal_checkup`
@@ -444,7 +460,7 @@ CREATE TABLE `tbl_pwd` (
   `patient_id` varchar(200) NOT NULL,
   `disablity` varchar(500) DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deceased, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -456,7 +472,7 @@ CREATE TABLE `tbl_queue` (
   `queue_number` varchar(200) NOT NULL,
   `patient_id` varchar(200) NOT NULL,
   `department` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -468,7 +484,7 @@ CREATE TABLE `tbl_senior_citizen` (
   `senior_citizen_id` varchar(200) NOT NULL,
   `patient_id` varchar(200) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deceased, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -485,7 +501,7 @@ CREATE TABLE `tbl_supplies_inventory` (
   `quantity` int(11) NOT NULL,
   `quantity_type` varchar(200) NOT NULL,
   `status` int(3) NOT NULL COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -499,7 +515,7 @@ CREATE TABLE `tbl_supply_release` (
   `user_id` int(11) NOT NULL,
   `quantity_released` int(11) NOT NULL,
   `status` int(3) NOT NULL COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -523,7 +539,7 @@ CREATE TABLE `tbl_users` (
   `permission_level` int(5) NOT NULL COMMENT '0 - no access, 1 - admin, 2 - doctors, 3 - front_desk, 4 - view',
   `date_added` date NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = suspended, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_users`
@@ -712,6 +728,18 @@ ALTER TABLE `tbl_department`
 --
 ALTER TABLE `tbl_household`
   MODIFY `household_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `tbl_immunization`
+--
+ALTER TABLE `tbl_immunization`
+  MODIFY `immunization_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbl_medicine_inventory`
+--
+ALTER TABLE `tbl_medicine_inventory`
+  MODIFY `medicine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_opd`
