@@ -1,0 +1,98 @@
+.pr-prenatal-view {
+  .card-box {
+    border: 2px solid #5f8d4e;
+    border-radius: 5px;
+    position: relative;
+  }
+
+  .create-btn {
+    height: 40px;
+    font-size: 12px;
+  }
+
+  .prenatal-number {
+    position: absolute;
+    right: 35%;
+    top: 10px;
+  }
+
+  .action-btn {
+    position: absolute;
+    right: 3%;
+    top: 20px;
+  }
+
+  .second-col,
+  .third-col,
+  .fourth-col {
+    margin-top: 70px;
+    margin-bottom: 20px;
+  }
+
+  .midwifes-notes {
+    border: 2px solid #5f8d4e;
+    border-radius: 5px;
+
+    .mn-heading {
+      font-size: 18px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+  }
+
+  .third-col {
+    border: 2px solid #5f8d4e;
+    border-radius: 5px;
+
+    .date-heading {
+      font-size: 18px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+  }
+
+  .new-checkup {
+    border: 2px solid #5f8d4e;
+    border-radius: 5px;
+    position: relative;
+
+    .nc-heading {
+      font-size: 18px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+
+    .new-checkup-field {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .new-checkup-btn {
+        border-radius: 20px;
+        margin-top: -50px;
+      }
+    }
+  }
+
+  .heading-number {
+    font-size: 34px;
+  }
+
+  .separator-1 {
+    margin-top: 100px;
+  }
+
+  .separator-2 {
+    margin-top: 25px;
+  }
+
+  .separator-3 {
+    margin-top: 18px;
+  }
+
+  .save-field {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+}
