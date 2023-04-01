@@ -12,11 +12,11 @@
 
     <!-- Patients Profile -->
     <q-expansion-item icon="groups" label="Patients Profile" class="text-white">
-      <q-list dense separator class="dropdown-list bg-grey">
+      <q-list dense separator class="dropdown-list bg-grey-8">
         <q-item
           clickable
           exact
-          class="list-text text-white"
+          class="list-text text-white q-ml-md"
           to="search-patients"
         >
           <q-item-section avatar>
@@ -27,7 +27,7 @@
 
         <q-item
           clickable
-          class="list-text text-white"
+          class="list-text text-white q-ml-md"
           to="add-new-patient-record"
         >
           <q-item-section avatar>
@@ -36,28 +36,32 @@
           <q-item-section>Add New Patient Record</q-item-section>
         </q-item>
 
-        <q-item clickable class="list-text text-white" to="household-records">
+        <q-item
+          clickable
+          class="list-text text-white q-ml-md"
+          to="household-records"
+        >
           <q-item-section avatar>
             <q-icon size="xs" name="eva-home-outline" />
           </q-item-section>
           <q-item-section>View Household</q-item-section>
         </q-item>
 
-        <q-item clickable class="list-text text-white">
+        <q-item clickable class="list-text text-white q-ml-md">
           <q-item-section avatar>
             <q-icon size="xs" name="fa fa-wheelchair" />
           </q-item-section>
           <q-item-section>PWDs</q-item-section>
         </q-item>
 
-        <q-item clickable class="list-text text-white">
+        <q-item clickable class="list-text text-white q-ml-md">
           <q-item-section avatar>
             <q-icon size="xs" name="fa fa-person-cane" />
           </q-item-section>
           <q-item-section>Senior Citizens</q-item-section>
         </q-item>
 
-        <q-item clickable class="list-text text-white">
+        <q-item clickable class="list-text text-white q-ml-md">
           <q-item-section avatar>
             <q-icon size="xs" name="fa fa-person-pregnant" />
           </q-item-section>
