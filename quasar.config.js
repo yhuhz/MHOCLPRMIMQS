@@ -10,7 +10,15 @@
 
 const ESLintPlugin = require("eslint-webpack-plugin");
 
+<<<<<<< HEAD
 const { configure } = require("quasar/wrappers");
+=======
+const ESLintPlugin = require('eslint-webpack-plugin');
+const { QInput } = require('quasar');
+
+
+const { configure } = require('quasar/wrappers');
+>>>>>>> 2e1f227031fc18fcdd3226dc55a8dde425040661
 
 module.exports = configure(function (ctx) {
   return {
@@ -31,9 +39,10 @@ module.exports = configure(function (ctx) {
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
       // 'ionicons-v4',
-      // 'mdi-v5',
-      // 'fontawesome-v6',
-      // 'eva-icons',
+      'mdi-v5',
+      'fontawesome-v6',
+      'eva-icons',
+      'bootstrap-icons',
       // 'themify',
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
@@ -66,11 +75,19 @@ module.exports = configure(function (ctx) {
       // https://v2.quasar.dev/quasar-cli-webpack/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
 
+<<<<<<< HEAD
       chainWebpack(chain) {
         chain
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);
       },
+=======
+      chainWebpack (chain) {
+        chain.plugin('eslint-webpack-plugin')
+          .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }])
+      }
+
+>>>>>>> 2e1f227031fc18fcdd3226dc55a8dde425040661
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
@@ -85,7 +102,6 @@ module.exports = configure(function (ctx) {
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-framework
     framework: {
       config: {},
-
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
 
@@ -117,11 +133,20 @@ module.exports = configure(function (ctx) {
       maxAge: 1000 * 60 * 60 * 24 * 30,
       // Tell browser when a file from the server should expire from cache (in ms)
 
+<<<<<<< HEAD
       chainWebpackWebserver(chain) {
         chain
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js"] }]);
       },
+=======
+
+      chainWebpackWebserver (chain) {
+        chain.plugin('eslint-webpack-plugin')
+          .use(ESLintPlugin, [{ extensions: [ 'js' ] }])
+      },
+
+>>>>>>> 2e1f227031fc18fcdd3226dc55a8dde425040661
 
       middlewares: [
         ctx.prod ? "compression" : "",
@@ -137,11 +162,19 @@ module.exports = configure(function (ctx) {
       // for the custom service worker ONLY (/src-pwa/custom-service-worker.[js|ts])
       // if using workbox in InjectManifest mode
 
+<<<<<<< HEAD
       chainWebpackCustomSW(chain) {
         chain
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js"] }]);
       },
+=======
+      chainWebpackCustomSW (chain) {
+        chain.plugin('eslint-webpack-plugin')
+          .use(ESLintPlugin, [{ extensions: [ 'js' ] }])
+      },
+
+>>>>>>> 2e1f227031fc18fcdd3226dc55a8dde425040661
 
       manifest: {
         name: `Municipal Health Office of Camalig LAN-Based Patient Record and Medicine Inventory Management with Queueing System`,
@@ -213,6 +246,7 @@ module.exports = configure(function (ctx) {
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
+<<<<<<< HEAD
 
       chainWebpackMain(chain) {
         chain
@@ -227,4 +261,21 @@ module.exports = configure(function (ctx) {
       },
     },
   };
+=======
+
+      chainWebpackMain (chain) {
+        chain.plugin('eslint-webpack-plugin')
+          .use(ESLintPlugin, [{ extensions: [ 'js' ] }])
+      },
+
+
+
+      chainWebpackPreload (chain) {
+        chain.plugin('eslint-webpack-plugin')
+          .use(ESLintPlugin, [{ extensions: [ 'js' ] }])
+      },
+
+    }
+  }
+>>>>>>> 2e1f227031fc18fcdd3226dc55a8dde425040661
 });
