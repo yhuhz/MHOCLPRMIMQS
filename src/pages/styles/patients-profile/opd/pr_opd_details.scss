@@ -1,0 +1,78 @@
+.pr-opd-details {
+  .card-box {
+    border: 2px solid #5F8D4E;
+    border-radius: 5px;
+    position: relative;
+  }
+
+  .opd-number {
+    position: absolute;
+    right: 35%;
+    top: 10px;
+  }
+
+  .action-btn {
+    position: absolute;
+    right: 3%;
+    top: 20px;
+  }
+
+  .second-col, .third-col, .fourth-col {
+    margin-top: 70px;
+    margin-bottom: 20px;
+  }
+
+  .create-btn {
+    height: 40px;
+    font-size: 12px;
+  }
+
+  .preliminary-checkup {
+    border: 2px solid #5F8D4E;
+    border-radius: 5px;
+
+    .pc-heading {
+      font-size: 18px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+  }
+
+  .findings {
+    border: 2px solid #5F8D4E;
+    border-radius: 5px;
+
+    .findings-heading {
+      font-size: 18px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+  }
+
+  .laboratory-results {
+    border: 2px solid #5F8D4E;
+    border-radius: 5px;
+
+    .lr-heading {
+      font-size: 18px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+  }
+
+  .doctors-notes {
+    border: 2px solid #5F8D4E;
+    border-radius: 5px;
+
+    .dn-heading {
+      font-size: 18px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+  }
+
+    .heading-number {
+      font-size: 34px;
+    }
+
+}
