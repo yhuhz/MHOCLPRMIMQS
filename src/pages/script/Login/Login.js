@@ -11,21 +11,7 @@ export default {
       password: "",
     });
 
-    const loginForm = ref(null);
-
-    const usersList = [
-      {
-        userID: "Admin",
-        password: "admin123",
-      },
-      {
-        userID: "Staff",
-        password: "staff123",
-      },
-    ];
-
     const loginFunction = () => {
-      // loginForm.value.validate().then((success) => {
       Login(loginDetails.value).then((response) => {
         if (response.status === "success") {
           if (LoginCredential.value[0].status === 0) {
@@ -42,14 +28,12 @@ export default {
           }
         }
       });
-      // });
     };
 
     let isShowPassword = ref(true);
 
     return {
       loginDetails,
-      loginForm,
       isShowPassword,
       loginFunction,
     };

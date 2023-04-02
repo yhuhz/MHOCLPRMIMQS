@@ -1,6 +1,7 @@
 const routes = [
   {
     path: "/",
+    name: "login",
     component: () => import("pages/LoginPage.vue"),
   },
   {
@@ -13,7 +14,7 @@ const routes = [
       //   component: () => import('../components/MainMenu.vue')
       // },
       {
-        path: "dashboard/:id",
+        path: ":id/dashboard",
         name: "dashboard",
         component: () => import("pages/Dashboard/DashboardPage.vue"),
       },

@@ -20,7 +20,9 @@ class API
 
     public function httpGet($payload)
     {
-        // $this->db->where('status', 0);
+        if (isset($_GET['user_id'])) {
+          $this->db->where('user_id', $_GET['user_id']);
+        }
         $users = $this->db->get('tbl_users');
 
         if ($users) {
