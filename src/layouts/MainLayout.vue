@@ -59,7 +59,7 @@
                     <div class="row">
                       <div class="col">
                         <q-input
-                          v-model="editUser_details.username"
+                          v-model="editUserDetails.username"
                           outlined
                           dense
                           class="q-mt-xs"
@@ -77,7 +77,7 @@
                           >Last Name <span class="text-negative">*</span></label
                         >
                         <q-input
-                          v-model="editUser_details.last_name"
+                          v-model="editUserDetails.last_name"
                           outlined
                           dense
                           class="q-mt-xs"
@@ -93,7 +93,7 @@
                           <span class="text-negative">*</span></label
                         >
                         <q-input
-                          v-model="editUser_details.first_name"
+                          v-model="editUserDetails.first_name"
                           outlined
                           dense
                           class="q-mt-xs"
@@ -109,7 +109,7 @@
                       <div class="col-5 q-mt-md">
                         <label>Middle Name</label>
                         <q-input
-                          v-model="editUser_details.middle_name"
+                          v-model="editUserDetails.middle_name"
                           outlined
                           dense
                           class="q-mt-xs"
@@ -118,7 +118,7 @@
                       <div class="col-2 q-mt-md q-mx-md">
                         <label>Suffix</label>
                         <q-input
-                          v-model="editUser_details.suffix"
+                          v-model="editUserDetails.suffix"
                           outlined
                           dense
                           class="q-mt-xs"
@@ -130,7 +130,7 @@
                           <span class="text-negative">*</span></label
                         >
                         <q-input
-                          v-model="editUser_details.birthdate"
+                          v-model="editUserDetails.birthdate"
                           outlined
                           dense
                           class="q-mt-xs"
@@ -145,7 +145,7 @@
                                 transition-show="scale"
                                 transition-hide="scale"
                               >
-                                <q-date v-model="editUser_details.birthdate">
+                                <q-date v-model="editUserDetails.birthdate">
                                   <div class="row justify-end items-center">
                                     <q-btn
                                       v-close-popup
@@ -170,7 +170,7 @@
                           <span class="text-negative">*</span></label
                         >
                         <q-input
-                          v-model="editUser_details.phone_number"
+                          v-model="editUserDetails.phone_number"
                           outlined
                           dense
                           class="q-mt-xs"
@@ -184,14 +184,14 @@
                         <label>Sex <span class="text-negative">*</span></label>
                         <div>
                           <q-radio
-                            v-model="editUser_details.sex"
+                            v-model="editUserDetails.sex"
                             checked-icon="task_alt"
                             unchecked-icon="panorama_fish_eye"
                             val="Male"
                             label="Male"
                           />
                           <q-radio
-                            v-model="editUser_details.sex"
+                            v-model="editUserDetails.sex"
                             checked-icon="task_alt"
                             unchecked-icon="panorama_fish_eye"
                             val="Female"
@@ -203,7 +203,6 @@
 
                     <div class="row q-my-lg justify-center items-center">
                       <q-btn
-                        v-close-popup
                         type="submit"
                         color="primary"
                         label="Submit"
@@ -224,11 +223,7 @@
                 </q-card>
               </q-dialog>
 
-              <q-item
-                clickable
-                class="drop-list"
-                @click="changePassword = true"
-              >
+              <q-item clickable class="drop-list" @click="changePass = true">
                 <q-item-section> Change Password </q-item-section>
                 <q-item-section avatar>
                   <q-icon name="key" />
@@ -236,98 +231,110 @@
               </q-item>
 
               <!-- Change Password Dialog Box -->
-              <q-dialog persistent v-model="changePassword">
+              <q-dialog persistent v-model="changePass">
                 <q-card class="q-px-md q-py-lg" style="min-width: 350px">
-                  <div class="flex justify-center items-center">
-                    <p class="text-primary q-mr-md">
-                      <q-icon name="key" size="md" />
-                    </p>
-                    <p
-                      class="text-primary text-weight-bold"
-                      style="font-size: 1rem"
-                    >
-                      Change Password
-                    </p>
-                  </div>
-
-                  <div class="row">
-                    <div class="col">
-                      <label>New Password</label>
-                      <q-input
-                        v-model="newPassword"
-                        dense
-                        outlined
-                        :type="showNewPassword ? 'password' : 'text'"
-                        class="q-mt-sm"
+                  <q-form @submit="changePassword">
+                    <div class="flex justify-center items-center">
+                      <p class="text-primary q-mr-md">
+                        <q-icon name="key" size="md" />
+                      </p>
+                      <p
+                        class="text-primary text-weight-bold"
+                        style="font-size: 1rem"
                       >
-                        <template v-slot:append>
-                          <q-icon
-                            v-if="newPassword"
-                            :name="
-                              showNewPassword ? 'visibility_off' : 'visibility'
-                            "
-                            size="xs"
-                            class="cursor-pointer"
-                            @click="showNewPassword = !showNewPassword"
-                          />
-                        </template>
-                      </q-input>
+                        Change Password
+                      </p>
                     </div>
-                  </div>
 
-                  <div class="row q-mt-md">
-                    <div class="col">
-                      <label>Confirm Password</label>
-                      <q-input
-                        v-model="confirmPassword"
+                    <div class="row">
+                      <div class="col">
+                        <label>New Password</label>
+                        <q-input
+                          v-model="newPassword"
+                          dense
+                          outlined
+                          :type="showNewPassword ? 'password' : 'text'"
+                          class="q-mt-sm"
+                          :rules="[
+                            (val) =>
+                              (val && val.length > 6) ||
+                              'Password must contain at least 7 characters',
+                          ]"
+                        >
+                          <template v-slot:append>
+                            <q-icon
+                              v-if="newPassword"
+                              :name="
+                                showNewPassword
+                                  ? 'visibility_off'
+                                  : 'visibility'
+                              "
+                              size="xs"
+                              class="cursor-pointer"
+                              @click="showNewPassword = !showNewPassword"
+                            />
+                          </template>
+                        </q-input>
+                      </div>
+                    </div>
+
+                    <div class="row q-mt-md">
+                      <div class="col">
+                        <label>Confirm Password</label>
+                        <q-input
+                          v-model="confirmPassword"
+                          dense
+                          outlined
+                          :type="showConfirmPassword ? 'password' : 'text'"
+                          class="q-mt-sm"
+                          :rules="[
+                            (val) =>
+                              val === newPassword || 'Password does not match',
+                          ]"
+                        >
+                          <template v-slot:append>
+                            <q-icon
+                              v-if="confirmPassword"
+                              :name="
+                                showConfirmPassword
+                                  ? 'visibility_off'
+                                  : 'visibility'
+                              "
+                              size="xs"
+                              class="cursor-pointer"
+                              @click="
+                                showConfirmPassword = !showConfirmPassword
+                              "
+                            />
+                          </template>
+                        </q-input>
+                      </div>
+                    </div>
+
+                    <div class="row justify-between items-center q-mt-lg">
+                      <q-btn
+                        type="submit"
                         dense
-                        outlined
-                        :type="showConfirmPassword ? 'password' : 'text'"
-                        class="q-mt-sm"
-                      >
-                        <template v-slot:append>
-                          <q-icon
-                            v-if="confirmPassword"
-                            :name="
-                              showConfirmPassword
-                                ? 'visibility_off'
-                                : 'visibility'
-                            "
-                            size="xs"
-                            class="cursor-pointer"
-                            @click="showConfirmPassword = !showConfirmPassword"
-                          />
-                        </template>
-                      </q-input>
+                        color="primary"
+                        label="Submit"
+                        no-caps
+                        style="width: 150px"
+                      />
+                      <q-btn
+                        v-close-popup
+                        dense
+                        outline
+                        color="primary"
+                        label="Cancel"
+                        no-caps
+                        style="width: 150px"
+                      />
                     </div>
-                  </div>
-
-                  <div class="row justify-between items-center q-mt-lg">
-                    <q-btn
-                      dense
-                      color="primary"
-                      label="Submit"
-                      no-caps
-                      style="width: 150px"
-                    />
-                    <q-btn
-                      v-close-popup
-                      dense
-                      outline
-                      color="primary"
-                      label="Cancel"
-                      no-caps
-                      style="width: 150px"
-                    />
-                  </div>
+                  </q-form>
                 </q-card>
               </q-dialog>
 
-              <q-item
-                clickable
-                class="drop-list"
-                @click="$router.push({ name: 'login' })"
-              >
+              <q-item clickable class="drop-list" @click="logout">
                 <q-item-section> Logout </q-item-section>
                 <q-item-section avatar>
                   <q-icon name="logout" />
@@ -375,14 +382,16 @@
 
 <script>
 import { defineComponent, ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import MainMenu from "components/MainMenu.vue";
 import {
   LoginCredential,
   FindUser,
   UpdateUserAccount,
-} from "src/composables/Login";
+  ChangePassword,
+} from "src/composables/UserAccount.js";
 import _ from "lodash";
+import { useQuasar, SessionStorage } from "quasar";
 
 export default defineComponent({
   name: "MainLayout",
@@ -393,52 +402,109 @@ export default defineComponent({
 
   setup() {
     const route = useRoute();
-    FindUser(route.params.id);
+    const router = useRouter();
+    const $q = useQuasar();
+
+    //SESSION KEYS
+    let keySession = SessionStorage.getItem("cred");
+
+    if (keySession == NaN || keySession == null) {
+      router.push({ name: "login" });
+    }
+
+    //RETRIEVE USER ACCOUNT FROM DB
+    FindUser(keySession.user_id);
 
     const leftDrawerOpen = ref(false);
     let editUser = ref(false);
-    let changePassword = ref(false);
-    let newPassword = ref("");
+    let changePass = ref(false);
+    let newPassword = ref(null);
     let showNewPassword = ref(true);
-    let confirmPassword = ref("");
+    let confirmPassword = ref(null);
     let showConfirmPassword = ref(true);
 
-    let userSex = ["Male", "Female"];
-    let editUser_details = ref({});
+    let sexArray = ["Male", "Female"];
+    let editUserDetails = ref({});
 
     let name = ref(null);
     watch(
-      () => _.cloneDeep(LoginCredential.value),
+      () => _.cloneDeep(LoginCredential.value[0]),
       () => {
+        let userInfo = ref(LoginCredential.value[0]);
         name.value = [
-          LoginCredential.value[0].first_name,
-          LoginCredential.value[0].middle_name,
-          LoginCredential.value[0].last_name,
-          LoginCredential.value[0].suffix,
+          userInfo.value.first_name,
+          userInfo.value.middle_name,
+          userInfo.value.last_name,
+          userInfo.value.suffix,
         ]
           .filter(Boolean)
           .join(" ");
 
-        editUser_details.value = {
-          user_id: Number(route.params.id),
-          username: LoginCredential.value[0].username,
-          last_name: LoginCredential.value[0].last_name,
-          first_name: LoginCredential.value[0].first_name,
-          middle_name: LoginCredential.value[0].middle_name,
-          suffix: LoginCredential.value[0].suffix,
-          birthdate: LoginCredential.value[0].birthdate,
-          phone_number: LoginCredential.value[0].phone_number,
-          sex: userSex[LoginCredential.value[0].sex],
+        editUserDetails.value = {
+          user_id: keySession.user_id,
+          username: userInfo.value.username,
+          last_name: userInfo.value.last_name,
+          first_name: userInfo.value.first_name,
+          middle_name: userInfo.value.middle_name,
+          suffix: userInfo.value.suffix,
+          birthdate: userInfo.value.birthdate,
+          phone_number: userInfo.value.phone_number,
+          sex: sexArray[userInfo.value.sex],
         };
       }
     );
 
     const updateUser = () => {
-      UpdateUserAccount(editUser_details.value).then((response) => {});
+      UpdateUserAccount(editUserDetails.value).then((response) => {
+        if (response.status === "success") {
+          $q.notify({
+            type: "positive",
+            classes: "text-white",
+            message: "Account edited successfully",
+          });
+
+          editUser.value = false;
+        } else {
+          $q.notify({
+            type: "negative",
+            classes: "text-white",
+            message: "Failed to edit account",
+          });
+        }
+      });
     };
 
     const onReset = () => {
-      FindUser(route.params.id);
+      FindUser(keySession.user_id);
+    };
+
+    const changePassword = () => {
+      let payload = {
+        user_id: keySession.user_id,
+        new_password: newPassword.value,
+      };
+      console.log(payload);
+      ChangePassword(payload).then((response) => {
+        if (response.status === "success") {
+          $q.notify({
+            type: "positive",
+            classes: "text-white",
+            message: "Password changed successfully",
+          });
+          changePass.value = false;
+        } else {
+          $q.notify({
+            type: "negative",
+            classes: "text-white",
+            message: "Failed to change password",
+          });
+        }
+      });
+    };
+
+    const logout = () => {
+      SessionStorage.clear("cred");
+      router.push({ name: "login" });
     };
 
     return {
@@ -449,6 +515,7 @@ export default defineComponent({
       },
       miniState: ref(false),
       editUser,
+      changePass,
       changePassword,
       newPassword,
       showNewPassword,
@@ -456,9 +523,10 @@ export default defineComponent({
       showConfirmPassword,
       LoginCredential,
       name,
-      editUser_details,
+      editUserDetails,
       updateUser,
       onReset,
+      logout,
     };
   },
 });

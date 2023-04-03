@@ -14,7 +14,7 @@ const routes = [
       //   component: () => import('../components/MainMenu.vue')
       // },
       {
-        path: ":id/dashboard",
+        path: "dashboard",
         name: "dashboard",
         component: () => import("pages/Dashboard/DashboardPage.vue"),
       },

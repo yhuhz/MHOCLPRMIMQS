@@ -1,48 +1,36 @@
-import { ref } from 'vue'
+import { ref } from "vue";
+import { DashboardData, GetDashboardData } from "src/composables/Dashboard";
+import { useQuasar, SessionStorage } from "quasar";
 
 export default {
   setup() {
+    //Session Storage
+    let keySession = SessionStorage.getItem("cred");
 
-    let selected = ref('Today')
-    let options = ref(['Today', 'This Week', 'This Month', 'This Year'])
+    let selected = ref("This Week");
+    let options = ["This Week", "This Month", "This Year"];
 
-    // let cardInfo = ref([
-    //   {
-    //     name: "New Patients",
-    //     cardNumber: "67",
-    //     cardColor: "#F1D356",
-    //     cardIcon: "group",
-    //     cardIconColor: "#DEBB2A",
-    //   },
-    //   {
-    //     name: "Medicines",
-    //     cardNumber: "496",
-    //     cardColor: "#4D96FF",
-    //     cardIcon: "mdi-pill",
-    //     cardIconColor: "#2977E8",
-    //   },
-    //   {
-    //     name: "Supplies",
-    //     cardNumber: "496",
-    //     cardColor: "#6BCB77",
-    //     cardIcon: "mdi-needle",
-    //     cardIconColor: "#55A15E",
-    //   },
-    //   {
-    //     name: "Disease",
-    //     cardNumber: "0",
-    //     cardColor: "#FF6B6B",
-    //     cardIcon: "monitor_heart",
-    //     cardIconColor: "#D75555",
-    //   },
-    // ]);
+    let payload = {
+      filter: selected.value,
+      department: keySession.department,
+    };
 
-    // let cardIconColor = ref[("#DEBB2A", "#2977E8", "#55A15E", "#D75555")];
+    GetDashboardData(payload);
+
+    const setDashboard = () => {
+      let payload = {
+        filter: selected.value,
+        department: keySession.department,
+      };
+
+      GetDashboardData(payload);
+    };
 
     return {
-      options,
       selected,
-      // cardInfo
-    }
-  }
-}
+      options,
+      DashboardData,
+      setDashboard,
+    };
+  },
+};

@@ -152,16 +152,16 @@ class API
                       ));
           }
 
-        //SET PASSWORD
-        } else if (isset($payload['password'])) {
+        //CHANGE PASSWORD - CUSTOM
+        } else if (isset($payload['new_password'])) {
 
-          $password = array('password' => password_hash($payload['password'], PASSWORD_DEFAULT));
+          $password = array('password' => password_hash($payload['new_password'], PASSWORD_DEFAULT));
           $this->db->where('user_id', $user_id);
           $set_password = $this->db->update('tbl_users', $password);
 
           if ($set_password) {
             echo json_encode(array('status' => 'success',
-                                'message' => 'Password has been changed to ' . $payload['password'],
+                                'message' => 'Password has been changed to ' . $payload['new_password'],
                                 'method' => 'PUT'
                               ));
           } else {

@@ -70,7 +70,20 @@ let UpdateUserAccount = (payload) => {
   });
 };
 
+let ChangePassword = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(pathlink, payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 /**
  * Export LoginList as readonly (real time copy of Login)
  */
-export { Login, LoginCredential, FindUser, UpdateUserAccount };
+export { Login, LoginCredential, FindUser, UpdateUserAccount, ChangePassword };
