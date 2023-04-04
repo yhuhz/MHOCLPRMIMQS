@@ -57,7 +57,14 @@ import { DashboardData } from 'src/composables/Dashboard';
                 class="q-mb-none text-weight-bold text-white"
                 style="font-size: 24px"
               >
-                10, 999
+                {{
+                  Number(DashboardData.medicine_count) -
+                    Number(DashboardData.medicine_release_count) ===
+                  NaN
+                    ? 0
+                    : Number(DashboardData.medicine_count) -
+                      Number(DashboardData.medicine_release_count)
+                }}
               </p>
               <p class="text-weight-bold text-white" style="font-size: 16px">
                 Medicines
@@ -86,7 +93,14 @@ import { DashboardData } from 'src/composables/Dashboard';
                 class="q-mb-none text-weight-bold text-white"
                 style="font-size: 24px"
               >
-                11, 999
+                {{
+                  Number(DashboardData.supply_count) -
+                    Number(DashboardData.supply_release_count) ===
+                  NaN
+                    ? 0
+                    : Number(DashboardData.supply_count) -
+                      Number(DashboardData.supply_release_count)
+                }}
               </p>
               <p class="text-weight-bold text-white" style="font-size: 16px">
                 Supplies
@@ -115,7 +129,7 @@ import { DashboardData } from 'src/composables/Dashboard';
                 class="q-mb-none text-weight-bold text-white"
                 style="font-size: 24px"
               >
-                0
+                {{ DashboardData.disease_count }}
               </p>
               <p class="text-weight-bold text-white" style="font-size: 16px">
                 Disease

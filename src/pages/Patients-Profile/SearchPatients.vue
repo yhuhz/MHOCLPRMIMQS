@@ -16,7 +16,12 @@
     <div class="q-px-md">
       <div class="flex justify-between items-center">
         <div class="flex">
-          <q-input outlined dense :input-style="{ color: '#525252' }">
+          <q-input
+            v-model="searchString"
+            outlined
+            dense
+            :input-style="{ color: '#525252' }"
+          >
             <template v-slot:prepend>
               <q-icon name="mdi-account-search-outline" />
             </template>
@@ -51,6 +56,7 @@
                     <label class="text-primary text-weight-bold">Age</label>
                     <div class="flex justify-between q-mt-sm">
                       <q-input
+                        v-model="age[0]"
                         dense
                         outlined
                         hint="From"
@@ -60,7 +66,13 @@
 
                       <div class="line"></div>
 
-                      <q-input dense outlined hint="To" style="width: 60px" />
+                      <q-input
+                        v-model="age[1]"
+                        dense
+                        outlined
+                        hint="To"
+                        style="width: 60px"
+                      />
                     </div>
                   </div>
 
@@ -70,7 +82,7 @@
                     <div v-for="(gender, index) in genderList" :key="index">
                       <q-checkbox
                         v-model="gender_array_model"
-                        :val="genderList[index]"
+                        :val="index"
                         :label="gender"
                         class="text-dark"
                       />
@@ -79,11 +91,11 @@
 
                   <!-- Status -->
                   <div>
-                    <label class="text-primary text-weight-bold">Status</label>
+                    <label class="text-primary text-weight-bold">Status </label>
                     <div v-for="(status, index) in statusList" :key="index">
                       <q-checkbox
                         v-model="status_array_model"
-                        :val="statusList[index]"
+                        :val="index"
                         :label="status"
                         class="text-dark"
                       />
@@ -98,7 +110,13 @@
                   >
                   <div class="flex q-mt-sm">
                     <!-- From -->
-                    <q-input dense outlined hint="From" class="width-150">
+                    <q-input
+                      v-model="dateAdded[0]"
+                      dense
+                      outlined
+                      hint="From"
+                      class="width-150"
+                    >
                       <template v-slot:append>
                         <q-icon
                           name="eva-calendar-outline"
@@ -109,7 +127,7 @@
                             transition-show="scale"
                             transition-hide="scale"
                           >
-                            <q-date />
+                            <q-date v-model="dateAdded[0]" />
                           </q-popup-proxy>
                         </q-icon>
                       </template>
@@ -118,7 +136,13 @@
                     <div class="line"></div>
 
                     <!-- To -->
-                    <q-input dense outlined hint="To" class="width-150">
+                    <q-input
+                      v-model="dateAdded[1]"
+                      dense
+                      outlined
+                      hint="To"
+                      class="width-150"
+                    >
                       <template v-slot:append>
                         <q-icon
                           name="eva-calendar-outline"
@@ -129,7 +153,7 @@
                             transition-show="scale"
                             transition-hide="scale"
                           >
-                            <q-date />
+                            <q-date v-model="dateAdded[1]" />
                           </q-popup-proxy>
                         </q-icon>
                       </template>
@@ -140,14 +164,23 @@
                 <!-- Barangays -->
                 <div class="q-mt-xl">
                   <label class="text-primary text-weight-bold">Barangay</label>
-                  <div class="brgy q-mt-sm">
-                    <div v-for="(brgy, index) in barangayList" :key="index">
-                      <q-checkbox
-                        v-model="brgy_array_model"
-                        :val="barangayList[index]"
-                        :label="brgy"
-                        class="text-dark"
-                      />
+                  <div>
+                    <q-checkbox
+                      v-model="select_all_brgy"
+                      label="Select All"
+                      class="text-dark"
+                      @update:model-value="select_all_brgy_change()"
+                    />
+                    <div class="brgy q-mt-sm">
+                      <div v-for="(brgy, index) in barangayList" :key="index">
+                        <q-checkbox
+                          v-model="brgy_array_model"
+                          :val="barangayList[index]"
+                          :label="brgy"
+                          class="text-dark"
+                          :disable="brgy_checkbox_disable"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -164,11 +197,18 @@
             no-caps
             icon-right="eva-search-outline"
             class="button-120"
+            @click="searchPatients"
           />
         </div>
 
         <!-- Create New Patient Profile -->
-        <div class="flex justify-end">
+        <div
+          class="flex justify-end"
+          v-if="
+            (keySession.department === 6 || keySession.department === 5) &&
+            keySession.permission_level != 3
+          "
+        >
           <q-btn
             @click="$router.push('add-new-patient-record')"
             outline
@@ -183,16 +223,18 @@
       <!-- Table -->
       <div class="q-my-xl table">
         <q-table
+          dense
           :columns="columns"
-          :rows="rows"
+          :rows="PatientsList"
           :pagination="{ rowsPerPage: 10 }"
           :rows-per-page-options="[5, 10, 15, 20, 0]"
           flat
           class="mhc-table"
+          :loading="loading"
         >
           <!-- Table Row Slots -->
-          <template #body-cell-action>
-            <q-td>
+          <template v-slot:body-cell-action="props">
+            <q-td :props="props">
               <q-btn
                 dense
                 color="primary"
@@ -209,7 +251,16 @@
                 >
                   <q-list separator dense>
                     <!-- View -->
-                    <q-item clickable class="drop-list">
+                    <q-item
+                      clickable
+                      class="drop-list"
+                      @click="
+                        $router.push({
+                          name: 'patient-details',
+                          params: { id: props.row.patient_id },
+                        })
+                      "
+                    >
                       <q-item-section>View Details</q-item-section>
                       <q-item-section avatar>
                         <q-icon size="xs" name="eva-eye-outline" />
@@ -237,6 +288,12 @@
             </q-td>
           </template>
 
+          <template v-slot:body-cell-sex="props">
+            <q-td :props="props">
+              {{ sex[props.row.sex] }}
+            </q-td>
+          </template>
+
           <!-- Table Header Slots -->
           <template #header-cell-action="props">
             <q-th :props="props">
@@ -248,6 +305,7 @@
                 color="primary"
                 unelevated
                 class="button-100 download-btn"
+                @click="exportTable()"
               />
             </q-th>
           </template>

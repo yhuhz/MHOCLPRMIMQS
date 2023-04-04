@@ -1,20 +1,30 @@
-import { ref } from "vue";
-import MHCDialog from '../../../components/MHCDialog.vue'
-import DeletePatientConfirmation from '../../Components/DeletePatientConfirmation'
+import { ref, watch } from "vue";
+import MHCDialog from "../../../components/MHCDialog.vue";
+import DeletePatientConfirmation from "../../Components/DeletePatientConfirmation";
 import { ToggleDialogState } from "../../../composables/Triggers";
+import { GetPatients, PatientsList } from "src/composables/Patients";
+import _ from "lodash";
+import { useQuasar, SessionStorage } from "quasar";
+import exportFile from "quasar/src/utils/export-file.js";
 
 export default {
   components: { MHCDialog, DeletePatientConfirmation },
   setup() {
-    let selectedSearchBy = ref(null);
-    let searchBy = ref(['Name', "Patient ID", "Household ID", "Phone Number"]);
+    //SESSION KEYS
+    let keySession = SessionStorage.getItem("cred");
+    if (keySession == NaN || keySession == null) {
+      router.push({ name: "login" });
+    }
+
+    let searchString = ref(null);
+    let selectedSearchBy = ref("Name");
+    let searchBy = ref(["Name", "Patient ID", "Household ID", "Phone Number"]);
 
     let showFilterModal = ref(false);
 
-    let genderList = ref(["Male", "Female"])
-    let statusList = ref(["Active", "Deceased", "Deleted"])
+    let genderList = ref(["Male", "Female"]);
+    let statusList = ref(["Active", "Deceased", "Deleted"]);
     let barangayList = [
-      "All",
       "Outside Camalig",
       "Anoling",
       "Baligang",
@@ -68,23 +78,71 @@ export default {
       "Tumpa",
     ];
 
-    let dateAdded = ref(
-      {
-        from: "",
-        to: ""
-      }
-    );
+    let age = ref([]);
 
-    let gender_array_model = ref(["Male"])
-    let status_array_model = ref(["Active"])
-    let brgy_array_model = ref(["All"]);
+    let dateAdded = ref([]);
+
+    let gender_array_model = ref([0, 1]);
+    let status_array_model = ref([0]);
+    let brgy_array_model = ref([]);
+
+    let select_all_brgy = ref(true);
+    let brgy_checkbox_disable = ref(false);
+
+    let sex = ["Male", "Female"];
+
+    if (select_all_brgy.value === true) {
+      brgy_array_model.value = barangayList;
+      brgy_checkbox_disable.value = true;
+    } else {
+      brgy_array_model.value = [];
+      brgy_checkbox_disable.value = false;
+    }
+
+    const select_all_brgy_change = () => {
+      if (select_all_brgy.value === true) {
+        brgy_array_model.value = barangayList;
+        brgy_checkbox_disable.value = true;
+      } else {
+        brgy_array_model.value = [];
+        brgy_checkbox_disable.value = false;
+      }
+    };
+
+    let loading = ref(false);
+
+    const searchPatients = () => {
+      let payload = {
+        search_by: {
+          search_category: selectedSearchBy.value,
+          search_string:
+            searchString.value === null
+              ? ""
+              : searchString.value.replace(/\s+/g, ""),
+        },
+
+        filter: {
+          age: age.value,
+          sex: gender_array_model.value,
+          status: status_array_model.value,
+          date_added: dateAdded.value,
+          barangay: brgy_array_model.value,
+        },
+      };
+
+      // console.log(payload);
+      loading.value = true;
+      GetPatients(payload).then((response) => {
+        loading.value = false;
+      });
+    };
 
     const columns = [
       {
         name: "patientID",
         align: "left",
         label: "Patient ID",
-        field: "patientID",
+        field: "patient_id",
         sortable: true,
       },
       {
@@ -98,7 +156,7 @@ export default {
         name: "household",
         align: "left",
         label: "Household",
-        field: "household",
+        field: "household_name",
         sortable: true,
       },
       {
@@ -119,7 +177,7 @@ export default {
         name: "birth date",
         align: "left",
         label: "Birth date",
-        field: "birthDate",
+        field: "birthdate",
         sortable: true,
       },
       {
@@ -133,7 +191,7 @@ export default {
         name: "phone number",
         align: "left",
         label: "Phone Number",
-        field: "phoneNumber",
+        field: "phone_number",
         sortable: true,
       },
       {
@@ -145,32 +203,57 @@ export default {
       },
     ];
 
-    const rows = [
-      {
-        patientID: "12A",
-        name: "John Doe",
-        household: "Doe",
-        sex: "M",
-        birthDate: "02/31/2000",
-        age: 23,
-        barangay: "Baligang",
-        phoneNumber: "+639123456789"
-      },
-      {
-        patientID: "12B",
-        name: "Jane Doe",
-        household: "Doe",
-        sex: "F",
-        birthDate: "02/30/2000",
-        age: 23,
-        barangay: "Baligang",
-        phoneNumber: "+639987654321"
-      },
-    ];
+    const wrapCsvValue = (val, formatFn, row) => {
+      let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
+
+      formatted =
+        formatted === void 0 || formatted === null ? "" : String(formatted);
+
+      formatted = formatted.split('"').join('""');
+      /**
+       * Excel accepts \n and \r in strings, but some other CSV parsers do not
+       * Uncomment the next two lines to escape new lines
+       */
+      // .split('\n').join('\\n')
+      // .split('\r').join('\\r')
+
+      return `"${formatted}"`;
+    };
+
+    const exportTable = () => {
+      // naive encoding to csv format
+      const content = [columns.map((col) => wrapCsvValue(col.label))]
+        .concat(
+          PatientsList.value.map((row) =>
+            columns
+              .map((col) =>
+                wrapCsvValue(
+                  typeof col.field === "function"
+                    ? col.field(row)
+                    : row[col.field === void 0 ? col.name : col.field],
+                  col.format,
+                  row
+                )
+              )
+              .join(",")
+          )
+        )
+        .join("\r\n");
+
+      const status = exportFile("List of Patients.csv", content, "text/csv");
+
+      if (status !== true) {
+        $q.notify({
+          message: "Browser denied file download...",
+          color: "negative",
+          icon: "warning",
+        });
+      }
+    };
 
     const openDialog = () => {
-      ToggleDialogState()
-    }
+      ToggleDialogState();
+    };
 
     return {
       searchBy,
@@ -184,8 +267,18 @@ export default {
       gender_array_model,
       dateAdded,
       columns,
-      rows,
-      openDialog
+      openDialog,
+      select_all_brgy,
+      brgy_checkbox_disable,
+      select_all_brgy_change,
+      age,
+      searchPatients,
+      searchString,
+      PatientsList,
+      keySession,
+      loading,
+      exportTable,
+      sex,
     };
   },
 };

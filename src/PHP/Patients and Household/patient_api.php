@@ -21,60 +21,110 @@ class API
     public function httpGet()
     {
 
-      //check if there are parameters
-      if (isset($_GET['search_by'])) {
-        $search_by = (array) json_decode($_GET['search_by']);
+      $payload = (array) json_decode($_GET['payload']);
 
-         //SEARCH BY NAME
-         if (array_keys($search_by)[0] === 'name') {
+      if (isset($payload['record_type'])) {
 
-          $this->db->where('concat_ws(first_name, middle_name, last_name, suffix)', '%'.$search_by[array_keys($search_by)[0]].'%', 'LIKE');
+        $this->db->where('patient_id', $payload['patient_id']);
 
-        //SEARCH BY PHONE NUMBER
-        } else if (array_keys($search_by)[0] === 'phone_number') {
+        if ($payload['record_type'] === "OPD") {
+          $record = $this->db->get('tbl_opd', null, 'opd_id as record_id, checkup_date as date');
+        } else if ($payload['record_type'] === "Dental") {
+          $record = $this->db->get('tbl_dental', null, 'dental_id as record_id, checkup_date as date');
+        } else if ($payload['record_type'] === "Prenatal") {
+          $record = $this->db->get('tbl_prenatal', null, 'prenatal_id as record_id, date_added as date');
+        } else if ($payload['record_type'] === "Immunization") {
+          $record = $this->db->get('tbl_immunization', null, 'immunization_id as record_id, immunization_date as date');
+        }
 
-          $this->db->where(array_keys($search_by)[0], '%'.$search_by[array_keys($search_by)[0]].'%', 'LIKE');
+        if ($record != []) {
+          echo json_encode(array('status' => 'success',
+                                    'data' => $record,
+                                    'method' => 'GET'
+                                  ));
+        }
+      } else if (isset($payload['patient_id'])) {
+        $this->db->join('tbl_pwd pw', 'pw.patient_id=p.patient_id', 'LEFT');
+        $this->db->join('tbl_senior_citizen sc', 'sc.patient_id=p.patient_id', 'LEFT');
+        $this->db->where('p.patient_id',$payload['patient_id']);
+        $patient = $this->db->get('tbl_patient_info p', null, 'p.patient_id, first_name, middle_name, last_name, suffix, household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, barangay, address, pw.pwd_id, pw.disability, sc.senior_citizen_id');
 
-        } else {
+        if ($patient != []) {
+          echo json_encode(array('status' => 'success',
+                                    'data' => $patient,
+                                    'method' => 'GET'
+                                  ));
+        }
+      } else {
+        //check if there are parameters
+        if (isset($payload['search_by'])) {
+          $search_by = (array) $payload['search_by'];
 
-          $this->db->where(array_keys($search_by)[0], $search_by[array_keys($search_by)[0]]);
+          if ($search_by['search_string'] != null) {
 
+            //SEARCH BY NAME
+            if ($search_by['search_category'] === 'Name') {
+
+              // echo $search_by['search_string']; return;
+              $this->db->where("CONCAT_WS(' ', REPLACE(first_name, ' ', ''), REPLACE(middle_name, ' ', ''), REPLACE(last_name, ' ', ''), REPLACE(suffix, ' ', '')) LIKE '%" . $search_by['search_string'] . "%'");
+
+
+            //SEARCH BY PATIENT ID
+            } else if ($search_by['search_category'] === 'Patient ID') {
+
+              $this->db->where('patient_id', strval($search_by['search_string']));
+
+            //SEARCH BY HOUSEHOLD ID
+            } else if ($search_by['search_category'] === 'Household ID') {
+
+              $this->db->where('household_id', strval($search_by['search_string']));
+
+            //SEARCH BY PHONE NUMBER
+            } else if (array_keys($search_by)[0] === 'Phone Number') {
+
+              $this->db->where('phone_number', '%'.strval($search_by['search_string']).'%', 'LIKE');
+
+            }
+          }
+        }
+
+        //FILTER
+        if (isset($payload['filter'])) {
+          $filter = (array) $payload['filter'];
+
+          //Age filter
+          if (isset($filter['age']) && $filter['age'] != [])
+          $this->db->where('DATEDIFF(CURRENT_DATE, birthdate)', Array (($filter['age'][0]*365), ($filter['age'][1]*365)), 'BETWEEN');
+
+          //Date Added filter
+          if (isset($filter['date_added']) && $filter['date_added'] != []) {
+            $this->db->where('date_added', $filter['date_added'], 'BETWEEN');
+          }
+
+          //Sex filter
+          $this->db->where('sex', $filter['sex'], 'IN');
+
+          //Status filter
+          $this->db->where('p.status', $filter['status'], 'IN');
+
+          //Barangays filter
+          if ($filter['barangay']) {
+            $this->db->where('barangay', $filter['barangay'], 'IN');
+          }
+        }
+
+        $this->db->join('tbl_household hh', 'hh.household_id=p.household_id', 'LEFT');
+        $patients = $this->db->get('tbl_patient_info p', null, 'patient_id, concat(first_name, " ", last_name, " ", coalesce(suffix, "")) as name, first_name, middle_name, last_name, suffix, hh.household_name, p.household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, barangay, address');
+
+        if ($patients) {
+          echo json_encode(array('status' => 'success',
+                                    'data' => $patients,
+                                    'method' => 'GET'
+                                  ));
         }
       }
 
-      //FILTER
-      if (isset($_GET['filter'])) {
-        $filter = (array) json_decode($_GET['filter']);
 
-        //Age filter
-        $this->db->where('DATEDIFF(CURRENT_DATE, birthdate)', Array (($filter['age_from']*365), ($filter['age_to']*365)), 'BETWEEN');
-
-        //Date Added filter
-        if (isset($filter['date_added'])) {
-          $this->db->where('date_added', $filter['date_added'], 'BETWEEN');
-        }
-
-
-        //Sex filter
-        $this->db->where('sex', $filter['sex'], 'IN');
-
-        //Status filter
-        $this->db->where('status', $filter['status'], 'IN');
-
-        //Barangays filter
-        if ($filter['barangay'][0] !== 'all') {
-          $this->db->where('barangay', $filter['barangay'], 'IN');
-        }
-      }
-
-      $patients = $this->db->get('tbl_patient_info');
-
-      if ($patients) {
-        echo json_encode(array('status' => 'success',
-                                  'data' => $patients,
-                                  'method' => 'GET'
-                                ));
-      }
 
     }
 

@@ -48,11 +48,59 @@ class API
 
       $data_array = [];
 
-      if ($dashboard_filter['department'] === 5 || $dashboard_filter['department'] === 6) {
-        $this->db->where('date_added', $date_array, 'BETWEEN');
-        $patient_count = $this->db->getValue('tbl_patient_info', "count(*)");
-        $data_array['patient_count'] = $patient_count;
-      }
+      //PATIENTS
+      //Get Patient count
+      $this->db->where('date_added', $date_array, 'BETWEEN');
+      $patient_count = $this->db->getValue('tbl_patient_info', "count(*)");
+      $data_array['patient_count'] = $patient_count;
+
+      //Get OPD count
+      $this->db->where('checkup_date', $date_array, 'BETWEEN');
+      $opd_count = $this->db->getValue('tbl_opd', "count(*)");
+      $data_array['opd_count'] = $opd_count;
+
+      //Get Dental count
+      $this->db->where('checkup_date', $date_array, 'BETWEEN');
+      $dental_count = $this->db->getValue('tbl_dental', "count(*)");
+      $data_array['dental_count'] = $dental_count;
+
+      //Get Prenatal count
+      $this->db->where('checkup_date', $date_array, 'BETWEEN');
+      $prenatal_count = $this->db->getValue('tbl_prenatal_checkup', "count(*)");
+      $data_array['prenatal_count'] = $prenatal_count;
+
+      //Get Immunization count
+      $this->db->where('immunization_date', $date_array, 'BETWEEN');
+      $immunization_count = $this->db->getValue('tbl_immunization', "count(*)");
+      $data_array['immunization_count'] = $immunization_count;
+
+      //MEDICINES
+      //Get medicine count
+      $medicine_count = $this->db->getValue('tbl_medicine_inventory', "SUM(quantity)");
+      $data_array['medicine_count'] = $medicine_count;
+
+      //Get medicine_release count
+      $medicine_release_count = $this->db->getValue('tbl_medicine_release', "SUM(quantity)");
+      $data_array['medicine_release_count'] = $medicine_release_count;
+
+      //SUPPLIES
+      //Get supplies count
+      $supply_count = $this->db->getValue('tbl_supplies_inventory', "SUM(quantity)");
+      $data_array['supply_count'] = $supply_count;
+
+      //Get supplies release count
+      $supply_release_count = $this->db->getValue('tbl_supply_release', "SUM(quantity)");
+      $data_array['supply_release_count'] = $supply_release_count;
+
+      //DISEASES
+      //Get diseases count
+      $this->db->where('date_added', $date_array, 'BETWEEN');
+      $this->db->groupBy("opd_disease");
+      $this->db->orderBy("opd_disease", "ASC");
+      $disease_count = $this->db->get('tbl_opd_disease', null, "opd_disease, COUNT(*) as count");
+
+      $data_array['diseases'] = $disease_count;
+      $data_array['disease_count'] = count($disease_count);
 
 
         echo json_encode(array('status' => 'success',

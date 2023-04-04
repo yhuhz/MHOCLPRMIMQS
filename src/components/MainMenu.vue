@@ -74,9 +74,9 @@
     <q-expansion-item
       label="Meds & Supplies"
       icon="fa fa-prescription-bottle-medical"
-      class="text-white bg-grey-8"
+      class="text-white"
     >
-      <q-list dense separator class="dropdown-list">
+      <q-list dense separator class="dropdown-list bg-grey-8">
         <q-item
           clickable
           class="list-text text-white q-ml-md"
