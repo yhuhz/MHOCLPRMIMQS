@@ -231,6 +231,7 @@
           flat
           class="mhc-table"
           :loading="loading"
+          no-data-label="Please search first"
         >
           <!-- Table Row Slots -->
           <template v-slot:body-cell-action="props">

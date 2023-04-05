@@ -130,7 +130,7 @@ export default {
         },
       };
 
-      // console.log(payload);
+      console.log("pay js", payload);
       loading.value = true;
       GetPatients(payload).then((response) => {
         loading.value = false;

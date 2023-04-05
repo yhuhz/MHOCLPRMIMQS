@@ -20,7 +20,7 @@ from '../script/Patients-Profile/PatientDetails.js'; import PatientDetails from
     <!-- Card -->
     <div class="card-box q-mx-md q-mb-xl">
       <div class="row">
-        <div class="col-3 q-pa-md first-col" style="width: 300px">
+        <div class="col-3 q-pa-md first-col" style="width: 20vw; height: 50%">
           <div>
             <q-btn
               class="float-right cursor-pointer q-mt-xs"
@@ -130,6 +130,7 @@ from '../script/Patients-Profile/PatientDetails.js'; import PatientDetails from
                 padding="4px 8px"
                 icon="eva-folder-add-outline"
                 class="create-btn"
+                :disable="selectedDepartment != null ? false : true"
               />
             </div>
 
@@ -154,6 +155,14 @@ from '../script/Patients-Profile/PatientDetails.js'; import PatientDetails from
         </div>
 
         <q-separator vertical size="2px" color="primary" />
+
+        <div class="">
+          <q-layout>
+            <q-page-container>
+              <router-view />
+            </q-page-container>
+          </q-layout>
+        </div>
       </div>
     </div>
   </div>

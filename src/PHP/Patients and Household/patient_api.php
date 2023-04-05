@@ -93,11 +93,11 @@ class API
           $filter = (array) $payload['filter'];
 
           //Age filter
-          if (isset($filter['age']) && $filter['age'] != [])
+          if (isset($filter['age']) && $filter['age'] != [] && $filter['age'][0] != '' && $filter['age'][1] != '')
           $this->db->where('DATEDIFF(CURRENT_DATE, birthdate)', Array (($filter['age'][0]*365), ($filter['age'][1]*365)), 'BETWEEN');
 
           //Date Added filter
-          if (isset($filter['date_added']) && $filter['date_added'] != []) {
+          if (isset($filter['date_added']) && $filter['date_added'] != [] && $filter['date_added'][0] != '' && $filter['date_added'][1] != '') {
             $this->db->where('date_added', $filter['date_added'], 'BETWEEN');
           }
 

@@ -33,6 +33,15 @@ const routes = [
         path: ":id/patient-details",
         name: "patient-details",
         component: () => import("pages/Patients-Profile/PatientDetails.vue"),
+        children: [
+          // OPD
+          {
+            path: ":record_id/opd_records",
+            name: "opd_records",
+            component: () =>
+              import("src/pages/Patients-Profile/OPD/PatientDetailsOPD.vue"),
+          },
+        ],
       },
       // OPD
       {
