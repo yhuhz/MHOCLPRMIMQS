@@ -28,25 +28,23 @@
           </p>
           <div class="row">
             <div class="col">
-              <q-label class="text-dark">Patient ID</q-label>
+              <label class="text-dark">Patient ID</label>
               <q-input
-                v-model="patientIDHousehold.patientID"
                 dense
                 outlined
                 :input-style="{ color: '#525252' }"
+                bg-color="grey-3"
                 class="q-mt-sm"
+                disable
               />
-              <p class="col-details">
-                Patient ID is auto generated based on the Household ID. you can
-                still edit the Patient ID
-              </p>
+              <p class="col-details">Patient ID is auto-generated</p>
             </div>
             <div class="col q-ml-md">
-              <q-label class="text-dark"
-                >Household ID <span class="text-negative">*</span></q-label
+              <label class="text-dark"
+                >Household ID <span class="text-negative">*</span></label
               >
-              <q-input
-                v-model="patientIDHousehold.householdID"
+              <q-select
+                v-model="personalInformation.householdID"
                 dense
                 outlined
                 :input-style="{ color: '#525252' }"
@@ -61,11 +59,11 @@
           <!-- Second Row -->
           <div class="row">
             <div class="col-6 q-gutter-x-sm">
-              <q-label class="text-dark"
-                >Status <span class="text-negative">*</span></q-label
+              <label class="text-dark"
+                >Status <span class="text-negative">*</span></label
               >
               <q-select
-                v-model="patientIDHousehold.status"
+                v-model="personalInformation.status"
                 dense
                 outlined
                 :options="statusList"
@@ -89,8 +87,8 @@
           <div class="row">
             <!-- Municipality -->
             <div class="col">
-              <q-label class="text-dark"
-                >Municipality <span class="text-negative">*</span></q-label
+              <label class="text-dark"
+                >Municipality <span class="text-negative">*</span></label
               >
               <div>
                 <q-radio
@@ -113,8 +111,8 @@
             </div>
             <!-- Barangay -->
             <div class="col">
-              <q-label class="text-dark"
-                >Barangay <span class="text-negative">*</span></q-label
+              <label class="text-dark"
+                >Barangay <span class="text-negative">*</span></label
               >
               <q-select
                 dense
@@ -131,13 +129,13 @@
 
           <div class="row">
             <div class="col">
-              <q-label class="text-dark">
+              <label class="text-dark">
                 Complete Address <span class="text-negative q-mr-md">*</span>
                 <span class="col-details"
                   >House No., Street Name, Barangay, Municipality/City,
                   Province</span
                 >
-              </q-label>
+              </label>
               <q-input
                 outlined
                 v-model="completeAddress"
@@ -161,8 +159,8 @@
           <div class="row">
             <!-- Last Name -->
             <div class="col">
-              <q-label class="text-dark"
-                >Last Name <span class="text-negative">*</span></q-label
+              <label class="text-dark"
+                >Last Name <span class="text-negative">*</span></label
               >
               <q-input
                 v-model="personalInformation.lastName"
@@ -174,8 +172,8 @@
             </div>
             <!-- First Name -->
             <div class="col">
-              <q-label class="text-dark"
-                >First Name <span class="text-negative">*</span></q-label
+              <label class="text-dark"
+                >First Name <span class="text-negative">*</span></label
               >
               <q-input
                 v-model="personalInformation.firstName"
@@ -190,8 +188,8 @@
           <div class="row q-mt-md">
             <div class="col">
               <!-- Middle Name -->
-              <q-label class="text-dark"
-                >Middle Name <span class="text-negative">*</span></q-label
+              <label class="text-dark"
+                >Middle Name <span class="text-negative">*</span></label
               >
               <q-input
                 v-model="personalInformation.middleName"
@@ -203,7 +201,7 @@
             </div>
             <div class="col-2 q-mx-md">
               <!-- Suffix -->
-              <q-label class="text-dark">Suffix</q-label>
+              <label class="text-dark">Suffix</label>
               <q-input
                 v-model="personalInformation.suffix"
                 dense
@@ -214,8 +212,8 @@
             </div>
             <div class="col">
               <!-- Date of Birth -->
-              <q-label class="text-dark"
-                >Date of Birth<span class="text-negative">*</span></q-label
+              <label class="text-dark"
+                >Date of Birth<span class="text-negative">*</span></label
               >
               <q-input
                 outlined
@@ -242,8 +240,8 @@
           <div class="row q-mt-md">
             <div class="col q-mr-md">
               <!-- Phone Number -->
-              <q-label class="text-dark"
-                >Phone Number <span class="text-negative">*</span></q-label
+              <label class="text-dark"
+                >Phone Number <span class="text-negative">*</span></label
               >
               <q-input
                 v-model="personalInformation.phoneNumber"
@@ -253,8 +251,8 @@
               />
             </div>
             <div class="col">
-              <q-label class="text-dark"
-                >Sex <span class="text-negative">*</span></q-label
+              <label class="text-dark"
+                >Sex <span class="text-negative">*</span></label
               >
               <div>
                 <q-radio
@@ -294,7 +292,7 @@
           </q-checkbox>
           <div class="row q-pa-md">
             <div class="col-4">
-              <q-label class="text-dark">PWD ID</q-label>
+              <label class="text-dark">PWD ID</label>
               <q-input
                 v-model="pwd.pwdID"
                 dense
@@ -304,7 +302,7 @@
               />
             </div>
             <div class="col q-ml-md">
-              <q-label class="text-dark">Type of Disability</q-label>
+              <label class="text-dark">Type of Disability</label>
               <q-input
                 v-model="pwd.typeOfDisability"
                 dense
@@ -323,7 +321,7 @@
           </q-checkbox>
           <div class="row q-pa-md">
             <div class="col-4">
-              <q-label class="text-dark">Senior Citizen ID</q-label>
+              <label class="text-dark">Senior Citizen ID</label>
               <q-input
                 v-model="seniorCitizenID"
                 dense
