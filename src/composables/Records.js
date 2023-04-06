@@ -2,6 +2,7 @@ import axios from "axios";
 import { ref, readonly } from "vue";
 let RecordDetails = ref([]);
 let PatientRecords = ref([]);
+let OPDDiseaseLab = ref([]);
 // let pathlink =
 //   "http://localhost/MHOCLPRMIMQS/src/PHP/RecordDetails and Household/patient_api.php";
 /**
@@ -31,22 +32,28 @@ let GetRecords = (payload) => {
   });
 };
 
-let FindRecordDetails = (payload) => {
+let FindRecordDetails = (payload, department) => {
   let pathlink =
     "http://localhost/MHOCLPRMIMQS/src/PHP/Patient Records/" +
-    payload.department.toLowerCase() +
+    department.toLowerCase() +
     "_api.php";
 
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
         params: {
-          payload: payload,
+          payload: { record_id: payload },
         },
       })
       .then((response) => {
         // console.log(response.data);
-        RecordDetails.value = response.data.data;
+        if (department === "OPD") {
+          console.log(response.data);
+          RecordDetails.value = response.data.opd_data;
+          OPDDiseaseLab.value = response.data.opd_arrays;
+        } else {
+          RecordDetails.value = response.data.data;
+        }
         resolve(response.data);
       })
       .catch((error) => {
@@ -99,7 +106,12 @@ let UpdateRecord = (payload, department) => {
       .then((response) => {
         if (response.data.status === "success") {
           console.log(response.data);
-          RecordDetails.value = response.data.data;
+          if (department === "OPD") {
+            RecordDetails.value = response.data.opd_data;
+            OPDDiseaseLab.value = response.data.opd_arrays;
+          } else {
+            RecordDetails.value = response.data.data;
+          }
         } else [console.log(response.data)];
         resolve(response.data);
       })
@@ -152,4 +164,5 @@ export {
   PatientRecords,
   DeleteRecord,
   AddRecord,
+  OPDDiseaseLab,
 };

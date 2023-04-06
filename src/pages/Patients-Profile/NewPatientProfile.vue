@@ -10,11 +10,13 @@
         @click="$router.go(-1)"
         class="q-mr-md"
       />
-      <h5 class="text-weight-bold text-dark">CREATE NEW PATIENT PROFILE</h5>
+      <h5 class="text-weight-bold text-dark q-my-lg">
+        CREATE NEW PATIENT PROFILE
+      </h5>
     </div>
 
     <!-- Columns -->
-    <div class="q-pa-md">
+    <div class="q-px-md">
       <div class="row">
         <!-- Patient ID and Household -->
         <q-card class="col col-box q-pa-md">

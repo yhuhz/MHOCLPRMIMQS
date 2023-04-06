@@ -9,6 +9,7 @@ import {
   FindRecordDetails,
   RecordDetails,
   UpdateRecord,
+  OPDDiseaseLab,
 } from "src/composables/Records";
 import { FindUsersByName } from "src/composables/Manage_Users";
 import { Loading, SessionStorage } from "quasar";
@@ -28,67 +29,50 @@ export default {
     Loading.show();
 
     let patientRecordInfo = ref({});
+    let disease = ref([]);
+    let lab_results = ref([]);
 
-    FindRecordDetails({
-      record_id: route.params.record_id,
-      department: route.params.department,
-    }).then((response) => {
-      Loading.hide();
+    FindRecordDetails(route.params.record_id, route.params.department).then(
+      (response) => {
+        Loading.hide();
 
-      patientRecordInfo.value = {
-        record_id: route.params.record_id,
-        preliminary_checkup_done_by: {
-          user_id: RecordDetails.value.preliminary_checkup_done_by,
-          user_name: RecordDetails.value.preliminary_checkup_done_by_name,
-        },
-        temperature: RecordDetails.value.temperature,
-        blood_pressure: RecordDetails.value.blood_pressure,
-        height: RecordDetails.value.height,
-        weight: RecordDetails.value.weight,
-        pulse_rate: RecordDetails.value.pulse_rate,
-        oxygen_sat: RecordDetails.value.oxygen_sat,
-
-        doctor_id: {
-          user_id: RecordDetails.value.doctor_id,
-          user_name: RecordDetails.value.doctor_name,
-        },
-        disease: RecordDetails.value.disease,
-        lab_results: RecordDetails.value.lab_results,
-        complaint: RecordDetails.value.complaint,
-        checkup_date: RecordDetails.value.checkup_date,
-        next_checkup: RecordDetails.value.next_checkup,
-        checkup_results: RecordDetails.value.checkup_results,
-        status: 0,
-      };
-    });
+        console.log("par", route.params.record_id);
+      }
+    );
 
     watch(
       () => _.cloneDeep(RecordDetails.value),
       () => {
-        // patientRecordInfo.value = {
-        //   record_id: route.params.record_id,
-        //   preliminary_checkup_done_by: {
-        //     user_id: RecordDetails.value.preliminary_checkup_done_by,
-        //     user_name: RecordDetails.value.preliminary_checkup_done_by_name,
-        //   },
-        //   temperature: RecordDetails.value.temperature,
-        //   blood_pressure: RecordDetails.value.blood_pressure,
-        //   height: RecordDetails.value.height,
-        //   weight: RecordDetails.value.weight,
-        //   pulse_rate: RecordDetails.value.pulse_rate,
-        //   oxygen_sat: RecordDetails.value.oxygen_sat,
-        //   doctor_id: {
-        //     user_id: RecordDetails.value.doctor_id,
-        //     user_name: RecordDetails.value.doctor_name,
-        //   },
-        //   disease: RecordDetails.value.disease,
-        //   lab_results: RecordDetails.value.lab_results,
-        //   complaint: RecordDetails.value.complaint,
-        //   checkup_date: RecordDetails.value.checkup_date,
-        //   next_checkup: RecordDetails.value.next_checkup,
-        //   checkup_results: RecordDetails.value.checkup_results,
-        //   status: 0,
-        // };
+        patientRecordInfo.value = {
+          record_id: route.params.record_id,
+          preliminary_checkup_done_by: {
+            user_id: RecordDetails.value.preliminary_checkup_done_by,
+            user_name: RecordDetails.value.preliminary_checkup_done_by_name,
+          },
+          temperature: RecordDetails.value.temperature,
+          blood_pressure: RecordDetails.value.blood_pressure,
+          height: RecordDetails.value.height,
+          weight: RecordDetails.value.weight,
+          pulse_rate: RecordDetails.value.pulse_rate,
+          oxygen_sat: RecordDetails.value.oxygen_sat,
+          doctor_id: {
+            user_id: RecordDetails.value.doctor_id,
+            user_name: RecordDetails.value.doctor_name,
+          },
+          complaint: RecordDetails.value.complaint,
+          checkup_date: RecordDetails.value.checkup_date,
+          next_checkup: RecordDetails.value.next_checkup,
+          checkup_results: RecordDetails.value.checkup_results,
+          status: 0,
+        };
+      }
+    );
+
+    watch(
+      () => _.cloneDeep(OPDDiseaseLab.value),
+      () => {
+        disease.value = OPDDiseaseLab.value.disease;
+        lab_results.value = OPDDiseaseLab.value.lab_results;
       }
     );
 
@@ -121,62 +105,40 @@ export default {
     let cancelFunction = () => {
       Loading.show();
       editForm.value = false;
-      FindRecordDetails({
-        record_id: route.params.record_id,
-        department: route.params.department,
-      }).then((response) => {
-        Loading.hide();
-
-        patientRecordInfo.value = {
-          record_id: route.params.record_id,
-          preliminary_checkup_done_by: {
-            user_id: RecordDetails.value.preliminary_checkup_done_by,
-            user_name: RecordDetails.value.preliminary_checkup_done_by_name,
-          },
-          temperature: RecordDetails.value.temperature,
-          blood_pressure: RecordDetails.value.blood_pressure,
-          height: RecordDetails.value.height,
-          weight: RecordDetails.value.weight,
-          pulse_rate: RecordDetails.value.pulse_rate,
-          oxygen_sat: RecordDetails.value.oxygen_sat,
-
-          doctor_id: {
-            user_id: RecordDetails.value.doctor_id,
-            user_name: RecordDetails.value.doctor_name,
-          },
-          disease: RecordDetails.value.disease,
-          lab_results: RecordDetails.value.lab_results,
-          complaint: RecordDetails.value.complaint,
-          checkup_date: RecordDetails.value.checkup_date,
-          next_checkup: RecordDetails.value.next_checkup,
-          checkup_results: RecordDetails.value.checkup_results,
-          status: 0,
-        };
-      });
+      FindRecordDetails(route.params.record_id, route.params.department).then(
+        (response) => {
+          Loading.hide();
+        }
+      );
     };
 
     let editForm = ref(false);
 
     const addFinding = () => {
-      patientRecordInfo.value.disease.push({ opd_disease: "" });
+      disease.value.push({ opd_disease: "" });
     };
 
     const removeFinding = (index) => {
-      patientRecordInfo.value.disease.splice(index, 1);
+      disease.value.splice(index, 1);
     };
 
     const addLabResult = () => {
-      patientRecordInfo.value.lab_results.push({ lab_result: "" });
+      lab_results.value.push({ lab_result: "" });
     };
 
     const removeLabResult = (index) => {
-      patientRecordInfo.value.lab_results.splice(index, 1);
+      lab_results.value.splice(index, 1);
     };
 
     const editFunction = () => {
       editForm.value = false;
 
-      if (patientRecordInfo.value.preliminary_checkup_done_by.user_id != null) {
+      patientRecordInfo.value.disease = disease.value;
+      patientRecordInfo.value.lab_results = lab_results.value;
+
+      if (
+        typeof patientRecordInfo.value.preliminary_checkup_done_by === "object"
+      ) {
         patientRecordInfo.value.preliminary_checkup_done_by =
           patientRecordInfo.value.preliminary_checkup_done_by.user_id;
       }
@@ -185,7 +147,8 @@ export default {
         patientRecordInfo.value.doctor_id =
           patientRecordInfo.value.doctor_id.user_id;
       }
-      // console.log(patientRecordInfo.value);
+
+      // console.log("p val", patientRecordInfo.value);
 
       UpdateRecord(patientRecordInfo.value, route.params.department);
     };
@@ -208,6 +171,8 @@ export default {
       userOptions,
       userFilterFunction,
       openDialog,
+      lab_results,
+      disease,
     };
   },
 };

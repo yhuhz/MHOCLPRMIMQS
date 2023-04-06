@@ -10,7 +10,7 @@
         @click="$router.go(-1)"
         class="q-mr-md"
       />
-      <h5 class="text-weight-bold text-dark">PATIENT RECORDS</h5>
+      <h5 class="text-weight-bold text-dark q-my-lg">PATIENT RECORDS</h5>
     </div>
 
     <!-- Card -->

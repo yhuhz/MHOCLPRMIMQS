@@ -95,10 +95,7 @@ export default {
     };
 
     const onRowClick = (evt, row) => {
-      FindRecordDetails({
-        record_id: row.record_id,
-        department: selectedDepartment.value,
-      });
+      FindRecordDetails(row.record_id, selectedDepartment.value);
 
       router.push({
         name: selectedDepartment.value + "/patient_records",

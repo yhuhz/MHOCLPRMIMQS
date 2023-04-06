@@ -58,7 +58,7 @@ import { RecordDetails } from 'src/composables/Patients';
     <div class="flex q-mt-lg">
       <div class="col">
         <!-- Preliminary Checkup -->
-        <div class="preliminary-checkup">
+        <div class="preliminary-checkup top-boxes">
           <div>
             <p class="bg-primary text-white text-center pc-heading">
               Preliminary Checkup
@@ -82,7 +82,6 @@ import { RecordDetails } from 'src/composables/Patients';
               :readonly="!editForm"
               input-style="padding: 0"
               input-class="text-right text-primary"
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 130px'"
             />
           </div>
           <div class="flex justify-between items-baseline q-px-md">
@@ -91,7 +90,6 @@ import { RecordDetails } from 'src/composables/Patients';
               :readonly="!editForm"
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'"
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.temperature"
@@ -103,7 +101,6 @@ import { RecordDetails } from 'src/composables/Patients';
               :readonly="!editForm"
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.blood_pressure"
             />
@@ -114,7 +111,6 @@ import { RecordDetails } from 'src/composables/Patients';
               :readonly="!editForm"
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.height"
             />
@@ -125,7 +121,6 @@ import { RecordDetails } from 'src/composables/Patients';
               :readonly="!editForm"
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.weight"
             />
@@ -136,7 +131,6 @@ import { RecordDetails } from 'src/composables/Patients';
               :readonly="!editForm"
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.pulse_rate"
             />
@@ -147,7 +141,6 @@ import { RecordDetails } from 'src/composables/Patients';
               :readonly="!editForm"
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 80px'"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.oxygen_sat"
             />
@@ -155,7 +148,7 @@ import { RecordDetails } from 'src/composables/Patients';
         </div>
 
         <!-- Findings -->
-        <div class="findings q-mt-lg">
+        <div class="findings bottom-boxes q-mt-md">
           <div>
             <p class="bg-primary text-white text-center findings-heading">
               Findings
@@ -171,7 +164,7 @@ import { RecordDetails } from 'src/composables/Patients';
           </div>
           <div
             class="q-ma-md"
-            v-for="(findings, index) in patientRecordInfo.disease"
+            v-for="(findings, index) in disease"
             :key="index"
           >
             <q-input
@@ -195,49 +188,9 @@ import { RecordDetails } from 'src/composables/Patients';
         </div>
       </div>
 
-      <!-- Laboratory Results -->
-      <div class="col q-mx-md">
-        <div class="laboratory-results fit">
-          <p class="bg-primary text-center text-white lr-heading">
-            Laboratory Results
-            <q-btn
-              dense
-              flat
-              borderless
-              icon="add_circle"
-              v-if="editForm"
-              @click="addLabResult"
-            />
-          </p>
-          <div
-            class="q-px-md q-mb-md"
-            v-for="(lab_results, index) in patientRecordInfo.lab_results"
-            :key="index"
-          >
-            <q-input
-              :readonly="!editForm"
-              autogrow
-              dense
-              outlined
-              input-class="text-primary"
-              v-model="lab_results.lab_result"
-            >
-              <q-btn
-                dense
-                flat
-                icon="delete"
-                borderless
-                v-if="editForm"
-                @click="removeLabResult(index)"
-              />
-            </q-input>
-          </div>
-        </div>
-      </div>
-
       <!-- Doctors Notes -->
-      <div class="col">
-        <div class="doctors-notes fit">
+      <div class="col q-ml-md">
+        <div class="doctors-notes top-boxes">
           <p class="bg-primary text-white text-center dn-heading">
             Doctors Notes
           </p>
@@ -258,9 +211,6 @@ import { RecordDetails } from 'src/composables/Patients';
                 :readonly="!editForm"
                 input-style="padding: 0"
                 input-class="text-right text-primary"
-                :style="
-                  $q.screen.width > 1366 ? 'width: 150px' : 'width: 130px'
-                "
               />
             </div>
 
@@ -271,11 +221,9 @@ import { RecordDetails } from 'src/composables/Patients';
                 autogrow
                 outlined
                 dense
-                :style="
-                  $q.screen.width > 1366 ? 'width: 150px' : 'width: 110px'
-                "
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.complaint"
+                hide-bottom-space
               />
             </div>
 
@@ -286,9 +234,6 @@ import { RecordDetails } from 'src/composables/Patients';
                 autogrow
                 outlined
                 dense
-                :style="
-                  $q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'
-                "
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.checkup_date"
               >
@@ -325,9 +270,6 @@ import { RecordDetails } from 'src/composables/Patients';
                 autogrow
                 outlined
                 dense
-                :style="
-                  $q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'
-                "
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.next_checkup"
                 ><template v-slot:append v-if="editForm">
@@ -355,19 +297,62 @@ import { RecordDetails } from 'src/composables/Patients';
                 </template>
               </q-input>
             </div>
+
+            <div
+              class="text-primary"
+              style="border-top: 1px solid; overflow: auto"
+            >
+              <q-input
+                :readonly="!editForm"
+                autogrow
+                outlined
+                dense
+                input-class="text-primary"
+                class="q-mt-md"
+                input-style="max-height: 100px"
+                v-model="patientRecordInfo.checkup_results"
+              />
+            </div>
           </div>
+        </div>
 
-          <q-separator color="dark" />
+        <!-- Laboratory Results -->
 
-          <div class="q-pa-md text-primary">
+        <div class="laboratory-results bottom-boxes q-mt-md">
+          <p class="bg-primary text-center text-white lr-heading">
+            Laboratory Results
+            <q-btn
+              dense
+              flat
+              borderless
+              icon="add_circle"
+              v-if="editForm"
+              @click="addLabResult"
+            />
+          </p>
+
+          <div
+            class="q-px-md q-mb-md"
+            v-for="(result, index) in lab_results"
+            :key="index"
+          >
             <q-input
               :readonly="!editForm"
               autogrow
-              outlined
               dense
+              outlined
               input-class="text-primary"
-              v-model="patientRecordInfo.checkup_results"
-            />
+              v-model="result.lab_result"
+            >
+              <q-btn
+                dense
+                flat
+                icon="delete"
+                borderless
+                v-if="editForm"
+                @click="removeLabResult(index)"
+              />
+            </q-input>
           </div>
         </div>
       </div>

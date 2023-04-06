@@ -22,22 +22,22 @@ class API
     {
 
       $payload = (array) json_decode($_GET['payload']);
-
       if (isset($payload['record_id'])) {
         $this->db->where('opd_id', $payload['record_id']);
       }
       $this->db->where('status', 0);
       $opd_record = $this->db->get('tbl_opd');
       $opd_record = $opd_record[0];
+      $opd_arrays = [];
 
 
       if (isset($opd_record['doctor_id'])) {
 
           $this->db->where('opd_id', $opd_record['opd_id']);
-          $opd_record['disease'] = $this->db->get('tbl_opd_disease', null,  'opd_disease');
+          $opd_arrays['disease'] = $this->db->get('tbl_opd_disease', null,  'opd_disease');
 
           $this->db->where('opd_id', $opd_record['opd_id']);
-          $opd_record['lab_results'] = $this->db->get('tbl_opd_lab_results', null, 'lab_result');
+          $opd_arrays['lab_results'] = $this->db->get('tbl_opd_lab_results', null, 'lab_result');
 
           $this->db->where('user_id',$opd_record['doctor_id']);
           $doctor_name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
@@ -59,7 +59,8 @@ class API
 
       if ($opd_record) {
         echo json_encode(array('status' => 'success',
-                                  'data' => $opd_record,
+                                  'opd_data' => $opd_record,
+                                  'opd_arrays' => $opd_arrays,
                                   'method' => 'GET'
                                 ));
       }
@@ -155,11 +156,13 @@ class API
         $name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
         $payload['doctor_name'] = $name[0]['name'];
 
-        $payload['lab_results'] = $lab_results_array;
-        $payload['disease'] = $disease_array;
+        $opd_arrays = [];
+        $opd_arrays['lab_results'] = $lab_results_array;
+        $opd_arrays['disease'] = $disease_array;
 
         echo json_encode(array('status' => 'success',
-                                'data' => $payload,
+                                'opd_data' => $payload,
+                                'opd_arrays' => $opd_arrays,
                                 'method' => 'PUT'
                               ));
       }

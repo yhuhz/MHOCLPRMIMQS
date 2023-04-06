@@ -88,10 +88,27 @@ export default {
         patientRecordInfo.value.preliminary_checkup_done_by =
           patientRecordInfo.value.preliminary_checkup_done_by.user_id;
       }
-      AddRecord(patientRecordInfo.value, route.params.department);
+      AddRecord(patientRecordInfo.value, route.params.department).then(
+        (response) => {
+          router.push({
+            name: "OPD/patient_records",
+            params: {
+              record_id: response.data.record_id,
+              department: route.params.department,
+            },
+          });
+        }
+      );
     };
 
-    const cancel = () => {};
+    const cancel = () => {
+      router.push({
+        name: "patient-details",
+        params: {
+          id: route.params.id,
+        },
+      });
+    };
     return {
       keySession,
       addRecord,
