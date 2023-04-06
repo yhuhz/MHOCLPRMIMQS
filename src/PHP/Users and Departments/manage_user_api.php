@@ -20,6 +20,17 @@ class API
 
     public function httpGet($payload)
     {
+      if (isset($_GET['name'])) {
+        $this->db->where("CONCAT_WS(' ', REPLACE(first_name, ' ', ''), REPLACE(middle_name, ' ', ''), REPLACE(last_name, ' ', ''), REPLACE(suffix, ' ', '')) LIKE '%" . $_GET['name'] . "%'");
+        $users = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name, " ", coalesce(suffix, "")) as user_name, user_id as id');
+
+        if ($users) {
+          echo json_encode(array('status' => 'success',
+                                'data' => $users,
+                                'method' => 'GET'
+        ));
+        }
+      } else {
         if (isset($_GET['user_id'])) {
           $this->db->where('user_id', $_GET['user_id']);
         }
@@ -30,8 +41,9 @@ class API
                                 'data' => $users,
                                 'method' => 'GET'
         ));
-
+        }
       }
+
     }
 
     public function httpPost($payload)

@@ -1,7 +1,12 @@
 <template>
   <div>
     <!-- Dashboard -->
-    <q-item clickable exact class="text-white" to="dashboard">
+    <q-item
+      clickable
+      exact
+      class="text-white"
+      @click="$router.push({ name: 'dashboard' })"
+    >
       <q-item-section avatar>
         <q-icon name="dashboard" />
       </q-item-section>
@@ -16,56 +21,70 @@
         <q-item
           clickable
           exact
-          class="list-text text-white q-ml-md"
-          to="search-patients"
+          class="list-text text-white"
+          @click="$router.push({ name: 'search-patients' })"
         >
           <q-item-section avatar>
-            <q-icon size="xs" name="eva-search-outline" />
+            <q-icon size="xs" name="eva-search-outline" class="q-ml-md" />
           </q-item-section>
-          <q-item-section>Search Patients</q-item-section>
+          <q-item-section class="q-ml-md">Search Patients</q-item-section>
         </q-item>
 
         <q-item
           clickable
-          class="list-text text-white q-ml-md"
-          to="add-new-patient-record"
+          class="list-text text-white"
+          @click="$router.push({ name: 'add-new-patient-record' })"
         >
           <q-item-section avatar>
-            <q-icon size="xs" name="eva-plus-square-outline" />
+            <q-icon size="xs" name="eva-plus-square-outline" class="q-ml-md" />
           </q-item-section>
-          <q-item-section>Add New Patient Record</q-item-section>
+          <q-item-section class="q-ml-md"
+            >Add New Patient Record</q-item-section
+          >
         </q-item>
 
         <q-item
           clickable
-          class="list-text text-white q-ml-md"
-          to="household-records"
+          class="list-text text-white"
+          @click="$router.push({ name: 'household-records' })"
         >
           <q-item-section avatar>
-            <q-icon size="xs" name="eva-home-outline" />
+            <q-icon size="xs" name="eva-home-outline" class="q-ml-md" />
           </q-item-section>
-          <q-item-section>View Household</q-item-section>
+          <q-item-section class="q-ml-md">View Household</q-item-section>
         </q-item>
 
-        <q-item clickable class="list-text text-white q-ml-md">
+        <q-item
+          clickable
+          class="list-text text-white"
+          @click="$router.push({ name: 'pwd' })"
+        >
           <q-item-section avatar>
-            <q-icon size="xs" name="fa fa-wheelchair" />
+            <q-icon size="xs" name="fa fa-wheelchair" class="q-ml-md" />
           </q-item-section>
-          <q-item-section>PWDs</q-item-section>
+          <q-item-section class="q-ml-md">PWDs</q-item-section>
         </q-item>
 
-        <q-item clickable class="list-text text-white q-ml-md">
+        <q-item
+          clickable
+          class="list-text text-white"
+          @click="$router.push({ name: 'senior-citizens' })"
+        >
           <q-item-section avatar>
-            <q-icon size="xs" name="fa fa-person-cane" />
+            <q-icon size="xs" name="fa fa-person-cane" class="q-ml-md" />
           </q-item-section>
-          <q-item-section>Senior Citizens</q-item-section>
+          <q-item-section class="q-ml-md">Senior Citizens</q-item-section>
         </q-item>
 
-        <q-item clickable class="list-text text-white q-ml-md">
+        <q-item
+          clickable
+          class="list-text text-white"
+          @click="$router.push({ name: 'pregnant-women' })"
+        >
           <q-item-section avatar>
-            <q-icon size="xs" name="fa fa-person-pregnant" />
+            <q-icon size="xs" name="fa fa-person-pregnant" class="q-ml-md" />
           </q-item-section>
-          <q-item-section>Pregnant Women</q-item-section>
+          <q-item-section class="q-ml-md">Pregnant Women</q-item-section>
         </q-item>
       </q-list>
     </q-expansion-item>
@@ -79,26 +98,34 @@
       <q-list dense separator class="dropdown-list bg-grey-8">
         <q-item
           clickable
-          class="list-text text-white q-ml-md"
-          to="medicine-inventory"
+          class="list-text text-white"
+          @click="$router.push({ name: 'medicine-inventory' })"
         >
           <q-item-section avatar>
-            <q-icon size="xs" name="fa fa-pills" />
+            <q-icon size="xs" name="fa fa-pills" class="q-ml-md" />
           </q-item-section>
-          <q-item-section>Medicine Inventory</q-item-section>
+          <q-item-section class="q-ml-md">Medicine Inventory</q-item-section>
         </q-item>
 
-        <q-item clickable class="list-text text-white q-ml-md">
+        <q-item
+          clickable
+          class="list-text text-white"
+          @click="$router.push({ name: 'supplies-inventory' })"
+        >
           <q-item-section avatar>
-            <q-icon size="xs" name="fa fa-syringe" />
+            <q-icon size="xs" name="fa fa-syringe" class="q-ml-md" />
           </q-item-section>
-          <q-item-section>Supplies Inventory</q-item-section>
+          <q-item-section class="q-ml-md">Supplies Inventory</q-item-section>
         </q-item>
       </q-list>
     </q-expansion-item>
 
     <!-- Users -->
-    <q-item clickable class="text-white">
+    <q-item
+      clickable
+      class="text-white"
+      @click="$router.push({ name: 'administrator' })"
+    >
       <q-item-section avatar>
         <q-icon name="account_circle" />
       </q-item-section>
@@ -108,7 +135,11 @@
     </q-item>
 
     <!-- Reports -->
-    <q-item clickable class="text-white">
+    <q-item
+      clickable
+      class="text-white"
+      @click="$router.push({ name: 'reports' })"
+    >
       <q-item-section avatar>
         <q-icon name="description" />
       </q-item-section>

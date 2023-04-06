@@ -28,12 +28,16 @@ class API
         $this->db->where('patient_id', $payload['patient_id']);
 
         if ($payload['record_type'] === "OPD") {
+          $this->db->where('status', 0 );
           $record = $this->db->get('tbl_opd', null, 'opd_id as record_id, checkup_date as date');
         } else if ($payload['record_type'] === "Dental") {
+          $this->db->where('status', 0 );
           $record = $this->db->get('tbl_dental', null, 'dental_id as record_id, checkup_date as date');
         } else if ($payload['record_type'] === "Prenatal") {
+          $this->db->where('status', 0 );
           $record = $this->db->get('tbl_prenatal', null, 'prenatal_id as record_id, date_added as date');
         } else if ($payload['record_type'] === "Immunization") {
+          $this->db->where('status', 0 );
           $record = $this->db->get('tbl_immunization', null, 'immunization_id as record_id, immunization_date as date');
         }
 
@@ -43,6 +47,7 @@ class API
                                     'method' => 'GET'
                                   ));
         }
+
       } else if (isset($payload['patient_id'])) {
         $this->db->join('tbl_pwd pw', 'pw.patient_id=p.patient_id', 'LEFT');
         $this->db->join('tbl_senior_citizen sc', 'sc.patient_id=p.patient_id', 'LEFT');

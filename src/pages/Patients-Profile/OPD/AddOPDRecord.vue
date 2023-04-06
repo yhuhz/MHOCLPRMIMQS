@@ -11,30 +11,10 @@ import { RecordDetails } from 'src/composables/Patients';
       </div>
 
       <!-- Action Button -->
-      <div v-if="!editForm">
-        <q-btn
-          @click="editForm = !editForm"
-          dense
-          label="Edit"
-          icon="eva-edit-outline"
-          no-caps
-          color="primary"
-          class="q-px-lg"
-        />
-        <q-btn
-          dense
-          label="Delete"
-          icon="eva-trash-2-outline"
-          no-caps
-          class="q-px-lg q-ml-sm"
-          color="negative"
-          @click="openDialog"
-        />
-      </div>
 
-      <div v-if="editForm">
+      <div>
         <q-btn
-          @click="editFunction"
+          @click="addRecord"
           dense
           label="Save"
           icon="save"
@@ -43,7 +23,7 @@ import { RecordDetails } from 'src/composables/Patients';
           class="q-px-lg"
         />
         <q-btn
-          @click="cancelFunction"
+          @click="cancel"
           dense
           label="Cancel"
           icon="close"
@@ -66,9 +46,6 @@ import { RecordDetails } from 'src/composables/Patients';
           </div>
           <div class="flex justify-between items-baseline q-px-md q-mb-sm">
             <p class="text-primary text-weight-bold">Done by</p>
-            <!-- <p class="text-primary">
-              {{ RecordDetails.preliminary_checkup_done_by_name }}
-            </p> -->
             <q-select
               outlined
               v-model="patientRecordInfo.preliminary_checkup_done_by"
@@ -79,164 +56,88 @@ import { RecordDetails } from 'src/composables/Patients';
               emit-value
               map-options
               dense
-              :readonly="!editForm"
               input-style="padding: 0"
               input-class="text-right text-primary"
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 130px'"
             />
           </div>
           <div class="flex justify-between items-baseline q-px-md">
             <p class="text-primary text-weight-bold">Temperature</p>
             <q-input
-              :readonly="!editForm"
+              hide-bottom-space
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'"
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.temperature"
+              :rules="[(val) => (val && val.length > 0) || 'Required field']"
+              label="Celsius"
             />
           </div>
           <div class="flex justify-between items-baseline q-px-md">
             <p class="text-primary text-weight-bold">Blood Pressure</p>
             <q-input
-              :readonly="!editForm"
+              hide-bottom-space
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.blood_pressure"
+              :rules="[(val) => (val && val.length > 0) || 'Required field']"
+              label="e.g. 120/60"
             />
           </div>
           <div class="flex justify-between items-baseline q-px-md">
             <p class="text-primary text-weight-bold">Height</p>
             <q-input
-              :readonly="!editForm"
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.height"
+              hide-bottom-space
+              :rules="[(val) => (val && val.length > 0) || 'Required field']"
+              label="Centimeters"
             />
           </div>
           <div class="flex justify-between items-baseline q-px-md">
             <p class="text-primary text-weight-bold">Weight</p>
             <q-input
-              :readonly="!editForm"
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.weight"
+              hide-bottom-space
+              :rules="[(val) => (val && val.length > 0) || 'Required field']"
+              label="Kilograms"
             />
           </div>
           <div class="flex justify-between items-baseline q-px-md">
             <p class="text-primary text-weight-bold">Pulse Rate</p>
             <q-input
-              :readonly="!editForm"
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.pulse_rate"
+              hide-bottom-space
+              :rules="[(val) => (val && val.length > 0) || 'Required field']"
+              label="Beats per minute"
             />
           </div>
           <div class="flex justify-between items-baseline q-px-md">
             <p class="text-primary text-weight-bold">Oxygen Saturation</p>
             <q-input
-              :readonly="!editForm"
               outlined
               dense
-              :style="$q.screen.width > 1366 ? 'width: 150px' : 'width: 80px'"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.oxygen_sat"
+              hide-bottom-space
+              :rules="[(val) => (val && val.length > 0) || 'Required field']"
+              label="%"
             />
-          </div>
-        </div>
-
-        <!-- Findings -->
-        <div class="findings q-mt-lg">
-          <div>
-            <p class="bg-primary text-white text-center findings-heading">
-              Findings
-              <q-btn
-                dense
-                flat
-                borderless
-                icon="add_circle"
-                v-if="editForm"
-                @click="addFinding"
-              />
-            </p>
-          </div>
-          <div
-            class="q-ma-md"
-            v-for="(findings, index) in patientRecordInfo.disease"
-            :key="index"
-          >
-            <q-input
-              :readonly="!editForm"
-              autogrow
-              dense
-              outlined
-              input-class="text-primary"
-              v-model="findings.opd_disease"
-            >
-              <q-btn
-                dense
-                flat
-                icon="delete"
-                borderless
-                v-if="editForm"
-                @click="removeFinding(index)"
-              />
-            </q-input>
-          </div>
-        </div>
-      </div>
-
-      <!-- Laboratory Results -->
-      <div class="col q-mx-md">
-        <div class="laboratory-results fit">
-          <p class="bg-primary text-center text-white lr-heading">
-            Laboratory Results
-            <q-btn
-              dense
-              flat
-              borderless
-              icon="add_circle"
-              v-if="editForm"
-              @click="addLabResult"
-            />
-          </p>
-          <div
-            class="q-px-md q-mb-md"
-            v-for="(lab_results, index) in patientRecordInfo.lab_results"
-            :key="index"
-          >
-            <q-input
-              :readonly="!editForm"
-              autogrow
-              dense
-              outlined
-              input-class="text-primary"
-              v-model="lab_results.lab_result"
-            >
-              <q-btn
-                dense
-                flat
-                icon="delete"
-                borderless
-                v-if="editForm"
-                @click="removeLabResult(index)"
-              />
-            </q-input>
           </div>
         </div>
       </div>
 
       <!-- Doctors Notes -->
-      <div class="col">
+      <div class="col q-ml-md">
         <div class="doctors-notes fit">
           <p class="bg-primary text-white text-center dn-heading">
             Doctors Notes
@@ -244,8 +145,8 @@ import { RecordDetails } from 'src/composables/Patients';
           <div class="q-px-md">
             <div class="flex justify-between items-baseline q-mb-sm">
               <p class="text-primary text-weight-bold">Doctor:</p>
-              <!-- <p class="text-primary">{{ RecordDetails.doctor_name }}</p> -->
               <q-select
+                style="width: 200px"
                 outlined
                 v-model="patientRecordInfo.doctor_id"
                 @filter="userFilterFunction"
@@ -255,50 +156,41 @@ import { RecordDetails } from 'src/composables/Patients';
                 emit-value
                 map-options
                 dense
-                :readonly="!editForm"
                 input-style="padding: 0"
                 input-class="text-right text-primary"
-                :style="
-                  $q.screen.width > 1366 ? 'width: 150px' : 'width: 130px'
-                "
               />
             </div>
 
             <div class="flex justify-between items-baseline q-mb-sm">
               <p class="text-primary text-weight-bold">Complaint:</p>
               <q-input
-                :readonly="!editForm"
                 autogrow
                 outlined
                 dense
-                :style="
-                  $q.screen.width > 1366 ? 'width: 150px' : 'width: 110px'
-                "
+                style="width: 200px"
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.complaint"
               />
             </div>
 
-            <div class="flex justify-between items-baseline">
+            <div class="flex justify-between items-baseline q-mb-sm">
               <p class="text-primary text-weight-bold">Checkup Date:</p>
               <q-input
-                :readonly="!editForm"
                 autogrow
                 outlined
                 dense
-                :style="
-                  $q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'
-                "
+                style="width: 200px"
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.checkup_date"
               >
-                <template v-slot:append v-if="editForm">
+                <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy
                       transition-show="scale"
                       transition-hide="scale"
                     >
                       <q-date
+                        today-btn
                         mask="YYYY-MM-DD"
                         v-model="patientRecordInfo.checkup_date"
                       >
@@ -317,67 +209,14 @@ import { RecordDetails } from 'src/composables/Patients';
                 </template>
               </q-input>
             </div>
-
-            <div class="flex justify-between items-baseline q-mb-sm">
-              <p class="text-primary text-weight-bold">Next Checkup:</p>
-              <q-input
-                :readonly="!editForm"
-                autogrow
-                outlined
-                dense
-                :style="
-                  $q.screen.width > 1366 ? 'width: 150px' : 'width: 100px'
-                "
-                input-class="text-right text-primary"
-                v-model="patientRecordInfo.next_checkup"
-                ><template v-slot:append v-if="editForm">
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        mask="YYYY-MM-DD"
-                        v-model="patientRecordInfo.next_checkup"
-                      >
-                        <div class="row justify-end items-center">
-                          <q-btn
-                            v-close-popup
-                            color="primary"
-                            label="Close"
-                            dense
-                            flat
-                          />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-          </div>
-
-          <q-separator color="dark" />
-
-          <div class="q-pa-md text-primary">
-            <q-input
-              :readonly="!editForm"
-              autogrow
-              outlined
-              dense
-              input-class="text-primary"
-              v-model="patientRecordInfo.checkup_results"
-            />
           </div>
         </div>
       </div>
     </div>
-
-    <MHCDialog :content="$options.components.DeletePatientRecordConfirmation" />
   </div>
 </template>
 
-<script src="../../script/Patients-Profile/OPD/PatientDetailsOPD"></script>
+<script src="../../script/Patients-Profile/OPD/AddOPDRecord"></script>
 
 <style lang="scss" scoped>
 @import "../../styles/patients-profile/opd/pr_opd_details.scss";

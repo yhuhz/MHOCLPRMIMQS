@@ -23,16 +23,16 @@ let GetUsers = () => {
   });
 };
 
-let FindUsers = (payload) => {
+let FindUsersByName = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
         params: {
-          id: payload,
+          name: payload,
         },
       })
       .then((response) => {
-        Users.value = response.data.data;
+        // Users.value = response.data.data;
         resolve(response.data);
       })
       .catch((error) => {
@@ -118,4 +118,4 @@ let DeleteUser = (payload) => {
 /**
  * Export UsersList as readonly (real time copy of Users)
  */
-export {};
+export { FindUsersByName };

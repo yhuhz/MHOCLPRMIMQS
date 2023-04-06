@@ -18,26 +18,48 @@ class API
         $this->db = new MysqliDB('localhost', 'root', '', 'mhoclprmimqs');
     }
 
-    public function httpGet()
+    public function httpGet($payload)
     {
-      $this->db->where('patient_id', $_GET['patient_id']);
+
+      $payload = (array) json_decode($_GET['payload']);
+
+      if (isset($payload['record_id'])) {
+        $this->db->where('opd_id', $payload['record_id']);
+      }
       $this->db->where('status', 0);
-      $opd_records = $this->db->get('tbl_opd');
-      $opd_array = [];
+      $opd_record = $this->db->get('tbl_opd');
+      $opd_record = $opd_record[0];
 
-      foreach ($opd_records as $opd) {
-        $this->db->where('opd_id', $opd['opd_id']);
-        $opd['disease'] = $this->db->get('tbl_opd_disease', null, 'opd_disease_id, opd_disease');
 
-        $this->db->where('opd_id', $opd['opd_id']);
-        $opd['lab_results'] = $this->db->get('tbl_opd_lab_results', null, 'lab_result_id, lab_result');
+      if (isset($opd_record['doctor_id'])) {
 
-        array_push($opd_array, $opd);
+          $this->db->where('opd_id', $opd_record['opd_id']);
+          $opd_record['disease'] = $this->db->get('tbl_opd_disease', null,  'opd_disease');
+
+          $this->db->where('opd_id', $opd_record['opd_id']);
+          $opd_record['lab_results'] = $this->db->get('tbl_opd_lab_results', null, 'lab_result');
+
+          $this->db->where('user_id',$opd_record['doctor_id']);
+          $doctor_name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
+          $opd_record['doctor_name'] = $doctor_name[0]['name'];
+
+          $this->db->where('user_id',$opd_record['preliminary_checkup_done_by']);
+          $prelim_name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
+          $opd_record['preliminary_checkup_done_by_name'] = $prelim_name[0]['name'];
+
+
+      } else {
+
+          $this->db->where('user_id',$opd_record['preliminary_checkup_done_by']);
+          $prelim_name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
+          $opd_record['preliminary_checkup_done_by_name'] = $prelim_name[0]['name'];
+
       }
 
-      if ($opd_records) {
+
+      if ($opd_record) {
         echo json_encode(array('status' => 'success',
-                                  'data' => $opd_array,
+                                  'data' => $opd_record,
                                   'method' => 'GET'
                                 ));
       }
@@ -47,12 +69,19 @@ class API
     public function httpPost($payload)
     {
       // print_r($payload); return;
-      foreach($payload as $opd_record) {
-        $opd_record = (array) $opd_record;
+      // foreach($payload as $opd_record) {
+        // $opd_record = (array) $opd_record;
+        $opd_record = (array) $payload;
 
         $opd_record['opd_id'] = $this->db->insert('tbl_opd', $opd_record);
 
         if ($opd_record['opd_id']) {
+          $opd_record['record_id'] = $opd_record['opd_id'];
+          unset($opd_record['opd_id']);
+
+          $opd_record['date'] = $opd_record['checkup_date'];
+          unset($opd_record['checkup_date']);
+
           echo json_encode(array('status' => 'success',
                                     'data' => $opd_record,
                                     'method' => 'POST'
@@ -64,12 +93,14 @@ class API
                                   ));
           return;
         }
-      }
+      // }
     }
 
     public function httpPut($payload)
     {
       $payload = (array) $payload;
+      $payload['opd_id'] = $payload['record_id'];
+      unset($payload['record_id']);
 
       //EDIT OPD RECORD
 
@@ -89,8 +120,8 @@ class API
             array_push($disease_array, $disease);
           }
         }
-        unset($payload['disease']);
       }
+      unset($payload['disease']);
 
       $lab_results_array = [];
       if (isset($payload['lab_results'])) {
@@ -108,13 +139,22 @@ class API
             array_push($lab_results_array, $lab_result);
           }
         }
-        unset($payload['lab_results']);
       }
+
+      unset($payload['lab_results']);
 
       $this->db->where('opd_id', $payload['opd_id']);
       $opd_record = $this->db->update('tbl_opd', $payload);
 
       if ($opd_record) {
+        $this->db->where('user_id', $payload['preliminary_checkup_done_by']);
+        $name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
+        $payload['preliminary_checkup_done_by_name'] = $name[0]['name'];
+
+        $this->db->where('user_id', $payload['doctor_id']);
+        $name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
+        $payload['doctor_name'] = $name[0]['name'];
+
         $payload['lab_results'] = $lab_results_array;
         $payload['disease'] = $disease_array;
 
@@ -131,9 +171,8 @@ class API
     {
         $payload = (array) $payload;
 
-        $this->db->where('opd_id', $payload['opd_id']);
-        $payload['status'] = 1;
-        $delete_user = $this->db->update('tbl_opd', $payload);
+        $this->db->where('opd_id', $_GET['record_id']);
+        $delete_user = $this->db->update('tbl_opd', array('status' => 1));
 
         if ($delete_user) {
             echo json_encode(array('status' => 'success',

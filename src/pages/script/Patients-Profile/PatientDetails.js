@@ -2,12 +2,11 @@ import { ref, watch } from "vue";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import DeletePatientConfirmation from "../../Components/DeletePatientConfirmation";
 import { ToggleDialogState } from "../../../composables/Triggers";
-import {
-  FindPatient,
-  PatientDetails,
-  GetRecords,
-  PatientRecords,
-} from "src/composables/Patients";
+import { FindPatient, PatientDetails } from "src/composables/Patients";
+
+import { GetRecords, PatientRecords } from "src/composables/Records";
+
+import { FindRecordDetails } from "src/composables/Records";
 import _ from "lodash";
 import { useQuasar, SessionStorage } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
@@ -53,7 +52,16 @@ export default {
       }
     );
 
-    let selectedDepartment = ref();
+    let selectedDepartment = ref(
+      route.params.department != null ? route.params.department : null
+    );
+
+    if (selectedDepartment.value != null) {
+      GetRecords({
+        patient_id: route.params.id,
+        record_type: selectedDepartment.value,
+      });
+    }
 
     let columns = [
       {
@@ -86,6 +94,21 @@ export default {
       });
     };
 
+    const onRowClick = (evt, row) => {
+      FindRecordDetails({
+        record_id: row.record_id,
+        department: selectedDepartment.value,
+      });
+
+      router.push({
+        name: selectedDepartment.value + "/patient_records",
+        params: {
+          record_id: row.record_id,
+          department: selectedDepartment.value,
+        },
+      });
+    };
+
     const openDialog = () => {
       ToggleDialogState();
     };
@@ -102,6 +125,7 @@ export default {
       selectedDepartment,
       getRecords,
       PatientRecords,
+      onRowClick,
     };
   },
 };
