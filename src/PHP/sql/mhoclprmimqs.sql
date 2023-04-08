@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2023 at 08:09 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Apr 08, 2023 at 10:28 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,7 +40,7 @@ CREATE TABLE `tbl_dental` (
   `checkup_results` varchar(5000) NOT NULL,
   `next_checkup` date NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_dental`
@@ -62,7 +62,7 @@ CREATE TABLE `tbl_dental_chart` (
   `tooth_number` varchar(200) NOT NULL,
   `tooth_score` int(11) NOT NULL DEFAULT 0,
   `comments` varchar(5000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_dental_chart`
@@ -113,7 +113,7 @@ CREATE TABLE `tbl_department` (
   `dept_code` varchar(200) NOT NULL,
   `dept_name` varchar(200) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = suspended, 2 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_department`
@@ -125,8 +125,7 @@ INSERT INTO `tbl_department` (`dept_id`, `dept_code`, `dept_name`, `status`) VAL
 (3, 'PNI', 'Prenatal and Immunization', 0),
 (4, 'PHM', 'Pharmacy', 0),
 (5, 'FD', 'Front Desk', 0),
-(6, 'ADMIN', 'Admin Office', 0),
-(11, 'FD', 'Front Desk', 0);
+(6, 'ADMIN', 'Admin Office', 0);
 
 -- --------------------------------------------------------
 
@@ -138,7 +137,7 @@ CREATE TABLE `tbl_household` (
   `household_id` int(11) NOT NULL,
   `household_name` varchar(200) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_household`
@@ -179,15 +178,15 @@ CREATE TABLE `tbl_immunization` (
   `vaccine_used` varchar(5000) NOT NULL,
   `comments` varchar(5000) DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_immunization`
 --
 
 INSERT INTO `tbl_immunization` (`immunization_id`, `immunizer_id`, `patient_id`, `immunization_date`, `next_immunization_date`, `vaccine_used`, `comments`, `status`) VALUES
-(1, 71, '03232307', '2023-03-29', '2023-06-25', 'MMR Vaccine', 'No allergic reactions', 0),
-(2, 71, '03232306', '2023-03-29', '2023-05-16', 'MMR Vaccine', 'No allergic reactions', 0);
+(1, 71, '03232307', '2023-04-04', '2023-06-25', 'MMR Vaccine', 'No allergic reactions', 0),
+(2, 71, '03232306', '2023-04-04', '2023-05-16', 'MMR Vaccine', 'No allergic reactions', 0);
 
 -- --------------------------------------------------------
 
@@ -211,14 +210,14 @@ CREATE TABLE `tbl_medicine_inventory` (
   `date_added` date NOT NULL,
   `added_by` int(11) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_medicine_inventory`
 --
 
 INSERT INTO `tbl_medicine_inventory` (`medicine_id`, `generic_name`, `brand_name`, `med_classification`, `dosage_strength`, `dosage_form`, `ptr_number`, `batch_lot_number`, `mfg_date`, `exp_date`, `quantity`, `procured_by`, `date_added`, `added_by`, `status`) VALUES
-(1, 'Paracetamol', 'Biogesic', 'Analgesic', '500mg/2mg', 'Tablet', '22-11-2101', '13-08-713', '2023-03-01', '2026-03-01', 500, 'DOH', '2023-03-29', 69, 0);
+(1, 'Paracetamol', 'Biogesic', 'Analgesic', '500mg/2mg', 'Tablet', '22-11-2101', '13-08-713', '2023-03-01', '2026-03-01', 500, 'DOH', '2023-04-01', 69, 0);
 
 -- --------------------------------------------------------
 
@@ -236,7 +235,14 @@ CREATE TABLE `tbl_medicine_release` (
   `release_date` date NOT NULL,
   `released_by` int(11) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_medicine_release`
+--
+
+INSERT INTO `tbl_medicine_release` (`med_release_id`, `patient_id`, `doctor_id`, `department`, `medicine_id`, `quantity`, `release_date`, `released_by`, `status`) VALUES
+('', NULL, 69, 1, 1, 200, '2023-04-04', 69, 0);
 
 -- --------------------------------------------------------
 
@@ -260,16 +266,20 @@ CREATE TABLE `tbl_opd` (
   `checkup_results` varchar(5000) DEFAULT NULL,
   `next_checkup` date DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_opd`
 --
 
 INSERT INTO `tbl_opd` (`opd_id`, `patient_id`, `checkup_date`, `temperature`, `blood_pressure`, `height`, `weight`, `pulse_rate`, `oxygen_sat`, `complaint`, `preliminary_checkup_done_by`, `doctor_id`, `checkup_results`, `next_checkup`, `status`) VALUES
-(1, '03212301', '2023-03-14', 35, '120/60', 163, 70, 72, 75, 'Pain in the ass', 69, 69, 'The patient has a cucumber lodged in his butt.', '2023-03-25', 0),
+(1, '03212301', '2023-03-14', 35, '120/60', 163, 70, 72, 75, 'Pain in the ass', 69, 72, 'Patient has no jowa', '2023-03-25', 0),
 (2, '03212301', '2023-03-08', 37, '120/60', 163, 70, 70, 72, 'Pain when urinating', 73, 69, 'Patient has UTI. Prescribed antibiotics. Patient should drink lots of fluids.', '2023-03-25', 0),
-(4, '03212302', '2023-01-12', 37, '120/60', 163, 70, 70, 72, 'Heartbroken', 73, NULL, NULL, NULL, 0);
+(4, '03212302', '2023-01-12', 37, '120/60', 163, 70, 70, 72, 'Heartbroken', 73, 67, 'tesxt test', NULL, 0),
+(7, '03212301', '2023-04-06', 37, '120/60', 175, 63, 75, 88, 'Loss of apetite', 69, 69, NULL, NULL, 0),
+(8, '03212301', '2023-03-14', 35, '120/60', 163, 70, 72, 75, 'Pain in the ass', 71, 68, 'Patient has no jowa', '2023-03-25', 0),
+(10, '03212301', '2023-04-07', 38, '110/20', 167, 74, 88, 88, 'test', 69, 67, NULL, NULL, 1),
+(11, '03212301', '2023-04-20', 38, '120/60', 178, 56, 88, 88, 'test test', 70, 68, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -280,16 +290,22 @@ INSERT INTO `tbl_opd` (`opd_id`, `patient_id`, `checkup_date`, `temperature`, `b
 CREATE TABLE `tbl_opd_disease` (
   `opd_disease_id` int(11) NOT NULL,
   `opd_id` int(11) NOT NULL,
-  `opd_disease` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `opd_disease` varchar(200) NOT NULL,
+  `date_added` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_opd_disease`
 --
 
-INSERT INTO `tbl_opd_disease` (`opd_disease_id`, `opd_id`, `opd_disease`) VALUES
-(1, 1, 'hemorrhoids'),
-(5, 2, 'UTI');
+INSERT INTO `tbl_opd_disease` (`opd_disease_id`, `opd_id`, `opd_disease`, `date_added`) VALUES
+(5, 2, 'UTI', '2023-03-14'),
+(45, 8, 'Heartbroken', '0000-00-00'),
+(46, 8, 'Mahilig uminom', '0000-00-00'),
+(87, 1, 'Heartbroken', '0000-00-00'),
+(88, 1, 'Mahilig uminom', '0000-00-00'),
+(93, 4, 'test', '0000-00-00'),
+(94, 4, 'test', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -301,16 +317,18 @@ CREATE TABLE `tbl_opd_lab_results` (
   `lab_result_id` int(11) NOT NULL,
   `opd_id` int(11) NOT NULL,
   `lab_result` varchar(5000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_opd_lab_results`
 --
 
 INSERT INTO `tbl_opd_lab_results` (`lab_result_id`, `opd_id`, `lab_result`) VALUES
-(1, 1, 'Blood in stool'),
 (7, 2, 'Blood in urine'),
-(8, 2, 'Bacteria in urine');
+(8, 2, 'Bacteria in urine'),
+(32, 8, 'Walang jowa'),
+(53, 1, 'Walang jowa'),
+(56, 4, 'test');
 
 -- --------------------------------------------------------
 
@@ -325,7 +343,7 @@ CREATE TABLE `tbl_patient_info` (
   `first_name` varchar(200) NOT NULL,
   `middle_name` varchar(200) DEFAULT NULL,
   `suffix` varchar(200) DEFAULT NULL,
-  `sex` int(2) NOT NULL COMMENT '1 - male, 2 - female',
+  `sex` int(2) NOT NULL COMMENT '0 - male, 1 - female',
   `birthdate` date NOT NULL,
   `barangay` varchar(200) NOT NULL,
   `address` varchar(5000) NOT NULL,
@@ -333,65 +351,76 @@ CREATE TABLE `tbl_patient_info` (
   `added_by` int(11) NOT NULL,
   `date_added` date NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deceased, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_patient_info`
 --
 
 INSERT INTO `tbl_patient_info` (`patient_id`, `household_id`, `last_name`, `first_name`, `middle_name`, `suffix`, `sex`, `birthdate`, `barangay`, `address`, `phone_number`, `added_by`, `date_added`, `status`) VALUES
-('03212301', 1, 'Grajo', 'Julius Albert', 'Areola', NULL, 1, '1996-09-09', 'Tagaytay', 'Camalig', '094685123123', 69, '2023-03-21', 0),
-('03212302', 2, 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, 1, '1978-10-10', 'Outside Camalig', 'Bacacay, Albay', '09269851328', 69, '2023-03-21', 0),
-('03212303', 3, 'Boco', 'Roseler', 'Nasol', 'Jr', 1, '1969-02-10', 'Tagaytay', ' Tagaytay, Camalig, Albay', '09269874567', 69, '2023-03-21', 0),
-('03232301', 2, 'Basmayor', 'Pia', 'Areola', NULL, 2, '1997-12-05', 'Bantonan', 'Bantonan, Camalig, Albay', '09812251321', 69, '2023-03-23', 0),
-('03232302', 4, 'Abaranto', 'Cecillo', 'Romulo', NULL, 1, '1996-09-09', 'Tagaytay', 'Tagaytay, Camalig, Albay', '09269851328', 69, '2023-03-23', 0),
-('03232303', 4, 'Abaranto', 'Elsie', 'Azuela', NULL, 2, '1995-06-09', 'Outside Camalig', 'Daraga, Albay', '09268151356', 69, '2023-03-23', 0),
-('03232304', 5, 'Melgar', 'Layla', 'Poland', NULL, 2, '1999-10-03', 'Salugan', 'Salugan, Camalig, Albay', '09471924505', 69, '2023-03-23', 0),
-('03232305', 5, 'Melgar', 'Roldan', 'Abrique', NULL, 1, '1995-09-10', 'Taloto', 'Taloto, Camalig, Albay', '09260051398', 69, '2023-03-23', 0),
-('03232306', 5, 'Melgar', 'Jennifer', 'Abisado', NULL, 2, '2022-12-30', 'Gotob', 'Gotob, Camalig, Albay', '09461805143', 69, '2023-03-23', 0),
-('03232307', 6, 'Bas', 'Ederson', 'Abuela', NULL, 1, '2022-08-03', 'Outside Camalig', 'Pawa, Albay', '09269952365', 69, '2023-03-23', 0),
+('03212301', 1, 'Grajo', 'Julius Albert', 'Areola', NULL, 0, '1996-09-09', 'Tagaytay', 'Camalig', '094685123123', 69, '2023-03-21', 0),
+('03212302', 2, 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, 0, '1978-10-10', 'Outside Camalig', 'Bacacay, Albay', '09269851328', 69, '2023-03-21', 0),
+('03212303', 3, 'Boco', 'Roseler', 'Nasol', 'Jr', 0, '1969-02-10', 'Tagaytay', ' Tagaytay, Camalig, Albay', '09269874567', 69, '2023-03-21', 0),
+('03232301', 2, 'Basmayor', 'Pia', 'Areola', NULL, 1, '1997-12-05', 'Bantonan', 'Bantonan, Camalig, Albay', '09812251321', 69, '2023-03-23', 0),
+('03232302', 4, 'Abaranto', 'Cecillo', 'Romulo', NULL, 0, '1996-09-09', 'Tagaytay', 'Tagaytay, Camalig, Albay', '09269851328', 69, '2023-03-23', 0),
+('03232303', 4, 'Abaranto', 'Elsie', 'Azuela', NULL, 1, '1995-06-09', 'Outside Camalig', 'Daraga, Albay', '09268151356', 69, '2023-03-23', 0),
+('03232304', 5, 'Melgar', 'Layla', 'Poland', NULL, 1, '1999-10-03', 'Salugan', 'Salugan, Camalig, Albay', '09471924505', 69, '2023-03-23', 0),
+('03232305', 5, 'Melgar', 'Roldan', 'Abrique', NULL, 0, '1995-09-10', 'Taloto', 'Taloto, Camalig, Albay', '09260051398', 69, '2023-03-23', 0),
+('03232306', 5, 'Melgar', 'Jennifer', 'Abisado', NULL, 1, '2022-12-30', 'Gotob', 'Gotob, Camalig, Albay', '09461805143', 69, '2023-03-23', 0),
+('03232307', 6, 'Bas', 'Ederson', 'Abuela', NULL, 0, '2022-08-03', 'Outside Camalig', 'Pawa, Albay', '09269952365', 69, '2023-03-23', 0),
 ('03232308', 6, 'Bas', 'Shenna Marie', 'Moya', NULL, 1, '1998-06-04', 'Miti', 'Miti, Camalig, Albay', '09269761328', 69, '2023-03-23', 0),
-('03232309', 6, 'Bas', 'Regina', 'Abiera', NULL, 2, '1994-11-13', 'Bongabong', 'Bongabong, Camalig, Albay', '09267743557', 69, '2023-03-23', 0),
-('03232310', 7, 'Malaya', 'Mercy', 'Abad', NULL, 2, '2023-01-04', 'Outside Camalig', 'Maroroy, Albay', '09819858325', 69, '2023-03-23', 0),
-('03232311', 7, 'Malaya', 'Hannah Mae', 'Villa', NULL, 2, '2000-01-15', 'Binitayan', 'Binitayan, Camalig, Albay', '09260733629', 69, '2023-03-23', 0),
-('03232312', 8, 'Arena', 'Marissa Joy', 'Nueva', NULL, 2, '1992-01-07', 'Binitayan', 'Binitayan, Camalig, Albay', '09269899328', 69, '2023-03-23', 0),
-('03232313', 8, 'Arena', 'Maricel', 'Abes', NULL, 2, '1998-11-22', 'Binitayan', 'Binitayan, Camalig, Albay', '09818851324', 69, '2023-03-23', 0),
-('03232314', 8, 'Arena', 'Joselito', 'Pascual', 'Jr', 1, '1993-06-09', 'Binitayan', 'Binitayan, Camalig, Albay', '09260091325', 69, '2023-03-23', 0),
-('03232315', 8, 'Arena', 'Rofino', 'Abra', 'Sr', 1, '1938-06-07', 'Comun', 'Comun, Camalig, Albay', '09268824369', 69, '2023-03-23', 0),
-('03232316', 9, 'Cabala', 'Francis', 'Escudero', NULL, 1, '1992-04-06', 'Outside Camalig', 'Legazpi, City', '09267851355', 69, '2023-03-23', 0),
-('03232317', 9, 'Cabala', 'Albert', 'Balbin', NULL, 1, '1995-11-08', 'Caguiba', 'Caguiba, Camalig, Albay', '09260081356', 69, '2023-03-23', 0),
-('03232318', 9, 'Cabala', 'John Paul', 'Masarate', NULL, 1, '1998-10-05', 'Caguiba', 'Caguiba, Camalig, Albay', '09817544359', 69, '2023-03-23', 0),
-('03232319', 9, 'Cabala', 'Joel', 'Asejo', NULL, 1, '1997-05-03', 'Outside Camalig', 'Oas, Albay', '09260045524', 69, '2023-03-23', 0),
-('03232320', 10, 'Dalit', 'Ruby', 'Reales', NULL, 2, '1999-09-17', 'Bariw', 'Bariw, Camalig, Albay', '09266851395', 69, '2023-03-23', 0),
-('03232321', 10, 'Dalit', 'Maribel', 'Asignado', NULL, 2, '1983-10-18', 'Outside Camalig', 'Matnog, Albay', '09260051324', 69, '2023-03-23', 0),
-('03232322', 10, 'Dalit', 'Peralta', 'Perez', NULL, 2, '1997-09-05', 'Outside Camalig', 'Malilipot, Albay', '09268853421', 69, '2023-03-23', 0),
-('03232323', 11, 'Ronda', 'Roselyn', 'Agnote', NULL, 2, '1998-03-24', 'Outside Camalig', 'Polangui, Albay', '09268951322', 69, '2023-03-23', 0),
-('03232324', 11, 'Ronda', 'Julius', 'Arnaldo', NULL, 1, '1998-04-09', 'Calabidongan', 'Calabidongan, Camalig, Albay', '09266651323', 69, '2023-03-23', 0),
-('03232325', 11, 'Ronda', 'Francia', 'Panalo', NULL, 2, '1999-03-24', 'Ilawod', 'Ilawod, Camalig, Albay', '09260043224', 69, '2023-03-23', 0),
-('03232326', 12, 'Alcala', 'Roberto', 'Abraham', NULL, 1, '1998-09-02', 'Ilawod', 'Ilawod, Camalig, Albay', '09264151325', 69, '2023-03-23', 0),
-('03232327', 12, 'Alcala', 'Ruffa Mae', 'Israel', NULL, 2, '1999-11-26', 'Outside Camalig', 'Ligao, Albay', '09260895432', 69, '2023-03-23', 0),
-('03232328', 12, 'Alcala', 'Rafael', 'Bola', NULL, 1, '1995-12-28', 'Magogon', 'Magogon, Camalig, Albay', '09269851355', 69, '2023-03-23', 0),
-('03232329', 12, 'Alcala', 'Alexa', 'Esplana', NULL, 2, '1999-09-11', 'Magogon', 'Magogon, Camalig, Albay', '09260081906', 69, '2023-03-23', 0),
-('03232330', 13, 'Andes', 'John', 'Arena', NULL, 1, '1991-12-05', 'Magogon', 'Magogon, Camalig, Albay', '09812756436', 69, '2023-03-23', 0),
-('03232331', 13, 'Andes', 'Lizbit', 'Reblando', NULL, 2, '1990-08-13', 'Maninila', 'Maninila, Camalig, Albay', '09268851356', 69, '2023-03-23', 0),
-('03232332', 13, 'Andes', 'Mary Rose', 'Montega', NULL, 2, '1999-12-15', 'Outside Camalig', 'Pioduran, Albay', '09815567432', 69, '2023-03-23', 0),
-('03232333', 13, 'Andes', 'Raul', 'Almayda', NULL, 1, '1996-11-02', 'Gotob', 'Gotob, Camalig, Albay', '09268889421', 69, '2023-03-23', 0),
-('03232334', 13, 'Andes', 'Leandro', 'Alagaban', NULL, 1, '1997-01-08', 'Gotob', 'Gotob, Camalig, Albay', '09265851355', 69, '2023-03-23', 0),
-('03232335', 14, 'Armenta', 'Celest Emarie', 'Areola', NULL, 2, '2000-05-19', 'Palanog', 'Palanog, Camalig, Albay', '09816643521', 69, '2023-03-23', 0),
-('03232336', 14, 'Armenta', 'Robert', 'Umayan', NULL, 1, '1997-10-09', 'Palanog', 'Palanog, Camalig, Albay', '09266455137', 69, '2023-03-23', 0),
-('03232337', 14, 'Armenta', 'Jared Leonard', 'Ariel', NULL, 1, '2000-07-03', 'Cotmon', 'Cotmon, Camalig, Albay', '09264891376', 69, '2023-03-23', 0),
-('03232338', 15, 'Miralles', 'Jonalyn', 'Azupardo', NULL, 2, '1986-10-06', 'Cotmon', 'Cotmon, Camalig, Albay', '09269856751', 69, '2023-03-23', 0),
-('03232339', 15, 'Miralles', 'Jairus Lim', 'Barcebal', NULL, 1, '1996-09-09', 'Manawan', 'Manawan, Camalig, Albay', '09260042321', 69, '2023-03-23', 0),
-('03232340', 15, 'Miralles', 'Michell', 'Ayala', NULL, 2, '1999-12-27', 'Manawan', 'Manawan, Camalig, Albay', '09263351358', 69, '2023-03-23', 0),
-('03232341', 16, 'Cruz', 'Jose Rolando', 'Bente', NULL, 1, '1994-04-08', 'Quitinday', 'Quitinday, Camalig, Albay', '09812265324', 69, '2023-03-23', 0),
-('03232342', 16, 'Cruz', 'Lilibeth', 'Berces', NULL, 2, '1990-05-21', 'Quitinday', 'Quitinday, Camalig, Albay', '09264532221 ', 69, '2023-03-23', 0),
-('03232343', 16, 'Cruz', 'Veronica', 'Gonzales', NULL, 2, '1991-05-29', 'Outside Camalig', 'Malinaw, Albay', '09265551384', 69, '2023-03-23', 0),
-('03232344', 16, 'Cruz', 'Josephine', 'Abaranto', NULL, 2, '1990-08-20', 'Gapo', 'Gapo, Camalig, Albay', '09819954324', 69, '2023-03-23', 0),
-('03232345', 17, 'Hiram', 'Demetrio', 'Abonda', NULL, 1, '1990-10-22', 'Gapo', 'Gapo, Camalig, Albay', '09267746432', 69, '2023-03-23', 0),
-('03232346', 17, 'Hiram', 'Jomar', 'Banalnal', NULL, 1, '2000-09-04', 'Anoling', 'Anoling, Camalig, Albay', '09263351384', 69, '2023-03-23', 0),
-('03232347', 18, 'Reolo', 'Marelyn', 'Lucio', NULL, 2, '1991-11-23', 'Anoling', 'Anoling, Camalig, Albay', '09817745632', 69, '2023-03-23', 0),
-('03232348', 18, 'Reolo', 'Samuel', 'Israel', NULL, 1, '1992-05-30', 'Mabunga', 'Mabunga, Camalig, Albay', '09260084532', 69, '2023-03-23', 0),
-('03232349', 18, 'Reolo', 'Arnold', 'Arnulfo', NULL, 1, '1999-04-03', 'Mabunga', 'Mabunga, Camalig, Albay', '09815649642', 69, '2023-03-23', 0);
+('03232309', 6, 'Bas', 'Regina', 'Abiera', NULL, 1, '1994-11-13', 'Bongabong', 'Bongabong, Camalig, Albay', '09267743557', 69, '2023-03-23', 0),
+('03232310', 7, 'Malaya', 'Mercy', 'Abad', NULL, 1, '2023-01-04', 'Outside Camalig', 'Maroroy, Albay', '09819858325', 69, '2023-03-23', 0),
+('03232311', 7, 'Malaya', 'Hannah Mae', 'Villa', NULL, 1, '2000-01-15', 'Binitayan', 'Binitayan, Camalig, Albay', '09260733629', 69, '2023-03-23', 0),
+('03232312', 8, 'Arena', 'Marissa Joy', 'Nueva', NULL, 1, '1992-01-07', 'Binitayan', 'Binitayan, Camalig, Albay', '09269899328', 69, '2023-03-23', 0),
+('03232313', 8, 'Arena', 'Maricel', 'Abes', NULL, 1, '1998-11-22', 'Binitayan', 'Binitayan, Camalig, Albay', '09818851324', 69, '2023-03-23', 0),
+('03232314', 8, 'Arena', 'Joselito', 'Pascual', 'Jr', 0, '1993-06-09', 'Binitayan', 'Binitayan, Camalig, Albay', '09260091325', 69, '2023-03-23', 0),
+('03232315', 8, 'Arena', 'Rofino', 'Abra', 'Sr', 0, '1938-06-07', 'Comun', 'Comun, Camalig, Albay', '09268824369', 69, '2023-03-23', 0),
+('03232316', 9, 'Cabala', 'Francis', 'Escudero', NULL, 0, '1992-04-06', 'Outside Camalig', 'Legazpi, City', '09267851355', 69, '2023-03-23', 0),
+('03232317', 9, 'Cabala', 'Albert', 'Balbin', NULL, 0, '1995-11-08', 'Caguiba', 'Caguiba, Camalig, Albay', '09260081356', 69, '2023-03-23', 0),
+('03232318', 9, 'Cabala', 'John Paul', 'Masarate', NULL, 0, '1998-10-05', 'Caguiba', 'Caguiba, Camalig, Albay', '09817544359', 69, '2023-03-23', 0),
+('03232319', 9, 'Cabala', 'Joel', 'Asejo', NULL, 0, '1997-05-03', 'Outside Camalig', 'Oas, Albay', '09260045524', 69, '2023-03-23', 0),
+('03232320', 10, 'Dalit', 'Ruby', 'Reales', NULL, 1, '1999-09-17', 'Bariw', 'Bariw, Camalig, Albay', '09266851395', 69, '2023-03-23', 0),
+('03232321', 10, 'Dalit', 'Maribel', 'Asignado', NULL, 1, '1983-10-18', 'Outside Camalig', 'Matnog, Albay', '09260051324', 69, '2023-03-23', 0),
+('03232322', 10, 'Dalit', 'Peralta', 'Perez', NULL, 0, '1997-09-05', 'Outside Camalig', 'Malilipot, Albay', '09268853421', 69, '2023-03-23', 0),
+('03232323', 11, 'Ronda', 'Roselyn', 'Agnote', NULL, 1, '1998-03-24', 'Outside Camalig', 'Polangui, Albay', '09268951322', 69, '2023-03-23', 0),
+('03232324', 11, 'Ronda', 'Julius', 'Arnaldo', NULL, 0, '1998-04-09', 'Calabidongan', 'Calabidongan, Camalig, Albay', '09266651323', 69, '2023-03-23', 0),
+('03232325', 11, 'Ronda', 'Francia', 'Panalo', NULL, 1, '1999-03-24', 'Ilawod', 'Ilawod, Camalig, Albay', '09260043224', 69, '2023-03-23', 0),
+('03232326', 12, 'Alcala', 'Roberto', 'Abraham', NULL, 0, '1998-09-02', 'Ilawod', 'Ilawod, Camalig, Albay', '09264151325', 69, '2023-03-23', 0),
+('03232327', 12, 'Alcala', 'Ruffa Mae', 'Israel', NULL, 1, '1999-11-26', 'Outside Camalig', 'Ligao, Albay', '09260895432', 69, '2023-03-23', 0),
+('03232328', 12, 'Alcala', 'Rafael', 'Bola', NULL, 0, '1995-12-28', 'Magogon', 'Magogon, Camalig, Albay', '09269851355', 69, '2023-03-23', 0),
+('03232329', 12, 'Alcala', 'Alexa', 'Esplana', NULL, 1, '1999-09-11', 'Magogon', 'Magogon, Camalig, Albay', '09260081906', 69, '2023-03-23', 0),
+('03232330', 13, 'Andes', 'John', 'Arena', NULL, 0, '1991-12-05', 'Magogon', 'Magogon, Camalig, Albay', '09812756436', 69, '2023-03-23', 0),
+('03232331', 13, 'Andes', 'Lizbit', 'Reblando', NULL, 1, '1990-08-13', 'Maninila', 'Maninila, Camalig, Albay', '09268851356', 69, '2023-03-23', 0),
+('03232332', 13, 'Andes', 'Mary Rose', 'Montega', NULL, 1, '1999-12-15', 'Outside Camalig', 'Pioduran, Albay', '09815567432', 69, '2023-03-23', 0),
+('03232333', 13, 'Andes', 'Raul', 'Almayda', NULL, 0, '1996-11-02', 'Gotob', 'Gotob, Camalig, Albay', '09268889421', 69, '2023-03-23', 0),
+('03232334', 13, 'Andes', 'Leandro', 'Alagaban', NULL, 0, '1997-01-08', 'Gotob', 'Gotob, Camalig, Albay', '09265851355', 69, '2023-03-23', 0),
+('03232335', 14, 'Armenta', 'Celest Emarie', 'Areola', NULL, 1, '2000-05-19', 'Palanog', 'Palanog, Camalig, Albay', '09816643521', 69, '2023-03-23', 0),
+('03232336', 14, 'Armenta', 'Robert', 'Umayan', NULL, 0, '1997-10-09', 'Palanog', 'Palanog, Camalig, Albay', '09266455137', 69, '2023-03-23', 0),
+('03232337', 14, 'Armenta', 'Jared Leonard', 'Ariel', NULL, 0, '2000-07-03', 'Cotmon', 'Cotmon, Camalig, Albay', '09264891376', 69, '2023-03-23', 0),
+('03232338', 15, 'Miralles', 'Jonalyn', 'Azupardo', NULL, 1, '1986-10-06', 'Cotmon', 'Cotmon, Camalig, Albay', '09269856751', 69, '2023-03-23', 0),
+('03232339', 15, 'Miralles', 'Jairus Lim', 'Barcebal', NULL, 0, '1996-09-09', 'Manawan', 'Manawan, Camalig, Albay', '09260042321', 69, '2023-03-23', 0),
+('03232340', 15, 'Miralles', 'Michell', 'Ayala', NULL, 1, '1999-12-27', 'Manawan', 'Manawan, Camalig, Albay', '09263351358', 69, '2023-03-23', 0),
+('03232341', 16, 'Cruz', 'Jose Rolando', 'Bente', NULL, 0, '1994-04-08', 'Quitinday', 'Quitinday, Camalig, Albay', '09812265324', 69, '2023-03-23', 0),
+('03232342', 16, 'Cruz', 'Lilibeth', 'Berces', NULL, 1, '1990-05-21', 'Quitinday', 'Quitinday, Camalig, Albay', '09264532221 ', 69, '2023-03-23', 0),
+('03232343', 16, 'Cruz', 'Veronica', 'Gonzales', NULL, 1, '1991-05-29', 'Outside Camalig', 'Malinaw, Albay', '09265551384', 69, '2023-03-23', 0),
+('03232344', 16, 'Cruz', 'Josephine', 'Abaranto', NULL, 1, '1990-08-20', 'Gapo', 'Gapo, Camalig, Albay', '09819954324', 69, '2023-03-23', 0),
+('03232345', 17, 'Hiram', 'Demetrio', 'Abonda', NULL, 0, '1990-10-22', 'Gapo', 'Gapo, Camalig, Albay', '09267746432', 69, '2023-03-23', 0),
+('03232346', 17, 'Hiram', 'Jomar', 'Banalnal', NULL, 0, '2000-09-04', 'Anoling', 'Anoling, Camalig, Albay', '09263351384', 69, '2023-03-23', 0),
+('03232347', 18, 'Reolo', 'Marelyn', 'Lucio', NULL, 1, '1991-11-23', 'Anoling', 'Anoling, Camalig, Albay', '09817745632', 69, '2023-03-23', 0),
+('03232348', 18, 'Reolo', 'Samuel', 'Israel', NULL, 0, '1992-05-30', 'Mabunga', 'Mabunga, Camalig, Albay', '09260084532', 69, '2023-03-23', 0),
+('03232349', 18, 'Reolo', 'Arnold', 'Arnulfo', NULL, 0, '1999-04-03', 'Mabunga', 'Mabunga, Camalig, Albay', '09815649642', 69, '2023-03-23', 0),
+('04032301', 1, 'Cruz', 'Lance', 'Baller', NULL, 0, '2020-03-28', 'Tagaytay', 'Tagaytay, Camalig, Albay', '09269851328', 69, '2023-04-03', 0),
+('04032302', 2, 'Hiram', 'John Mark', 'Bataller', NULL, 0, '2020-03-22', 'Anoling', 'Anoling, Camalig, Albay', '09269851328', 69, '2023-04-03', 0),
+('04032303', 3, 'Andes', 'Asley Zeah', 'zuela', NULL, 1, '2020-03-10', 'Gotob', 'Gotob, Camalig, Albay', '09268151356', 69, '2023-04-03', 0),
+('04032304', 4, 'Datun', 'Althea Zamarrah', 'Areola', NULL, 1, '2020-03-07', 'Bantonan', 'Bantonan, Camalig, Albay', '09812251321', 69, '2023-04-03', 0),
+('04032305', 5, 'Largo', 'John Louie', 'Dexisne', NULL, 0, '2023-03-20', 'Salugan', 'Salugan, Camalig, Albay', '09471924505', 69, '2023-04-03', 0),
+('04032306', 6, 'Villa', 'Achiles Jacob', 'Abuela', NULL, 0, '2023-03-11', 'Taloto', 'Taloto, Camalig, Albay', '09260051398', 69, '2023-04-03', 0),
+('04032307', 7, 'Zeus', 'Ruffa Mae', 'Abes', NULL, 1, '2000-12-30', 'Gotob', 'Gotob, Camalig, Albay', '09461805143', 69, '2023-04-03', 0),
+('04032308', 8, 'Moya', 'Jayley Rose', 'Andes', NULL, 1, '2020-03-18', 'Bariw', 'Bariw, Camalig, Albay', '09269952365', 69, '2023-04-03', 0),
+('04032309', 9, 'Yap', 'John Albet', 'Alejo', NULL, 0, '2023-03-23', 'Miti', 'Miti, Camalig, Albay', '09269761328', 69, '2023-04-03', 0),
+('04032310', 10, 'Atun', 'Rhian Mae', 'Abiera', NULL, 1, '2023-03-19', 'Bongabong', 'Bongabong, Camalig, Albay', '09267743557', 69, '2023-04-03', 0),
+('04042301', 1, 'De La Cruz', 'Antonio', NULL, NULL, 0, '2015-04-04', 'Baligang', 'Baligang, Camalig', '09451237851', 69, '2023-04-04', 0);
 
 -- --------------------------------------------------------
 
@@ -407,16 +436,17 @@ CREATE TABLE `tbl_prenatal` (
   `previous_full_term` int(11) NOT NULL,
   `previous_premature` int(11) NOT NULL,
   `midwifes_notes` varchar(5000) DEFAULT NULL,
+  `date_added` date NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_prenatal`
 --
 
-INSERT INTO `tbl_prenatal` (`prenatal_id`, `midwife_id`, `patient_id`, `last_menstruation`, `previous_full_term`, `previous_premature`, `midwifes_notes`, `status`) VALUES
-(1, 71, '03232301', '2023-01-05', 0, 0, 'Pregnancy is normal.', 0),
-(2, 71, '03232303', '2023-02-03', 1, 1, 'All seems good', 0);
+INSERT INTO `tbl_prenatal` (`prenatal_id`, `midwife_id`, `patient_id`, `last_menstruation`, `previous_full_term`, `previous_premature`, `midwifes_notes`, `date_added`, `status`) VALUES
+(1, 71, '03232301', '2023-01-05', 0, 0, 'Pregnancy is normal.', '2023-03-29', 0),
+(2, 71, '03232303', '2023-02-03', 1, 1, 'All seems good', '2023-03-29', 0);
 
 -- --------------------------------------------------------
 
@@ -437,7 +467,7 @@ CREATE TABLE `tbl_prenatal_checkup` (
   `next_checkup` date DEFAULT NULL,
   `comments` varchar(5000) DEFAULT NULL,
   `status` int(3) NOT NULL COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_prenatal_checkup`
@@ -458,9 +488,16 @@ INSERT INTO `tbl_prenatal_checkup` (`prenatal_checkup_id`, `prenatal_id`, `heigh
 CREATE TABLE `tbl_pwd` (
   `pwd_id` varchar(200) NOT NULL,
   `patient_id` varchar(200) NOT NULL,
-  `disablity` varchar(500) DEFAULT NULL,
+  `disability` varchar(500) DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deceased, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_pwd`
+--
+
+INSERT INTO `tbl_pwd` (`pwd_id`, `patient_id`, `disability`, `status`) VALUES
+('12test', '03212302', 'Erectile Dysfunction', 0);
 
 -- --------------------------------------------------------
 
@@ -472,7 +509,7 @@ CREATE TABLE `tbl_queue` (
   `queue_number` varchar(200) NOT NULL,
   `patient_id` varchar(200) NOT NULL,
   `department` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -484,7 +521,14 @@ CREATE TABLE `tbl_senior_citizen` (
   `senior_citizen_id` varchar(200) NOT NULL,
   `patient_id` varchar(200) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deceased, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_senior_citizen`
+--
+
+INSERT INTO `tbl_senior_citizen` (`senior_citizen_id`, `patient_id`, `status`) VALUES
+('12xc', '03212302', 0);
 
 -- --------------------------------------------------------
 
@@ -496,12 +540,21 @@ CREATE TABLE `tbl_supplies_inventory` (
   `supply_id` int(11) NOT NULL,
   `supply_name` varchar(200) NOT NULL,
   `supply_type` varchar(200) NOT NULL,
-  `mfg_date` int(11) NOT NULL,
-  `exp_date` int(11) DEFAULT NULL,
+  `mfg_date` date NOT NULL,
+  `exp_date` date DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `quantity_type` varchar(200) NOT NULL,
-  `status` int(3) NOT NULL COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `date_added` date NOT NULL,
+  `added_by` int(11) NOT NULL,
+  `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_supplies_inventory`
+--
+
+INSERT INTO `tbl_supplies_inventory` (`supply_id`, `supply_name`, `supply_type`, `mfg_date`, `exp_date`, `quantity`, `quantity_type`, `date_added`, `added_by`, `status`) VALUES
+(1, 'Gloves', 'Gloves', '2022-04-05', '2026-04-15', 600, 'piece', '2023-04-04', 69, 0);
 
 -- --------------------------------------------------------
 
@@ -513,9 +566,18 @@ CREATE TABLE `tbl_supply_release` (
   `supply_release_id` int(11) NOT NULL,
   `supply_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `quantity_released` int(11) NOT NULL,
-  `status` int(3) NOT NULL COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `quantity` int(11) NOT NULL,
+  `release_date` date NOT NULL,
+  `released_by` int(11) NOT NULL,
+  `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_supply_release`
+--
+
+INSERT INTO `tbl_supply_release` (`supply_release_id`, `supply_id`, `user_id`, `quantity`, `release_date`, `released_by`, `status`) VALUES
+(1, 1, 69, 100, '2023-04-04', 69, 0);
 
 -- --------------------------------------------------------
 
@@ -539,7 +601,7 @@ CREATE TABLE `tbl_users` (
   `permission_level` int(5) NOT NULL COMMENT '0 - no access, 1 - admin, 2 - doctors, 3 - front_desk, 4 - view',
   `date_added` date NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = suspended, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_users`
@@ -548,7 +610,7 @@ CREATE TABLE `tbl_users` (
 INSERT INTO `tbl_users` (`user_id`, `username`, `password`, `last_name`, `first_name`, `middle_name`, `suffix`, `birthdate`, `phone_number`, `sex`, `department`, `job_title`, `permission_level`, `date_added`, `status`) VALUES
 (67, 'basmayormbOPD67', '$2y$10$5yE/uCGotKWaf9WYBH/qNeG9BZhQl9rsTevsxGwgrAEzOHgyj7R8m', 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, '1998-05-05', '09488561235', 0, 1, 'Assistant', 2, '2023-03-18', 0),
 (68, 'bocornDNTL68', '$2y$10$rbeyU7K7Y7hkWhuDsvMI1eHIu24ZZO1ugsSyco2eYLePZYlWEj.aS', 'Boco', 'Roseler', 'Nasol', 'Jr', '1998-05-05', '09488561235', 0, 2, 'Doctor', 2, '2023-03-18', 0),
-(69, 'pogingAdmin69', '$2y$10$Hm2Y.fiN1kGYB1Ye.gDgbOBm1OC4IHGIcN3YnouWTm5lEu3F14NoS', 'Grajo', 'Julius Albert', 'Areola', NULL, '1998-05-05', '09488561235', 0, 6, 'Office Staff', 8, '2023-03-18', 0),
+(69, 'pogingAdmin69', '$2y$10$W4Q9MuV5gSnxM4oCZI6IGu25yxNiBtgz2pwlbk692WdjT5rLbTDt.', 'Grajo', 'Julius Albert', 'Areola', NULL, '1998-05-05', '09488561235', 0, 6, 'Office Staff', 1, '2023-03-18', 0),
 (70, 'ardaleseOPD70', '$2y$10$zcinjgZNSCPgsXHgHO/3Z.lXzG7s10mYtgvcExPP8497OA3lf3p6a', 'Ardales', 'Edmel', NULL, NULL, '1998-05-05', '09488561235', 0, 1, 'Doctor', 2, '2023-03-18', 0),
 (71, 'aperinlOPD71', '$2y$10$djgAWdpYRa9n2ALt/qMdCeAmkYvKvzNmjWzHPVYOBHQvpvq41DZte', 'Aperin', 'Lynnette', NULL, NULL, '1998-05-05', '09488561235', 0, 1, 'Midwife', 3, '2023-03-18', 0),
 (72, 'esplanasADMIN72', '$2y$10$IULIcy.DfQDA4je.5hQXR.n0EBgVu8pOMTeQ87msXbv2QqrDAVmAy', 'Esplana', 'Samuel', NULL, NULL, '1998-05-05', '09488561235', 0, 6, 'Office Staff', 1, '2023-03-18', 0),
@@ -684,14 +746,17 @@ ALTER TABLE `tbl_senior_citizen`
 -- Indexes for table `tbl_supplies_inventory`
 --
 ALTER TABLE `tbl_supplies_inventory`
-  ADD PRIMARY KEY (`supply_id`);
+  ADD PRIMARY KEY (`supply_id`),
+  ADD KEY `supplies_inv_fk_added_by` (`added_by`);
 
 --
 -- Indexes for table `tbl_supply_release`
 --
 ALTER TABLE `tbl_supply_release`
   ADD PRIMARY KEY (`supply_release_id`),
-  ADD KEY `supply_release_fk_supply_id` (`supply_id`);
+  ADD KEY `supply_release_fk_supply_id` (`supply_id`),
+  ADD KEY `supply_release_fk_released_by` (`released_by`),
+  ADD KEY `supply_release_fk_user_id` (`user_id`);
 
 --
 -- Indexes for table `tbl_users`
@@ -727,7 +792,7 @@ ALTER TABLE `tbl_department`
 -- AUTO_INCREMENT for table `tbl_household`
 --
 ALTER TABLE `tbl_household`
-  MODIFY `household_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `household_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tbl_immunization`
@@ -745,19 +810,19 @@ ALTER TABLE `tbl_medicine_inventory`
 -- AUTO_INCREMENT for table `tbl_opd`
 --
 ALTER TABLE `tbl_opd`
-  MODIFY `opd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `opd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_opd_disease`
 --
 ALTER TABLE `tbl_opd_disease`
-  MODIFY `opd_disease_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `opd_disease_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT for table `tbl_opd_lab_results`
 --
 ALTER TABLE `tbl_opd_lab_results`
-  MODIFY `lab_result_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `lab_result_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `tbl_prenatal`
@@ -775,13 +840,13 @@ ALTER TABLE `tbl_prenatal_checkup`
 -- AUTO_INCREMENT for table `tbl_supplies_inventory`
 --
 ALTER TABLE `tbl_supplies_inventory`
-  MODIFY `supply_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `supply_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_supply_release`
 --
 ALTER TABLE `tbl_supply_release`
-  MODIFY `supply_release_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `supply_release_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_users`
@@ -873,7 +938,7 @@ ALTER TABLE `tbl_prenatal_checkup`
 -- Constraints for table `tbl_pwd`
 --
 ALTER TABLE `tbl_pwd`
-  ADD CONSTRAINT `pwd_fk_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `tbl_patient_info` (`patient_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `pwd_fk_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `tbl_patient_info` (`patient_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_queue`
@@ -886,13 +951,21 @@ ALTER TABLE `tbl_queue`
 -- Constraints for table `tbl_senior_citizen`
 --
 ALTER TABLE `tbl_senior_citizen`
-  ADD CONSTRAINT `patient_id` FOREIGN KEY (`patient_id`) REFERENCES `tbl_patient_info` (`patient_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `patient_id` FOREIGN KEY (`patient_id`) REFERENCES `tbl_patient_info` (`patient_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tbl_supplies_inventory`
+--
+ALTER TABLE `tbl_supplies_inventory`
+  ADD CONSTRAINT `supplies_inv_fk_added_by` FOREIGN KEY (`added_by`) REFERENCES `tbl_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_supply_release`
 --
 ALTER TABLE `tbl_supply_release`
-  ADD CONSTRAINT `supply_release_fk_supply_id` FOREIGN KEY (`supply_id`) REFERENCES `tbl_supplies_inventory` (`supply_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `supply_release_fk_released_by` FOREIGN KEY (`released_by`) REFERENCES `tbl_users` (`user_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `supply_release_fk_supply_id` FOREIGN KEY (`supply_id`) REFERENCES `tbl_supplies_inventory` (`supply_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `supply_release_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`user_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_users`
