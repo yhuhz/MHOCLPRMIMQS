@@ -1,23 +1,23 @@
 import axios from "axios";
 import { ref, readonly } from "vue";
-let Patients = ref([]);
-let PatientsList = readonly(Patients);
-let PatientDetails = ref([]);
+let Households = ref([]);
+let HouseholdsList = readonly(Households);
+let HouseholdDetails = ref([]);
 let pathlink =
-  "http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/patient_api.php";
+  "http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/household_api.php";
 /**
  * This function accepts parameters of an array then
- * set the passed array to Patients data.
+ * set the passed array to Households data.
  * @param {*} object
  */
-let GetPatients = (payload) => {
+let GetHouseholds = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
         params: { payload: payload },
       })
       .then((response) => {
-        Patients.value = response.data.data;
+        Households.value = response.data.data;
         resolve(response.data);
       })
       .catch((error) => {
@@ -26,17 +26,33 @@ let GetPatients = (payload) => {
   });
 };
 
-let FindPatient = (payload) => {
+let FindHousehold = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
         params: {
-          payload: payload,
+          household_id: payload,
         },
       })
       .then((response) => {
-        // console.log(response.data);
-        PatientDetails.value = response.data.data[0];
+        HouseholdDetails.value = response.data.data[0];
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let FindHouseholdByName = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          household_name: payload,
+        },
+      })
+      .then((response) => {
         resolve(response.data);
       })
       .catch((error) => {
@@ -47,17 +63,17 @@ let FindPatient = (payload) => {
 
 /**
  * This function accepts parameters of an object then
- * add the passed object to Patients data.
+ * add the passed object to Households data.
  * @param {*} object
  */
-let AddPatient = (payload) => {
+let AddUser = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .post(pathlink, payload)
       .then((response) => {
-        console.log(response.data);
         if (response.data.status === "success") {
-          // Patients.value.push(response.data.data);
+          console.log(response.data);
+          Households.value.push(response.data.data);
         } else {
           console.log(response.data);
         }
@@ -70,26 +86,25 @@ let AddPatient = (payload) => {
 };
 /**
  * This function accepts parameters of an object then
- * updates the Patients specific data based on the id passed in the object.
+ * updates the Households specific data based on the id passed in the object.
  * @param {*} object
  */
-let EditPatient = (payload) => {
+let UpdateUser = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .put(pathlink, payload)
       .then((response) => {
-        // console.log(response.data);
         if (response.data.status === "success") {
-          // let objectIndex = Patients.value.findIndex(
-          //   (e) => e.patient_id === payload.personal_info.patient_id
-          // );
-          // // if index not found (-1) update nothing !
-          // objectIndex !== -1 &&
-          //   Object.keys(Patients.value[objectIndex]).forEach((key) => {
-          //     response.data.data.personal_info[key] &&
-          //       (Patients.value[objectIndex][key] =
-          //         response.data.data.personal_info[key]);
-          //   });
+          console.log(response.data);
+          let objectIndex = Households.value.findIndex(
+            (e) => e.id === payload.id
+          );
+          // if index not found (-1) update nothing !
+          objectIndex !== -1 &&
+            Object.keys(Households.value[objectIndex]).forEach((key) => {
+              response.data.data[key] &&
+                (Households.value[objectIndex][key] = response.data.data[key]);
+            });
         } else [console.log(response.data)];
         resolve(response.data);
       })
@@ -101,20 +116,20 @@ let EditPatient = (payload) => {
 
 /**
  * This function accepts parameters of an array like this [1,2,3,4] then
- * delete the data in the Patients based on this parameter.
+ * delete the data in the Households based on this parameter.
  * @param {*} array
  */
-let DeletePatient = (payload) => {
+let DeleteUser = (payload) => {
   return new Promise((resolve, reject) => {
     axios
-      .delete(pathlink + "?patient_id=" + payload.patient_id)
+      .delete(pathlink + "?id=" + payload.id)
       .then((response) => {
         if (response.data.status === "success") {
-          let objectIndex = Patients.value.findIndex(
-            (e) => e.patient_id === payload.patient_id
+          let objectIndex = Households.value.findIndex(
+            (e) => e.id === payload.id
           );
           // if index not found (-1) delete nothing !
-          objectIndex !== -1 && Patients.value.splice(objectIndex, 1);
+          objectIndex !== -1 && Households.value.splice(objectIndex, 1);
         } else {
           console.log(response.data);
         }
@@ -126,15 +141,12 @@ let DeletePatient = (payload) => {
   });
 };
 /**
- * Export PatientsList as readonly (real time copy of Patients)
+ * Export HouseholdsList as readonly (real time copy of Households)
  */
 export {
-  GetPatients,
-  Patients,
-  PatientsList,
-  FindPatient,
-  PatientDetails,
-  AddPatient,
-  EditPatient,
-  DeletePatient,
+  GetHouseholds,
+  HouseholdsList,
+  FindHousehold,
+  HouseholdDetails,
+  FindHouseholdByName,
 };

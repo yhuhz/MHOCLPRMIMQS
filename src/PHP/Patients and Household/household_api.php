@@ -22,6 +22,11 @@ class API
     {
       //GET HOUSEHOLD
       // $this->db->where('status', 0);
+
+      if (isset($_GET['household_name'])) {
+        $this->db->where('household_name', $_GET['household_name'].'%', 'LIKE');
+
+      }
       $household = $this->db->get('tbl_household');
 
       if ($household) {

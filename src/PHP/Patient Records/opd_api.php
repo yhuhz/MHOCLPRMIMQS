@@ -30,31 +30,25 @@ class API
       $opd_record = $opd_record[0];
       $opd_arrays = [];
 
-
-      if (isset($opd_record['doctor_id'])) {
-
           $this->db->where('opd_id', $opd_record['opd_id']);
           $opd_arrays['disease'] = $this->db->get('tbl_opd_disease', null,  'opd_disease');
 
           $this->db->where('opd_id', $opd_record['opd_id']);
           $opd_arrays['lab_results'] = $this->db->get('tbl_opd_lab_results', null, 'lab_result');
 
+          if (isset($opd_record['doctor_id'])) {
           $this->db->where('user_id',$opd_record['doctor_id']);
           $doctor_name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
           $opd_record['doctor_name'] = $doctor_name[0]['name'];
+          }
 
+          if (isset($opd_record['preliminary_checkup_done_by'])) {
           $this->db->where('user_id',$opd_record['preliminary_checkup_done_by']);
           $prelim_name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
           $opd_record['preliminary_checkup_done_by_name'] = $prelim_name[0]['name'];
+          }
 
 
-      } else {
-
-          $this->db->where('user_id',$opd_record['preliminary_checkup_done_by']);
-          $prelim_name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
-          $opd_record['preliminary_checkup_done_by_name'] = $prelim_name[0]['name'];
-
-      }
 
 
       if ($opd_record) {

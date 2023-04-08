@@ -2,10 +2,11 @@ import { ref, watch } from "vue";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import DeletePatientConfirmation from "../../Components/DeletePatientConfirmation";
 import { ToggleDialogState } from "../../../composables/Triggers";
-import { GetPatients, PatientsList } from "src/composables/Patients";
+import { GetPatients, PatientsList, Patients } from "src/composables/Patients";
 import _ from "lodash";
 import { useQuasar, SessionStorage } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
+import { SetIDS } from "src/composables/IDS";
 
 export default {
   components: { MHCDialog, DeletePatientConfirmation },
@@ -16,6 +17,9 @@ export default {
       router.push({ name: "login" });
     }
 
+    Patients.value = [];
+
+    let downloadDisable = ref(true);
     let searchString = ref(null);
     let selectedSearchBy = ref("Name");
     let searchBy = ref(["Name", "Patient ID", "Household ID", "Phone Number"]);
@@ -130,10 +134,10 @@ export default {
         },
       };
 
-      console.log("pay js", payload);
       loading.value = true;
       GetPatients(payload).then((response) => {
         loading.value = false;
+        downloadDisable.value = false;
       });
     };
 
@@ -203,6 +207,11 @@ export default {
       },
     ];
 
+    const deletePatientRecord = (patient_id) => {
+      SetIDS(patient_id);
+      ToggleDialogState();
+    };
+
     const wrapCsvValue = (val, formatFn, row) => {
       let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
 
@@ -251,10 +260,6 @@ export default {
       }
     };
 
-    const openDialog = () => {
-      ToggleDialogState();
-    };
-
     return {
       searchBy,
       selectedSearchBy,
@@ -267,7 +272,6 @@ export default {
       gender_array_model,
       dateAdded,
       columns,
-      openDialog,
       select_all_brgy,
       brgy_checkbox_disable,
       select_all_brgy_change,
@@ -279,6 +283,8 @@ export default {
       loading,
       exportTable,
       sex,
+      downloadDisable,
+      deletePatientRecord,
     };
   },
 };

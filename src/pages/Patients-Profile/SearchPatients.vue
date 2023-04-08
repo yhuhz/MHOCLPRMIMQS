@@ -210,7 +210,7 @@
           "
         >
           <q-btn
-            @click="$router.push('add-new-patient-record')"
+            @click="$router.push('add-edit-patient-record')"
             outline
             label="Create New Patient Profile"
             icon-right="bi-person-add"
@@ -269,7 +269,18 @@
                     </q-item>
 
                     <!-- Edit -->
-                    <q-item clickable class="drop-list">
+                    <q-item
+                      clickable
+                      class="drop-list"
+                      @click="
+                        $router.push({
+                          name: 'add-edit-patient-record',
+                          query: {
+                            id: props.row.patient_id,
+                          },
+                        })
+                      "
+                    >
                       <q-item-section>Edit Details</q-item-section>
                       <q-item-section avatar>
                         <q-icon size="xs" name="eva-edit-outline" />
@@ -277,7 +288,11 @@
                     </q-item>
 
                     <!-- Delete -->
-                    <q-item clickable class="drop-list-delete">
+                    <q-item
+                      clickable
+                      class="drop-list-delete"
+                      @click="deletePatientRecord(props.row.patient_id)"
+                    >
                       <q-item-section>Delete Record</q-item-section>
                       <q-item-section avatar>
                         <q-icon size="xs" name="eva-trash-2-outline" />
@@ -305,6 +320,7 @@
                 no-caps
                 color="primary"
                 unelevated
+                :disable="downloadDisable"
                 class="button-100 download-btn"
                 @click="exportTable()"
               />

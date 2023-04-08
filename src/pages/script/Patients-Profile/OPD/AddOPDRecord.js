@@ -90,13 +90,25 @@ export default {
       }
       AddRecord(patientRecordInfo.value, route.params.department).then(
         (response) => {
-          router.push({
-            name: "OPD/patient_records",
-            params: {
-              record_id: response.data.record_id,
-              department: route.params.department,
-            },
+          let status = response.status === "success" ? 0 : 1;
+
+          $q.notify({
+            type: status === 0 ? "positive" : "negative",
+            classes: "text-white",
+            message:
+              status === 0
+                ? "Patient record added successfully"
+                : "Failed to add patient record",
           });
+          if (status === 0) {
+            router.push({
+              name: "OPD/patient_records",
+              params: {
+                record_id: response.data.record_id,
+                department: route.params.department,
+              },
+            });
+          }
         }
       );
     };

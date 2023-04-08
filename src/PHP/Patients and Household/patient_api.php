@@ -135,9 +135,11 @@ class API
 
     public function httpPost($payload)
     {
-      // print_r($payload); return;
-      foreach($payload as $patient_info) {
-        $patient_info = (array) $patient_info;
+        $payload = (array) $payload;
+        $patient_info = (array) $payload['personal_info'];
+        $pwd = (array) $payload['pwd'];
+        $senior_citizen['senior_citizen_id'] = $payload['senior_citizen'];
+
 
         $patient_info['date_added'] = date("Y-m-d");
 
@@ -153,10 +155,20 @@ class API
 
         $patient = $this->db->insert('tbl_patient_info', $patient_info);
 
+        if (isset($pwd['pwd_id'])) {
+          $pwd['patient_id'] = $patient_info['patient_id'];
+          $this->db->insert('tbl_pwd', $pwd);
+        }
+
+        if (isset($senior_citizen['senior_citizen_id'])) {
+          $senior_citizen['patient_id'] = $patient_info['patient_id'];
+          $this->db->insert('tbl_senior_citizen', $senior_citizen);
+        }
+
 
         if ($patient) {
           echo json_encode(array('status' => 'success',
-                                    'data' => $patient_info,
+                                    'data' => $payload,
                                     'method' => 'POST'
                                   ));
         } else {
@@ -166,18 +178,53 @@ class API
                                   ));
           return;
         }
-      }
-
-
     }
 
     public function httpPut($payload)
     {
-        $payload = (array) $payload;
+      $payload = (array) $payload;
+      $patient_info = (array) $payload['personal_info'];
+      $pwd = (array) $payload['pwd'];
+      $senior_citizen['senior_citizen_id'] = $payload['senior_citizen'];
 
         //EDIT PATIENT INFO
-        $this->db->where('patient_id', $payload['patient_id']);
-        $patient = $this->db->update('tbl_patient_info', $payload);
+        $this->db->where('patient_id', $patient_info['patient_id']);
+        $patient = $this->db->update('tbl_patient_info', $patient_info);
+
+        if (isset($pwd['pwd_id'])) {
+          $pwd['patient_id'] = $patient_info['patient_id'];
+
+          $this->db->where('pwd_id', $pwd['pwd_id']);
+          $pwd_check = $this->db->get('tbl_pwd');
+
+          if ($pwd_check != []) {
+            $this->db->where('pwd_id', $pwd['pwd_id']);
+            $this->db->update('tbl_pwd', $pwd);
+          } else {
+            $this->db->insert('tbl_pwd', $pwd);
+          }
+        } else {
+          $this->db->where('patient_id', $patient_info['patient_id']);
+          $this->db->delete('tbl_pwd');
+        }
+
+        if (isset($senior_citizen['senior_citizen_id'])) {
+          $senior_citizen['patient_id'] = $patient_info['patient_id'];
+
+
+          $this->db->where('senior_citizen_id', $senior_citizen['senior_citizen_id']);
+          $sc_check = $this->db->get('tbl_senior_citizen');
+
+          if ($sc_check != []) {
+            $this->db->where('senior_citizen_id', $senior_citizen['senior_citizen_id']);
+            $this->db->update('tbl_senior_citizen', $senior_citizen);
+          } else {
+            $this->db->insert('tbl_senior_citizen', $senior_citizen);
+          }
+        } else {
+          $this->db->where('patient_id', $patient_info['patient_id']);
+          $this->db->delete('tbl_senior_citizen');
+        }
 
         if ($patient) {
           echo json_encode(array('status' => 'success',
@@ -189,11 +236,9 @@ class API
 
     }
 
-    public function httpDelete($payload)
+    public function httpDelete()
     {
-        $payload = (array) $payload;
-
-        $this->db->where('patient_id', $payload['patient_id']);
+        $this->db->where('patient_id', $_GET['patient_id']);
         $delete_user = $this->db->update('tbl_patient_info', array('status' => 2));
 
         if ($delete_user) {

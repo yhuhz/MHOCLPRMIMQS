@@ -12,11 +12,12 @@ import {
   OPDDiseaseLab,
 } from "src/composables/Records";
 import { FindUsersByName } from "src/composables/Manage_Users";
-import { Loading, SessionStorage } from "quasar";
+import { Loading, SessionStorage, useQuasar } from "quasar";
 
 export default {
   components: { MHCDialog, DeletePatientRecordConfirmation },
   setup() {
+    const $q = useQuasar();
     const route = useRoute();
     const router = useRouter();
 
@@ -35,8 +36,6 @@ export default {
     FindRecordDetails(route.params.record_id, route.params.department).then(
       (response) => {
         Loading.hide();
-
-        console.log("par", route.params.record_id);
       }
     );
 
@@ -148,9 +147,24 @@ export default {
           patientRecordInfo.value.doctor_id.user_id;
       }
 
-      // console.log("p val", patientRecordInfo.value);
+      Loading.show();
 
-      UpdateRecord(patientRecordInfo.value, route.params.department);
+      UpdateRecord(patientRecordInfo.value, route.params.department).then(
+        (response) => {
+          Loading.hide();
+
+          let status = response.status === "success" ? 0 : 1;
+
+          $q.notify({
+            type: status === 0 ? "positive" : "negative",
+            classes: "text-white",
+            message:
+              status === 0
+                ? "Patient record edited successfully"
+                : "Failed to edit patient record",
+          });
+        }
+      );
     };
 
     const openDialog = () => {

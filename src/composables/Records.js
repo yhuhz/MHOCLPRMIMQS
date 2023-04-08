@@ -22,7 +22,7 @@ let GetRecords = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         PatientRecords.value = response.data.data;
         resolve(response.data);
       })
@@ -77,7 +77,7 @@ let AddRecord = (payload, department) => {
       .post(pathlink, payload)
       .then((response) => {
         if (response.data.status === "success") {
-          console.log(response.data);
+          // console.log(response.data);
           PatientRecords.value.push(response.data.data);
         } else {
           console.log(response.data);
@@ -105,7 +105,7 @@ let UpdateRecord = (payload, department) => {
       .put(pathlink, payload)
       .then((response) => {
         if (response.data.status === "success") {
-          console.log(response.data);
+          // console.log(response.data);
           if (department === "OPD") {
             RecordDetails.value = response.data.opd_data;
             OPDDiseaseLab.value = response.data.opd_arrays;

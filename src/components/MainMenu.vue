@@ -33,7 +33,7 @@
         <q-item
           clickable
           class="list-text text-white"
-          @click="$router.push({ name: 'add-new-patient-record' })"
+          @click="$router.push({ name: 'add-edit-patient-record' })"
         >
           <q-item-section avatar>
             <q-icon size="xs" name="eva-plus-square-outline" class="q-ml-md" />
@@ -51,7 +51,7 @@
           <q-item-section avatar>
             <q-icon size="xs" name="eva-home-outline" class="q-ml-md" />
           </q-item-section>
-          <q-item-section class="q-ml-md">View Household</q-item-section>
+          <q-item-section class="q-ml-md">Households</q-item-section>
         </q-item>
 
         <q-item
