@@ -25,13 +25,25 @@ class API
 
       if (isset($_GET['household_name'])) {
         $this->db->where('household_name', $_GET['household_name'].'%', 'LIKE');
-
       }
-      $household = $this->db->get('tbl_household');
 
-      if ($household) {
+      if (isset($_GET['household_id'])) {
+        $this->db->where('household_id', $_GET['household_id'].'%', 'LIKE');
+      }
+
+      $households = $this->db->get('tbl_household');
+
+      $household_array = [];
+
+      foreach($households as $household) {
+        $this->db->where('household_id', $household['household_id']);
+        $household['patient_count'] = $this->db->getValue('tbl_patient_info', 'count(*)');
+        array_push($household_array, $household);
+      }
+
+      if ($households) {
         echo json_encode(array('status' => 'success',
-                                  'data' => $household,
+                                  'data' => $household_array,
                                   'method' => 'GET'
                                 ));
       }
@@ -40,8 +52,7 @@ class API
 
     public function httpPost($payload)
     {
-      foreach($payload as $household) {
-        $household = (array) $household;
+        $household = (array) $payload;
 
         //RESET AUTO INCREMENT
         // $this->db->query("SET  @num := 0");
@@ -51,6 +62,7 @@ class API
 
         //ADD HOUSEHOLD
         $household['household_id'] = $this->db->insert('tbl_household', $household);
+        $household['patient_count'] = 0;
 
         if ($household['household_id']) {
           echo json_encode(array('status' => 'success',
@@ -58,7 +70,7 @@ class API
                                     'method' => 'POST'
                                   ));
         }
-      }
+
     }
 
     public function httpPut($payload)
@@ -70,6 +82,9 @@ class API
         $this->db->where('household_id', $payload['household_id']);
         $household = $this->db->update('tbl_household', $payload);
 
+        $this->db->where('household_id', $payload['household_id']);
+        $payload['patient_count'] = $this->db->getValue('tbl_patient_info', 'count(*)');
+
         if ($household) {
           echo json_encode(array('status' => 'success',
                                   'data' => $payload,
@@ -80,13 +95,11 @@ class API
 
     }
 
-    public function httpDelete($payload)
+    public function httpDelete()
     {
-        $payload = (array) $payload;
-
-        $this->db->where('household_id', $payload['household_id']);
+        $this->db->where('household_id', $_GET['household_id']);
         $payload['status'] = 1;
-        $delete_user = $this->db->update('tbl_household', $payload);
+        $delete_user = $this->db->update('tbl_household', array('status' => 1));
 
         if ($delete_user) {
             echo json_encode(array('status' => 'success',

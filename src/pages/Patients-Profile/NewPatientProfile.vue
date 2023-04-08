@@ -254,6 +254,7 @@
                   :rules="[
                     (val) => (val && val.length > 0) || 'Required field',
                   ]"
+                  @update:model-value="updateBirthdate"
                 >
                   <template v-slot:append>
                     <q-icon name="eva-calendar-outline" class="cursor-pointer">
@@ -262,7 +263,11 @@
                         transition-show="scale"
                         transition-hide="scale"
                       >
-                        <q-date v-model="personalInformation.birthdate">
+                        <q-date
+                          v-model="personalInformation.birthdate"
+                          mask="YYYY-MM-DD"
+                          @update:model-value="updateBirthdate"
+                        >
                         </q-date>
                       </q-popup-proxy>
                     </q-icon>
@@ -371,6 +376,7 @@
                 v-model="isSeniorCitizen"
                 size="xs"
                 @update:model-value="onChangeSC"
+                :disable="scDisable"
               >
                 <span class="text-dark"
                   >I am a <span class="text-primary">Senior Citizen</span></span
@@ -429,6 +435,7 @@
         </div>
       </q-form>
     </div>
+    <MHCDialog :content="$options.components.AddPatientSuccess" />
   </div>
 </template>
 

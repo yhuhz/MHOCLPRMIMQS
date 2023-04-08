@@ -48,9 +48,6 @@ class API
           $opd_record['preliminary_checkup_done_by_name'] = $prelim_name[0]['name'];
           }
 
-
-
-
       if ($opd_record) {
         echo json_encode(array('status' => 'success',
                                   'opd_data' => $opd_record,

@@ -24,6 +24,14 @@
             padding="3px"
             outline
             color="primary"
+            @click="
+              $router.push({
+                name: 'add-edit-patient-record',
+                query: {
+                  id: PatientDetails.patient_id,
+                },
+              })
+            "
           />
           <p class="text-primary text-center text-weight-bold p-name">
             {{

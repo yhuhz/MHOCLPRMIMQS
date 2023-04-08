@@ -1,14 +1,30 @@
-import { ref } from "vue";
-import { FindHouseholdByName } from "src/composables/Household";
-import { AddPatient, FindPatient, EditPatient } from "src/composables/Patients";
+import { ref, watch } from "vue";
+import {
+  FindHouseholdByName,
+  FindHouseholdByID,
+} from "src/composables/Household";
+import {
+  AddPatient,
+  FindPatient,
+  EditPatient,
+  PatientDetails,
+} from "src/composables/Patients";
 import { useRoute } from "vue-router";
-import { useQuasar, SessionStorage, Loading } from "quasar";
+import { useQuasar, SessionStorage, Loading, date } from "quasar";
+import _ from "lodash";
+import MHCDialog from "../../../components/MHCDialog.vue";
+import AddPatientSuccess from "../../Components/AddPatientSuccess";
+import { ToggleDialogState } from "../../../composables/Triggers";
+import { SetIDS } from "src/composables/IDS";
 
 export default {
+  components: { MHCDialog, AddPatientSuccess },
   setup() {
     const $q = useQuasar();
     const route = useRoute();
     let keySession = SessionStorage.getItem("cred");
+
+    PatientDetails.value = [];
 
     // Patient ID and household
     let statusList = ["Active", "Deceased", "Archived"];
@@ -105,12 +121,49 @@ export default {
       disability: null,
     });
     let senior_citizen_id = ref(null);
+    let scDisable = ref(true);
+
+    const onReset = () => {
+      // console.log("mun", municipality.value);
+      //Address
+      barangay.value = null;
+      municipality.value = null;
+      address.value = null;
+
+      // Personl Information
+      personalInformation.value = {
+        household_id: null,
+        status: "Active",
+        last_name: null,
+        first_name: null,
+        middle_name: null,
+        suffix: null,
+        birthdate: null,
+        phone_number: null,
+        sex: null,
+      };
+
+      // PWD and Senior Citizens
+      isPWD.value = false;
+      isSeniorCitizen.value = false;
+      pwd.value = {
+        pwd_id: null,
+        disability: null,
+      };
+      senior_citizen_id.value = null;
+    };
 
     /**FOR EDIT**/
     if (route.query.id) {
+      Loading.show();
       FindPatient({ patient_id: route.query.id }).then((response) => {
-        if (response.status === "success") {
-          let info = response.data[0];
+        Loading.hide();
+      });
+
+      watch(
+        () => _.cloneDeep(PatientDetails.value),
+        () => {
+          let info = PatientDetails.value;
 
           //Address
           if (info.barangay != "Outside Camalig") {
@@ -144,35 +197,75 @@ export default {
             disability: info.disability,
           };
           senior_citizen_id.value = info.senior_citizen_id;
+
+          let age_now = Math.floor(
+            date.getDateDiff(
+              new Date(),
+              personalInformation.value.birthdate,
+              "days"
+            ) / 365
+          );
+          scDisable.value = age_now <= 60 ? true : false;
         }
-      });
+      );
     }
+
+    let updateBirthdate = () => {
+      let age_now = Math.floor(
+        date.getDateDiff(
+          new Date(),
+          personalInformation.value.birthdate,
+          "days"
+        ) / 365
+      );
+      scDisable.value = age_now <= 60 ? true : false;
+    };
 
     let householdOptions = ref([]);
 
     const householdFilterFunction = (val, update, abort) => {
-      if (val.length > -1) {
+      if (val.length > 0) {
         update(() => {
-          const needle = String(val.toLowerCase());
-          FindHouseholdByName(needle).then((response) => {
-            householdOptions.value = [];
-            if (response.status === "success") {
-              let Household = ref([]);
-              Household.value = response.data;
-              Household.value.forEach((h) => {
-                let selectValues = {
-                  household_name:
-                    "HH" +
-                    (h.household_id < 10 ? "0" : "") +
-                    h.household_id +
-                    " - " +
-                    h.household_name,
-                  household_id: h.household_id,
-                };
-                householdOptions.value.push(selectValues);
-              });
-            }
-          });
+          if (!isNaN(val)) {
+            FindHouseholdByID(val).then((response) => {
+              householdOptions.value = [];
+              if (response.status === "success") {
+                let Household = ref([]);
+                Household.value = response.data;
+                Household.value.forEach((h) => {
+                  let selectValues = {
+                    household_name:
+                      (h.household_id < 10 ? "0" : "") +
+                      h.household_id +
+                      " - " +
+                      h.household_name,
+                    household_id: h.household_id,
+                  };
+                  householdOptions.value.push(selectValues);
+                });
+              }
+            });
+          } else {
+            const needle = String(val.toLowerCase());
+            FindHouseholdByName(needle).then((response) => {
+              householdOptions.value = [];
+              if (response.status === "success") {
+                let Household = ref([]);
+                Household.value = response.data;
+                Household.value.forEach((h) => {
+                  let selectValues = {
+                    household_name:
+                      (h.household_id < 10 ? "0" : "") +
+                      h.household_id +
+                      " - " +
+                      h.household_name,
+                    household_id: h.household_id,
+                  };
+                  householdOptions.value.push(selectValues);
+                });
+              }
+            });
+          }
         });
       } else {
         abort();
@@ -194,36 +287,6 @@ export default {
       }
     };
 
-    const onReset = () => {
-      // console.log("mun", municipality.value);
-      //Address
-      barangay.value = null;
-      municipality.value = null;
-      address.value = null;
-
-      // Personl Information
-      personalInformation.value = {
-        household_id: null,
-        status: "Active",
-        last_name: null,
-        first_name: null,
-        middle_name: null,
-        suffix: null,
-        birthdate: null,
-        phone_number: null,
-        sex: null,
-      };
-
-      // PWD and Senior Citizens
-      isPWD.value = false;
-      isSeniorCitizen.value = false;
-      pwd.value = {
-        pwd_id: null,
-        disability: null,
-      };
-      senior_citizen_id.value = null;
-    };
-
     const addPatient = () => {
       if (
         personalInformation.value.household_id &&
@@ -233,6 +296,13 @@ export default {
         personalInformation.value.barangay = barangay.value;
         personalInformation.value.address = personalInformation.value.address;
         personalInformation.value.added_by = keySession.user_id;
+        personalInformation.value.sex = sexArray.indexOf(
+          personalInformation.value.sex
+        );
+        personalInformation.value.status = statusList.indexOf(
+          personalInformation.value.status
+        );
+
         let payload = {
           personal_info: personalInformation.value,
           pwd: pwd.value,
@@ -241,6 +311,8 @@ export default {
 
         Loading.show();
         AddPatient(payload).then((response) => {
+          personalInformation.value.sex = "Male";
+          personalInformation.value.status = statusList[0];
           Loading.hide();
 
           let status = response.status === "success" ? 0 : 1;
@@ -255,6 +327,9 @@ export default {
           });
 
           status = 0 ? onReset() : "";
+
+          SetIDS(response.data.patient_id);
+          ToggleDialogState();
         });
       }
     };
@@ -268,6 +343,13 @@ export default {
         personalInformation.value.barangay = barangay.value;
         personalInformation.value.address = personalInformation.value.address;
         personalInformation.value.added_by = keySession.user_id;
+        personalInformation.value.sex = sexArray.indexOf(
+          personalInformation.value.sex
+        );
+        personalInformation.value.status = statusList.indexOf(
+          personalInformation.value.status
+        );
+
         let payload = {
           personal_info: personalInformation.value,
           pwd: pwd.value,
@@ -276,6 +358,10 @@ export default {
 
         Loading.show();
         EditPatient(payload).then((response) => {
+          personalInformation.value.sex =
+            sexArray[personalInformation.value.sex];
+          personalInformation.value.status =
+            statusList[personalInformation.value.status];
           Loading.hide();
 
           let status = response.status === "success" ? 0 : 1;
@@ -320,6 +406,8 @@ export default {
       onSubmit,
       onChangePWD,
       onChangeSC,
+      scDisable,
+      updateBirthdate,
     };
   },
 };

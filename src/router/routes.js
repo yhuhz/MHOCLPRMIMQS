@@ -103,6 +103,12 @@ const routes = [
         component: () =>
           import("src/pages/Patients-Profile/Household/HouseholdRecords.vue"),
       },
+      // PWD
+      {
+        path: "pwd-records",
+        name: "pwd-records",
+        component: () => import("src/pages/Patients-Profile/PWD/PWD.vue"),
+      },
 
       // Meds & supplies
       {

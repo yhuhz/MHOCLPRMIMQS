@@ -455,6 +455,7 @@ export default defineComponent({
     );
 
     const updateUser = () => {
+      editUserDetails.value.sex = sexArray.indexOf(editUserDetails.value.sex);
       UpdateUserAccount(editUserDetails.value).then((response) => {
         if (response.status === "success") {
           $q.notify({

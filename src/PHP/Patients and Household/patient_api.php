@@ -22,6 +22,7 @@ class API
     {
 
       $payload = (array) json_decode($_GET['payload']);
+      // print_r($payload);
 
       if (isset($payload['record_type'])) {
 
@@ -60,6 +61,40 @@ class API
                                     'method' => 'GET'
                                   ));
         }
+
+      } else if (isset($payload['pwd'])) {
+        $search_by = (array) $payload['search_by'];
+        // print_r($search_by);
+
+        if (isset($search_by['search_string'])) {
+          //SEARCH BY NAME
+        if ($search_by['search_category'] === 'Name') {
+
+          // echo $search_by['search_string']; return;
+          $this->db->where("CONCAT_WS(' ', REPLACE(first_name, ' ', ''), REPLACE(middle_name, ' ', ''), REPLACE(last_name, ' ', ''), REPLACE(suffix, ' ', '')) LIKE '%" . $search_by['search_string'] . "%'");
+
+          //SEARCH BY PATIENT ID
+          } else if ($search_by['search_category'] === 'Patient ID') {
+
+            $this->db->where('p.patient_id', strval($search_by['search_string']));
+
+          //SEARCH BY PWD ID
+          } else if ($search_by['search_category'] === 'PWD ID') {
+            $this->db->where('pwd_id', strval($search_by['search_string']));
+          }
+        }
+
+        $this->db->join('tbl_patient_info p', 'p.patient_id=pw.patient_id', 'LEFT');
+        $this->db->join('tbl_household hh', 'hh.household_id=p.household_id', 'LEFT');
+        $patients = $this->db->get('tbl_pwd pw', null, 'pw.patient_id, concat(first_name, " ", last_name, " ", coalesce(suffix, "")) as name, first_name, middle_name, last_name, suffix, hh.household_name, p.household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, pw.pwd_id, pw.disability, barangay, address');
+
+        if ($patients) {
+          echo json_encode(array('status' => 'success',
+                                    'data' => $patients,
+                                    'method' => 'GET'
+                                  ));
+        }
+
       } else {
         //check if there are parameters
         if (isset($payload['search_by'])) {
@@ -82,14 +117,14 @@ class API
             //SEARCH BY HOUSEHOLD ID
             } else if ($search_by['search_category'] === 'Household ID') {
 
-              $this->db->where('household_id', strval($search_by['search_string']));
+              $this->db->where('p.household_id', strval($search_by['search_string']));
 
             //SEARCH BY PHONE NUMBER
             } else if (array_keys($search_by)[0] === 'Phone Number') {
 
               $this->db->where('phone_number', '%'.strval($search_by['search_string']).'%', 'LIKE');
-
             }
+
           }
         }
 
@@ -165,10 +200,9 @@ class API
           $this->db->insert('tbl_senior_citizen', $senior_citizen);
         }
 
-
         if ($patient) {
           echo json_encode(array('status' => 'success',
-                                    'data' => $payload,
+                                    'data' => $patient_info,
                                     'method' => 'POST'
                                   ));
         } else {
@@ -226,9 +260,14 @@ class API
           $this->db->delete('tbl_senior_citizen');
         }
 
+        $this->db->where('household_id', $patient_info['household_id']);
+        $hh_name = $this->db->get('tbl_household', null, 'household_name');
+        $patient_info['household_name'] = $hh_name[0]['household_name'];
+        $age = (date_diff(date_create($patient_info['birthdate']), date_create()));
+        $patient_info['age'] = $age->format("%y");
         if ($patient) {
           echo json_encode(array('status' => 'success',
-                                  'data' => $payload,
+                                  'data' => $patient_info,
                                   'method' => 'PUT'
                                 ));
         }

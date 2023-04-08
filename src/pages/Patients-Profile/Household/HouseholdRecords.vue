@@ -16,13 +16,18 @@
     <div class="q-px-md">
       <div class="flex justify-between items-center">
         <div class="flex">
-          <q-input outlined dense :input-style="{ color: '#525252' }">
+          <!-- Search By -->
+          <q-input
+            v-model="searchValue"
+            outlined
+            dense
+            :input-style="{ color: '#525252' }"
+          >
             <template v-slot:prepend>
               <q-icon name="mdi-account-search-outline" />
             </template>
           </q-input>
 
-          <!-- Search By -->
           <q-select
             v-model="selectedSearchBy"
             :options="searchBy"
@@ -39,6 +44,7 @@
             no-caps
             icon-right="eva-search-outline"
             class="button-120"
+            @click="getHouseholds"
           />
         </div>
 
@@ -61,53 +67,59 @@
               <q-icon name="eva-home q-gutter-xs" size="20px" class="q-mr-sm" />
               ADD HOUSEHOLD
             </p>
+            <q-form @submit="addHousehold()">
+              <div class="q-mt-lg">
+                <label class="text-dark">Household Name</label>
 
-            <div class="q-mt-lg">
-              <label class="text-dark">Household Name</label>
-              <q-input
-                dense
-                outlined
-                :input-style="{ color: '#525252' }"
-                placeholder="eg. Perez"
-                class="q-mt-sm"
-              />
-            </div>
+                <q-input
+                  v-model="addHouseholdName"
+                  dense
+                  outlined
+                  :input-style="{ color: '#525252' }"
+                  placeholder="eg. Perez"
+                  class="q-mt-sm"
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Required field',
+                  ]"
+                />
+              </div>
 
-            <div class="flex justify-between items-center q-mt-lg">
-              <q-btn
-                color="primary"
-                label="Submit"
-                no-caps
-                class="button-120"
-              />
-              <q-btn
-                v-close-popup
-                outline
-                color="primary"
-                label="Cancel"
-                no-caps
-                class="button-120"
-              />
-            </div>
-
+              <div class="flex justify-between items-center q-mt-lg">
+                <q-btn
+                  color="primary"
+                  type="submit"
+                  label="Submit"
+                  no-caps
+                  class="button-120"
+                />
+                <q-btn
+                  v-close-popup
+                  outline
+                  color="primary"
+                  label="Cancel"
+                  no-caps
+                  class="button-120"
+                />
+              </div>
+            </q-form>
           </q-card>
         </q-dialog>
-
       </div>
 
       <!-- Table -->
       <div class="q-my-xl table">
         <q-table
           :columns="columns"
-          :rows="rows"
+          :rows="HouseholdsList"
           :pagination="{ rowsPerPage: 10 }"
           :rows-per-page-options="[5, 10, 15, 20, 0]"
+          dense
           flat
           class="mhc-table"
         >
           <!-- Table Row Slots -->
-          <template #body-cell-action>
-            <q-td>
+          <template #body-cell-action="props">
+            <q-td :props="props">
               <q-btn
                 dense
                 color="primary"
@@ -125,22 +137,92 @@
                   <q-list separator dense>
                     <!-- View -->
                     <q-item clickable class="drop-list">
-                      <q-item-section>View Details</q-item-section>
+                      <q-item-section>View Patients</q-item-section>
                       <q-item-section avatar>
                         <q-icon size="xs" name="eva-eye-outline" />
                       </q-item-section>
                     </q-item>
 
                     <!-- Edit -->
-                    <q-item clickable class="drop-list">
+                    <q-item
+                      clickable
+                      class="drop-list"
+                      @click="
+                        openDialogEdit(
+                          props.row.household_name,
+                          props.row.household_id
+                        )
+                      "
+                    >
                       <q-item-section>Edit Details</q-item-section>
                       <q-item-section avatar>
                         <q-icon size="xs" name="eva-edit-outline" />
                       </q-item-section>
+
+                      <template>
+                        <!-- Edit Household Modal -->
+                        <q-dialog v-model="isEditHousehold" persistent>
+                          <q-card class="q-pa-lg width-350">
+                            <p
+                              class="text-primary text-weight-bold text-center text-18"
+                            >
+                              <q-icon
+                                name="eva-home q-gutter-xs"
+                                size="20px"
+                                class="q-mr-sm"
+                              />
+                              EDIT HOUSEHOLD
+                            </p>
+                            <q-form @submit="editHousehold()">
+                              <div class="q-mt-lg">
+                                <label class="text-dark">Household Name</label>
+
+                                <q-input
+                                  v-model="editHouseholdName"
+                                  dense
+                                  outlined
+                                  :input-style="{ color: '#525252' }"
+                                  placeholder="eg. Perez"
+                                  class="q-mt-sm"
+                                  :rules="[
+                                    (val) =>
+                                      (val && val.length > 0) ||
+                                      'Required field',
+                                  ]"
+                                />
+                              </div>
+
+                              <div
+                                class="flex justify-between items-center q-mt-lg"
+                              >
+                                <q-btn
+                                  color="primary"
+                                  type="submit"
+                                  label="Submit"
+                                  no-caps
+                                  class="button-120"
+                                />
+                                <q-btn
+                                  v-close-popup
+                                  outline
+                                  color="primary"
+                                  label="Cancel"
+                                  no-caps
+                                  class="button-120"
+                                />
+                              </div>
+                            </q-form>
+                          </q-card>
+                        </q-dialog>
+                      </template>
                     </q-item>
 
                     <!-- Delete -->
-                    <q-item clickable class="drop-list-delete">
+                    <q-item
+                      clickable
+                      class="drop-list-delete"
+                      @click="deleteRecord(props.row.household_id)"
+                    >
                       <q-item-section>Delete Record</q-item-section>
                       <q-item-section avatar>
                         <q-icon size="xs" name="eva-trash-2-outline" />
@@ -163,6 +245,7 @@
                 color="primary"
                 unelevated
                 class="button-100 download-btn"
+                :disable="downloadDisable"
               />
             </q-th>
           </template>

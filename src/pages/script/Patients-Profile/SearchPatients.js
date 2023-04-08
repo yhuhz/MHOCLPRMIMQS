@@ -2,7 +2,7 @@ import { ref, watch } from "vue";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import DeletePatientConfirmation from "../../Components/DeletePatientConfirmation";
 import { ToggleDialogState } from "../../../composables/Triggers";
-import { GetPatients, PatientsList, Patients } from "src/composables/Patients";
+import { GetPatients, PatientsList } from "src/composables/Patients";
 import _ from "lodash";
 import { useQuasar, SessionStorage } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
@@ -17,9 +17,10 @@ export default {
       router.push({ name: "login" });
     }
 
-    Patients.value = [];
+    let downloadDisable = ref(
+      typeof PatientsList.value === "undefined" ? true : false
+    );
 
-    let downloadDisable = ref(true);
     let searchString = ref(null);
     let selectedSearchBy = ref("Name");
     let searchBy = ref(["Name", "Patient ID", "Household ID", "Phone Number"]);
@@ -137,7 +138,8 @@ export default {
       loading.value = true;
       GetPatients(payload).then((response) => {
         loading.value = false;
-        downloadDisable.value = false;
+        downloadDisable.value =
+          typeof PatientsList.value === "undefined" ? true : false;
       });
     };
 
@@ -153,7 +155,11 @@ export default {
         name: "name",
         align: "left",
         label: "Name",
-        field: "name",
+        field: (row) =>
+          row.first_name +
+          " " +
+          row.last_name +
+          (row.suffix ? " " + row.suffix : ""),
         sortable: true,
       },
       {

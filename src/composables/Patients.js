@@ -3,6 +3,7 @@ import { ref, readonly } from "vue";
 let Patients = ref([]);
 let PatientsList = readonly(Patients);
 let PatientDetails = ref([]);
+let PWD = ref([]);
 let pathlink =
   "http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/patient_api.php";
 /**
@@ -17,7 +18,14 @@ let GetPatients = (payload) => {
         params: { payload: payload },
       })
       .then((response) => {
-        Patients.value = response.data.data;
+        // console.log(response.data);
+
+        if (typeof payload.pwd != "undefined") {
+          PWD.value = response.data.data;
+        } else {
+          Patients.value = response.data.data;
+        }
+
         resolve(response.data);
       })
       .catch((error) => {
@@ -78,18 +86,20 @@ let EditPatient = (payload) => {
     axios
       .put(pathlink, payload)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data.data);
         if (response.data.status === "success") {
-          // let objectIndex = Patients.value.findIndex(
-          //   (e) => e.patient_id === payload.personal_info.patient_id
-          // );
-          // // if index not found (-1) update nothing !
+          let objectIndex = Patients.value.findIndex(
+            (e) => e.patient_id === payload.personal_info.patient_id
+          );
+          // if index not found (-1) update nothing !
           // objectIndex !== -1 &&
-          //   Object.keys(Patients.value[objectIndex]).forEach((key) => {
-          //     response.data.data.personal_info[key] &&
-          //       (Patients.value[objectIndex][key] =
-          //         response.data.data.personal_info[key]);
-          //   });
+          // Object.keys(Patients.value[objectIndex]).forEach((key) => {
+          //   response.data.data.personal_info[key] &&
+          //     (Patients.value[objectIndex][key] =
+          //       response.data.data.personal_info[key]);
+          // });
+
+          Patients.value[objectIndex] = response.data.data;
         } else [console.log(response.data)];
         resolve(response.data);
       })
@@ -137,4 +147,5 @@ export {
   AddPatient,
   EditPatient,
   DeletePatient,
+  PWD,
 };

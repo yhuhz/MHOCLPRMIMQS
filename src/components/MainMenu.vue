@@ -57,7 +57,7 @@
         <q-item
           clickable
           class="list-text text-white"
-          @click="$router.push({ name: 'pwd' })"
+          @click="$router.push({ name: 'pwd-records' })"
         >
           <q-item-section avatar>
             <q-icon size="xs" name="fa fa-wheelchair" class="q-ml-md" />

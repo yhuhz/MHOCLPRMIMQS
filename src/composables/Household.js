@@ -10,32 +10,15 @@ let pathlink =
  * set the passed array to Households data.
  * @param {*} object
  */
-let GetHouseholds = (payload) => {
+let FindHouseholdByID = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
-        params: { payload: payload },
+        params: { household_id: payload },
       })
       .then((response) => {
+        console.log(response.data);
         Households.value = response.data.data;
-        resolve(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-};
-
-let FindHousehold = (payload) => {
-  return new Promise((resolve, reject) => {
-    axios
-      .get(pathlink, {
-        params: {
-          household_id: payload,
-        },
-      })
-      .then((response) => {
-        HouseholdDetails.value = response.data.data[0];
         resolve(response.data);
       })
       .catch((error) => {
@@ -53,6 +36,7 @@ let FindHouseholdByName = (payload) => {
         },
       })
       .then((response) => {
+        Households.value = response.data.data;
         resolve(response.data);
       })
       .catch((error) => {
@@ -66,7 +50,7 @@ let FindHouseholdByName = (payload) => {
  * add the passed object to Households data.
  * @param {*} object
  */
-let AddUser = (payload) => {
+let AddHousehold = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .post(pathlink, payload)
@@ -89,22 +73,17 @@ let AddUser = (payload) => {
  * updates the Households specific data based on the id passed in the object.
  * @param {*} object
  */
-let UpdateUser = (payload) => {
+let UpdateHousehold = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .put(pathlink, payload)
       .then((response) => {
         if (response.data.status === "success") {
-          console.log(response.data);
           let objectIndex = Households.value.findIndex(
-            (e) => e.id === payload.id
+            (e) => e.household_id === payload.household_id
           );
           // if index not found (-1) update nothing !
-          objectIndex !== -1 &&
-            Object.keys(Households.value[objectIndex]).forEach((key) => {
-              response.data.data[key] &&
-                (Households.value[objectIndex][key] = response.data.data[key]);
-            });
+          Households.value[objectIndex] = response.data.data;
         } else [console.log(response.data)];
         resolve(response.data);
       })
@@ -119,14 +98,14 @@ let UpdateUser = (payload) => {
  * delete the data in the Households based on this parameter.
  * @param {*} array
  */
-let DeleteUser = (payload) => {
+let DeleteHousehold = (payload) => {
   return new Promise((resolve, reject) => {
     axios
-      .delete(pathlink + "?id=" + payload.id)
+      .delete(pathlink + "?household_id=" + payload.household_id)
       .then((response) => {
         if (response.data.status === "success") {
           let objectIndex = Households.value.findIndex(
-            (e) => e.id === payload.id
+            (e) => e.household_id === payload.household_id
           );
           // if index not found (-1) delete nothing !
           objectIndex !== -1 && Households.value.splice(objectIndex, 1);
@@ -144,9 +123,11 @@ let DeleteUser = (payload) => {
  * Export HouseholdsList as readonly (real time copy of Households)
  */
 export {
-  GetHouseholds,
+  FindHouseholdByID,
   HouseholdsList,
-  FindHousehold,
-  HouseholdDetails,
   FindHouseholdByName,
+  HouseholdDetails,
+  AddHousehold,
+  UpdateHousehold,
+  DeleteHousehold,
 };
