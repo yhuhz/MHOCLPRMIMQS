@@ -19,6 +19,13 @@ export default {
 
     let searchBy = ref(["Household Name", "Household ID"]);
     let selectedSearchBy = ref("Household Name");
+
+    //Filter
+    let showFilterModal = ref(false);
+    let statusList = ref(["Active", "Deleted"]);
+    let dateAdded = ref([]);
+    let status_array_model = ref([0]);
+
     let searchValue = ref(null);
     let downloadDisable = ref(
       typeof HouseholdsList.value === "undefined" ? true : false
@@ -76,13 +83,17 @@ export default {
     ]);
 
     const getHouseholds = () => {
+      let payload = {
+        status: status_array_model.value,
+        search_string: searchValue.value,
+      };
       if (selectedSearchBy.value === "Household ID") {
-        FindHouseholdByID(searchValue.value).then((response) => {
+        FindHouseholdByID(payload).then((response) => {
           downloadDisable.value =
             typeof HouseholdsList.value === "undefined" ? true : false;
         });
       } else {
-        FindHouseholdByName(searchValue.value).then((response) => {
+        FindHouseholdByName(payload).then((response) => {
           downloadDisable.value =
             typeof HouseholdsList.value === "undefined" ? true : false;
         });
@@ -167,6 +178,10 @@ export default {
       isEditHousehold,
       editHousehold,
       openDialogEdit,
+      showFilterModal,
+      statusList,
+      dateAdded,
+      status_array_model,
     };
   },
 };

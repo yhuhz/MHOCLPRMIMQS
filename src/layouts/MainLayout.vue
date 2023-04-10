@@ -15,7 +15,8 @@
 
         <div class="flex items-center cursor-pointer">
           <q-avatar>
-            <img src="https://cdn.quasar.dev/img/avatar.png" />
+            <!-- <img src="https://cdn.quasar.dev/img/avatar.png" /> -->
+            <q-icon name="person" />
           </q-avatar>
           <q-toolbar-title class="account-name">
             {{ name }}
@@ -360,12 +361,13 @@
         <div class="q-my-lg">
           <div class="flex justify-center items-center">
             <q-avatar class="q-mb-md">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+              <!-- <img src="https://cdn.quasar.dev/img/boy-avatar.png" /> -->
+              <img src="../images/MHOLogo.png" />
             </q-avatar>
           </div>
           <div class="text-center" v-show="!miniState">
             <p class="text-white text-weight-bold" style="font-size: 1.2rem">
-              MHO HEAD
+              {{ keySession && keySession.job_title.toUpperCase() }}
             </p>
           </div>
         </div>
@@ -405,15 +407,13 @@ export default defineComponent({
     const router = useRouter();
     const $q = useQuasar();
 
-    //SESSION KEYS
     let keySession = SessionStorage.getItem("cred");
-
-    if (keySession == NaN || keySession == null) {
+    if (keySession === null) {
       router.push({ name: "login" });
     }
 
     //RETRIEVE USER ACCOUNT FROM DB
-    FindUser(keySession.user_id);
+    FindUser(keySession ? keySession.user_id : "");
 
     const leftDrawerOpen = ref(false);
     let editUser = ref(false);
@@ -484,7 +484,7 @@ export default defineComponent({
         user_id: keySession.user_id,
         new_password: newPassword.value,
       };
-      console.log(payload);
+      // console.log(payload);
       ChangePassword(payload).then((response) => {
         if (response.status === "success") {
           $q.notify({
@@ -528,6 +528,7 @@ export default defineComponent({
       updateUser,
       onReset,
       logout,
+      keySession,
     };
   },
 });

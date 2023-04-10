@@ -4,7 +4,9 @@
     <q-item
       clickable
       exact
-      class="text-white"
+      :class="
+        $route.name === 'dashboard' ? 'bg-primary text-white' : 'text-white'
+      "
       @click="$router.push({ name: 'dashboard' })"
     >
       <q-item-section avatar>
@@ -21,7 +23,11 @@
         <q-item
           clickable
           exact
-          class="list-text text-white"
+          :class="
+            $route.name === 'search-patients'
+              ? 'bg-primary list-text text-white'
+              : 'list-text text-white'
+          "
           @click="$router.push({ name: 'search-patients' })"
         >
           <q-item-section avatar>
@@ -34,6 +40,11 @@
           clickable
           class="list-text text-white"
           @click="$router.push({ name: 'add-edit-patient-record' })"
+          :class="
+            $route.name === 'add-edit-patient-record'
+              ? 'bg-primary list-text text-white'
+              : 'list-text text-white'
+          "
         >
           <q-item-section avatar>
             <q-icon size="xs" name="eva-plus-square-outline" class="q-ml-md" />
@@ -47,6 +58,11 @@
           clickable
           class="list-text text-white"
           @click="$router.push({ name: 'household-records' })"
+          :class="
+            $route.name === 'household-records'
+              ? 'bg-primary list-text text-white'
+              : 'list-text text-white'
+          "
         >
           <q-item-section avatar>
             <q-icon size="xs" name="eva-home-outline" class="q-ml-md" />
@@ -58,6 +74,11 @@
           clickable
           class="list-text text-white"
           @click="$router.push({ name: 'pwd-records' })"
+          :class="
+            $route.name === 'pwd-records'
+              ? 'bg-primary list-text text-white'
+              : 'list-text text-white'
+          "
         >
           <q-item-section avatar>
             <q-icon size="xs" name="fa fa-wheelchair" class="q-ml-md" />
@@ -68,7 +89,12 @@
         <q-item
           clickable
           class="list-text text-white"
-          @click="$router.push({ name: 'senior-citizens' })"
+          @click="$router.push({ name: 'senior-citizen-records' })"
+          :class="
+            $route.name === 'senior-citizen-records'
+              ? 'bg-primary list-text text-white'
+              : 'list-text text-white'
+          "
         >
           <q-item-section avatar>
             <q-icon size="xs" name="fa fa-person-cane" class="q-ml-md" />
@@ -79,7 +105,12 @@
         <q-item
           clickable
           class="list-text text-white"
-          @click="$router.push({ name: 'pregnant-women' })"
+          @click="$router.push({ name: 'pregnant-women-records' })"
+          :class="
+            $route.name === 'pregnant-women-records'
+              ? 'bg-primary list-text text-white'
+              : 'list-text text-white'
+          "
         >
           <q-item-section avatar>
             <q-icon size="xs" name="fa fa-person-pregnant" class="q-ml-md" />
@@ -157,7 +188,6 @@ import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   name: "MainMenu",
-
   setup() {
     return {};
   },

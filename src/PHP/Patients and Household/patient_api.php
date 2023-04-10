@@ -84,9 +84,95 @@ class API
           }
         }
 
+        //FILTER
+        if (isset($search_by['filters'])) {
+          $filter = (array) $search_by['filters'];
+
+          //Age filter
+          if (isset($filter['age']) && $filter['age'] != [] && $filter['age'][0] != '' && $filter['age'][1] != '')
+          $this->db->where('DATEDIFF(CURRENT_DATE, birthdate)', Array (($filter['age'][0]*365), ($filter['age'][1]*365)), 'BETWEEN');
+
+          //Date Added filter
+          if (isset($filter['date_added']) && $filter['date_added'] != [] && $filter['date_added'][0] != '' && $filter['date_added'][1] != '') {
+            $this->db->where('date_added', $filter['date_added'], 'BETWEEN');
+          }
+
+          //Sex filter
+          $this->db->where('sex', $filter['sex'], 'IN');
+
+          //Status filter
+          $this->db->where('p.status', $filter['status'], 'IN');
+
+          //Barangays filter
+          if ($filter['barangay']) {
+            $this->db->where('barangay', $filter['barangay'], 'IN');
+          }
+        }
+
         $this->db->join('tbl_patient_info p', 'p.patient_id=pw.patient_id', 'LEFT');
         $this->db->join('tbl_household hh', 'hh.household_id=p.household_id', 'LEFT');
         $patients = $this->db->get('tbl_pwd pw', null, 'pw.patient_id, concat(first_name, " ", last_name, " ", coalesce(suffix, "")) as name, first_name, middle_name, last_name, suffix, hh.household_name, p.household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, pw.pwd_id, pw.disability, barangay, address');
+
+        if ($patients) {
+          echo json_encode(array('status' => 'success',
+                                    'data' => $patients,
+                                    'method' => 'GET'
+                                  ));
+        }
+
+      } else if (isset($payload['sc'])) {
+        $search_by = (array) $payload['search_by'];
+        // print_r($payload);
+
+        if (isset($search_by['search_string'])) {
+          //SEARCH BY NAME
+        if ($search_by['search_category'] === 'Name') {
+
+          // echo $search_by['search_string']; return;
+          $this->db->where("CONCAT_WS(' ', REPLACE(first_name, ' ', ''), REPLACE(middle_name, ' ', ''), REPLACE(last_name, ' ', ''), REPLACE(suffix, ' ', '')) LIKE '%" . $search_by['search_string'] . "%'");
+
+          //SEARCH BY PATIENT ID
+          } else if ($search_by['search_category'] === 'Patient ID') {
+
+            $this->db->where('p.patient_id', strval($search_by['search_string']));
+
+          //SEARCH BY PWD ID
+          } else if ($search_by['search_category'] === 'Senior Citizen ID') {
+            $this->db->where('senior_citizen_id', strval($search_by['search_string']));
+          }
+        }
+
+        // print_r($search_by);
+         //FILTER
+         if (isset($search_by['filters'])) {
+          $filter = (array) $search_by['filters'];
+
+
+          //Age filter
+          if (isset($filter['age']) && $filter['age'] != [] && $filter['age'][0] != '' && $filter['age'][1] != '') {
+            $this->db->where('DATEDIFF(CURRENT_DATE, birthdate)', Array (($filter['age'][0]*365), ($filter['age'][1]*365)), 'BETWEEN');
+          }
+
+          //Date Added filter
+          if (isset($filter['date_added']) && $filter['date_added'] != [] && $filter['date_added'][0] != '' && $filter['date_added'][1] != '') {
+            $this->db->where('date_added', $filter['date_added'], 'BETWEEN');
+          }
+
+          //Sex filter
+          $this->db->where('sex', $filter['sex'], 'IN');
+
+          //Status filter
+          $this->db->where('p.status', $filter['status'], 'IN');
+
+          //Barangays filter
+          if ($filter['barangay']) {
+            $this->db->where('barangay', $filter['barangay'], 'IN');
+          }
+        }
+
+        $this->db->join('tbl_patient_info p', 'p.patient_id=sc.patient_id', 'LEFT');
+        $this->db->join('tbl_household hh', 'hh.household_id=p.household_id', 'LEFT');
+        $patients = $this->db->get('tbl_senior_citizen sc', null, 'sc.patient_id, concat(first_name, " ", last_name, " ", coalesce(suffix, "")) as name, first_name, middle_name, last_name, suffix, hh.household_name, p.household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, sc.senior_citizen_id, barangay, address');
 
         if ($patients) {
           echo json_encode(array('status' => 'success',

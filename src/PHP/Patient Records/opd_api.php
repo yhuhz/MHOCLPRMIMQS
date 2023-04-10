@@ -50,8 +50,8 @@ class API
 
       if ($opd_record) {
         echo json_encode(array('status' => 'success',
-                                  'opd_data' => $opd_record,
-                                  'opd_arrays' => $opd_arrays,
+                                  'record' => $opd_record,
+                                  'array' => $opd_arrays,
                                   'method' => 'GET'
                                 ));
       }
@@ -152,8 +152,8 @@ class API
         $opd_arrays['disease'] = $disease_array;
 
         echo json_encode(array('status' => 'success',
-                                'opd_data' => $payload,
-                                'opd_arrays' => $opd_arrays,
+                                'record' => $payload,
+                                'array' => $opd_arrays,
                                 'method' => 'PUT'
                               ));
       }

@@ -20,22 +20,27 @@ class API
 
     public function httpGet()
     {
-      $this->db->where('patient_id', $_GET['patient_id']);
-      $this->db->where('status', 0);
-      $prenatal_records = $this->db->get('tbl_prenatal');
-      $prenatal_array = [];
+      $payload = (array) json_decode($_GET['payload']);
+      if (isset($payload['record_id'])) {
+        $this->db->where('prenatal_id', $payload['record_id']);
+      }
+      $this->db->where('pn.status', 0);
+
+      $this->db->join('tbl_users u', 'u.user_id=pn.midwife_id', 'LEFT');
+      $prenatal_records = $this->db->get('tbl_prenatal pn', null, 'prenatal_id, midwife_id, patient_id, last_menstruation, previous_full_term, previous_premature, midwifes_notes, pn.date_added, concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as midwife_name');
+      $prenatal_checkup = [];
 
       foreach ($prenatal_records as $prenatal) {
         $this->db->where('prenatal_id', $prenatal['prenatal_id']);
         $this->db->where('status', 0);
-        $prenatal['prenatal_checkup'] = $this->db->get('tbl_prenatal_checkup');
 
-        array_push($prenatal_array, $prenatal);
+        array_push($prenatal_checkup, $this->db->get('tbl_prenatal_checkup'));
       }
 
       if ($prenatal_records) {
         echo json_encode(array('status' => 'success',
-                                  'data' => $prenatal_array,
+                                  'record' => $prenatal_records,
+                                  'array' => $prenatal_checkup,
                                   'method' => 'GET'
                                 ));
       }

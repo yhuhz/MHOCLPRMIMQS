@@ -5,19 +5,20 @@
         round
         outline
         dense
-        icon="eva-arrow-back-outline"
         color="dark"
+        icon="eva-arrow-back-outline"
         class="q-mr-md"
         @click="$router.go(-1)"
       />
-      <h5 class="text-weight-bold text-dark">PATIENT RECORDS</h5>
+      <h5 class="text-weight-bold text-dark">SENIOR CITIZEN RECORDS</h5>
     </div>
 
     <div class="q-px-md">
       <div class="flex justify-between items-center">
         <div class="flex">
+          <!-- Search By -->
           <q-input
-            v-model="searchString"
+            v-model="searchValue"
             outlined
             dense
             :input-style="{ color: '#525252' }"
@@ -27,7 +28,6 @@
             </template>
           </q-input>
 
-          <!-- Search By -->
           <q-select
             v-model="selectedSearchBy"
             :options="searchBy"
@@ -44,7 +44,7 @@
             no-caps
             icon-right="eva-funnel-outline"
             color="primary"
-            class="q-mx-lg button-120"
+            class="q-mx-md button-120"
             @click="showFilterModal = true"
           >
             <!-- Filters Modal -->
@@ -216,26 +216,7 @@
             no-caps
             icon-right="eva-search-outline"
             class="button-120"
-            @click="searchPatients"
-          />
-        </div>
-
-        <!-- Create New Patient Profile -->
-        <div
-          class="flex justify-end"
-          v-if="
-            keySession &&
-            (keySession.department === 6 || keySession.department === 5) &&
-            keySession.permission_level != 3
-          "
-        >
-          <q-btn
-            @click="$router.push('add-edit-patient-record')"
-            outline
-            label="Create New Patient Profile"
-            icon-right="bi-person-add"
-            no-caps
-            color="primary"
+            @click="getSC"
           />
         </div>
       </div>
@@ -243,90 +224,35 @@
       <!-- Table -->
       <div class="q-my-xl table">
         <q-table
-          dense
           :columns="columns"
-          :rows="PatientsList"
+          :rows="SC"
           :pagination="{ rowsPerPage: 10 }"
           :rows-per-page-options="[5, 10, 15, 20, 0]"
+          dense
           flat
           class="mhc-table"
-          :loading="loading"
-          no-data-label="Please search first"
         >
           <!-- Table Row Slots -->
-          <template v-slot:body-cell-action="props">
+          <template #body-cell-action="props">
             <q-td :props="props">
               <q-btn
                 dense
                 color="primary"
-                label="Action"
-                icon-right="more_vert"
+                label="View"
+                icon-right="visibility"
                 no-caps
                 unelevated
                 class="button-100 action-btn"
+                @click="
+                  $router.push({
+                    name: 'patient-details',
+                    params: {
+                      id: props.row.patient_id,
+                    },
+                  })
+                "
               >
-                <q-menu
-                  transition-show="jump-down"
-                  transition-hide="jump-up"
-                  class="width-200"
-                >
-                  <q-list separator dense>
-                    <!-- View -->
-                    <q-item
-                      clickable
-                      class="drop-list"
-                      @click="
-                        $router.push({
-                          name: 'patient-details',
-                          params: { id: props.row.patient_id },
-                        })
-                      "
-                    >
-                      <q-item-section>View Details</q-item-section>
-                      <q-item-section avatar>
-                        <q-icon size="xs" name="eva-eye-outline" />
-                      </q-item-section>
-                    </q-item>
-
-                    <!-- Edit -->
-                    <q-item
-                      clickable
-                      class="drop-list"
-                      @click="
-                        $router.push({
-                          name: 'add-edit-patient-record',
-                          query: {
-                            id: props.row.patient_id,
-                          },
-                        })
-                      "
-                    >
-                      <q-item-section>Edit Details</q-item-section>
-                      <q-item-section avatar>
-                        <q-icon size="xs" name="eva-edit-outline" />
-                      </q-item-section>
-                    </q-item>
-
-                    <!-- Delete -->
-                    <q-item
-                      clickable
-                      class="drop-list-delete"
-                      @click="deletePatientRecord(props.row.patient_id)"
-                    >
-                      <q-item-section>Delete Record</q-item-section>
-                      <q-item-section avatar>
-                        <q-icon size="xs" name="eva-trash-2-outline" />
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-menu>
               </q-btn>
-            </q-td>
-          </template>
-
-          <template v-slot:body-cell-sex="props">
-            <q-td :props="props">
-              {{ sex[props.row.sex] }}
             </q-td>
           </template>
 
@@ -340,22 +266,19 @@
                 no-caps
                 color="primary"
                 unelevated
-                :disable="downloadDisable"
                 class="button-100 download-btn"
-                @click="exportTable()"
+                :disable="downloadDisable"
               />
             </q-th>
           </template>
         </q-table>
       </div>
     </div>
-
-    <MHCDialog :content="$options.components.DeletePatientConfirmation" />
   </div>
 </template>
 
-<script src="../script/Patients-Profile/SearchPatients"></script>
+<script src="../../script/Patients-Profile/Senior-Citizen/Senior-Citizen"></script>
 
 <style scoped lang="scss">
-@import "../styles/patients-profile/search_patients.scss";
+@import "../../styles/patients-profile/search_patients.scss";
 </style>

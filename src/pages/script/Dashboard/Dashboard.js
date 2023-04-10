@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { DashboardData, GetDashboardData } from "src/composables/Dashboard";
-import { useQuasar, SessionStorage } from "quasar";
+import { useQuasar, SessionStorage, Loading } from "quasar";
 
 export default {
   setup() {
@@ -12,18 +12,23 @@ export default {
 
     let payload = {
       filter: selected.value,
-      department: keySession.department,
+      department: keySession && keySession.department,
     };
 
-    GetDashboardData(payload);
+    Loading.show();
+    GetDashboardData(payload).then((response) => {
+      Loading.hide();
+    });
 
     const setDashboard = () => {
       let payload = {
         filter: selected.value,
         department: keySession.department,
       };
-
-      GetDashboardData(payload);
+      Loading.show();
+      GetDashboardData(payload).then((response) => {
+        Loading.hide();
+      });
     };
 
     return {

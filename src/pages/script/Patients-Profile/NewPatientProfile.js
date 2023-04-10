@@ -227,7 +227,7 @@ export default {
       if (val.length > 0) {
         update(() => {
           if (!isNaN(val)) {
-            FindHouseholdByID(val).then((response) => {
+            FindHouseholdByID({ search_string: val }).then((response) => {
               householdOptions.value = [];
               if (response.status === "success") {
                 let Household = ref([]);
@@ -247,7 +247,7 @@ export default {
             });
           } else {
             const needle = String(val.toLowerCase());
-            FindHouseholdByName(needle).then((response) => {
+            FindHouseholdByName({ search_string: needle }).then((response) => {
               householdOptions.value = [];
               if (response.status === "success") {
                 let Household = ref([]);

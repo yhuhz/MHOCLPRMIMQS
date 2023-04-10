@@ -47,6 +47,15 @@ const routes = [
             component: () =>
               import("src/pages/Patients-Profile/OPD/AddOPDRecord.vue"),
           },
+          //Prenatal
+          {
+            path: ":record_id/:department/patient_records",
+            name: "Prenatal/patient_records",
+            component: () =>
+              import(
+                "src/pages/Patients-Profile/Prenatal/PatientDetailsPrenatal.vue"
+              ),
+          },
         ],
       },
       // OPD
@@ -108,6 +117,15 @@ const routes = [
         path: "pwd-records",
         name: "pwd-records",
         component: () => import("src/pages/Patients-Profile/PWD/PWD.vue"),
+      },
+      // Senior Citizen
+      {
+        path: "senior-citizen-records",
+        name: "senior-citizen-records",
+        component: () =>
+          import(
+            "src/pages/Patients-Profile/Senior-Citizen/senior-citizen.vue"
+          ),
       },
 
       // Meds & supplies

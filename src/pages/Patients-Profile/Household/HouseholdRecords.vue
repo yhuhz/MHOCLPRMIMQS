@@ -34,8 +34,53 @@
             outlined
             dense
             label="Search By:"
-            class="mhc-select-200 q-mr-md"
+            class="mhc-select-200"
           />
+
+          <!-- Filters -->
+          <q-btn
+            outline
+            label="Filters"
+            no-caps
+            icon-right="eva-funnel-outline"
+            color="primary"
+            class="q-mx-md button-120"
+            @click="showFilterModal = true"
+          >
+            <!-- Filters Modal -->
+            <q-dialog v-model="showFilterModal">
+              <q-card class="q-pa-md width-700">
+                <div class="flex items-center justify-between q-mb-md">
+                  <label class="text-bold text-primary" style="font-size: 20px"
+                    >FILTERS</label
+                  >
+                  <q-btn
+                    label="Done"
+                    class="bg-primary text-white q-px-md"
+                    flat
+                    dense
+                    @click="showFilterModal = !showFilterModal"
+                  />
+                </div>
+                <div class="flex justify-between">
+                  <!-- Status -->
+                  <div>
+                    <label class="text-primary text-weight-bold">Status </label>
+                    <div v-for="(status, index) in statusList" :key="index">
+                      <q-checkbox
+                        v-model="status_array_model"
+                        :val="index"
+                        :label="status"
+                        class="text-dark"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Button -->
+              </q-card>
+            </q-dialog>
+          </q-btn>
 
           <!-- Search -->
           <q-btn

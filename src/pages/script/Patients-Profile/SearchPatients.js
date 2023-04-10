@@ -7,15 +7,20 @@ import _ from "lodash";
 import { useQuasar, SessionStorage } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
 import { SetIDS } from "src/composables/IDS";
+import { useRouter } from "vue-router";
+import { LoginCredential, FindUser } from "src/composables/UserAccount";
 
 export default {
   components: { MHCDialog, DeletePatientConfirmation },
   setup() {
+    const router = useRouter();
     //SESSION KEYS
     let keySession = SessionStorage.getItem("cred");
     if (keySession == NaN || keySession == null) {
       router.push({ name: "login" });
     }
+
+    FindUser(keySession ? keySession.user_id : "");
 
     let downloadDisable = ref(
       typeof PatientsList.value === "undefined" ? true : false
@@ -83,7 +88,7 @@ export default {
       "Tumpa",
     ];
 
-    let age = ref([]);
+    let age = ref([0, 100]);
 
     let dateAdded = ref([]);
 

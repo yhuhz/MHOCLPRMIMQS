@@ -14,7 +14,10 @@ let FindHouseholdByID = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
-        params: { household_id: payload },
+        params: {
+          household_id: payload.search_string,
+          status: payload.status && payload.status,
+        },
       })
       .then((response) => {
         console.log(response.data);
@@ -32,10 +35,12 @@ let FindHouseholdByName = (payload) => {
     axios
       .get(pathlink, {
         params: {
-          household_name: payload,
+          household_name: payload.search_string,
+          status: payload.status && payload.status,
         },
       })
       .then((response) => {
+        // console.log(response.data);
         Households.value = response.data.data;
         resolve(response.data);
       })

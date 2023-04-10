@@ -4,6 +4,8 @@ let Patients = ref([]);
 let PatientsList = readonly(Patients);
 let PatientDetails = ref([]);
 let PWD = ref([]);
+let SC = ref([]);
+let Pregnant = ref([]);
 let pathlink =
   "http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/patient_api.php";
 /**
@@ -18,10 +20,14 @@ let GetPatients = (payload) => {
         params: { payload: payload },
       })
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
 
         if (typeof payload.pwd != "undefined") {
           PWD.value = response.data.data;
+        } else if (typeof payload.sc != "undefined") {
+          SC.value = response.data.data;
+        } else if (typeof payload.pregnant != "undefined") {
+          Pregnant.value = response.data.data;
         } else {
           Patients.value = response.data.data;
         }
@@ -148,4 +154,6 @@ export {
   EditPatient,
   DeletePatient,
   PWD,
+  SC,
+  Pregnant,
 };

@@ -31,6 +31,10 @@ class API
         $this->db->where('household_id', $_GET['household_id'].'%', 'LIKE');
       }
 
+      if (isset($_GET['status'])) {
+        $this->db->where('status', $_GET['status'], 'IN');
+      }
+
       $households = $this->db->get('tbl_household');
 
       $household_array = [];

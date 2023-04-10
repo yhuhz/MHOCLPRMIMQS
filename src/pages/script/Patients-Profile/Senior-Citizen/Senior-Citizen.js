@@ -1,13 +1,13 @@
 import { ref } from "vue";
-import { GetPatients, PWD } from "src/composables/Patients";
+import { GetPatients, SC } from "src/composables/Patients";
 import { Loading, useQuasar } from "quasar";
 
 export default {
   setup() {
     const $q = useQuasar();
 
-    let searchBy = ref(["PWD ID", "Patient ID", "Name"]);
-    let selectedSearchBy = ref("PWD ID");
+    let searchBy = ref(["Senior Citizen ID", "Patient ID", "Name"]);
+    let selectedSearchBy = ref("Senior Citizen ID");
     let searchValue = ref(null);
     let downloadDisable = ref(true);
     let sexArray = ["Male", "Female"];
@@ -69,7 +69,7 @@ export default {
       "Tumpa",
     ];
 
-    let age = ref([0, 100]);
+    let age = ref([60, 100]);
 
     let dateAdded = ref([]);
 
@@ -101,10 +101,10 @@ export default {
 
     const columns = ref([
       {
-        name: "pwd_id",
+        name: "senior_citizen_id",
         align: "left",
-        label: "PWD ID",
-        field: "pwd_id",
+        label: "Senior Citizen ID",
+        field: "senior_citizen_id",
         sortable: true,
       },
       {
@@ -116,13 +116,6 @@ export default {
           " " +
           row.last_name +
           (row.suffix ? " " + row.suffix : ""),
-        sortable: true,
-      },
-      {
-        name: "disability",
-        align: "left",
-        label: "Disability",
-        field: "disability",
         sortable: true,
       },
       {
@@ -169,7 +162,7 @@ export default {
       },
     ]);
 
-    const getPWD = () => {
+    const getSC = () => {
       let payload = {
         search_category: selectedSearchBy.value,
         search_string: searchValue.value,
@@ -183,7 +176,7 @@ export default {
       };
 
       Loading.show();
-      GetPatients({ search_by: payload, pwd: true }).then((response) => {
+      GetPatients({ search_by: payload, sc: true }).then((response) => {
         Loading.hide();
       });
     };
@@ -193,9 +186,9 @@ export default {
       selectedSearchBy,
       columns,
       searchValue,
-      getPWD,
+      getSC,
       downloadDisable,
-      PWD,
+      SC,
       showFilterModal,
       statusList,
       barangayList,

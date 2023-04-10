@@ -73,7 +73,7 @@ export default {
             ? "OPD" + row.record_id
             : selectedDepartment.value === "Dental"
             ? "DNTL" + row.record_id
-            : selectedDepartment.value === "PNL"
+            : selectedDepartment.value === "Prenatal"
             ? "PNL" + row.record_id
             : "IMZN" + row.record_id,
         sortable: true,

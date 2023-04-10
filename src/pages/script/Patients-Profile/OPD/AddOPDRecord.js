@@ -19,13 +19,14 @@ export default {
     let patientRecordInfo = ref({
       patient_id: route.params.id,
       preliminary_checkup_done_by: {
-        user_id: keySession.user_id,
+        user_id: keySession ? keySession.user_id : null,
         user_name:
+          keySession &&
           keySession.first_name +
-          " " +
-          keySession.last_name +
-          " " +
-          (keySession.suffix != null ? keySession.suffix : ""),
+            " " +
+            keySession.last_name +
+            " " +
+            (keySession.suffix != null ? keySession.suffix : ""),
       },
       temperature: null,
       blood_pressure: null,

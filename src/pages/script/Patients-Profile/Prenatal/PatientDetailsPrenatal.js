@@ -30,8 +30,8 @@ export default {
     Loading.show();
 
     let patientRecordInfo = ref({});
-    let disease = ref([]);
-    let lab_results = ref([]);
+    let prenatal_checkup = ref([]);
+    let toggleNewCheckup = ref(false);
 
     FindRecordDetails(route.params.record_id, route.params.department).then(
       (response) => {
@@ -40,28 +40,19 @@ export default {
     );
 
     watch(
-      () => _.cloneDeep(RecordDetails.value),
+      () => _.cloneDeep(RecordDetails.value[0]),
       () => {
         patientRecordInfo.value = {
           record_id: route.params.record_id,
-          preliminary_checkup_done_by: {
-            user_id: RecordDetails.value.preliminary_checkup_done_by,
-            user_name: RecordDetails.value.preliminary_checkup_done_by_name,
+          midwife_id: {
+            user_id: RecordDetails.value[0].midwife_id,
+            user_name: RecordDetails.value[0].midwife_name,
           },
-          temperature: RecordDetails.value.temperature,
-          blood_pressure: RecordDetails.value.blood_pressure,
-          height: RecordDetails.value.height,
-          weight: RecordDetails.value.weight,
-          pulse_rate: RecordDetails.value.pulse_rate,
-          oxygen_sat: RecordDetails.value.oxygen_sat,
-          doctor_id: {
-            user_id: RecordDetails.value.doctor_id,
-            user_name: RecordDetails.value.doctor_name,
-          },
-          complaint: RecordDetails.value.complaint,
-          checkup_date: RecordDetails.value.checkup_date,
-          next_checkup: RecordDetails.value.next_checkup,
-          checkup_results: RecordDetails.value.checkup_results,
+          last_menstruation: RecordDetails.value[0].last_menstruation,
+          date_added: RecordDetails.value[0].date_added,
+          previous_full_term: RecordDetails.value[0].previous_full_term,
+          previous_premature: RecordDetails.value[0].previous_premature,
+          midwifes_notes: RecordDetails.value[0].midwifes_notes,
           status: 0,
         };
       }
@@ -70,8 +61,7 @@ export default {
     watch(
       () => _.cloneDeep(RecordArrays.value),
       () => {
-        disease.value = RecordArrays.value.disease;
-        lab_results.value = RecordArrays.value.lab_results;
+        prenatal_checkup.value = RecordArrays.value[0];
       }
     );
 
@@ -112,22 +102,6 @@ export default {
     };
 
     let editForm = ref(false);
-
-    const addFinding = () => {
-      disease.value.push({ opd_disease: "" });
-    };
-
-    const removeFinding = (index) => {
-      disease.value.splice(index, 1);
-    };
-
-    const addLabResult = () => {
-      lab_results.value.push({ lab_result: "" });
-    };
-
-    const removeLabResult = (index) => {
-      lab_results.value.splice(index, 1);
-    };
 
     const editFunction = () => {
       editForm.value = false;
@@ -177,16 +151,12 @@ export default {
       patientRecordInfo,
       editForm,
       editFunction,
-      addFinding,
-      addLabResult,
-      removeLabResult,
-      removeFinding,
       cancelFunction,
       userOptions,
       userFilterFunction,
       openDialog,
-      lab_results,
-      disease,
+      prenatal_checkup,
+      toggleNewCheckup,
     };
   },
 };

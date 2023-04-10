@@ -88,7 +88,10 @@
           </div>
         </div>
 
-        <div class="flex items-center justify-between q-mt-lg">
+        <div
+          class="flex items-center justify-between q-mt-lg"
+          v-if="PatientDetails.pwd_id"
+        >
           <div class="column text-center">
             <label class="text-green-8">{{
               PatientDetails.pwd_id === null ? "" : PatientDetails.pwd_id
@@ -107,7 +110,10 @@
           </div>
         </div>
 
-        <div class="row justify-center q-mb-sm q-mt-lg">
+        <div
+          class="row justify-center q-mb-sm q-mt-lg"
+          v-if="PatientDetails.senior_citizen_id"
+        >
           <div class="column text-center">
             <label class="text-green-8">{{
               PatientDetails.senior_citizen_id === null
