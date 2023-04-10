@@ -36,20 +36,20 @@ const routes = [
         children: [
           // OPD
           {
-            path: ":record_id/:department/patient_records",
+            path: ":record_id/:department/1/patient_records",
             name: "OPD/patient_records",
             component: () =>
               import("src/pages/Patients-Profile/OPD/PatientDetailsOPD.vue"),
           },
           {
-            path: "new_record/:department/patient_records",
+            path: "new_record/:department/1-1/patient_records",
             name: "OPD/patient_records/new",
             component: () =>
               import("src/pages/Patients-Profile/OPD/AddOPDRecord.vue"),
           },
           //Prenatal
           {
-            path: ":record_id/:department/patient_records",
+            path: ":record_id/:department/3/patient_records",
             name: "Prenatal/patient_records",
             component: () =>
               import(
