@@ -34,11 +34,14 @@ import {
 } from "src/composables/Records";
 import { IDList } from "../../composables/IDS";
 import { useRoute, useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
 export default {
   setup() {
     const router = useRouter();
     const route = useRoute();
+
+    const $q = useQuasar();
 
     const closeDialog = () => {
       ToggleDialogState();
@@ -54,7 +57,18 @@ export default {
       ).then((response) => {
         ToggleDialogState();
 
-        if (response.status === "success") {
+        let status = response.status === "success" ? 0 : 1;
+
+        $q.notify({
+          type: status === 0 ? "positive" : "negative",
+          classes: "text-white",
+          message:
+            status === 0
+              ? "Patient record deleted successfully"
+              : "Failed to delete patient record",
+        });
+
+        if (!status) {
           router.push({ name: "patient-details", id: route.params.id });
         }
       });

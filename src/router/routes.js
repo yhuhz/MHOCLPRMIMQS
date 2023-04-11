@@ -56,6 +56,14 @@ const routes = [
                 "src/pages/Patients-Profile/Prenatal/PatientDetailsPrenatal.vue"
               ),
           },
+          {
+            path: "new-record/:department/3-1/patient_records",
+            name: "Prenatal/patient_records/new",
+            component: () =>
+              import(
+                "src/pages/Patients-Profile/Prenatal/AddPrenatalRecord.vue"
+              ),
+          },
         ],
       },
       // OPD

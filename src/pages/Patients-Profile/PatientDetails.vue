@@ -142,7 +142,7 @@
               :disable="selectedDepartment != null ? false : true"
               @click="
                 $router.push({
-                  name: 'OPD/patient_records/new',
+                  name: selectedDepartment + '/patient_records/new',
                   params: {
                     department: selectedDepartment,
                   },

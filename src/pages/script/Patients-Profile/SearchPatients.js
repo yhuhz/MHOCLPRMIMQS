@@ -163,9 +163,19 @@ export default {
         field: (row) =>
           row.first_name +
           " " +
+          (row.middle_name && row.middle_name + " ") +
           row.last_name +
           (row.suffix ? " " + row.suffix : ""),
         sortable: true,
+      },
+      {
+        name: "household_id",
+        align: "left",
+        label: "Household ID",
+        field: "household_id",
+        sortable: true,
+        classes: "hidden",
+        headerClasses: "hidden",
       },
       {
         name: "household",
@@ -180,6 +190,15 @@ export default {
         label: "Barangay",
         field: "barangay",
         sortable: true,
+      },
+      {
+        name: "address",
+        align: "left",
+        label: "Address",
+        field: "address",
+        sortable: true,
+        classes: "hidden",
+        headerClasses: "hidden",
       },
       {
         name: "sex",
@@ -223,6 +242,7 @@ export default {
       ToggleDialogState();
     };
 
+    /**EXPORT TABLE**/
     const wrapCsvValue = (val, formatFn, row) => {
       let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
 

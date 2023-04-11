@@ -103,8 +103,8 @@ let UpdateRecord = (payload, department) => {
       .put(pathlink, payload)
       .then((response) => {
         if (response.data.status === "success") {
-          // console.log(response.data);
-          if (department === "OPD") {
+          console.log(response.data);
+          if (department === "OPD" || department === "Prenatal") {
             RecordDetails.value = response.data.record;
             RecordArrays.value = response.data.array;
           } else {

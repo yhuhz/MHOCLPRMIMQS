@@ -13,6 +13,7 @@ import {
 } from "src/composables/Records";
 import { FindUsersByName } from "src/composables/Manage_Users";
 import { Loading, SessionStorage, useQuasar } from "quasar";
+import { editForm } from "../PatientDetails";
 
 export default {
   components: { MHCDialog, DeletePatientRecordConfirmation },
@@ -26,6 +27,8 @@ export default {
     if (keySession == NaN || keySession == null) {
       router.push({ name: "login" });
     }
+
+    let editForm = ref(false);
 
     Loading.show();
 
@@ -49,7 +52,8 @@ export default {
             user_name: RecordDetails.value.preliminary_checkup_done_by_name,
           },
           temperature: RecordDetails.value.temperature,
-          blood_pressure: RecordDetails.value.blood_pressure,
+          blood_pressure_systole: RecordDetails.value.blood_pressure_systole,
+          blood_pressure_diastole: RecordDetails.value.blood_pressure_diastole,
           height: RecordDetails.value.height,
           weight: RecordDetails.value.weight,
           pulse_rate: RecordDetails.value.pulse_rate,
@@ -110,8 +114,6 @@ export default {
         }
       );
     };
-
-    let editForm = ref(false);
 
     const addFinding = () => {
       disease.value.push({ opd_disease: "" });

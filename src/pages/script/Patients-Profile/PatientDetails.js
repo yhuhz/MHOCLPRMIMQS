@@ -8,7 +8,7 @@ import { GetRecords, PatientRecords } from "src/composables/Records";
 
 import { FindRecordDetails } from "src/composables/Records";
 import _ from "lodash";
-import { useQuasar, SessionStorage } from "quasar";
+import { useQuasar, SessionStorage, Loading } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
 import { useRoute, useRouter } from "vue-router";
 
@@ -24,7 +24,11 @@ export default {
       router.push({ name: "login" });
     }
 
-    FindPatient({ patient_id: route.params.id });
+    Loading.show();
+
+    FindPatient({ patient_id: route.params.id }).then((response) => {
+      Loading.hide();
+    });
 
     let name = ref(null);
     let status = ["Active", "Deceased", "Deleted"];
@@ -95,7 +99,12 @@ export default {
     };
 
     const onRowClick = (evt, row) => {
-      FindRecordDetails(row.record_id, selectedDepartment.value);
+      Loading.show();
+      FindRecordDetails(row.record_id, selectedDepartment.value).then(
+        (response) => {
+          Loading.hide();
+        }
+      );
 
       router.push({
         name: selectedDepartment.value + "/patient_records",

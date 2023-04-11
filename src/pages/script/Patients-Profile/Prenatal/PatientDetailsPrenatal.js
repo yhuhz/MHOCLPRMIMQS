@@ -40,19 +40,19 @@ export default {
     );
 
     watch(
-      () => _.cloneDeep(RecordDetails.value[0]),
+      () => _.cloneDeep(RecordDetails.value),
       () => {
         patientRecordInfo.value = {
-          record_id: route.params.record_id,
+          prenatal_id: route.params.record_id,
           midwife_id: {
-            user_id: RecordDetails.value[0].midwife_id,
-            user_name: RecordDetails.value[0].midwife_name,
+            user_id: RecordDetails.value.midwife_id,
+            user_name: RecordDetails.value.midwife_name,
           },
-          last_menstruation: RecordDetails.value[0].last_menstruation,
-          date_added: RecordDetails.value[0].date_added,
-          previous_full_term: RecordDetails.value[0].previous_full_term,
-          previous_premature: RecordDetails.value[0].previous_premature,
-          midwifes_notes: RecordDetails.value[0].midwifes_notes,
+          last_menstruation: RecordDetails.value.last_menstruation,
+          date_added: RecordDetails.value.date_added,
+          previous_full_term: RecordDetails.value.previous_full_term,
+          previous_premature: RecordDetails.value.previous_premature,
+          midwifes_notes: RecordDetails.value.midwifes_notes,
           status: 0,
         };
       }
@@ -61,7 +61,7 @@ export default {
     watch(
       () => _.cloneDeep(RecordArrays.value),
       () => {
-        prenatal_checkup.value = RecordArrays.value[0];
+        prenatal_checkup.value = RecordArrays.value;
       }
     );
 
@@ -103,42 +103,62 @@ export default {
 
     let editForm = ref(false);
 
+    const addCheckup = () => {
+      let currentDate = new Date().toISOString().slice(0, 10);
+
+      prenatal_checkup.value.push({
+        prenatal_id: route.params.record_id,
+        height: null,
+        weight: null,
+        temperature: null,
+        blood_pressure_systole: null,
+        blood_pressure_diastole: null,
+        next_checkup: null,
+        pulse_rate: null,
+        oxygen_sat: null,
+        checkup_date: currentDate,
+        next_checkup: null,
+        comments: null,
+      });
+    };
+
+    const removeCheckup = (index) => {
+      prenatal_checkup.value[index].status = 1;
+    };
+
+    const undoRemoveCheckup = (index) => {
+      prenatal_checkup.value[index].status = 0;
+    };
+
     const editFunction = () => {
       editForm.value = false;
 
-      patientRecordInfo.value.disease = disease.value;
-      patientRecordInfo.value.lab_results = lab_results.value;
-
-      if (
-        typeof patientRecordInfo.value.preliminary_checkup_done_by === "object"
-      ) {
-        patientRecordInfo.value.preliminary_checkup_done_by =
-          patientRecordInfo.value.preliminary_checkup_done_by.user_id;
+      if (patientRecordInfo.value.midwife_id.user_id != null) {
+        patientRecordInfo.value.midwife_id =
+          patientRecordInfo.value.midwife_id.user_id;
       }
 
-      if (patientRecordInfo.value.doctor_id.user_id != null) {
-        patientRecordInfo.value.doctor_id =
-          patientRecordInfo.value.doctor_id.user_id;
-      }
+      let payload = {
+        prenatal: patientRecordInfo.value,
+        checkup: prenatal_checkup.value,
+      };
 
       Loading.show();
 
-      UpdateRecord(patientRecordInfo.value, route.params.department).then(
-        (response) => {
-          Loading.hide();
+      UpdateRecord(payload, route.params.department).then((response) => {
+        Loading.hide();
 
-          let status = response.status === "success" ? 0 : 1;
+        let status = response.status === "success" ? 0 : 1;
 
-          $q.notify({
-            type: status === 0 ? "positive" : "negative",
-            classes: "text-white",
-            message:
-              status === 0
-                ? "Patient record edited successfully"
-                : "Failed to edit patient record",
-          });
-        }
-      );
+        $q.notify({
+          type: status === 0 ? "positive" : "negative",
+          classes: "text-white",
+          message:
+            status === 0
+              ? "Patient record edited successfully"
+              : "Failed to edit patient record",
+        });
+      });
     };
 
     const openDialog = () => {
@@ -157,6 +177,9 @@ export default {
       openDialog,
       prenatal_checkup,
       toggleNewCheckup,
+      addCheckup,
+      removeCheckup,
+      undoRemoveCheckup,
     };
   },
 };

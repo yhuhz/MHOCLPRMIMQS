@@ -1,15 +1,14 @@
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import {} from "src/composables/Records";
+import { AddRecord } from "src/composables/Records";
 import { FindUsersByName } from "src/composables/Manage_Users";
-import { AddRecord, PatientRecords } from "src/composables/Records";
-import { SessionStorage, date, useQuasar, Loading } from "quasar";
+import { Loading, SessionStorage, useQuasar, date } from "quasar";
 
 export default {
   setup() {
+    const $q = useQuasar();
     const route = useRoute();
     const router = useRouter();
-    const $q = useQuasar();
 
     //SESSION KEYS
     let keySession = SessionStorage.getItem("cred");
@@ -19,7 +18,7 @@ export default {
 
     let patientRecordInfo = ref({
       patient_id: route.params.id,
-      preliminary_checkup_done_by: {
+      midwife_id: {
         user_id: keySession ? keySession.user_id : null,
         user_name:
           keySession &&
@@ -29,35 +28,12 @@ export default {
             " " +
             (keySession.suffix != null ? keySession.suffix : ""),
       },
-      temperature: null,
-      blood_pressure_systole: null,
-      blood_pressure_diastole: null,
-      height: null,
-      weight: null,
-      pulse_rate: null,
-      oxygen_sat: null,
-
-      doctor_id: null,
-      complaint: null,
-      checkup_date: date.formatDate(new Date(), "YYYY-MM-DD"),
+      previous_full_term: null,
+      previous_premature: null,
+      date_added: date.formatDate(new Date(), "YYYY-MM-DD"),
+      midwifes_notes: null,
       status: 0,
     });
-
-    const addFinding = () => {
-      patientRecordInfo.value.disease.push({ opd_disease: "" });
-    };
-
-    const removeFinding = (index) => {
-      patientRecordInfo.value.disease.splice(index, 1);
-    };
-
-    const addLabResult = () => {
-      patientRecordInfo.value.lab_results.push({ lab_result: "" });
-    };
-
-    const removeLabResult = (index) => {
-      patientRecordInfo.value.lab_results.splice(index, 1);
-    };
 
     let userOptions = ref([]);
 
@@ -85,16 +61,26 @@ export default {
       }
     };
 
-    const addRecord = () => {
-      Loading.show();
-      if (patientRecordInfo.value.preliminary_checkup_done_by.user_id != null) {
-        patientRecordInfo.value.preliminary_checkup_done_by =
-          patientRecordInfo.value.preliminary_checkup_done_by.user_id;
+    let cancelFunction = () => {
+      router.push({
+        name: "patient-details",
+        params: {
+          id: route.params.id,
+        },
+      });
+    };
+
+    const addFunction = () => {
+      if (patientRecordInfo.value.midwife_id.user_id != null) {
+        patientRecordInfo.value.midwife_id =
+          patientRecordInfo.value.midwife_id.user_id;
       }
+
+      Loading.show();
+
       AddRecord(patientRecordInfo.value, route.params.department).then(
         (response) => {
           Loading.hide();
-
           let status = response.status === "success" ? 0 : 1;
 
           $q.notify({
@@ -107,9 +93,9 @@ export default {
           });
           if (status === 0) {
             router.push({
-              name: "OPD/patient_records",
+              name: "Prenatal/patient_records",
               params: {
-                record_id: response.data.record_id,
+                record_id: response.data.prenatal_id,
                 department: route.params.department,
               },
             });
@@ -118,23 +104,10 @@ export default {
       );
     };
 
-    const cancel = () => {
-      router.push({
-        name: "patient-details",
-        params: {
-          id: route.params.id,
-        },
-      });
-    };
     return {
-      keySession,
-      addRecord,
-      cancel,
       patientRecordInfo,
-      addFinding,
-      removeFinding,
-      addLabResult,
-      removeLabResult,
+      addFunction,
+      cancelFunction,
       userOptions,
       userFilterFunction,
     };

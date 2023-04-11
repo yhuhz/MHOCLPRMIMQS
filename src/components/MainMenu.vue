@@ -18,13 +18,25 @@
     </q-item>
 
     <!-- Patients Profile -->
-    <q-expansion-item icon="groups" label="Patients Profile" class="text-white">
+    <q-expansion-item
+      icon="groups"
+      label="Patients Profile"
+      class="text-white"
+      :default-opened="
+        $route.name === 'search-patients' ||
+        $route.name === 'patient-details' ||
+        $route.name === 'add-edit-patient-record'
+          ? true
+          : false
+      "
+    >
       <q-list dense separator class="dropdown-list bg-grey-8">
         <q-item
           clickable
           exact
           :class="
-            $route.name === 'search-patients'
+            $route.name === 'search-patients' ||
+            $route.name === 'patient-details'
               ? 'bg-primary list-text text-white'
               : 'list-text text-white'
           "

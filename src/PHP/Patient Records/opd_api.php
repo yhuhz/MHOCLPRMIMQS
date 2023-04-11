@@ -163,7 +163,6 @@ class API
 
     public function httpDelete($payload)
     {
-        $payload = (array) $payload;
 
         $this->db->where('opd_id', $_GET['record_id']);
         $delete_user = $this->db->update('tbl_opd', array('status' => 1));

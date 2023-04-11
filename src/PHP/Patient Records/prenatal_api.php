@@ -39,8 +39,8 @@ class API
 
       if ($prenatal_records) {
         echo json_encode(array('status' => 'success',
-                                  'record' => $prenatal_records,
-                                  'array' => $prenatal_checkup,
+                                  'record' => $prenatal_records[0],
+                                  'array' => $prenatal_checkup[0],
                                   'method' => 'GET'
                                 ));
       }
@@ -49,88 +49,74 @@ class API
 
     public function httpPost($payload)
     {
-      foreach($payload as $prenatal_record) {
-        $prenatal_record = (array) $prenatal_record;
+      $prenatal_record = (array) $payload;
 
-        //INSERT PRENATAL RECORDS
-        if (isset($prenatal_record['patient_id'])) {
+      $prenatal_record['prenatal_id'] = $this->db->insert('tbl_prenatal', $prenatal_record);
 
-          $prenatal_record['prenatal_id'] = $this->db->insert('tbl_prenatal', $prenatal_record);
-
-          if ($prenatal_record['prenatal_id']) {
-            echo json_encode(array('status' => 'success',
-                                      'data' => $prenatal_record,
-                                      'method' => 'POST'
-                                    ));
-          } else {
-            echo json_encode(array('status' => 'fail',
-                                      'message' => 'Failed to add record',
-                                      'method' => 'POST'
-                                    ));
-            return;
-          }
-
-        //INSERT PRENATAL CHECKUP RECORDS
-        } else if (isset($prenatal_record['prenatal_id'])) {
-
-          $prenatal_record['prenatal_checkup_id'] = $this->db->insert('tbl_prenatal_checkup', $prenatal_record);
-
-          if ($prenatal_record['prenatal_checkup_id']) {
-            echo json_encode(array('status' => 'success',
-                                      'data' => $prenatal_record,
-                                      'method' => 'POST'
-                                    ));
-          } else {
-            echo json_encode(array('status' => 'fail',
-                                      'message' => 'Failed to add record',
-                                      'method' => 'POST'
-                                    ));
-            return;
-          }
-        }
+      if ($prenatal_record['prenatal_id']) {
+        echo json_encode(array('status' => 'success',
+                                  'data' => $prenatal_record,
+                                  'method' => 'POST'
+                                ));
+      } else {
+        echo json_encode(array('status' => 'fail',
+                                  'message' => 'Failed to add record',
+                                  'method' => 'POST'
+                                ));
+        return;
       }
     }
 
     public function httpPut($payload)
     {
       $payload = (array) $payload;
-
-      $prenatal_checkup = $payload['prenatal_checkup'];
-      unset($payload['prenatal_checkup']);
+      $prenatal = (array) $payload['prenatal'];
+      $prenatal_checkup = (array) $payload['checkup'];
 
       foreach ($prenatal_checkup as $checkup) {
         $checkup = (array) $checkup;
 
-        $this->db->where('prenatal_checkup_id', $checkup['prenatal_checkup_id']);
-        $this->db->update('tbl_prenatal_checkup', $checkup);
+        if (isset($checkup['prenatal_checkup_id'])) {
+          $this->db->where('prenatal_checkup_id', $checkup['prenatal_checkup_id']);
+          $this->db->update('tbl_prenatal_checkup', $checkup);
+        } else {
+          $this->db->insert('tbl_prenatal_checkup', $checkup);
+        }
+
       }
 
-      $this->db->where('prenatal_id', $payload['prenatal_id']);
-      $prenatal_record = $this->db->update('tbl_prenatal', $payload);
+      $this->db->where('prenatal_id', $prenatal['prenatal_id']);
+      $prenatal_record = $this->db->update('tbl_prenatal', $prenatal);
 
-      $payload['prenatal_checkup'] = $prenatal_checkup;
+      if ($prenatal_record) {
+        $this->db->where('user_id', $prenatal['midwife_id']);
+        $name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
+        $prenatal['midwife_name'] = $name[0]['name'];
+        // print_r($prenatal); return;
 
-      echo json_encode(array('status' => 'success',
-                              'data' => $payload,
+
+        echo json_encode(array('status' => 'success',
+                              'record' => $prenatal,
+                              'array' => $prenatal_checkup,
                               'method' => 'PUT'
                             ));
+      }
+
     }
 
     public function httpDelete($payload)
     {
-      $payload = (array) $payload;
+      $this->db->where('prenatal_id', $_GET['record_id']);
+        $delete_user = $this->db->update('tbl_prenatal', array('status' => 1));
 
-      //DELETE DENTAL RECORD
-      if (isset($payload['prenatal_id'])) {
-
-        $this->db->where('prenatal_id', $payload['prenatal_id']);
-        $dental_record = $this->db->update('tbl_prenatal', array('status' => 1));
-
-        echo json_encode(array('status' => 'success',
-                                'data' => 'Record successfully deleted',
+        if ($delete_user) {
+            echo json_encode(array('status' => 'success',
+                                'message' => 'Record successfully removed',
                                 'method' => 'DELETE'
-                              ));
-      }
+          ));
+        } else {
+            echo json_encode(array('status' => 'failed'));
+        }
     }
 }
 /* END OF CLASS */
