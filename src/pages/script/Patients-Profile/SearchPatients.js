@@ -20,7 +20,7 @@ export default {
       router.push({ name: "login" });
     }
 
-    FindUser(keySession ? keySession.user_id : "");
+    FindUser(keySession && keySession.user_id);
 
     let downloadDisable = ref(
       typeof PatientsList.value === "undefined" ? true : false

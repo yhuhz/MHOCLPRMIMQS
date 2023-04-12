@@ -1,0 +1,149 @@
+import axios from "axios";
+import { ref, readonly } from "vue";
+let Medicines = ref([]);
+let MedicinesList = readonly(Medicines);
+let MedicineDetails = ref([]);
+let pathlink =
+  "http://localhost/MHOCLPRMIMQS/src/PHP/Medicine and Supplies/medicine_inventory_api.php";
+/**
+ * This function accepts parameters of an array then
+ * set the passed array to Medicines data.
+ * @param {*} object
+ */
+let GetMedicines = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: { payload: payload },
+      })
+      .then((response) => {
+        // console.log(response.data);
+
+        if (response.data.status === "success") {
+          Medicines.value = response.data.data;
+        } else {
+          console.log(response.data.data);
+        }
+
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let FindMedicine = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          payload: payload,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        MedicineDetails.value = response.data.data[0];
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+/**
+ * This function accepts parameters of an object then
+ * add the passed object to Medicines data.
+ * @param {*} object
+ */
+let AddMedicine = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(pathlink, payload)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.status === "success") {
+          Medicines.value.push(response.data.data);
+        } else {
+          console.log(response.data);
+        }
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+/**
+ * This function accepts parameters of an object then
+ * updates the Medicines specific data based on the id passed in the object.
+ * @param {*} object
+ */
+let EditMedicine = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(pathlink, payload)
+      .then((response) => {
+        // console.log(response.data.data);
+        if (response.data.status === "success") {
+          let objectIndex = Medicines.value.findIndex(
+            (e) => e.medicine_id === payload.medicine_id
+          );
+          // if index not found (-1) update nothing !
+          // objectIndex !== -1 &&
+          // Object.keys(Medicines.value[objectIndex]).forEach((key) => {
+          //   response.data.data.personal_info[key] &&
+          //     (Medicines.value[objectIndex][key] =
+          //       response.data.data.personal_info[key]);
+          // });
+
+          Medicines.value[objectIndex] = response.data.data;
+        } else [console.log(response.data)];
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+/**
+ * This function accepts parameters of an array like this [1,2,3,4] then
+ * delete the data in the Medicines based on this parameter.
+ * @param {*} array
+ */
+let DeleteMedicine = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .delete(pathlink + "?medicine_id=" + payload.medicine_id)
+      .then((response) => {
+        if (response.data.status === "success") {
+          let objectIndex = Medicines.value.findIndex(
+            (e) => e.medicine_id === payload.medicine_id
+          );
+          // if index not found (-1) delete nothing !
+          objectIndex !== -1 && Medicines.value.splice(objectIndex, 1);
+        } else {
+          console.log(response.data);
+        }
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+/**
+ * Export MedicinesList as readonly (real time copy of Medicines)
+ */
+export {
+  GetMedicines,
+  Medicines,
+  MedicinesList,
+  FindMedicine,
+  MedicineDetails,
+  AddMedicine,
+  EditMedicine,
+  DeleteMedicine,
+};

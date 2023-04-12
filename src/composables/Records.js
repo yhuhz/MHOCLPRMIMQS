@@ -51,6 +51,7 @@ let FindRecordDetails = (payload, department) => {
           RecordArrays.value = response.data.array;
         } else {
           RecordDetails.value = response.data.data;
+          RecordArrays.value = [];
         }
         resolve(response.data);
       })
@@ -76,7 +77,12 @@ let AddRecord = (payload, department) => {
       .then((response) => {
         if (response.data.status === "success") {
           // console.log(response.data);
-          PatientRecords.value.push(response.data.data);
+          try {
+            PatientRecords.value.push(response.data.data);
+          } catch (e) {
+            PatientRecords.value = [];
+            PatientRecords.value.push(response.data.data);
+          }
         } else {
           console.log(response.data);
         }

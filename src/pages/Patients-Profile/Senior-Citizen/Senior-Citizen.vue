@@ -267,7 +267,8 @@
                 color="primary"
                 unelevated
                 class="button-100 download-btn"
-                :disable="downloadDisable"
+                :disable="SC && SC[0] ? false : true"
+                @click="exportTable"
               />
             </q-th>
           </template>

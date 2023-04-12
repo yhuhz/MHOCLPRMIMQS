@@ -109,7 +109,7 @@
             </div>
           </div>
 
-          <q-separator class="q-my-lg" color="primary" />
+          <q-separator class="q-my-lg" color="dark" />
 
           <!-- Create New Record -->
           <div class="row q-my-lg">
@@ -131,7 +131,6 @@
             </div>
           </div>
 
-          <!-- Table -->
           <div class="row q-my-md">
             <div class="col">
               <q-table dense />
@@ -148,20 +147,18 @@
         <!-- Action Button -->
         <div class="action-btn">
           <q-btn
-            @click="$router.push('patient-record-prenatal-edit')"
             dense
-            label="Edit"
+            label="Submit"
             no-caps
             color="primary"
-            icon="eva-edit-outline"
             class="button-120"
           />
           <q-btn
             dense
-            label="Delete"
+            outline
+            label="Cancel"
             no-caps
-            color="negative"
-            icon="eva-trash-2-outline"
+            color="primary"
             class="q-ml-md button-120"
           />
         </div>
@@ -176,26 +173,53 @@
             </div>
             <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Midwife:</p>
-              <p class="text-primary">Ma. Juana Santos</p>
+              <q-input
+                outlined
+                dense
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
             <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Prev. Full Term:</p>
-              <p class="text-primary">1</p>
+              <q-input
+                outlined
+                dense
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
             <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Prev. Premature:</p>
-              <p class="text-primary">2</p>
+              <q-input
+                outlined
+                dense
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
             <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">1st Checkup Date:</p>
-              <p class="text-primary">02/02/2023</p>
+              <q-input
+                outlined
+                dense
+                type="date"
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
             <div class="flex justify-between q-px-md">
               <p class="text-primary text-weight-bold">Last Menstruation:</p>
-              <p class="text-primary">12/25/2022</p>
+              <q-input
+                outlined
+                dense
+                type="date"
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
 
-            <q-separator color="primary" class="separator-1" />
+            <q-separator class="separator-1" />
 
             <div>
               <ul>
@@ -221,37 +245,79 @@
           <div class="fit">
             <p class="bg-primary text-center text-white date-heading">
               02/02/2023
+              <q-btn
+                round
+                size="xs"
+                unelevated
+                icon="eva-trash-2-outline"
+                class="float-right q-mr-xs"
+              />
             </p>
             <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Done by</p>
-              <p class="text-primary">John Doe</p>
+              <q-input
+                outlined
+                dense
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
             <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Temperature</p>
-              <p class="text-primary">27C</p>
+              <q-input
+                outlined
+                dense
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
             <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Blood Pressure</p>
-              <p class="text-primary">120/80</p>
+              <q-input
+                outlined
+                dense
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
             <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Height</p>
-              <p class="text-primary">172 cm</p>
+              <q-input
+                outlined
+                dense
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
             <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Weight</p>
-              <p class="text-primary">78 kgs</p>
+              <q-input
+                outlined
+                dense
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
             <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Pulse Rate</p>
-              <p class="text-primary">60bpm</p>
+              <q-input
+                outlined
+                dense
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
             <div class="flex justify-between q-px-md">
               <p class="text-weight-bold text-primary">Oxygen Saturation</p>
-              <p class="text-primary">88%</p>
+              <q-input
+                outlined
+                dense
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                class="mhc-input-field"
+              />
             </div>
 
-            <q-separator class="separator-2" color="primary" />
+            <q-separator class="separator-2" />
 
             <div>
               <ul>
@@ -277,7 +343,7 @@
               <div class="text-center">
                 <q-btn
                   @click="toggleNewCheckup = true"
-                  icon="add"
+                  icon="eva-plus-outline"
                   color="primary"
                   padding="25px"
                   class="new-checkup-btn"
@@ -292,34 +358,69 @@
             <div class="field fit" v-else>
               <div class="flex justify-between q-mx-md">
                 <p class="text-primary text-weight-bold">Done by</p>
-                <q-input dense outlined class="mhc-input-field" />
+                <q-input
+                  dense
+                  outlined
+                  :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                  class="mhc-input-field"
+                />
               </div>
               <div class="flex justify-between q-mx-md">
                 <p class="text-primary text-weight-bold">Temperature</p>
-                <q-input dense outlined class="mhc-input-field" />
+                <q-input
+                  dense
+                  outlined
+                  :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                  class="mhc-input-field"
+                />
               </div>
               <div class="flex justify-between q-mx-md">
                 <p class="text-primary text-weight-bold">Blood Pressure</p>
-                <q-input dense outlined class="mhc-input-field" />
+                <q-input
+                  dense
+                  outlined
+                  :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                  class="mhc-input-field"
+                />
               </div>
               <div class="flex justify-between q-mx-md">
                 <p class="text-primary text-weight-bold">Height</p>
-                <q-input dense outlined class="mhc-input-field" />
+                <q-input
+                  dense
+                  outlined
+                  :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                  class="mhc-input-field"
+                />
               </div>
               <div class="flex justify-between q-mx-md">
                 <p class="text-primary text-weight-bold">Weight</p>
-                <q-input dense outlined class="mhc-input-field" />
+                <q-input
+                  dense
+                  outlined
+                  :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                  class="mhc-input-field"
+                />
               </div>
               <div class="flex justify-between q-mx-md">
                 <p class="text-primary text-weight-bold">Pulse Rate</p>
-                <q-input dense outlined class="mhc-input-field" />
+                <q-input
+                  dense
+                  outlined
+                  :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                  class="mhc-input-field"
+                />
               </div>
               <div class="flex justify-between q-mx-md">
                 <p class="text-primary text-weight-bold">Oxygen Saturation</p>
-                <q-input dense outlined class="mhc-input-field" />
+                <q-input
+                  dense
+                  outlined
+                  :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+                  class="mhc-input-field"
+                />
               </div>
 
-              <q-separator class="separator-3" color="primary" />
+              <q-separator class="separator-2" />
 
               <!-- Save-btn -->
               <div class="bg-primary text-white text-center save-field">
@@ -333,7 +434,7 @@
   </div>
 </template>
 
-<script src="../../script/Patients-Profile/Prenatal/PR-Prenatal-Details-View"></script>
+<script src="./PR-Prenatal-Details-Edit"></script>
 
 <style lang="scss" scoped>
 @import "../../styles/patients-profile/prenatal/pr_prenatal.scss";

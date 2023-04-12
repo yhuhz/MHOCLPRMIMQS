@@ -38,13 +38,13 @@ class API
 
           if (isset($opd_record['doctor_id'])) {
           $this->db->where('user_id',$opd_record['doctor_id']);
-          $doctor_name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
+          $doctor_name = $this->db->get('tbl_users', null, 'CONCAT(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) AS name');
           $opd_record['doctor_name'] = $doctor_name[0]['name'];
           }
 
           if (isset($opd_record['preliminary_checkup_done_by'])) {
           $this->db->where('user_id',$opd_record['preliminary_checkup_done_by']);
-          $prelim_name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
+          $prelim_name = $this->db->get('tbl_users', null, 'CONCAT(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) AS name');
           $opd_record['preliminary_checkup_done_by_name'] = $prelim_name[0]['name'];
           }
 
@@ -140,11 +140,11 @@ class API
 
       if ($opd_record) {
         $this->db->where('user_id', $payload['preliminary_checkup_done_by']);
-        $name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
+        $name = $this->db->get('tbl_users', null, 'CONCAT(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) AS name');
         $payload['preliminary_checkup_done_by_name'] = $name[0]['name'];
 
         $this->db->where('user_id', $payload['doctor_id']);
-        $name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
+        $name = $this->db->get('tbl_users', null, 'CONCAT(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) AS name');
         $payload['doctor_name'] = $name[0]['name'];
 
         $opd_arrays = [];

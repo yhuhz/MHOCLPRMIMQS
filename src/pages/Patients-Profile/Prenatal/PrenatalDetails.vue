@@ -465,7 +465,7 @@ import { RecordDetails } from 'src/composables/Patients';
   </div>
 </template>
 
-<script src="../../script/Patients-Profile/Prenatal/PatientDetailsPrenatal"></script>
+<script src="../../script/Patients-Profile/Prenatal/PrenatalDetails"></script>
 
 <style lang="scss" scoped>
 // @import "../../styles/patients-profile/prenatal/pr_prenatal.scss";

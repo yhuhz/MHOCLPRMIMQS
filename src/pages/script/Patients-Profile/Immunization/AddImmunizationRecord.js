@@ -1,4 +1,5 @@
 import { ref } from "vue";
+
 import { useRoute, useRouter } from "vue-router";
 import { AddRecord } from "src/composables/Records";
 import { FindUsersByName } from "src/composables/Manage_Users";
@@ -18,7 +19,7 @@ export default {
 
     let patientRecordInfo = ref({
       patient_id: route.params.id,
-      midwife_id: {
+      immunizer_id: {
         user_id: keySession ? keySession.user_id : null,
         user_name:
           keySession &&
@@ -28,10 +29,10 @@ export default {
             " " +
             (keySession.suffix != null ? keySession.suffix : ""),
       },
-      previous_full_term: null,
-      previous_premature: null,
-      date_added: date.formatDate(new Date(), "YYYY-MM-DD"),
-      midwifes_notes: null,
+      immunization_date: date.formatDate(new Date(), "YYYY-MM-DD"),
+      next_immunization_date: null,
+      vaccine_used: null,
+      comments: null,
       status: 0,
     });
 
@@ -71,12 +72,12 @@ export default {
     };
 
     const addFunction = () => {
-      if (patientRecordInfo.value.midwife_id.user_id != null) {
-        patientRecordInfo.value.midwife_id =
-          patientRecordInfo.value.midwife_id.user_id;
-      }
-
       Loading.show();
+
+      if (patientRecordInfo.value.immunizer_id.user_id != null) {
+        patientRecordInfo.value.immunizer_id =
+          patientRecordInfo.value.immunizer_id.user_id;
+      }
 
       AddRecord(patientRecordInfo.value, route.params.department).then(
         (response) => {
@@ -91,15 +92,15 @@ export default {
                 ? "Patient record added successfully"
                 : "Failed to add patient record",
           });
-          // if (status === 0) {
-          //   router.push({
-          //     name: "Prenatal/patient_records",
-          //     params: {
-          //       record_id: response.data.record_id,
-          //       department: route.params.department,
-          //     },
-          //   });
-          // }
+          if (status === 0) {
+            router.push({
+              name: "Immunization/patient_records",
+              params: {
+                record_id: response.data.record_id,
+                department: route.params.department,
+              },
+            });
+          }
         }
       );
     };

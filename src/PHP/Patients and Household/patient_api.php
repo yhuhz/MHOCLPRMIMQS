@@ -66,9 +66,9 @@ class API
         $search_by = (array) $payload['search_by'];
         // print_r($search_by);
 
-        if (isset($search_by['search_string'])) {
+        if (isset($search_by['search_string']) && ($search_by['search_string'] != '')) {
           //SEARCH BY NAME
-        if ($search_by['search_category'] === 'Name') {
+          if ($search_by['search_category'] === 'Name') {
 
           // echo $search_by['search_string']; return;
           $this->db->where("CONCAT_WS(' ', REPLACE(first_name, ' ', ''), REPLACE(middle_name, ' ', ''), REPLACE(last_name, ' ', ''), REPLACE(suffix, ' ', '')) LIKE '%" . $search_by['search_string'] . "%'");
@@ -124,7 +124,7 @@ class API
         $search_by = (array) $payload['search_by'];
         // print_r($payload);
 
-        if (isset($search_by['search_string'])) {
+        if (isset($search_by['search_string']) && ($search_by['search_string'] != '')) {
           //SEARCH BY NAME
         if ($search_by['search_category'] === 'Name') {
 
@@ -186,7 +186,7 @@ class API
         if (isset($payload['search_by'])) {
           $search_by = (array) $payload['search_by'];
 
-          if ($search_by['search_string'] != null) {
+          if ($search_by['search_string'] != null && ($search_by['search_string'] != '')) {
 
             //SEARCH BY NAME
             if ($search_by['search_category'] === 'Name') {

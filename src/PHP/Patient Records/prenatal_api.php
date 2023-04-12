@@ -27,7 +27,7 @@ class API
       $this->db->where('pn.status', 0);
 
       $this->db->join('tbl_users u', 'u.user_id=pn.midwife_id', 'LEFT');
-      $prenatal_records = $this->db->get('tbl_prenatal pn', null, 'prenatal_id, midwife_id, patient_id, last_menstruation, previous_full_term, previous_premature, midwifes_notes, pn.date_added, concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as midwife_name');
+      $prenatal_records = $this->db->get('tbl_prenatal pn', null, 'prenatal_id, midwife_id, patient_id, last_menstruation, previous_full_term, previous_premature, midwifes_notes, pn.date_added, CONCAT(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) AS midwife_name');
       $prenatal_checkup = [];
 
       foreach ($prenatal_records as $prenatal) {
@@ -54,6 +54,13 @@ class API
       $prenatal_record['prenatal_id'] = $this->db->insert('tbl_prenatal', $prenatal_record);
 
       if ($prenatal_record['prenatal_id']) {
+
+        $prenatal_record['record_id'] = $prenatal_record['prenatal_id'];
+        unset($prenatal_record['prenatal_id']);
+
+        $prenatal_record['date'] = $prenatal_record['date_added'];
+        unset($prenatal_record['date_added']);
+
         echo json_encode(array('status' => 'success',
                                   'data' => $prenatal_record,
                                   'method' => 'POST'
@@ -90,7 +97,7 @@ class API
 
       if ($prenatal_record) {
         $this->db->where('user_id', $prenatal['midwife_id']);
-        $name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name,  " ", coalesce(suffix, "")) as name');
+        $name = $this->db->get('tbl_users', null, 'CONCAT(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) AS name');
         $prenatal['midwife_name'] = $name[0]['name'];
         // print_r($prenatal); return;
 

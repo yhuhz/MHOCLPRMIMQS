@@ -401,7 +401,7 @@ import { RecordDetails } from 'src/composables/Patients';
   </div>
 </template>
 
-<script src="../../script/Patients-Profile/OPD/PatientDetailsOPD"></script>
+<script src="../../script/Patients-Profile/OPD/OPDDetails"></script>
 
 <style lang="scss" scoped>
 @import "../../styles/patients-profile/opd/pr_opd_details.scss";

@@ -22,7 +22,7 @@ class API
     {
       if (isset($_GET['name'])) {
         $this->db->where("CONCAT_WS(' ', REPLACE(first_name, ' ', ''), REPLACE(middle_name, ' ', ''), REPLACE(last_name, ' ', ''), REPLACE(suffix, ' ', '')) LIKE '%" . $_GET['name'] . "%'");
-        $users = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name, " ", coalesce(suffix, "")) as user_name, user_id as id');
+        $users = $this->db->get('tbl_users', null, 'CONCAT(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) AS user_name, user_id as id');
 
         if ($users) {
           echo json_encode(array('status' => 'success',

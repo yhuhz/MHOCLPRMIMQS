@@ -2,13 +2,13 @@
   <div class="pr-opd-details">
     <div class="flex items-center q-px-md">
       <q-btn
-      round
-      dense
-      outline
-      icon="eva-arrow-back-outline"
-      color="dark"
-      @click="$router.go(-1)"
-      class="q-mr-md"
+        round
+        dense
+        outline
+        icon="eva-arrow-back-outline"
+        color="dark"
+        @click="$router.go(-1)"
+        class="q-mr-md"
       />
       <h5 class="text-weight-bold text-dark">PATIENT RECORDS</h5>
     </div>
@@ -16,20 +16,19 @@
     <!-- Card -->
     <div class="card-box q-mx-md q-mb-xl">
       <div class="row">
-
         <div class="col-3 q-pa-md first-col">
           <div>
-          <q-btn
-          class="float-right cursor-pointer q-mt-sm"
-          icon="eva-edit-outline"
-          size="xs"
-          padding="3px"
-          outline
-          color="primary"
-          />
-          <p class="text-primary text-center text-weight-bold p-name">
-            Jose Francisco Sinta Perez Sr.
-          </p>
+            <q-btn
+              class="float-right cursor-pointer q-mt-sm"
+              icon="eva-edit-outline"
+              size="xs"
+              padding="3px"
+              outline
+              color="primary"
+            />
+            <p class="text-primary text-center text-weight-bold p-name">
+              Jose Francisco Sinta Perez Sr.
+            </p>
           </div>
           <div class="flex justify-between items-center q-mt-sm">
             <p class="text-dark">12A</p>
@@ -44,29 +43,48 @@
 
           <div class="row q-mb-sm">
             <div class="col q-mr-xl text-center">
-              <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
+              <q-input
+                dense
+                class="q-mb-xs"
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+              />
               <label class="text-dark">Phone Number</label>
             </div>
             <div class="col text-center">
-              <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
+              <q-input
+                dense
+                class="q-mb-xs"
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+              />
               <label class="text-dark">Sex</label>
             </div>
           </div>
 
           <div class="row q-mb-sm">
             <div class="col q-mr-xl text-center">
-              <q-input dense :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
+              <q-input
+                dense
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+              />
               <label class="text-dark">Birth date</label>
             </div>
             <div class="col text-center">
-              <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
+              <q-input
+                dense
+                class="q-mb-xs"
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+              />
               <label class="text-dark">Age</label>
             </div>
           </div>
 
           <div class="row q-mb-sm">
             <div class="col q-mr-xl text-center">
-              <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
+              <q-input
+                dense
+                class="q-mb-xs"
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+              />
               <label class="text-dark">PWD ID</label>
             </div>
             <div class="col text-center">
@@ -77,7 +95,11 @@
 
           <div class="row justify-center q-mb-sm">
             <div class="col-6 text-center">
-              <q-input dense class="q-mb-xs" :input-style="{color: '#5f8d4e', fontWeight: '500'}" />
+              <q-input
+                dense
+                class="q-mb-xs"
+                :input-style="{ color: '#5f8d4e', fontWeight: '500' }"
+              />
               <label class="text-dark">Senior Citizen ID</label>
             </div>
           </div>
@@ -87,37 +109,33 @@
           <div class="row q-my-lg">
             <div class="col">
               <q-btn
-              dense
-              color="primary"
-              outline
-              label="Create New Record"
-              no-caps
-              size="sm"
-              padding="4px 8px"
-              icon="eva-folder-add-outline"
-              class="create-btn"
-            />
+                dense
+                color="primary"
+                outline
+                label="Create New Record"
+                no-caps
+                size="sm"
+                padding="4px 8px"
+                icon="eva-folder-add-outline"
+                class="create-btn"
+              />
             </div>
 
             <div class="col">
-            <q-select
-              v-model="selectedDepartment"
-              :options="departmentList"
-              dense
-              outlined
-              color="primary"
-              class="department-btn"
-            />
+              <q-select
+                v-model="selectedDepartment"
+                :options="departmentList"
+                dense
+                outlined
+                color="primary"
+                class="department-btn"
+              />
             </div>
           </div>
 
           <div class="row q-my-md">
             <div class="col">
-              <q-table
-                :columns="columns"
-                :rows="rows"
-                dense
-              />
+              <q-table :columns="columns" :rows="rows" dense />
             </div>
           </div>
         </div>
@@ -126,9 +144,7 @@
 
         <!-- OPD Number -->
         <div class="opd-number">
-          <p class="text-primary text-weight-bold queue-number">
-            OPD186
-          </p>
+          <p class="text-primary text-weight-bold queue-number">OPD186</p>
         </div>
         <!-- Action Button -->
         <div class="action-btn">
@@ -155,7 +171,9 @@
           <!-- Preliminary Checkup -->
           <div class="preliminary-checkup">
             <div>
-              <p class="bg-primary text-white text-center pc-heading">Preliminary Checkup</p>
+              <p class="bg-primary text-white text-center pc-heading">
+                Preliminary Checkup
+              </p>
             </div>
             <div class="flex justify-between items-center q-px-md">
               <p class="text-primary text-weight-bold">Done by</p>
@@ -190,14 +208,12 @@
           <!-- Findings -->
           <div class="findings q-mt-lg">
             <div>
-              <p class="bg-primary text-white text-center findings-heading">Findings</p>
+              <p class="bg-primary text-white text-center findings-heading">
+                Findings
+              </p>
             </div>
             <div class="q-ma-md">
-              <q-input
-                dense
-                outlined
-                class="q-mb-sm"
-              />
+              <q-input dense outlined class="q-mb-sm" />
             </div>
           </div>
         </div>
@@ -205,13 +221,11 @@
         <!-- Laboratory Results -->
         <div class="col q-mx-md third-col">
           <div class="laboratory-results fit">
-            <p class="bg-primary text-center text-white lr-heading">Laboratory Results</p>
+            <p class="bg-primary text-center text-white lr-heading">
+              Laboratory Results
+            </p>
             <div class="q-px-md q-mb-md">
-              <q-input
-              dense
-              outlined
-              class="q-mb-md"
-              />
+              <q-input dense outlined class="q-mb-md" />
             </div>
           </div>
         </div>
@@ -219,9 +233,10 @@
         <!-- Doctors Notes -->
         <div class="col q-mr-md fourth-col">
           <div class="doctors-notes fit">
-            <p class="bg-primary text-white text-center dn-heading">Doctors Notes</p>
+            <p class="bg-primary text-white text-center dn-heading">
+              Doctors Notes
+            </p>
             <div class="q-px-md">
-
               <div class="flex justify-between items-center">
                 <p class="text-primary text-weight-bold">Doctor:</p>
                 <p class="text-primary">Juan Dela Cruz</p>
@@ -247,23 +262,24 @@
 
             <div>
               <ul>
-                <li class="text-primary q-mb-sm">Patient should drink plenty of water</li>
+                <li class="text-primary q-mb-sm">
+                  Patient should drink plenty of water
+                </li>
                 <li class="text-primary q-mb-sm">Take some bed rest</li>
-                <li class="text-primary q-mb-sm">Return for follow-up checkup</li>
+                <li class="text-primary q-mb-sm">
+                  Return for follow-up checkup
+                </li>
               </ul>
             </div>
-
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </template>
 
-<script src="../../script/Patients-Profile/OPD/PR-OPD-Details">
-</script>
+<script src="./PR-OPD-Details"></script>
 
 <style lang="scss" scoped>
-  @import '../../styles/patients-profile/opd/pr_opd_details.scss'
+@import "../../styles/patients-profile/opd/pr_opd_details.scss";
 </style>

@@ -20,9 +20,17 @@ class API
 
     public function httpGet()
     {
-      $this->db->where('patient_id', $_GET['patient_id']);
+      $payload = (array) json_decode($_GET['payload']);
+
+      $this->db->where('immunization_id', $payload['record_id']);
       $this->db->where('status', 0);
       $immunization_records = $this->db->get('tbl_immunization');
+      $immunization_records = $immunization_records[0];
+
+      $this->db->where('user_id', $immunization_records['immunizer_id']);
+      $name = $this->db->get('tbl_users', null, 'CONCAT(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) AS name');
+
+        $immunization_records['immunizer_name'] = $name[0]['name'];
 
       if ($immunization_records) {
         echo json_encode(array('status' => 'success',
@@ -35,12 +43,18 @@ class API
 
     public function httpPost($payload)
     {
-      foreach($payload as $immunization_record) {
-        $immunization_record = (array) $immunization_record;
+        $immunization_record = (array) $payload;
 
           $immunization_record['immunization_id'] = $this->db->insert('tbl_immunization', $immunization_record);
 
           if ($immunization_record['immunization_id']) {
+
+            $immunization_record['record_id'] = $immunization_record['immunization_id'];
+            unset($immunization_record['immunization_id']);
+
+            $immunization_record['date'] = $immunization_record['immunization_date'];
+            unset($immunization_record['immunization_date']);
+
             echo json_encode(array('status' => 'success',
                                       'data' => $immunization_record,
                                       'method' => 'POST'
@@ -52,7 +66,6 @@ class API
                                     ));
             return;
           }
-      }
     }
 
     public function httpPut($payload)
@@ -62,27 +75,29 @@ class API
       $this->db->where('immunization_id', $payload['immunization_id']);
       $immunization_record = $this->db->update('tbl_immunization', $payload);
 
-      echo json_encode(array('status' => 'success',
+      $this->db->where('user_id', $payload['immunizer_id']);
+        $name = $this->db->get('tbl_users', null, 'CONCAT(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) AS name');
+        $payload['immunizer_name'] = $name[0]['name'];
+
+      if ($immunization_record) {
+        echo json_encode(array('status' => 'success',
                               'data' => $payload,
                               'method' => 'PUT'
                             ));
+      }
+
     }
 
     public function httpDelete($payload)
     {
-      $payload = (array) $payload;
 
-      //DELETE DENTAL RECORD
-      if (isset($payload['immunization_id'])) {
+      $this->db->where('immunization_id', $_GET['record_id']);
+      $this->db->update('tbl_immunization', array('status' => 1));
 
-        $this->db->where('immunization_id', $payload['immunization_id']);
-        $dental_record = $this->db->update('tbl_immunization', array('status' => 1));
-
-        echo json_encode(array('status' => 'success',
-                                'data' => 'Record successfully deleted',
-                                'method' => 'DELETE'
-                              ));
-      }
+      echo json_encode(array('status' => 'success',
+                              'data' => 'Record successfully deleted',
+                              'method' => 'DELETE'
+                            ));
     }
 }
 /* END OF CLASS */

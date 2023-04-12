@@ -340,7 +340,7 @@
                 no-caps
                 color="primary"
                 unelevated
-                :disable="downloadDisable"
+                :disable="PatientsList && PatientsList[0] ? false : true"
                 class="button-100 download-btn"
                 @click="exportTable()"
               />

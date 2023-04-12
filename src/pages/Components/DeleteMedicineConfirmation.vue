@@ -18,7 +18,7 @@
         label="Yes"
         no-caps
         class="button-100"
-        @click="deleteRecord"
+        @click="deleteMedicineRecord"
       />
     </div>
   </div>
@@ -27,35 +27,23 @@
 <script>
 import { ref } from "vue";
 import { ToggleDialogState } from "../../composables/Triggers";
-import {
-  DeleteRecord,
-  RecordDetails,
-  PatientRecords,
-} from "src/composables/Records";
 import { IDList } from "../../composables/IDS";
-import { useRoute, useRouter } from "vue-router";
-import { useQuasar } from "quasar";
+import { DeleteMedicine } from "src/composables/Medicine";
+import { useQuasar, Loading } from "quasar";
 
 export default {
   setup() {
-    const router = useRouter();
-    const route = useRoute();
-
     const $q = useQuasar();
 
     const closeDialog = () => {
       ToggleDialogState();
     };
 
-    const deleteRecord = () => {
-      DeleteRecord(
-        {
-          record_id: IDList.value.id,
-        },
-        IDList.value.department
-      ).then((response) => {
-        ToggleDialogState();
+    const deleteMedicineRecord = () => {
+      Loading.show();
 
+      DeleteMedicine({ medicine_id: IDList.value.id }).then((response) => {
+        Loading.hide();
         let status = response.status === "success" ? 0 : 1;
 
         $q.notify({
@@ -63,18 +51,16 @@ export default {
           classes: "text-white",
           message:
             status === 0
-              ? "Patient record deleted successfully"
-              : "Failed to delete patient record",
+              ? "Medicine record deleted successfully"
+              : "Failed to delete medicine record",
         });
 
-        if (!status) {
-          router.push({ name: "patient-details", id: route.params.id });
-        }
+        ToggleDialogState();
       });
     };
     return {
       closeDialog,
-      deleteRecord,
+      deleteMedicineRecord,
     };
   },
 };

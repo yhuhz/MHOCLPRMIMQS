@@ -39,7 +39,7 @@ const routes = [
             path: ":record_id/:department/1/patient_records",
             name: "OPD/patient_records",
             component: () =>
-              import("src/pages/Patients-Profile/OPD/PatientDetailsOPD.vue"),
+              import("src/pages/Patients-Profile/OPD/OPDDetails.vue"),
           },
           {
             path: "new_record/:department/1-1/patient_records",
@@ -52,9 +52,7 @@ const routes = [
             path: ":record_id/:department/3/patient_records",
             name: "Prenatal/patient_records",
             component: () =>
-              import(
-                "src/pages/Patients-Profile/Prenatal/PatientDetailsPrenatal.vue"
-              ),
+              import("src/pages/Patients-Profile/Prenatal/PrenatalDetails.vue"),
           },
           {
             path: "new-record/:department/3-1/patient_records",
@@ -64,54 +62,24 @@ const routes = [
                 "src/pages/Patients-Profile/Prenatal/AddPrenatalRecord.vue"
               ),
           },
+          //Immunization
+          {
+            path: ":record_id/:department/4/patient_records",
+            name: "Immunization/patient_records",
+            component: () =>
+              import(
+                "src/pages/Patients-Profile/Immunization/ImmunizationDetails.vue"
+              ),
+          },
+          {
+            path: "new-record/:department/4-1/patient_records",
+            name: "Immunization/patient_records/new",
+            component: () =>
+              import(
+                "src/pages/Patients-Profile/Immunization/AddImmunizationRecord.vue"
+              ),
+          },
         ],
-      },
-      // OPD
-      {
-        path: "patient-record-opd-view",
-        name: "patient-record-opd-view",
-        component: () =>
-          import("src/pages/Patients-Profile/OPD/PR-OPD-Details.vue"),
-      },
-      {
-        path: "patient-record-opd-edit",
-        name: "patient-record-opd-edit",
-        component: () =>
-          import("src/pages/Patients-Profile/OPD/PR-OPD-Details-Add-Edit.vue"),
-      },
-      // Prenatal
-      {
-        path: "patient-record-prenatal-view",
-        name: "patient-record-prenatal-view",
-        component: () =>
-          import(
-            "src/pages/Patients-Profile/Prenatal/PR-Prenatal-Details-View.vue"
-          ),
-      },
-      {
-        path: "patient-record-prenatal-edit",
-        name: "patient-record-prenatal-edit",
-        component: () =>
-          import(
-            "src/pages/Patients-Profile/Prenatal/PR-Prenatal-Details-Edit.vue"
-          ),
-      },
-      // Immunization
-      {
-        path: "patient-record-immunization-view",
-        name: "patient-record-immunization-view",
-        component: () =>
-          import(
-            "src/pages/Patients-Profile/Immunization/PR-Immunization-Details-View.vue"
-          ),
-      },
-      {
-        path: "patient-record-immunization-edit",
-        name: "patient-record-immunization-edit",
-        component: () =>
-          import(
-            "src/pages/Patients-Profile/Immunization/PR-Immunization-Details-Edit.vue"
-          ),
       },
       // Household
       {
