@@ -256,8 +256,6 @@ export default {
     };
 
     const editSupply = () => {
-      console.log(editSupplyRecord.value);
-      return;
       Loading.show();
 
       EditSupply(editSupplyRecord.value).then((response) => {

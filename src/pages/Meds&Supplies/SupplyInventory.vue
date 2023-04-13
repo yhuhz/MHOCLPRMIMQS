@@ -739,7 +739,7 @@
                     placeholder="ex. 350"
                     class="q-mr-md q-mt-xs"
                     v-model="editSupplyRecord.quantity"
-                    :rules="[(val) => val || 'Required field']"
+                    :rules="[(val) => !isNaN(val) || 'Required field']"
                   />
                 </div>
 

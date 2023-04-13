@@ -105,7 +105,7 @@ class API
             $this->db->where('generic_name', '%'.$search_by['search_string'].'%', 'LIKE');
 
           } else if ($search_by['search_category'] === "Medicine ID") {
-            $this->db->where('mi.medicine_id', $search_by['search_string']);
+            $this->db->where('medicine_id', $search_by['search_string']);
 
           } else if ($search_by['search_category'] === "Classification") {
             $this->db->where('med_classification', '%'.$search_by['search_string'].'%', 'LIKE');
@@ -129,19 +129,19 @@ class API
       }
 
       //FILTER
-      $this->db->join('tbl_medicine_release mr', 'mr.medicine_id=mi.medicine_id', 'LEFT');
+      // $this->db->join('tbl_medicine_release mr', 'mi.medicine_id=mr.medicine_id', 'LEFT');
 
       if (isset($payload['filter'])) {
         $filter = (array) $payload['filter'];
 
         //Stock filter
-        if (isset($filter['in_stock']) && isset($filter['in_stock'][0]) && isset($filter['in_stock'][1])) {
-          $this->db->where('mi.quantity - SUM(IFNULL(mr.quantity, 0))', $filter['in_stock'], 'BETWEEN');
-        }
+        // if (isset($filter['in_stock']) && ($filter['in_stock'][0] != '') && ($filter['in_stock'][1] != '')) {
+        //   $this->db->where('mi.quantity - IFNULL(mr.quantity, 0)', $filter['in_stock'], 'BETWEEN');
+        // }
 
         //Status filter
         if (isset($filter['status'])) {
-          $this->db->where('mi.status', $filter['status'], 'IN');
+          $this->db->where('status', $filter['status'], 'IN');
         }
 
         //Date Added filter
@@ -160,11 +160,28 @@ class API
         }
       }
 
-      $medicine_inventory = $this->db->get('tbl_medicine_inventory mi', null, 'mi.medicine_id, generic_name, brand_name, med_classification, dosage_strength, dosage_form, ptr_number, batch_lot_number, mfg_date, exp_date, mi.quantity, procured_by, date_added, added_by, mi.status');
+      // $medicine_inventory = $this->db->get('tbl_medicine_inventory mi', null, 'mi.medicine_id, generic_name, brand_name, med_classification, dosage_strength, dosage_form, ptr_number, batch_lot_number, mfg_date, exp_date, mi.quantity, mi.quantity - SUM(COALESCE(mr.quantity, 0)) as in_stock, procured_by, date_added, added_by, mi.status');
+
+      $medicine_inventory = $this->db->get('tbl_medicine_inventory');
+      $medicine_array = [];
+
+      foreach($medicine_inventory as $medicine) {
+        $this->db->where('medicine_id', $medicine['medicine_id']);
+        $count = $this->db->getValue('tbl_medicine_release', 'CAST(SUM(quantity) as int)');
+        $medicine['in_stock'] = $medicine['quantity'] - $count;
+
+        if (isset($filter['in_stock']) && ($filter['in_stock'][0] != '') && ($filter['in_stock'][1] != '')) {
+          if ($medicine['in_stock'] >= $filter['in_stock'][0] && $medicine['in_stock'] <= $filter['in_stock'][1]) {
+            array_push($medicine_array, $medicine);
+          }
+        } else {
+          array_push($medicine_array, $medicine);
+        }
+      }
 
 
         echo json_encode(array('status' => 'success',
-                                  'data' => $medicine_inventory,
+                                  'data' => $medicine_array,
                                   'method' => 'GET'
                                 ));
       }

@@ -102,7 +102,7 @@ class API
             $this->db->where('supply_name', '%'.$search_by['search_string'].'%', 'LIKE');
 
           } else if ($search_by['search_category'] === "Supply ID") {
-            $this->db->where('si.supply_id', $search_by['search_string']);
+            $this->db->where('supply_id', $search_by['search_string']);
 
           } else if ($search_by['search_category'] === "Supply Type") {
             $this->db->where('supply_type', '%'.$search_by['search_string'].'%', 'LIKE');
@@ -117,19 +117,19 @@ class API
       }
 
       //FILTER
-      $this->db->join('tbl_supply_release sr', 'sr.supply_id=si.supply_id', 'LEFT');
+      // $this->db->join('tbl_supply_release sr', 'sr.supply_id=si.supply_id', 'LEFT');
 
       if (isset($payload['filter'])) {
         $filter = (array) $payload['filter'];
 
-        //Stock filter
-        if (isset($filter['in_stock'])) {
-          $this->db->where('si.quantity - IFNULL(sr.quantity, 0)', $filter['in_stock'], 'BETWEEN');
-        }
+        // //Stock filter
+        // if (isset($filter['in_stock'])) {
+        //   $this->db->where('si.quantity - IFNULL(sr.quantity, 0)', $filter['in_stock'], 'BETWEEN');
+        // }
 
         //Status filter
         if (isset($filter['status'])) {
-          $this->db->where('si.status', $filter['status'], 'IN');
+          $this->db->where('status', $filter['status'], 'IN');
         }
 
         //Date Added filter
@@ -148,11 +148,26 @@ class API
         }
       }
 
-      $medicine_inventory = $this->db->get('tbl_supplies_inventory si', null, 'si.supply_id, supply_name, supply_type, mfg_date, exp_date, si.quantity, quantity_type,(si.quantity - IFNULL(sr.quantity, 0)) as in_stock , procured_by, date_added, added_by, si.status');
+      $supply_inventory = $this->db->get('tbl_supplies_inventory');
+      $supply_array = [];
+
+      foreach($supply_inventory as $supply) {
+        $this->db->where('supply_id', $supply['supply_id']);
+        $count = $this->db->getValue('tbl_supply_release', 'CAST(SUM(quantity) as int)');
+        $supply['in_stock'] = $supply['quantity'] - $count;
+
+        if (isset($filter['in_stock']) && ($filter['in_stock'][0] != '') && ($filter['in_stock'][1] != '')) {
+          if ($supply['in_stock'] >= $filter['in_stock'][0] && $supply['in_stock'] <= $filter['in_stock'][1]) {
+            array_push($supply_array, $supply);
+          }
+        } else {
+          array_push($supply_array, $supply);
+        }
+      }
 
 
         echo json_encode(array('status' => 'success',
-                                  'data' => $medicine_inventory,
+                                  'data' => $supply_array,
                                   'method' => 'GET'
                                 ));
       }
@@ -242,8 +257,8 @@ class API
         if ($household) {
 
           $this->db->where('supply_id', $payload['supply_id']);
-          $count = $this->db->getValue('tbl_medicine_release', 'SUM(quantity)');
-          $payload['in_stock'] = $count === null ? $payload['quantity'] : ($count[0] - $payload['quantity']);
+          $count = $this->db->getValue('tbl_supply_release', 'CAST(SUM(quantity) as int)');
+          $payload['in_stock'] = $payload['quantity'] - $count;
 
           echo json_encode(array('status' => 'success',
                                   'data' => $payload,
