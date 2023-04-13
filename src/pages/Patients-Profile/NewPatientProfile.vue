@@ -66,7 +66,12 @@
                 />
                 <p class="col-details">
                   Make sure that the household already has a record. For new
-                  households, click here
+                  households, click
+                  <span
+                    class="text-primary"
+                    @click="$router.push({ name: 'household-records' })"
+                    >here</span
+                  >
                 </p>
               </div>
             </div>
@@ -84,8 +89,9 @@
                   class="q-mt-sm"
                 />
                 <p class="col-details">
-                  Choose whether the patient is active,
-                  <span class="text-warning">deceased</span>, or the record has
+                  Choose whether the patient is
+                  <span class="text-primary">active</span>,
+                  <span class="text-warning"> deceased</span>, or the record has
                   been <span class="text-negative">archived</span>.
                 </p>
               </div>

@@ -112,7 +112,7 @@ const routes = [
           import("src/pages/Meds&Supplies/MedicineInventory.vue"),
       },
       {
-        path: "medicine-inventory-details",
+        path: ":medicine_id/medicine-inventory-details",
         name: "medicine-inventory-details",
         component: () =>
           import("src/pages/Meds&Supplies/MedicineInventoryDetails.vue"),

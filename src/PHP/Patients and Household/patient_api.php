@@ -172,7 +172,7 @@ class API
 
         $this->db->join('tbl_patient_info p', 'p.patient_id=sc.patient_id', 'LEFT');
         $this->db->join('tbl_household hh', 'hh.household_id=p.household_id', 'LEFT');
-        $patients = $this->db->get('tbl_senior_citizen sc', null, 'sc.patient_id, concat(first_name, " ", last_name, " ", coalesce(suffix, "")) as name, first_name, middle_name, last_name, suffix, hh.household_name, p.household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, sc.senior_citizen_id, barangay, address');
+        $patients = $this->db->get('tbl_senior_citizen sc', null, 'sc.patient_id, concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name, first_name, middle_name, last_name, suffix, hh.household_name, p.household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, sc.senior_citizen_id, barangay, address');
 
         if ($patients) {
           echo json_encode(array('status' => 'success',
@@ -240,7 +240,7 @@ class API
         }
 
         $this->db->join('tbl_household hh', 'hh.household_id=p.household_id', 'LEFT');
-        $patients = $this->db->get('tbl_patient_info p', null, 'patient_id, concat(first_name, " ", last_name, " ", coalesce(suffix, "")) as name, first_name, middle_name, last_name, suffix, hh.household_name, p.household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, barangay, address');
+        $patients = $this->db->get('tbl_patient_info p', null, 'patient_id, concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name, first_name, middle_name, last_name, suffix, hh.household_name, p.household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, barangay, address');
 
         if ($patients) {
           echo json_encode(array('status' => 'success',

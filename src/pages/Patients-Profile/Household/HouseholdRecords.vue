@@ -181,7 +181,16 @@
                 >
                   <q-list separator dense>
                     <!-- View -->
-                    <q-item clickable class="drop-list">
+                    <q-item
+                      clickable
+                      class="drop-list"
+                      @click="
+                        $router.push({
+                          name: 'search-patients',
+                          query: { household_id: props.row.household_id },
+                        })
+                      "
+                    >
                       <q-item-section>View Patients</q-item-section>
                       <q-item-section avatar>
                         <q-icon size="xs" name="eva-eye-outline" />
@@ -290,7 +299,8 @@
                 color="primary"
                 unelevated
                 class="button-100 download-btn"
-                :disable="downloadDisable"
+                :disable="HouseholdsList && HouseholdsList[0] ? false : true"
+                @click="exportTable"
               />
             </q-th>
           </template>

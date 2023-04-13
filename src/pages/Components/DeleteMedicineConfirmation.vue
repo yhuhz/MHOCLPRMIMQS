@@ -28,7 +28,11 @@
 import { ref } from "vue";
 import { ToggleDialogState } from "../../composables/Triggers";
 import { IDList } from "../../composables/IDS";
-import { DeleteMedicine } from "src/composables/Medicine";
+import {
+  DeleteMedicine,
+  DeleteMedicineRelease,
+  FindMedicineDetails,
+} from "src/composables/Medicine";
 import { useQuasar, Loading } from "quasar";
 
 export default {
@@ -42,25 +46,48 @@ export default {
     const deleteMedicineRecord = () => {
       Loading.show();
 
-      DeleteMedicine({ medicine_id: IDList.value.id }).then((response) => {
-        Loading.hide();
-        let status = response.status === "success" ? 0 : 1;
+      if (!IDList.value.id.med_release_id) {
+        DeleteMedicine({ medicine_id: IDList.value.id }).then((response) => {
+          Loading.hide();
+          let status = response.status === "success" ? 0 : 1;
 
-        $q.notify({
-          type: status === 0 ? "positive" : "negative",
-          classes: "text-white",
-          message:
-            status === 0
-              ? "Medicine record deleted successfully"
-              : "Failed to delete medicine record",
+          $q.notify({
+            type: status === 0 ? "positive" : "negative",
+            classes: "text-white",
+            message:
+              status === 0
+                ? "Medicine record deleted successfully"
+                : "Failed to delete medicine record",
+          });
+
+          ToggleDialogState();
         });
+      } else {
+        DeleteMedicineRelease({
+          med_release_id: IDList.value.id.med_release_id,
+        }).then((response) => {
+          Loading.hide();
+          let status = response.status === "success" ? 0 : 1;
 
-        ToggleDialogState();
-      });
+          $q.notify({
+            type: status === 0 ? "positive" : "negative",
+            classes: "text-white",
+            message:
+              status === 0
+                ? "Medicine release record deleted successfully"
+                : "Failed to delete medicine release record",
+          });
+
+          FindMedicineDetails(IDList.value.id.medicine_id);
+
+          ToggleDialogState();
+        });
+      }
     };
     return {
       closeDialog,
       deleteMedicineRecord,
+      IDList,
     };
   },
 };

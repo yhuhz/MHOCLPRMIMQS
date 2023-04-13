@@ -3,6 +3,7 @@ import { ref, readonly } from "vue";
 let Medicines = ref([]);
 let MedicinesList = readonly(Medicines);
 let MedicineDetails = ref([]);
+let MedicineRelease = ref([]);
 let pathlink =
   "http://localhost/MHOCLPRMIMQS/src/PHP/Medicine and Supplies/medicine_inventory_api.php";
 /**
@@ -33,17 +34,36 @@ let GetMedicines = (payload) => {
   });
 };
 
-let FindMedicine = (payload) => {
+let FindMedicineDetails = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
         params: {
-          payload: payload,
+          medicine_id: payload,
         },
       })
       .then((response) => {
         console.log(response.data);
-        MedicineDetails.value = response.data.data[0];
+        MedicineDetails.value = response.data.data;
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let FindMedicineRelease = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          release_filter: payload,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        MedicineRelease.value = response.data.data;
         resolve(response.data);
       })
       .catch((error) => {
@@ -64,7 +84,36 @@ let AddMedicine = (payload) => {
       .then((response) => {
         console.log(response.data);
         if (response.data.status === "success") {
-          Medicines.value.push(response.data.data);
+          try {
+            Medicines.value.push(response.data.data);
+          } catch (e) {
+            Medicines.value = [];
+            Medicines.value.push(response.data.data);
+          }
+        } else {
+          console.log(response.data);
+        }
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let AddMedicineRelease = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(pathlink, payload)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.status === "success") {
+          try {
+            MedicineRelease.value.push(response.data.data);
+          } catch (e) {
+            MedicineRelease.value = [];
+            MedicineRelease.value.push(response.data.data);
+          }
         } else {
           console.log(response.data);
         }
@@ -108,6 +157,34 @@ let EditMedicine = (payload) => {
   });
 };
 
+let EditMedicineRelease = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(pathlink, payload)
+      .then((response) => {
+        // console.log(response.data.data);
+        if (response.data.status === "success") {
+          let objectIndex = MedicineRelease.value.findIndex(
+            (e) => e.med_release_id === payload.med_release_id
+          );
+          // if index not found (-1) update nothing !
+          // objectIndex !== -1 &&
+          // Object.keys(Medicines.value[objectIndex]).forEach((key) => {
+          //   response.data.data.personal_info[key] &&
+          //     (Medicines.value[objectIndex][key] =
+          //       response.data.data.personal_info[key]);
+          // });
+
+          MedicineRelease.value[objectIndex] = response.data.data;
+        } else [console.log(response.data)];
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 /**
  * This function accepts parameters of an array like this [1,2,3,4] then
  * delete the data in the Medicines based on this parameter.
@@ -134,6 +211,29 @@ let DeleteMedicine = (payload) => {
       });
   });
 };
+
+let DeleteMedicineRelease = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .delete(pathlink + "?med_release_id=" + payload.med_release_id)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.status === "success") {
+          let objectIndex = MedicineRelease.value.findIndex(
+            (e) => e.med_release_id === payload.med_release_id
+          );
+          // if index not found (-1) delete nothing !
+          objectIndex !== -1 && MedicineRelease.value.splice(objectIndex, 1);
+        } else {
+          console.log(response.data);
+        }
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
 /**
  * Export MedicinesList as readonly (real time copy of Medicines)
  */
@@ -141,9 +241,14 @@ export {
   GetMedicines,
   Medicines,
   MedicinesList,
-  FindMedicine,
+  FindMedicineDetails,
   MedicineDetails,
   AddMedicine,
   EditMedicine,
   DeleteMedicine,
+  MedicineRelease,
+  FindMedicineRelease,
+  DeleteMedicineRelease,
+  AddMedicineRelease,
+  EditMedicineRelease,
 };

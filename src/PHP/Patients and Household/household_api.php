@@ -28,7 +28,7 @@ class API
       }
 
       if (isset($_GET['household_id'])) {
-        $this->db->where('household_id', $_GET['household_id'].'%', 'LIKE');
+        $this->db->where('household_id', $_GET['household_id']);
       }
 
       if (isset($_GET['status'])) {

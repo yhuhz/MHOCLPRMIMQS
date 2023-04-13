@@ -577,8 +577,13 @@
                     <!-- View -->
                     <q-item
                       clickable
-                      to="medicine-inventory-details"
                       class="drop-list"
+                      @click="
+                        $router.push({
+                          name: 'medicine-inventory-details',
+                          params: { medicine_id: props.row.medicine_id },
+                        })
+                      "
                     >
                       <q-item-section>View Details</q-item-section>
                       <q-item-section avatar>

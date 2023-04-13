@@ -7,13 +7,15 @@ import _ from "lodash";
 import { useQuasar, SessionStorage } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
 import { SetIDS } from "src/composables/IDS";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { LoginCredential, FindUser } from "src/composables/UserAccount";
 
 export default {
   components: { MHCDialog, DeletePatientConfirmation },
   setup() {
     const router = useRouter();
+    const route = useRoute();
+
     //SESSION KEYS
     let keySession = SessionStorage.getItem("cred");
     if (keySession == NaN || keySession == null) {
@@ -143,10 +145,26 @@ export default {
       loading.value = true;
       GetPatients(payload).then((response) => {
         loading.value = false;
-        downloadDisable.value =
-          typeof PatientsList.value === "undefined" ? true : false;
       });
     };
+
+    /**FOR PATIENTS UNDER HOUSEHOLD ID**/
+    if (route.query.household_id) {
+      selectedSearchBy.value = "Household ID";
+      searchString.value = route.query.household_id;
+
+      let payload = {
+        search_by: {
+          search_category: "Household ID",
+          search_string: route.query.household_id,
+        },
+      };
+
+      loading.value = true;
+      GetPatients(payload).then((response) => {
+        loading.value = false;
+      });
+    }
 
     const columns = [
       {

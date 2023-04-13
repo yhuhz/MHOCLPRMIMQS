@@ -326,7 +326,7 @@ export default {
                 : "Failed to add patient record",
           });
 
-          status = 0 ? onReset() : "";
+          status === 0 && onReset();
 
           SetIDS(response.data.patient_id);
           ToggleDialogState();
