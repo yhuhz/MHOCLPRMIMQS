@@ -22,13 +22,7 @@
       icon="groups"
       label="Patients Profile"
       class="text-white"
-      :default-opened="
-        $route.name === 'search-patients' ||
-        $route.name === 'patient-details' ||
-        $route.name === 'add-edit-patient-record'
-          ? true
-          : false
-      "
+      :default-opened="isPatientProfileOpen"
     >
       <q-list dense separator class="dropdown-list bg-grey-8">
         <q-item
@@ -36,7 +30,15 @@
           exact
           :class="
             $route.name === 'search-patients' ||
-            $route.name === 'patient-details'
+            $route.name === 'patient-details' ||
+            $route.name === 'OPD/patient_records' ||
+            $route.name === 'OPD/patient_records/new' ||
+            $route.name === 'Prenatal/patient_records' ||
+            $route.name === 'Prenatal/patient_records/new' ||
+            $route.name === 'Immunization/patient_records' ||
+            $route.name === 'Immunization/patient_records/new' ||
+            $route.name === 'Dental/patient_records' ||
+            $route.name === 'Dental/patient_records/new'
               ? 'bg-primary list-text text-white'
               : 'list-text text-white'
           "
@@ -137,11 +139,24 @@
       label="Meds & Supplies"
       icon="fa fa-prescription-bottle-medical"
       class="text-white"
+      :default-opened="
+        $route.name === 'medicine-inventory' ||
+        $route.name === 'medicine-inventory-details' ||
+        $route.name === 'supply-inventory' ||
+        $route.name === 'supply-inventory-details'
+          ? true
+          : false
+      "
     >
       <q-list dense separator class="dropdown-list bg-grey-8">
         <q-item
           clickable
-          class="list-text text-white"
+          :class="
+            $route.name === 'medicine-inventory' ||
+            $route.name === 'medicine-inventory-details'
+              ? 'bg-primary list-text text-white'
+              : 'list-text text-white'
+          "
           @click="$router.push({ name: 'medicine-inventory' })"
         >
           <q-item-section avatar>
@@ -152,8 +167,13 @@
 
         <q-item
           clickable
-          class="list-text text-white"
-          @click="$router.push({ name: 'supplies-inventory' })"
+          :class="
+            $route.name === 'supply-inventory' ||
+            $route.name === 'supply-inventory-details'
+              ? 'bg-primary list-text text-white'
+              : 'list-text text-white'
+          "
+          @click="$router.push({ name: 'supply-inventory' })"
         >
           <q-item-section avatar>
             <q-icon size="xs" name="fa fa-syringe" class="q-ml-md" />
@@ -201,7 +221,57 @@ import { useRoute, useRouter } from "vue-router";
 export default defineComponent({
   name: "MainMenu",
   setup() {
-    return {};
+    const route = useRoute();
+
+    let patient_route_names = [
+      "search-patients",
+      "add-edit-patient-record",
+      "patient-details",
+      "OPD/patient_records",
+      "OPD/patient_records/new",
+      "Prenatal/patient_records",
+      "Prenatal/patient_records/new",
+      "Immunization/patient_records",
+      "Immunization/patient_records/new",
+      "household-records",
+      "pwd-records",
+      "senior-citizen-records",
+      "pregnant-women-records",
+    ];
+
+    let isPatientProfileOpen = ref(false);
+
+    patient_route_names.forEach((element, index) => {
+      if (route.name === element) {
+        isPatientProfileOpen.value = true;
+      }
+    });
+
+    let patient_details_route_names = [
+      "patient-details",
+      "OPD/patient_records",
+      "Dental/patient_records",
+      "Dental/patient_records/new",
+      "OPD/patient_records/new",
+      "Prenatal/patient_records",
+      "Prenatal/patient_records/new",
+      "Immunization/patient_records",
+      "Immunization/patient_records/new",
+    ];
+
+    let isPatientDetails = ref(false);
+
+    patient_details_route_names.forEach((element, index) => {
+      if (route.name === element) {
+        isPatientDetails.value = "bg-primary list-text text-white";
+      } else {
+        isPatientDetails.value = "list-text text-white";
+      }
+    });
+    return {
+      isPatientProfileOpen,
+      isPatientDetails,
+    };
   },
 });
 </script>

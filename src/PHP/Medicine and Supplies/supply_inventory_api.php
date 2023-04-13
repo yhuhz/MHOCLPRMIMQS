@@ -20,11 +20,11 @@ class API
 
     public function httpGet($payload)
     {
-      if (isset($_GET['medicine_id'])) {
+      if (isset($_GET['supply_id'])) {
         //GET MEDICINE DETAILS
 
-        $this->db->where('medicine_id', $_GET['medicine_id']);
-        $medicine_details = $this->db->get('tbl_medicine_inventory');
+        $this->db->where('supply_id', $_GET['supply_id']);
+        $medicine_details = $this->db->get('tbl_supplies_inventory');
         $medicine_details = $medicine_details[0];
 
         $this->db->where('status', 0);
@@ -89,7 +89,7 @@ class API
                                 ));
 
       } else {
-        //GET MEDICINE INVENTORY
+        //GET SUPPLY INVENTORY
       $payload = (array) json_decode($_GET['payload']);
       // print_r($payload); return;
 
@@ -98,29 +98,17 @@ class API
         $search_by = (array) $payload['search_by'];
 
         if (isset($search_by['search_string']) && ($search_by['search_string'] != '')) {
-          if ($search_by['search_category'] === "Brand Name") {
-            $this->db->where('brand_name', '%'.$search_by['search_string'].'%', 'LIKE');
+          if ($search_by['search_category'] === "Supply Name") {
+            $this->db->where('supply_name', '%'.$search_by['search_string'].'%', 'LIKE');
 
-          } else if ($search_by['search_category'] === "Generic Name") {
-            $this->db->where('generic_name', '%'.$search_by['search_string'].'%', 'LIKE');
+          } else if ($search_by['search_category'] === "Supply ID") {
+            $this->db->where('si.supply_id', $search_by['search_string']);
 
-          } else if ($search_by['search_category'] === "Medicine ID") {
-            $this->db->where('mi.medicine_id', $search_by['search_string']);
+          } else if ($search_by['search_category'] === "Supply Type") {
+            $this->db->where('supply_type', '%'.$search_by['search_string'].'%', 'LIKE');
 
-          } else if ($search_by['search_category'] === "Classification") {
-            $this->db->where('med_classification', '%'.$search_by['search_string'].'%', 'LIKE');
-
-          } else if ($search_by['search_category'] === "Dosage Strength") {
-            $this->db->where('dosage_strength', '%'.$search_by['search_string'].'%', 'LIKE');
-
-          } else if ($search_by['search_category'] === "Dosage Form") {
-            $this->db->where('dosage_form', '%'.$search_by['search_string'].'%', 'LIKE');
-
-          } else if ($search_by['search_category'] === "PTR Number") {
-            $this->db->where('ptr_number', $search_by['search_string']);
-
-          } else if ($search_by['search_category'] === "Batch/Lot Number") {
-            $this->db->where('batch_lot_number', $search_by['search_string']);
+          } else if ($search_by['search_category'] === "Quantity Type") {
+            $this->db->where('quantity_type', '%'.$search_by['search_string'].'%', 'LIKE');
 
           } else if ($search_by['search_category'] === "Procured By") {
             $this->db->where('procured_by', '%'.$search_by['search_string'].'%', 'LIKE');
@@ -129,19 +117,19 @@ class API
       }
 
       //FILTER
-      $this->db->join('tbl_medicine_release mr', 'mr.medicine_id=mi.medicine_id', 'LEFT');
+      $this->db->join('tbl_supply_release sr', 'sr.supply_id=si.supply_id', 'LEFT');
 
       if (isset($payload['filter'])) {
         $filter = (array) $payload['filter'];
 
         //Stock filter
-        if (isset($filter['in_stock']) && isset($filter['in_stock'][0]) && isset($filter['in_stock'][1])) {
-          $this->db->where('mi.quantity - SUM(IFNULL(mr.quantity, 0))', $filter['in_stock'], 'BETWEEN');
+        if (isset($filter['in_stock'])) {
+          $this->db->where('si.quantity - IFNULL(sr.quantity, 0)', $filter['in_stock'], 'BETWEEN');
         }
 
         //Status filter
         if (isset($filter['status'])) {
-          $this->db->where('mi.status', $filter['status'], 'IN');
+          $this->db->where('si.status', $filter['status'], 'IN');
         }
 
         //Date Added filter
@@ -160,7 +148,7 @@ class API
         }
       }
 
-      $medicine_inventory = $this->db->get('tbl_medicine_inventory mi', null, 'mi.medicine_id, generic_name, brand_name, med_classification, dosage_strength, dosage_form, ptr_number, batch_lot_number, mfg_date, exp_date, mi.quantity, procured_by, date_added, added_by, mi.status');
+      $medicine_inventory = $this->db->get('tbl_supplies_inventory si', null, 'si.supply_id, supply_name, supply_type, mfg_date, exp_date, si.quantity, quantity_type,(si.quantity - IFNULL(sr.quantity, 0)) as in_stock , procured_by, date_added, added_by, si.status');
 
 
         echo json_encode(array('status' => 'success',
@@ -202,10 +190,10 @@ class API
 
       } else {
         //ADD MEDICINE RECORD
-        $payload['medicine_id'] = $this->db->insert('tbl_medicine_inventory', $payload);
+        $payload['supply_id'] = $this->db->insert('tbl_supplies_inventory', $payload);
         $payload['in_stock'] = $payload['quantity'];
 
-        if ($payload['medicine_id']) {
+        if ($payload['supply_id']) {
           echo json_encode(array('status' => 'success',
                                     'data' => $payload,
                                     'method' => 'POST'
@@ -248,12 +236,12 @@ class API
 
       } else {
         //EDIT MEDICINE RECORD
-        $this->db->where('medicine_id', $payload['medicine_id']);
-        $household = $this->db->update('tbl_medicine_inventory', $payload);
+        $this->db->where('supply_id', $payload['supply_id']);
+        $household = $this->db->update('tbl_supplies_inventory', $payload);
 
         if ($household) {
 
-          $this->db->where('medicine_id', $payload['medicine_id']);
+          $this->db->where('supply_id', $payload['supply_id']);
           $count = $this->db->getValue('tbl_medicine_release', 'SUM(quantity)');
           $payload['in_stock'] = $count === null ? $payload['quantity'] : ($count[0] - $payload['quantity']);
 
@@ -271,9 +259,9 @@ class API
 
     public function httpDelete($payload)
     {
-      if (isset($_GET['medicine_id'])) {
-        $this->db->where('medicine_id', $_GET['medicine_id']);
-        $delete_medicine = $this->db->update('tbl_medicine_inventory', array('status' => 1));
+      if (isset($_GET['supply_id'])) {
+        $this->db->where('supply_id', $_GET['supply_id']);
+        $delete_medicine = $this->db->update('tbl_supplies_inventory', array('status' => 1));
 
         if ($delete_medicine) {
             echo json_encode(array('status' => 'success',

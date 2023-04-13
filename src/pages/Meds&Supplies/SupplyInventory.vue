@@ -10,7 +10,7 @@
         class="q-mr-md"
         @click="$router.go(-1)"
       />
-      <h5 class="text-dark text-weight-bold">MEDICINE INVENTORY</h5>
+      <h5 class="text-dark text-weight-bold">SUPPLY INVENTORY</h5>
     </div>
 
     <div class="q-px-md">
@@ -287,20 +287,20 @@
           />
         </div>
 
-        <!-- Add New Medicine Stock -->
+        <!-- Add New Supply Stock -->
         <div>
           <q-btn
-            @click="isAddNewMedicineStock = true"
+            @click="isAddNewSupplyStock = true"
             outline
-            label="Add New Medicine Stock"
-            icon-right="bi-capsule-pill"
+            label="Add New Supply Stock"
+            icon-right="inventory"
             no-caps
             color="primary"
           />
         </div>
 
-        <!-- Modals for Add New Medicine Stock -->
-        <q-dialog v-model="isAddNewMedicineStock" persistent>
+        <!-- Modals for Add New Supply Stock -->
+        <q-dialog v-model="isAddNewSupplyStock" persistent>
           <q-card style="min-width: 750px">
             <div class="q-pa-lg">
               <div class="flex justify-end">
@@ -315,57 +315,46 @@
               <p
                 class="text-primary text-weight-bold text-24 text-center q-mb-xl"
               >
-                <q-icon name="bi-capsule-pill" class="q-mr-xs q-gutter-xs" />
-                ADD MEDICINE RECORD
+                <q-icon name="inventory" class="q-mr-xs q-gutter-xs" />
+                ADD SUPPLY RECORD
               </p>
-              <q-form @submit="addMedicineRecord" @reset="onReset">
+              <q-form @submit="addSupplyRecord" @reset="onReset">
                 <!-- First Row -->
                 <div class="row q-mb-md">
                   <div class="col">
                     <label class="text-dark"
-                      >Generic Name <span class="text-negative">*</span></label
+                      >Supply Name <span class="text-negative">*</span></label
                     >
                     <q-input
                       dense
                       outlined
-                      placeholder="ex. Paracetamol"
+                      placeholder="ex. Baygon Gloves"
                       class="q-mr-md q-mt-xs"
-                      v-model="newMedicineRecord.generic_name"
+                      v-model="newSupplyRecord.supply_name"
                       :rules="[
                         (val) => (val && val.length > 0) || 'Required field',
                       ]"
                     />
                   </div>
                   <div class="col">
-                    <label class="text-dark">Brand Name</label>
+                    <label class="text-dark"
+                      >Supply Type <span class="text-negative">*</span></label
+                    >
                     <q-input
                       dense
                       outlined
-                      placeholder="ex. Biogesic"
-                      class="q-mt-xs"
-                      v-model="newMedicineRecord.brand_name"
+                      placeholder="ex. Glove"
+                      class="q-mt-xs q-mr-md"
+                      v-model="newSupplyRecord.supply_type"
+                      :rules="[
+                        (val) => (val && val.length > 0) || 'Required field',
+                      ]"
                     />
                   </div>
                 </div>
 
                 <!-- Second Row -->
                 <div class="row q-mt-lg q-mb-md">
-                  <div class="col">
-                    <label class="text-dark"
-                      >Therapeutic Classification
-                      <span class="text-negative">*</span></label
-                    >
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. Analgesic"
-                      class="q-mt-xs q-mr-md"
-                      v-model="newMedicineRecord.med_classification"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
-                    />
-                  </div>
                   <div class="col">
                     <label class="text-dark"
                       >Manufacturing Date
@@ -376,7 +365,7 @@
                       outlined
                       placeholder="YYYY-MM-DD"
                       class="q-mt-xs q-mr-md"
-                      v-model="newMedicineRecord.mfg_date"
+                      v-model="newSupplyRecord.mfg_date"
                       :rules="[
                         (val) => (val && val.length > 0) || 'Required field',
                       ]"
@@ -394,7 +383,7 @@
                             <q-date
                               mask="YYYY-MM-DD"
                               label="YYYY-MM-DD"
-                              v-model="newMedicineRecord.mfg_date"
+                              v-model="newSupplyRecord.mfg_date"
                             />
                           </q-popup-proxy>
                         </q-icon>
@@ -402,18 +391,13 @@
                     </q-input>
                   </div>
                   <div class="col">
-                    <label class="text-dark"
-                      >Expiry Date <span class="text-negative">*</span></label
-                    >
+                    <label class="text-dark">Expiry Date</label>
                     <q-input
                       dense
                       outlined
                       placeholder="YYYY-MM-DD"
                       class="q-mt-xs"
-                      v-model="newMedicineRecord.exp_date"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
+                      v-model="newSupplyRecord.exp_date"
                     >
                       <template v-slot:append>
                         <q-icon
@@ -428,7 +412,7 @@
                             <q-date
                               mask="YYYY-MM-DD"
                               label="YYYY-MM-DD"
-                              v-model="newMedicineRecord.exp_date"
+                              v-model="newSupplyRecord.exp_date"
                             />
                           </q-popup-proxy>
                         </q-icon>
@@ -449,61 +433,29 @@
                       outlined
                       placeholder="ex. 350"
                       class="q-mr-md q-mt-xs"
-                      v-model="newMedicineRecord.quantity"
+                      v-model="newSupplyRecord.quantity"
                       :rules="[
                         (val) => (val && val.length > 0) || 'Required field',
                       ]"
                     />
                   </div>
+
                   <div class="col">
                     <label class="text-dark"
-                      >Dosage Form <span class="text-negative">*</span></label
+                      >Quantity Type <span class="text-negative">*</span></label
                     >
                     <q-input
                       dense
                       outlined
-                      placeholder="ex. Tablet"
-                      class="q-mt-xs q-mr-md"
-                      v-model="newMedicineRecord.dosage_form"
+                      placeholder="ex. piece"
+                      class="q-mr-md q-mt-xs"
+                      v-model="newSupplyRecord.quantity_type"
                       :rules="[
                         (val) => (val && val.length > 0) || 'Required field',
                       ]"
                     />
                   </div>
-                  <div class="col">
-                    <label class="text-dark">Dosage Strength</label>
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. 500mg"
-                      class="q-mt-xs"
-                      v-model="newMedicineRecord.dosage_strength"
-                    />
-                  </div>
-                </div>
 
-                <!-- Fourth Row -->
-                <div class="row q-mt-lg q-mb-md">
-                  <div class="col">
-                    <label class="text-dark">Batch/Lot Number</label>
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. 13-08-713"
-                      class="q-mr-md q-mt-xs"
-                      v-model="newMedicineRecord.batch_lot_number"
-                    />
-                  </div>
-                  <div class="col">
-                    <label class="text-dark">PTR Number</label>
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. 22-11-2101"
-                      class="q-mt-xs q-mr-md"
-                      v-model="newMedicineRecord.ptr_number"
-                    />
-                  </div>
                   <div class="col">
                     <label class="text-dark"
                       >Source <span class="text-negative">*</span></label
@@ -513,7 +465,7 @@
                       outlined
                       placeholder="ex. DOH"
                       class="q-mt-xs"
-                      v-model="newMedicineRecord.procured_by"
+                      v-model="newSupplyRecord.procured_by"
                       :rules="[
                         (val) => (val && val.length > 0) || 'Required field',
                       ]"
@@ -550,7 +502,7 @@
       <div class="q-my-xl table">
         <q-table
           :columns="columns"
-          :rows="MedicinesList"
+          :rows="SuppliesList"
           :pagination="{ rowsPerPage: 10 }"
           :rows-per-page-options="[5, 10, 15, 20, 0]"
           flat
@@ -608,7 +560,7 @@
                     <q-item
                       clickable
                       class="drop-list-delete"
-                      @click="openDialog(props.row.medicine_id)"
+                      @click="openDialog(props.row.supply_id)"
                     >
                       <q-item-section>Delete Record</q-item-section>
                       <q-item-section avatar>
@@ -632,7 +584,7 @@
                 color="primary"
                 unelevated
                 class="button-100 download-btn"
-                :disable="MedicinesList && MedicinesList[0] ? false : true"
+                :disable="SuppliesList && SuppliesList[0] ? false : true"
                 @click="exportTable"
               />
             </q-th>
@@ -641,7 +593,7 @@
       </div>
 
       <!-- Modal for Editing Medicine Record -->
-      <q-dialog v-model="isEditMedicineStock" persistent>
+      <q-dialog v-model="isEditSupplyStock" persistent>
         <q-card style="min-width: 750px">
           <div class="q-pa-lg">
             <div class="flex justify-end">
@@ -659,66 +611,55 @@
               <q-icon name="bi-capsule-pill" class="q-mr-xs q-gutter-xs" />
               EDIT MEDICINE RECORD
             </p>
-            <q-form @submit="editMedicine">
+            <q-form @submit="editSupply">
               <!-- First Row -->
               <div class="row q-mb-md">
                 <div class="col">
                   <label class="text-dark"
-                    >Medicine ID <span class="text-negative">*</span></label
+                    >Supply ID <span class="text-negative">*</span></label
                   >
                   <q-input
                     dense
                     outlined
                     disable
                     class="q-mr-md q-mt-xs bg-grey-4"
-                    v-model="editMedicineRecord.medicine_id"
+                    v-model="editSupplyRecord.supply_id"
                   />
                 </div>
                 <div class="col">
                   <label class="text-dark"
-                    >Generic Name <span class="text-negative">*</span></label
+                    >Supply Name <span class="text-negative">*</span></label
                   >
                   <q-input
                     dense
                     outlined
-                    placeholder="ex. Paracetamol"
+                    placeholder="ex. Baygon Gloves"
                     class="q-mr-md q-mt-xs"
-                    v-model="editMedicineRecord.generic_name"
+                    v-model="editSupplyRecord.supply_name"
                     :rules="[
                       (val) => (val && val.length > 0) || 'Required field',
                     ]"
                   />
                 </div>
                 <div class="col">
-                  <label class="text-dark">Brand Name</label>
+                  <label class="text-dark"
+                    >Supply Type <span class="text-negative">*</span></label
+                  >
                   <q-input
                     dense
                     outlined
-                    placeholder="ex. Biogesic"
-                    class="q-mt-xs"
-                    v-model="editMedicineRecord.brand_name"
+                    placeholder="ex. Glove"
+                    class="q-mt-xs q-mr-md"
+                    v-model="editSupplyRecord.supply_type"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Required field',
+                    ]"
                   />
                 </div>
               </div>
 
               <!-- Second Row -->
               <div class="row q-mt-lg q-mb-md">
-                <div class="col">
-                  <label class="text-dark"
-                    >Therapeutic Classification
-                    <span class="text-negative">*</span></label
-                  >
-                  <q-input
-                    dense
-                    outlined
-                    placeholder="ex. Analgesic"
-                    class="q-mt-xs q-mr-md"
-                    v-model="editMedicineRecord.med_classification"
-                    :rules="[
-                      (val) => (val && val.length > 0) || 'Required field',
-                    ]"
-                  />
-                </div>
                 <div class="col">
                   <label class="text-dark"
                     >Manufacturing Date
@@ -729,7 +670,7 @@
                     outlined
                     placeholder="YYYY-MM-DD"
                     class="q-mt-xs q-mr-md"
-                    v-model="editMedicineRecord.mfg_date"
+                    v-model="editSupplyRecord.mfg_date"
                     :rules="[
                       (val) => (val && val.length > 0) || 'Required field',
                     ]"
@@ -747,7 +688,7 @@
                           <q-date
                             mask="YYYY-MM-DD"
                             label="YYYY-MM-DD"
-                            v-model="editMedicineRecord.mfg_date"
+                            v-model="editSupplyRecord.mfg_date"
                           />
                         </q-popup-proxy>
                       </q-icon>
@@ -755,18 +696,13 @@
                   </q-input>
                 </div>
                 <div class="col">
-                  <label class="text-dark"
-                    >Expiry Date <span class="text-negative">*</span></label
-                  >
+                  <label class="text-dark">Expiry Date</label>
                   <q-input
                     dense
                     outlined
                     placeholder="YYYY-MM-DD"
                     class="q-mt-xs"
-                    v-model="editMedicineRecord.exp_date"
-                    :rules="[
-                      (val) => (val && val.length > 0) || 'Required field',
-                    ]"
+                    v-model="editSupplyRecord.exp_date"
                   >
                     <template v-slot:append>
                       <q-icon
@@ -781,7 +717,7 @@
                           <q-date
                             mask="YYYY-MM-DD"
                             label="YYYY-MM-DD"
-                            v-model="editMedicineRecord.exp_date"
+                            v-model="editSupplyRecord.exp_date"
                           />
                         </q-popup-proxy>
                       </q-icon>
@@ -802,68 +738,27 @@
                     outlined
                     placeholder="ex. 350"
                     class="q-mr-md q-mt-xs"
-                    v-model="editMedicineRecord.quantity"
-                    :rules="[(val) => !isNaN(val) || 'Required field']"
+                    v-model="editSupplyRecord.quantity"
+                    :rules="[(val) => val || 'Required field']"
                   />
                 </div>
+
                 <div class="col">
                   <label class="text-dark"
-                    >Dosage Form <span class="text-negative">*</span></label
+                    >Quantity Type <span class="text-negative">*</span></label
                   >
                   <q-input
                     dense
                     outlined
-                    placeholder="ex. Tablet"
-                    class="q-mt-xs q-mr-md"
-                    v-model="editMedicineRecord.dosage_form"
-                    :rules="[
-                      (val) => (val && val.length > 0) || 'Required field',
-                    ]"
-                  />
-                </div>
-                <div class="col">
-                  <label class="text-dark">Dosage Strength</label>
-                  <q-input
-                    dense
-                    outlined
-                    placeholder="ex. 500mg"
-                    class="q-mt-xs"
-                    v-model="editMedicineRecord.dosage_strength"
-                    :rules="[
-                      (val) => (val && val.length > 0) || 'Required field',
-                    ]"
-                  />
-                </div>
-              </div>
-
-              <!-- Fourth Row -->
-              <div class="row q-mt-lg q-mb-md">
-                <div class="col">
-                  <label class="text-dark">Batch/Lot Number</label>
-                  <q-input
-                    dense
-                    outlined
-                    placeholder="ex. 13-08-713"
+                    placeholder="ex. piece"
                     class="q-mr-md q-mt-xs"
-                    v-model="editMedicineRecord.batch_lot_number"
+                    v-model="editSupplyRecord.quantity_type"
                     :rules="[
                       (val) => (val && val.length > 0) || 'Required field',
                     ]"
                   />
                 </div>
-                <div class="col">
-                  <label class="text-dark">PTR Number</label>
-                  <q-input
-                    dense
-                    outlined
-                    placeholder="ex. 22-11-2101"
-                    class="q-mt-xs q-mr-md"
-                    v-model="editMedicineRecord.ptr_number"
-                    :rules="[
-                      (val) => (val && val.length > 0) || 'Required field',
-                    ]"
-                  />
-                </div>
+
                 <div class="col">
                   <label class="text-dark"
                     >Source <span class="text-negative">*</span></label
@@ -873,7 +768,7 @@
                     outlined
                     placeholder="ex. DOH"
                     class="q-mt-xs"
-                    v-model="editMedicineRecord.procured_by"
+                    v-model="editSupplyRecord.procured_by"
                     :rules="[
                       (val) => (val && val.length > 0) || 'Required field',
                     ]"
@@ -898,11 +793,11 @@
       </q-dialog>
     </div>
 
-    <MHCDialog :content="$options.components.DeleteMedicineConfirmation" />
+    <MHCDialog :content="$options.components.DeleteSupplyConfirmation" />
   </div>
 </template>
 
-<script src="../script/Meds&Supplies/MedicineInventory"></script>
+<script src="../script/Meds&Supplies/SupplyInventory"></script>
 
 <style scoped lang="scss">
 @import "../styles/meds&supplies/medicine_inventory.scss";

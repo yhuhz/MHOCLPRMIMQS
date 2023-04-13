@@ -1,17 +1,17 @@
 import axios from "axios";
 import { ref, readonly } from "vue";
-let Medicines = ref([]);
-let MedicinesList = readonly(Medicines);
-let MedicineDetails = ref([]);
-let MedicineRelease = ref([]);
+let Supplies = ref([]);
+let SuppliesList = readonly(Supplies);
+let SupplyDetails = ref([]);
+let SupplyRelease = ref([]);
 let pathlink =
-  "http://localhost/MHOCLPRMIMQS/src/PHP/Medicine and Supplies/medicine_inventory_api.php";
+  "http://localhost/MHOCLPRMIMQS/src/PHP/Medicine and Supplies/supply_inventory_api.php";
 /**
  * This function accepts parameters of an array then
- * set the passed array to Medicines data.
+ * set the passed array to Supplies data.
  * @param {*} object
  */
-let GetMedicines = (payload) => {
+let GetSupplies = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
@@ -21,7 +21,7 @@ let GetMedicines = (payload) => {
         console.log(response.data);
 
         if (response.data.status === "success") {
-          Medicines.value = response.data.data;
+          Supplies.value = response.data.data;
         } else {
           console.log(response.data.data);
         }
@@ -34,17 +34,17 @@ let GetMedicines = (payload) => {
   });
 };
 
-let FindMedicineDetails = (payload) => {
+let FindSupplyDetails = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
         params: {
-          medicine_id: payload,
+          supply_id: payload,
         },
       })
       .then((response) => {
         console.log(response.data);
-        MedicineDetails.value = response.data.data;
+        SupplyDetails.value = response.data.data;
         resolve(response.data);
       })
       .catch((error) => {
@@ -53,7 +53,7 @@ let FindMedicineDetails = (payload) => {
   });
 };
 
-let FindMedicineRelease = (payload) => {
+let FindSupplyRelease = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
@@ -63,7 +63,7 @@ let FindMedicineRelease = (payload) => {
       })
       .then((response) => {
         console.log(response.data);
-        MedicineRelease.value = response.data.data;
+        SupplyRelease.value = response.data.data;
         resolve(response.data);
       })
       .catch((error) => {
@@ -74,10 +74,10 @@ let FindMedicineRelease = (payload) => {
 
 /**
  * This function accepts parameters of an object then
- * add the passed object to Medicines data.
+ * add the passed object to Supplies data.
  * @param {*} object
  */
-let AddMedicine = (payload) => {
+let AddSupply = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .post(pathlink, payload)
@@ -85,10 +85,10 @@ let AddMedicine = (payload) => {
         console.log(response.data);
         if (response.data.status === "success") {
           try {
-            Medicines.value.push(response.data.data);
+            Supplies.value.push(response.data.data);
           } catch (e) {
-            Medicines.value = [];
-            Medicines.value.push(response.data.data);
+            Supplies.value = [];
+            Supplies.value.push(response.data.data);
           }
         } else {
           console.log(response.data);
@@ -101,7 +101,7 @@ let AddMedicine = (payload) => {
   });
 };
 
-let AddMedicineRelease = (payload) => {
+let AddSupplyRelease = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .post(pathlink, payload)
@@ -109,10 +109,10 @@ let AddMedicineRelease = (payload) => {
         console.log(response.data);
         if (response.data.status === "success") {
           try {
-            MedicineRelease.value.push(response.data.data);
+            SupplyRelease.value.push(response.data.data);
           } catch (e) {
-            MedicineRelease.value = [];
-            MedicineRelease.value.push(response.data.data);
+            SupplyRelease.value = [];
+            SupplyRelease.value.push(response.data.data);
           }
         } else {
           console.log(response.data);
@@ -126,28 +126,28 @@ let AddMedicineRelease = (payload) => {
 };
 /**
  * This function accepts parameters of an object then
- * updates the Medicines specific data based on the id passed in the object.
+ * updates the Supplies specific data based on the id passed in the object.
  * @param {*} object
  */
-let EditMedicine = (payload) => {
+let EditSupply = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .put(pathlink, payload)
       .then((response) => {
         // console.log(response.data.data);
         if (response.data.status === "success") {
-          let objectIndex = Medicines.value.findIndex(
-            (e) => e.medicine_id === payload.medicine_id
+          let objectIndex = Supplies.value.findIndex(
+            (e) => e.supply_id === payload.supply_id
           );
           // if index not found (-1) update nothing !
           // objectIndex !== -1 &&
-          // Object.keys(Medicines.value[objectIndex]).forEach((key) => {
+          // Object.keys(Supplies.value[objectIndex]).forEach((key) => {
           //   response.data.data.personal_info[key] &&
-          //     (Medicines.value[objectIndex][key] =
+          //     (Supplies.value[objectIndex][key] =
           //       response.data.data.personal_info[key]);
           // });
 
-          Medicines.value[objectIndex] = response.data.data;
+          Supplies.value[objectIndex] = response.data.data;
         } else [console.log(response.data)];
         resolve(response.data);
       })
@@ -157,25 +157,25 @@ let EditMedicine = (payload) => {
   });
 };
 
-let EditMedicineRelease = (payload) => {
+let EditSupplyRelease = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .put(pathlink, payload)
       .then((response) => {
         // console.log(response.data.data);
         if (response.data.status === "success") {
-          let objectIndex = MedicineRelease.value.findIndex(
+          let objectIndex = SupplyRelease.value.findIndex(
             (e) => e.med_release_id === payload.med_release_id
           );
           // if index not found (-1) update nothing !
           // objectIndex !== -1 &&
-          // Object.keys(Medicines.value[objectIndex]).forEach((key) => {
+          // Object.keys(Supplies.value[objectIndex]).forEach((key) => {
           //   response.data.data.personal_info[key] &&
-          //     (Medicines.value[objectIndex][key] =
+          //     (Supplies.value[objectIndex][key] =
           //       response.data.data.personal_info[key]);
           // });
 
-          MedicineRelease.value[objectIndex] = response.data.data;
+          SupplyRelease.value[objectIndex] = response.data.data;
         } else [console.log(response.data)];
         resolve(response.data);
       })
@@ -187,20 +187,20 @@ let EditMedicineRelease = (payload) => {
 
 /**
  * This function accepts parameters of an array like this [1,2,3,4] then
- * delete the data in the Medicines based on this parameter.
+ * delete the data in the Supplies based on this parameter.
  * @param {*} array
  */
-let DeleteMedicine = (payload) => {
+let DeleteSupply = (payload) => {
   return new Promise((resolve, reject) => {
     axios
-      .delete(pathlink + "?medicine_id=" + payload.medicine_id)
+      .delete(pathlink + "?supply_id=" + payload.supply_id)
       .then((response) => {
         if (response.data.status === "success") {
-          let objectIndex = Medicines.value.findIndex(
-            (e) => e.medicine_id === payload.medicine_id
+          let objectIndex = Supplies.value.findIndex(
+            (e) => e.supply_id === payload.supply_id
           );
           // if index not found (-1) delete nothing !
-          objectIndex !== -1 && Medicines.value.splice(objectIndex, 1);
+          objectIndex !== -1 && Supplies.value.splice(objectIndex, 1);
         } else {
           console.log(response.data);
         }
@@ -212,18 +212,18 @@ let DeleteMedicine = (payload) => {
   });
 };
 
-let DeleteMedicineRelease = (payload) => {
+let DeleteSupplyRelease = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .delete(pathlink + "?med_release_id=" + payload.med_release_id)
       .then((response) => {
         console.log(response.data);
         if (response.data.status === "success") {
-          let objectIndex = MedicineRelease.value.findIndex(
+          let objectIndex = SupplyRelease.value.findIndex(
             (e) => e.med_release_id === payload.med_release_id
           );
           // if index not found (-1) delete nothing !
-          objectIndex !== -1 && MedicineRelease.value.splice(objectIndex, 1);
+          objectIndex !== -1 && SupplyRelease.value.splice(objectIndex, 1);
         } else {
           console.log(response.data);
         }
@@ -235,20 +235,20 @@ let DeleteMedicineRelease = (payload) => {
   });
 };
 /**
- * Export MedicinesList as readonly (real time copy of Medicines)
+ * Export SuppliesList as readonly (real time copy of Supplies)
  */
 export {
-  GetMedicines,
-  Medicines,
-  MedicinesList,
-  FindMedicineDetails,
-  MedicineDetails,
-  AddMedicine,
-  EditMedicine,
-  DeleteMedicine,
-  MedicineRelease,
-  FindMedicineRelease,
-  DeleteMedicineRelease,
-  AddMedicineRelease,
-  EditMedicineRelease,
+  GetSupplies,
+  Supplies,
+  SuppliesList,
+  FindSupplyDetails,
+  SupplyDetails,
+  AddSupply,
+  EditSupply,
+  DeleteSupply,
+  SupplyRelease,
+  FindSupplyRelease,
+  DeleteSupplyRelease,
+  AddSupplyRelease,
+  EditSupplyRelease,
 };

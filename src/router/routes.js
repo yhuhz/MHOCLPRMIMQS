@@ -100,8 +100,15 @@ const routes = [
         name: "senior-citizen-records",
         component: () =>
           import(
-            "src/pages/Patients-Profile/Senior-Citizen/senior-citizen.vue"
+            "src/pages/Patients-Profile/Senior-Citizen/Senior-Citizen.vue"
           ),
+      },
+      // Pregnant Women
+      {
+        path: "pregnant-women-records",
+        name: "pregnant-women-records",
+        component: () =>
+          import("src/pages/Patients-Profile/Pregnant-Women/PregnantWomen.vue"),
       },
 
       // Meds & supplies
@@ -116,6 +123,11 @@ const routes = [
         name: "medicine-inventory-details",
         component: () =>
           import("src/pages/Meds&Supplies/MedicineInventoryDetails.vue"),
+      },
+      {
+        path: "supply-inventory",
+        name: "supply-inventory",
+        component: () => import("src/pages/Meds&Supplies/SupplyInventory.vue"),
       },
     ],
   },
