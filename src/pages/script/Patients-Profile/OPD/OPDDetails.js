@@ -12,7 +12,7 @@ import {
   RecordArrays,
 } from "src/composables/Records";
 import { FindUsersByName } from "src/composables/Manage_Users";
-import { Loading, SessionStorage, useQuasar } from "quasar";
+import { Loading, SessionStorage, useQuasar, date } from "quasar";
 import { editForm } from "../PatientDetails";
 
 export default {
@@ -116,7 +116,10 @@ export default {
     };
 
     const addFinding = () => {
-      disease.value.push({ opd_disease: "" });
+      disease.value.push({
+        opd_disease: "",
+        date_added: patientRecordInfo.value.checkup_date,
+      });
     };
 
     const removeFinding = (index) => {
@@ -124,7 +127,9 @@ export default {
     };
 
     const addLabResult = () => {
-      lab_results.value.push({ lab_result: "" });
+      lab_results.value.push({
+        lab_result: "",
+      });
     };
 
     const removeLabResult = (index) => {

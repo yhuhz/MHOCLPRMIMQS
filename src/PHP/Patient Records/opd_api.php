@@ -91,6 +91,7 @@ class API
     public function httpPut($payload)
     {
       $payload = (array) $payload;
+
       $payload['opd_id'] = $payload['record_id'];
       unset($payload['record_id']);
 
