@@ -11,7 +11,11 @@
       <q-card>
         <!--  Text  -->
         <div class="text-center q-pt-lg">
-          <h5 class="primary-text-color text-bold">Welcome!</h5>
+          <q-img
+            src="../images/MHOLogo.png"
+            style="width: 80px; height: 80px"
+          />
+          <h5 class="primary-text-color text-bold q-my-md">Welcome!</h5>
         </div>
         <!-- Input Field -->
         <q-form @submit="loginFunction()">

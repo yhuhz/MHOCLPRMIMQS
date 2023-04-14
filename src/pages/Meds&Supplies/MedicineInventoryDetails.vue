@@ -318,20 +318,61 @@
 
                   <div class="row q-mb-md q-px-lg">
                     <!-- ID -->
-                    <div class="col q-mr-md">
+                    <div
+                      class="col q-mr-md"
+                      v-if="selectedReleaseCategory === 'patient'"
+                    >
                       <label class="text-dark"
-                        >ID <span class="text-negative">*</span></label
+                        >Patient ID <span class="text-negative">*</span></label
                       >
-                      <q-input
-                        hide-bottom-space
-                        dense
+
+                      <q-select
                         outlined
-                        placeholder="ex. 040823"
-                        :input-style="{ color: '#525252' }"
-                        class="q-mt-sm"
+                        hide-bottom-space
                         v-model="patient_doctor_id"
+                        @filter="patientFilterFunction"
+                        option-label="patient_name"
+                        option-value="patient_id"
+                        :options="patientOptions"
+                        use-input
+                        emit-value
+                        map-options
+                        dense
+                        input-style="padding: 0"
+                        input-class="text-right text-primary"
+                        class="q-mt-sm"
                         :rules="[
-                          (val) => (val && val.length > 0) || 'Required field',
+                          (val) =>
+                            (val && (val.length > 0 || !isNaN(val))) ||
+                            'Required field',
+                        ]"
+                      />
+                    </div>
+
+                    <div class="col q-mr-md" v-else>
+                      <label class="text-dark"
+                        >User ID <span class="text-negative">*</span></label
+                      >
+
+                      <q-select
+                        outlined
+                        hide-bottom-space
+                        v-model="patient_doctor_id"
+                        @filter="userFilterFunction"
+                        option-label="user_name"
+                        option-value="user_id"
+                        :options="userOptions"
+                        use-input
+                        emit-value
+                        map-options
+                        dense
+                        input-style="padding: 0"
+                        input-class="text-right text-primary"
+                        class="q-mt-sm"
+                        :rules="[
+                          (val) =>
+                            (val && (val.length > 0 || !isNaN(val))) ||
+                            'Required field',
                         ]"
                       />
                     </div>
@@ -542,11 +583,11 @@
 
             <div class="row q-mb-md q-px-lg">
               <!-- ID -->
-              <div class="col q-mr-md">
+              <div class="col q-mr-md" v-if="editReleaseCategory === 'patient'">
                 <label class="text-dark"
-                  >ID <span class="text-negative">*</span></label
+                  >Patient ID <span class="text-negative">*</span></label
                 >
-                <q-input
+                <!-- <q-input
                   hide-bottom-space
                   dense
                   outlined
@@ -554,6 +595,56 @@
                   :input-style="{ color: '#525252' }"
                   class="q-mt-sm"
                   v-model="edit_patient_doctor_id"
+                /> -->
+
+                <q-select
+                  outlined
+                  hide-bottom-space
+                  v-model="edit_patient_doctor_id"
+                  @filter="patientFilterFunction"
+                  option-label="patient_name"
+                  option-value="patient_id"
+                  :options="patientOptions"
+                  use-input
+                  emit-value
+                  map-options
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  class="q-mt-sm"
+                  :rules="[
+                    (val) =>
+                      (val && (val.length > 0 || !isNaN(val))) ||
+                      'Required field',
+                  ]"
+                />
+              </div>
+
+              <div class="col q-mr-md" v-else>
+                <label class="text-dark"
+                  >User ID <span class="text-negative">*</span></label
+                >
+
+                <q-select
+                  outlined
+                  hide-bottom-space
+                  v-model="edit_patient_doctor_id"
+                  @filter="userFilterFunction"
+                  option-label="user_name"
+                  option-value="user_id"
+                  :options="userOptions"
+                  use-input
+                  emit-value
+                  map-options
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  class="q-mt-sm"
+                  :rules="[
+                    (val) =>
+                      (val && (val.length > 0 || !isNaN(val))) ||
+                      'Required field',
+                  ]"
                 />
               </div>
 

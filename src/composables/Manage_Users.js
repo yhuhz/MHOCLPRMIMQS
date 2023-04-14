@@ -40,6 +40,24 @@ let FindUsersByName = (payload) => {
       });
   });
 };
+
+let FindUsersByID = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          id: payload,
+        },
+      })
+      .then((response) => {
+        // Users.value = response.data.data;
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
 /**
  * This function accepts parameters of an object then
  * add the passed object to Users data.
@@ -118,4 +136,4 @@ let DeleteUser = (payload) => {
 /**
  * Export UsersList as readonly (real time copy of Users)
  */
-export { FindUsersByName };
+export { FindUsersByName, FindUsersByID };

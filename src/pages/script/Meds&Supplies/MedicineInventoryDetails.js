@@ -8,6 +8,9 @@ import {
   AddMedicineRelease,
   EditMedicineRelease,
 } from "src/composables/Medicine";
+
+import { FindPatients } from "src/composables/Patients";
+import { FindUsersByName, FindUsersByID } from "src/composables/Manage_Users";
 import { Loading, useQuasar, SessionStorage, date } from "quasar";
 import { useRoute, useRouter } from "vue-router";
 import DeleteMedicineConfirmation from "../../Components/DeleteMedicineConfirmation.vue";
@@ -174,6 +177,7 @@ export default {
     const search = () => {
       loading.value = true;
       let payload = {
+        medicine_id: route.params.medicine_id,
         department: selectedFiltersDepartment.value,
         released_to: selectedReleaseTo.value,
         status: selectedFilterStatus.value,
@@ -218,14 +222,16 @@ export default {
     const addReleaseRecord = () => {
       if (selectedReleaseCategory.value === "patient") {
         newMedicineRelease.value.patient_id = patient_doctor_id.value;
+        newMedicineRelease.value.doctor_id = null;
       } else {
         newMedicineRelease.value.doctor_id = patient_doctor_id.value;
+        newMedicineRelease.value.patient_id = null;
       }
 
       newMedicineRelease.value.department =
         filtersDepartment.indexOf(newMedicineRelease.value.department) + 1;
 
-      // console.log(newMedicineRelease.value);
+      console.log(newMedicineRelease.value);
 
       Loading.show();
       AddMedicineRelease(newMedicineRelease.value).then((response) => {
@@ -275,6 +281,91 @@ export default {
         released_by: med_release_info.released_by,
         release_date: med_release_info.release_date,
       };
+    };
+
+    let patientOptions = ref([]);
+
+    const patientFilterFunction = (val, update, abort) => {
+      if (val && (val.length > 5 || !isNaN(val))) {
+        update(() => {
+          if (isNaN(val)) {
+            const needle = String(val.toLowerCase());
+            FindPatients({ name_string: needle }).then((response) => {
+              patientOptions.value = [];
+              if (response.status === "success") {
+                let Patients = ref([]);
+                Patients.value = response.data;
+                Patients.value.forEach((p) => {
+                  let selectValues = {
+                    patient_name: p.patient_id + " - " + p.name,
+                    patient_id: p.patient_id,
+                  };
+                  patientOptions.value.push(selectValues);
+                });
+              }
+            });
+          } else {
+            FindPatients({ id_string: val }).then((response) => {
+              patientOptions.value = [];
+              if (response.status === "success") {
+                let Patients = ref([]);
+                Patients.value = response.data;
+                Patients.value.forEach((p) => {
+                  let selectValues = {
+                    patient_name: p.patient_id + " - " + p.name,
+                    patient_id: p.patient_id,
+                  };
+                  patientOptions.value.push(selectValues);
+                });
+              }
+            });
+          }
+        });
+      } else {
+        abort();
+      }
+    };
+
+    let userOptions = ref([]);
+    const userFilterFunction = (val, update, abort) => {
+      if (val.length > 5 || !isNaN(val)) {
+        update(() => {
+          if (isNaN(val)) {
+            const needle = String(val.toLowerCase());
+            FindUsersByName(needle).then((response) => {
+              userOptions.value = [];
+              if (response.status === "success") {
+                let Users = ref([]);
+                Users.value = response.data;
+                Users.value.forEach((p) => {
+                  let selectValues = {
+                    user_name: p.id + " - " + p.user_name,
+                    user_id: p.id,
+                  };
+                  userOptions.value.push(selectValues);
+                });
+              }
+            });
+          } else {
+            FindUsersByID(val).then((response) => {
+              userOptions.value = [];
+              if (response.status === "success") {
+                let Users = ref([]);
+                Users.value = response.data;
+                Users.value.forEach((p) => {
+                  let selectValues = {
+                    user_name: p.id + " - " + p.user_name,
+                    user_id: p.id,
+                  };
+                  userOptions.value.push(selectValues);
+                });
+              }
+            });
+          }
+        });
+      } else {
+        abort();
+      }
     };
 
     const editMedicineRelease = () => {
@@ -406,6 +497,10 @@ export default {
       edit_patient_doctor_id,
       openEditModal,
       editMedicineRelease,
+      patientFilterFunction,
+      patientOptions,
+      userFilterFunction,
+      userOptions,
     };
   },
 };

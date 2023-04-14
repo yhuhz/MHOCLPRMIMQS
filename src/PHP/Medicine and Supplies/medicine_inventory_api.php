@@ -27,6 +27,7 @@ class API
         $medicine_details = $this->db->get('tbl_medicine_inventory');
         $medicine_details = $medicine_details[0];
 
+        $this->db->where('medicine_id', $_GET['medicine_id']);
         $this->db->where('status', 0);
         $medicine_release = $this->db->getValue('tbl_medicine_release', 'CAST(SUM(quantity) as int)');
         $medicine_details['quantity_released'] = $medicine_release != null ? $medicine_release : 0;
@@ -37,6 +38,8 @@ class API
                                 ));
 
       } else if (isset($_GET['release_filter'])) {
+
+        //GET MEDICINE RELEASE
         $release_filter = (array) json_decode($_GET['release_filter']);
 
         if (isset($release_filter['department'])) {
@@ -63,6 +66,7 @@ class API
           $this->db->where('release_date', $release_filter['date_released'], 'BETWEEN');
         }
 
+        $this->db->where('medicine_id', $release_filter['medicine_id']);
         $medicine_release = $this->db->get('tbl_medicine_release');
         $medicine_release_array = [];
 
@@ -88,102 +92,117 @@ class API
                                   'method' => 'GET'
                                 ));
 
+      } else if (isset($_GET['patient_id'])) {
+
+          //GET MEDICINE RELEASE PER PATIENT
+          $this->db->where('patient_id', $_GET['patient_id']);
+          $this->db->where('mr.status', 0);
+
+          $this->db->join('tbl_medicine_inventory mi', 'mr.medicine_id=mi.medicine_id', 'LEFT');
+
+          $medicine_release_array = $this->db->get('tbl_medicine_release mr', null, 'med_release_id, mr.medicine_id, generic_name, brand_name, mr.quantity');
+
+
+          echo json_encode(array('status' => 'success',
+                                    'data' => $medicine_release_array,
+                                    'method' => 'GET'
+                                  ));
       } else {
         //GET MEDICINE INVENTORY
-      $payload = (array) json_decode($_GET['payload']);
-      // print_r($payload); return;
+        $payload = (array) json_decode($_GET['payload']);
+        // print_r($payload); return;
 
-      //check if there are parameters
-      if (isset($payload['search_by'])) {
-        $search_by = (array) $payload['search_by'];
+        //check if there are parameters
+        if (isset($payload['search_by'])) {
+          $search_by = (array) $payload['search_by'];
 
-        if (isset($search_by['search_string']) && ($search_by['search_string'] != '')) {
-          if ($search_by['search_category'] === "Brand Name") {
-            $this->db->where('brand_name', '%'.$search_by['search_string'].'%', 'LIKE');
+          if (isset($search_by['search_string']) && ($search_by['search_string'] != '')) {
+            if ($search_by['search_category'] === "Brand Name") {
+              $this->db->where('brand_name', '%'.$search_by['search_string'].'%', 'LIKE');
 
-          } else if ($search_by['search_category'] === "Generic Name") {
-            $this->db->where('generic_name', '%'.$search_by['search_string'].'%', 'LIKE');
+            } else if ($search_by['search_category'] === "Generic Name") {
+              $this->db->where('generic_name', '%'.$search_by['search_string'].'%', 'LIKE');
 
-          } else if ($search_by['search_category'] === "Medicine ID") {
-            $this->db->where('medicine_id', $search_by['search_string']);
+            } else if ($search_by['search_category'] === "Medicine ID") {
+              $this->db->where('medicine_id', $search_by['search_string']);
 
-          } else if ($search_by['search_category'] === "Classification") {
-            $this->db->where('med_classification', '%'.$search_by['search_string'].'%', 'LIKE');
+            } else if ($search_by['search_category'] === "Classification") {
+              $this->db->where('med_classification', '%'.$search_by['search_string'].'%', 'LIKE');
 
-          } else if ($search_by['search_category'] === "Dosage Strength") {
-            $this->db->where('dosage_strength', '%'.$search_by['search_string'].'%', 'LIKE');
+            } else if ($search_by['search_category'] === "Dosage Strength") {
+              $this->db->where('dosage_strength', '%'.$search_by['search_string'].'%', 'LIKE');
 
-          } else if ($search_by['search_category'] === "Dosage Form") {
-            $this->db->where('dosage_form', '%'.$search_by['search_string'].'%', 'LIKE');
+            } else if ($search_by['search_category'] === "Dosage Form") {
+              $this->db->where('dosage_form', '%'.$search_by['search_string'].'%', 'LIKE');
 
-          } else if ($search_by['search_category'] === "PTR Number") {
-            $this->db->where('ptr_number', $search_by['search_string']);
+            } else if ($search_by['search_category'] === "PTR Number") {
+              $this->db->where('ptr_number', $search_by['search_string']);
 
-          } else if ($search_by['search_category'] === "Batch/Lot Number") {
-            $this->db->where('batch_lot_number', $search_by['search_string']);
+            } else if ($search_by['search_category'] === "Batch/Lot Number") {
+              $this->db->where('batch_lot_number', $search_by['search_string']);
 
-          } else if ($search_by['search_category'] === "Procured By") {
-            $this->db->where('procured_by', '%'.$search_by['search_string'].'%', 'LIKE');
+            } else if ($search_by['search_category'] === "Procured By") {
+              $this->db->where('procured_by', '%'.$search_by['search_string'].'%', 'LIKE');
+            }
           }
         }
-      }
 
-      //FILTER
-      // $this->db->join('tbl_medicine_release mr', 'mi.medicine_id=mr.medicine_id', 'LEFT');
+        //FILTER
+        // $this->db->join('tbl_medicine_release mr', 'mi.medicine_id=mr.medicine_id', 'LEFT');
 
-      if (isset($payload['filter'])) {
-        $filter = (array) $payload['filter'];
+        if (isset($payload['filter'])) {
+          $filter = (array) $payload['filter'];
 
-        //Stock filter
-        // if (isset($filter['in_stock']) && ($filter['in_stock'][0] != '') && ($filter['in_stock'][1] != '')) {
-        //   $this->db->where('mi.quantity - IFNULL(mr.quantity, 0)', $filter['in_stock'], 'BETWEEN');
-        // }
+          //Stock filter
+          // if (isset($filter['in_stock']) && ($filter['in_stock'][0] != '') && ($filter['in_stock'][1] != '')) {
+          //   $this->db->where('mi.quantity - IFNULL(mr.quantity, 0)', $filter['in_stock'], 'BETWEEN');
+          // }
 
-        //Status filter
-        if (isset($filter['status'])) {
-          $this->db->where('status', $filter['status'], 'IN');
+          //Status filter
+          if (isset($filter['status'])) {
+            $this->db->where('status', $filter['status'], 'IN');
+          }
+
+          //Date Added filter
+          if (isset($filter['date_added'][0]) && isset($filter['date_added'][1])) {
+            $this->db->where('date_added', $filter['date_added'], 'BETWEEN');
+          }
+
+          //Manufacturing Date filter
+          if (isset($filter['mfg_date'][0]) && isset($filter['mfg_date'][1])) {
+            $this->db->where('mfg_date', $filter['mfg_date'], 'BETWEEN');
+          }
+
+          // //Expiry Date filter
+          if (isset($filter['exp_date'][0]) && isset($filter['exp_date'][1])) {
+            $this->db->where('exp_date', $filter['exp_date'], 'BETWEEN');
+          }
         }
 
-        //Date Added filter
-        if (isset($filter['date_added'][0]) && isset($filter['date_added'][1])) {
-          $this->db->where('date_added', $filter['date_added'], 'BETWEEN');
-        }
+        // $medicine_inventory = $this->db->get('tbl_medicine_inventory mi', null, 'mi.medicine_id, generic_name, brand_name, med_classification, dosage_strength, dosage_form, ptr_number, batch_lot_number, mfg_date, exp_date, mi.quantity, mi.quantity - SUM(COALESCE(mr.quantity, 0)) as in_stock, procured_by, date_added, added_by, mi.status');
 
-        //Manufacturing Date filter
-        if (isset($filter['mfg_date'][0]) && isset($filter['mfg_date'][1])) {
-          $this->db->where('mfg_date', $filter['mfg_date'], 'BETWEEN');
-        }
+        $medicine_inventory = $this->db->get('tbl_medicine_inventory');
+        $medicine_array = [];
 
-        // //Expiry Date filter
-        if (isset($filter['exp_date'][0]) && isset($filter['exp_date'][1])) {
-          $this->db->where('exp_date', $filter['exp_date'], 'BETWEEN');
-        }
-      }
+        foreach($medicine_inventory as $medicine) {
+          $this->db->where('medicine_id', $medicine['medicine_id']);
+          $count = $this->db->getValue('tbl_medicine_release', 'CAST(SUM(quantity) as int)');
+          $medicine['in_stock'] = $medicine['quantity'] - $count;
 
-      // $medicine_inventory = $this->db->get('tbl_medicine_inventory mi', null, 'mi.medicine_id, generic_name, brand_name, med_classification, dosage_strength, dosage_form, ptr_number, batch_lot_number, mfg_date, exp_date, mi.quantity, mi.quantity - SUM(COALESCE(mr.quantity, 0)) as in_stock, procured_by, date_added, added_by, mi.status');
-
-      $medicine_inventory = $this->db->get('tbl_medicine_inventory');
-      $medicine_array = [];
-
-      foreach($medicine_inventory as $medicine) {
-        $this->db->where('medicine_id', $medicine['medicine_id']);
-        $count = $this->db->getValue('tbl_medicine_release', 'CAST(SUM(quantity) as int)');
-        $medicine['in_stock'] = $medicine['quantity'] - $count;
-
-        if (isset($filter['in_stock']) && ($filter['in_stock'][0] != '') && ($filter['in_stock'][1] != '')) {
-          if ($medicine['in_stock'] >= $filter['in_stock'][0] && $medicine['in_stock'] <= $filter['in_stock'][1]) {
+          if (isset($filter['in_stock']) && ($filter['in_stock'][0] != '') && ($filter['in_stock'][1] != '')) {
+            if ($medicine['in_stock'] >= $filter['in_stock'][0] && $medicine['in_stock'] <= $filter['in_stock'][1]) {
+              array_push($medicine_array, $medicine);
+            }
+          } else {
             array_push($medicine_array, $medicine);
           }
-        } else {
-          array_push($medicine_array, $medicine);
         }
-      }
 
 
-        echo json_encode(array('status' => 'success',
-                                  'data' => $medicine_array,
-                                  'method' => 'GET'
-                                ));
+          echo json_encode(array('status' => 'success',
+                                    'data' => $medicine_array,
+                                    'method' => 'GET'
+                                  ));
       }
 
     }
@@ -200,7 +219,7 @@ class API
 
           if (isset($payload['patient_id'])) {
 
-            $this->db->where('patient_id', $release['patient_id']);
+            $this->db->where('patient_id', $payload['patient_id']);
             $name = $this->db->get('tbl_patient_info', null, 'concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name');
 
             $payload['patient_name'] = $name[0]['name'];

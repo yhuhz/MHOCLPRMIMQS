@@ -59,6 +59,25 @@ let FindPatient = (payload) => {
   });
 };
 
+//GET PATIENTS FOR Q-SELECT
+let FindPatients = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          payload: payload,
+        },
+      })
+      .then((response) => {
+        // console.log(response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 /**
  * This function accepts parameters of an object then
  * add the passed object to Patients data.
@@ -156,4 +175,5 @@ export {
   PWD,
   SC,
   Prenatal,
+  FindPatients,
 };

@@ -271,18 +271,28 @@
                     <!-- ID -->
                     <div class="col q-mr-md">
                       <label class="text-dark"
-                        >ID <span class="text-negative">*</span></label
+                        >User ID <span class="text-negative">*</span></label
                       >
-                      <q-input
-                        hide-bottom-space
-                        dense
+
+                      <q-select
                         outlined
-                        placeholder="ex. 040823"
-                        :input-style="{ color: '#525252' }"
-                        class="q-mt-sm"
+                        hide-bottom-space
                         v-model="newSupplyRelease.user_id"
+                        @filter="userFilterFunction"
+                        option-label="user_name"
+                        option-value="user_id"
+                        :options="userOptions"
+                        use-input
+                        emit-value
+                        map-options
+                        dense
+                        input-style="padding: 0"
+                        input-class="text-right text-primary"
+                        class="q-mt-sm"
                         :rules="[
-                          (val) => (val && val.length > 0) || 'Required field',
+                          (val) =>
+                            (val && (val.length > 0 || !isNaN(val))) ||
+                            'Required field',
                         ]"
                       />
                     </div>
@@ -493,17 +503,29 @@
               <!-- ID -->
               <div class="col q-mr-md">
                 <label class="text-dark"
-                  >ID <span class="text-negative">*</span></label
+                  >User ID <span class="text-negative">*</span></label
                 >
-                <q-input
-                  hide-bottom-space
-                  dense
+
+                <q-select
                   outlined
-                  placeholder="ex. 040823"
-                  :input-style="{ color: '#525252' }"
-                  class="q-mt-sm"
+                  hide-bottom-space
                   v-model="editMedReleaseInfo.user_id"
-                  :rules="[(val) => !isNaN(val) || 'Required field']"
+                  @filter="userFilterFunction"
+                  option-label="user_name"
+                  option-value="user_id"
+                  :options="userOptions"
+                  use-input
+                  emit-value
+                  map-options
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  class="q-mt-sm"
+                  :rules="[
+                    (val) =>
+                      (val && (val.length > 0 || !isNaN(val))) ||
+                      'Required field',
+                  ]"
                 />
               </div>
 

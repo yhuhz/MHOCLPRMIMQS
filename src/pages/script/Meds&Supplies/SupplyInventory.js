@@ -2,6 +2,7 @@ import { ref } from "vue";
 import { useQuasar, Loading, date, SessionStorage } from "quasar";
 import {
   GetSupplies,
+  Supplies,
   SuppliesList,
   AddSupply,
   EditSupply,
@@ -21,6 +22,8 @@ export default {
     if (keySession === null) {
       router.push({ name: "login" });
     }
+
+    Supplies.value = [];
 
     /*** Table ***/
     const columns = ref([

@@ -24,24 +24,34 @@ class API
         $this->db->where("CONCAT_WS(' ', REPLACE(first_name, ' ', ''), REPLACE(middle_name, ' ', ''), REPLACE(last_name, ' ', ''), REPLACE(suffix, ' ', '')) LIKE '%" . $_GET['name'] . "%'");
         $users = $this->db->get('tbl_users', null, 'CONCAT(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) AS user_name, user_id as id');
 
-        if ($users) {
+
           echo json_encode(array('status' => 'success',
                                 'data' => $users,
                                 'method' => 'GET'
         ));
-        }
+
+      } else if (isset($_GET['id'])) {
+          $this->db->where('user_id', $_GET['id']);
+
+          $users = $this->db->get('tbl_users', null, 'CONCAT(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) AS user_name, user_id as id');
+
+
+            echo json_encode(array('status' => 'success',
+                                  'data' => $users,
+                                  'method' => 'GET'
+          ));
+
       } else {
         if (isset($_GET['user_id'])) {
           $this->db->where('user_id', $_GET['user_id']);
         }
         $users = $this->db->get('tbl_users');
 
-        if ($users) {
           echo json_encode(array('status' => 'success',
                                 'data' => $users,
                                 'method' => 'GET'
         ));
-        }
+
       }
 
     }

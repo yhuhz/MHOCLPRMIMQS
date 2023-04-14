@@ -3,8 +3,12 @@ import MHCDialog from "../../../components/MHCDialog.vue";
 import DeletePatientConfirmation from "../../Components/DeletePatientConfirmation";
 import { ToggleDialogState } from "../../../composables/Triggers";
 import { GetPatients, PatientsList } from "src/composables/Patients";
+import {
+  FindMedicineReleasePerPatient,
+  MedReleasePerPatient,
+} from "src/composables/Medicine";
 import _ from "lodash";
-import { useQuasar, SessionStorage } from "quasar";
+import { useQuasar, SessionStorage, Loading } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
 import { SetIDS } from "src/composables/IDS";
 import { useRouter, useRoute } from "vue-router";
@@ -142,8 +146,10 @@ export default {
         },
       };
 
+      Loading.show();
       loading.value = true;
       GetPatients(payload).then((response) => {
+        Loading.hide();
         loading.value = false;
       });
     };
@@ -160,8 +166,11 @@ export default {
         },
       };
 
+      Loading.show();
+
       loading.value = true;
       GetPatients(payload).then((response) => {
+        Loading.hide();
         loading.value = false;
       });
     }
@@ -309,6 +318,64 @@ export default {
       }
     };
 
+    /**VIEW MEDICINE RELEASE PER PATIENT**/
+    let isViewMedicineRelease = ref(false);
+
+    const medicineReleaseColumn = [
+      {
+        name: "med_release_id",
+        align: "left",
+        label: "Release ID",
+        field: "med_release_id",
+        sortable: true,
+      },
+      {
+        name: "medicine_id",
+        align: "left",
+        label: "Medicine ID",
+        field: "medicine_id",
+        sortable: true,
+      },
+      {
+        name: "generic_name",
+        align: "left",
+        label: "Generic Name",
+        field: "generic_name",
+        sortable: true,
+      },
+      {
+        name: "brand_name",
+        align: "left",
+        label: "Brand Name",
+        field: "brand_name",
+        sortable: true,
+      },
+      {
+        name: "quantity",
+        align: "left",
+        label: "Qty",
+        field: "quantity",
+        sortable: true,
+      },
+      {
+        name: "action",
+        align: "left",
+        label: "",
+        field: "",
+        sortable: false,
+      },
+    ];
+
+    const viewMedicineRelease = (patient_id) => {
+      isViewMedicineRelease.value = true;
+
+      loading.value = true;
+
+      FindMedicineReleasePerPatient(patient_id).then((response) => {
+        loading.value = false;
+      });
+    };
+
     return {
       searchBy,
       selectedSearchBy,
@@ -334,6 +401,10 @@ export default {
       sex,
       downloadDisable,
       deletePatientRecord,
+      isViewMedicineRelease,
+      viewMedicineRelease,
+      medicineReleaseColumn,
+      MedReleasePerPatient,
     };
   },
 };

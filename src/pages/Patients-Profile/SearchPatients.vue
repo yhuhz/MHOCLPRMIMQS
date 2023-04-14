@@ -268,7 +268,7 @@
                 <q-menu
                   transition-show="jump-down"
                   transition-hide="jump-up"
-                  class="width-200"
+                  style="width: 250px"
                 >
                   <q-list separator dense>
                     <!-- View -->
@@ -285,6 +285,18 @@
                       <q-item-section>View Details</q-item-section>
                       <q-item-section avatar>
                         <q-icon size="xs" name="eva-eye-outline" />
+                      </q-item-section>
+                    </q-item>
+
+                    <!-- View Medicine Release -->
+                    <q-item
+                      clickable
+                      class="drop-list"
+                      @click="viewMedicineRelease(props.row.patient_id)"
+                    >
+                      <q-item-section>View Medicine Release</q-item-section>
+                      <q-item-section avatar>
+                        <q-icon size="xs" name="medication" />
                       </q-item-section>
                     </q-item>
 
@@ -347,6 +359,82 @@
             </q-th>
           </template>
         </q-table>
+
+        <!-- View Medicine Release per Patient -->
+        <q-dialog v-model="isViewMedicineRelease" persistent>
+          <q-card class="q-pa-md">
+            <div class="flex items-center justify-between q-mb-md">
+              <p
+                class="text-primary text-weight-bold text-24 text-center q-my-none"
+              >
+                <q-icon name="medication" class="q-mr-xs q-gutter-xs" />
+                MEDICINE RELEASE
+              </p>
+              <div class="flex justify-end">
+                <q-btn
+                  v-close-popup
+                  dense
+                  color="negative"
+                  size="0.375rem"
+                  icon="eva-close-outline"
+                />
+              </div>
+            </div>
+
+            <div class="table">
+              <q-table
+                dense
+                :columns="medicineReleaseColumn"
+                :rows="MedReleasePerPatient"
+                :pagination="{ rowsPerPage: 10 }"
+                :rows-per-page-options="[5, 10, 15, 20, 0]"
+                flat
+                class="mhc-table"
+                :loading="loading"
+                no-data-label="No available data"
+              >
+                <!-- Table Row Slots -->
+                <template v-slot:body-cell-action="props">
+                  <q-td :props="props">
+                    <q-btn
+                      dense
+                      color="primary"
+                      label="View"
+                      icon-right="visibility"
+                      no-caps
+                      unelevated
+                      class="button-100 action-btn"
+                      @click="
+                        $router.push({
+                          name: 'medicine-inventory-details',
+                          params: { medicine_id: props.row.medicine_id },
+                        })
+                      "
+                    >
+                    </q-btn>
+                  </q-td>
+                </template>
+
+                <!-- Table Header Slots -->
+                <template #header-cell-action="props">
+                  <q-th :props="props">
+                    <q-btn
+                      dense
+                      label="Download"
+                      icon-right="eva-download-outline"
+                      no-caps
+                      color="primary"
+                      unelevated
+                      :disable="PatientsList && PatientsList[0] ? false : true"
+                      class="button-100 download-btn"
+                      @click="exportTable()"
+                    />
+                  </q-th>
+                </template>
+              </q-table>
+            </div>
+          </q-card>
+        </q-dialog>
       </div>
     </div>
 
@@ -358,4 +446,8 @@
 
 <style scoped lang="scss">
 @import "../styles/patients-profile/search_patients.scss";
+
+.q-dialog__inner--minimized > div {
+  max-width: 100%;
+}
 </style>

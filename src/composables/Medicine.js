@@ -4,6 +4,7 @@ let Medicines = ref([]);
 let MedicinesList = readonly(Medicines);
 let MedicineDetails = ref([]);
 let MedicineRelease = ref([]);
+let MedReleasePerPatient = ref([]);
 let pathlink =
   "http://localhost/MHOCLPRMIMQS/src/PHP/Medicine and Supplies/medicine_inventory_api.php";
 /**
@@ -64,6 +65,25 @@ let FindMedicineRelease = (payload) => {
       .then((response) => {
         console.log(response.data);
         MedicineRelease.value = response.data.data;
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let FindMedicineReleasePerPatient = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          patient_id: payload,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        MedReleasePerPatient.value = response.data.data;
         resolve(response.data);
       })
       .catch((error) => {
@@ -251,4 +271,6 @@ export {
   DeleteMedicineRelease,
   AddMedicineRelease,
   EditMedicineRelease,
+  FindMedicineReleasePerPatient,
+  MedReleasePerPatient,
 };

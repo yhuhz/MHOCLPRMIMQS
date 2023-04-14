@@ -27,6 +27,7 @@ class API
         $supply_details = $this->db->get('tbl_supplies_inventory');
         $supply_details = $supply_details[0];
 
+        $this->db->where('supply_id', $_GET['supply_id']);
         $this->db->where('status', 0);
         $supply_release = $this->db->getValue('tbl_supply_release', 'CAST(SUM(quantity) as int)');
         $supply_details['quantity_released'] = $supply_release != null ? $supply_release : 0;
@@ -54,6 +55,8 @@ class API
         if (isset($release_filter['date_released']) && ($release_filter['date_released'][0] != '') && ($release_filter['quantity_released'][1] != '')) {
           $this->db->where('release_date', $release_filter['date_released'], 'BETWEEN');
         }
+
+        $this->db->where('supply_id', $release_filter['supply_id']);
 
         $supply_release = $this->db->get('tbl_supply_release');
         $supply_release_array = [];

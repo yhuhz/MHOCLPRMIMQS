@@ -249,6 +249,27 @@ class API
                                   ));
         }
 
+      } else if (isset($payload['name_string'])) {
+
+        $this->db->where("CONCAT_WS(' ', REPLACE(first_name, ' ', ''), REPLACE(middle_name, ' ', ''), REPLACE(last_name, ' ', ''), REPLACE(suffix, ' ', '')) LIKE '%" . $payload['name_string'] . "%'");
+
+        $patients = $this->db->get('tbl_patient_info', null, 'patient_id, concat(first_name, IFNULL(CONCAT(" ", middle_name), ""), " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name');
+
+        echo json_encode(array('status' => 'success',
+                                    'data' => $patients,
+                                    'method' => 'GET'
+                                  ));
+
+      } else if (isset($payload['id_string'])) {
+
+        $this->db->where('patient_id', '%'. $payload['id_string'] . '%', 'LIKE');
+
+        $patients = $this->db->get('tbl_patient_info', null, 'patient_id, concat(first_name, IFNULL(CONCAT(" ", middle_name), ""), " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name');
+
+        echo json_encode(array('status' => 'success',
+                                    'data' => $patients,
+                                    'method' => 'GET'
+                                  ));
       } else {
         //check if there are parameters
         if (isset($payload['search_by'])) {

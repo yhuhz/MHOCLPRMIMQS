@@ -2,6 +2,7 @@ import { ref } from "vue";
 import { useQuasar, Loading, date, SessionStorage } from "quasar";
 import {
   GetMedicines,
+  Medicines,
   MedicinesList,
   AddMedicine,
   EditMedicine,
@@ -21,6 +22,7 @@ export default {
     if (keySession === null) {
       router.push({ name: "login" });
     }
+    Medicines.value = [];
 
     /*** Table ***/
     const columns = ref([
