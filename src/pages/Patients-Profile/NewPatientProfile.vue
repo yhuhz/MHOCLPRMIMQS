@@ -224,9 +224,7 @@
             <div class="row q-mt-md">
               <div class="col">
                 <!-- Middle Name -->
-                <label class="text-dark"
-                  >Middle Name <span class="text-negative">*</span></label
-                >
+                <label class="text-dark">Middle Name</label>
                 <q-input
                   v-model="personalInformation.middle_name"
                   dense

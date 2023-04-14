@@ -21,18 +21,18 @@ class API
     public function httpGet($payload)
     {
       if (isset($_GET['supply_id'])) {
-        //GET MEDICINE DETAILS
+        //GET SUPPLY DETAILS
 
         $this->db->where('supply_id', $_GET['supply_id']);
-        $medicine_details = $this->db->get('tbl_supplies_inventory');
-        $medicine_details = $medicine_details[0];
+        $supply_details = $this->db->get('tbl_supplies_inventory');
+        $supply_details = $supply_details[0];
 
         $this->db->where('status', 0);
-        $medicine_release = $this->db->getValue('tbl_medicine_release', 'CAST(SUM(quantity) as int)');
-        $medicine_details['quantity_released'] = $medicine_release != null ? $medicine_release : 0;
+        $supply_release = $this->db->getValue('tbl_supply_release', 'CAST(SUM(quantity) as int)');
+        $supply_details['quantity_released'] = $supply_release != null ? $supply_release : 0;
 
         echo json_encode(array('status' => 'success',
-                                  'data' => $medicine_details,
+                                  'data' => $supply_details,
                                   'method' => 'GET'
                                 ));
 
@@ -41,14 +41,6 @@ class API
 
         if (isset($release_filter['department'])) {
           $this->db->where('department', $release_filter['department'], 'IN');
-        }
-
-        if (isset($release_filter['released_to'])) {
-          if ($release_filter['released_to'][0] === 0 && count($release_filter['released_to']) === 1) {
-            $this->db->where('patient_id', null, 'IS NOT');
-          } else if ($release_filter['released_to'][0] === 1 && count($release_filter['released_to']) === 1) {
-            $this->db->where('doctor_id', null, 'IS NOT');
-          }
         }
 
         if (isset($release_filter['status'])) {
@@ -63,28 +55,22 @@ class API
           $this->db->where('release_date', $release_filter['date_released'], 'BETWEEN');
         }
 
-        $medicine_release = $this->db->get('tbl_medicine_release');
-        $medicine_release_array = [];
+        $supply_release = $this->db->get('tbl_supply_release');
+        $supply_release_array = [];
 
-        foreach($medicine_release as $release) {
-          if (isset($release['patient_id'])) {
-            $this->db->where('patient_id', $release['patient_id']);
-            $name = $this->db->get('tbl_patient_info', null, 'concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name');
+        foreach($supply_release as $release) {
 
-            $release['patient_name'] = $name[0]['name'];
-            array_push($medicine_release_array, $release);
-          } else {
-            $this->db->where('user_id', $release['doctor_id']);
+            $this->db->where('user_id', $release['user_id']);
             $name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name');
 
-            $release['doctor_name'] = $name[0]['name'];
-            array_push($medicine_release_array, $release);
+            $release['user_name'] = $name[0]['name'];
+            array_push($supply_release_array, $release);
           }
-        }
+
 
 
         echo json_encode(array('status' => 'success',
-                                  'data' => $medicine_release_array,
+                                  'data' => $supply_release_array,
                                   'method' => 'GET'
                                 ));
 
@@ -179,23 +165,17 @@ class API
       $payload = (array) $payload;
 
       if (isset($payload['department'])) {
-        //ADD MEDICINE RELEASE RECORD
-        $payload['med_release_id'] = $this->db->insert('tbl_medicine_release', $payload);
+        //ADD SUPPLY RELEASE RECORD
+        $payload['supply_release_id'] = $this->db->insert('tbl_supply_release', $payload);
 
-        if ($payload['med_release_id']) {
+        if ($payload['supply_release_id']) {
 
-          if (isset($payload['patient_id'])) {
 
-            $this->db->where('patient_id', $release['patient_id']);
-            $name = $this->db->get('tbl_patient_info', null, 'concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name');
-
-            $payload['patient_name'] = $name[0]['name'];
-          } else {
-            $this->db->where('user_id', $payload['doctor_id']);
+            $this->db->where('user_id', $payload['user_id']);
             $name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name');
 
-            $payload['doctor_name'] = $name[0]['name'];
-          }
+            $payload['user_name'] = $name[0]['name'];
+
 
           echo json_encode(array('status' => 'success',
                                     'data' => $payload,
@@ -204,7 +184,7 @@ class API
         }
 
       } else {
-        //ADD MEDICINE RECORD
+        //ADD SUPPLY RECORD
         $payload['supply_id'] = $this->db->insert('tbl_supplies_inventory', $payload);
         $payload['in_stock'] = $payload['quantity'];
 
@@ -225,23 +205,17 @@ class API
       $payload = (array) $payload;
 
       if(isset($payload['department'])) {
-        //EDIT MEDICINE RELEASE RECORD
-        $this->db->where('med_release_id', $payload['med_release_id']);
-        $medicine_release = $this->db->update('tbl_medicine_release', $payload);
+        //EDIT SUPPLY RELEASE RECORD
+        $this->db->where('supply_release_id', $payload['supply_release_id']);
+        $supply_release = $this->db->update('tbl_supply_release', $payload);
 
-        if ($medicine_release) {
+        if ($supply_release) {
 
-          if (isset($payload['patient_id'])) {
-            $this->db->where('patient_id', $payload['patient_id']);
-            $name = $this->db->get('tbl_patient_info', null, 'concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name');
+          $this->db->where('user_id', $payload['user_id']);
+          $name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name');
 
-            $payload['patient_name'] = $name[0]['name'];
-          } else {
-            $this->db->where('user_id', $payload['doctor_id']);
-            $name = $this->db->get('tbl_users', null, 'concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name');
+          $payload['user_name'] = $name[0]['name'];
 
-            $payload['doctor_name'] = $name[0]['name'];
-          }
 
           echo json_encode(array('status' => 'success',
                                   'data' => $payload,
@@ -250,7 +224,7 @@ class API
         }
 
       } else {
-        //EDIT MEDICINE RECORD
+        //EDIT SUPPLY RECORD
         $this->db->where('supply_id', $payload['supply_id']);
         $household = $this->db->update('tbl_supplies_inventory', $payload);
 
@@ -276,9 +250,9 @@ class API
     {
       if (isset($_GET['supply_id'])) {
         $this->db->where('supply_id', $_GET['supply_id']);
-        $delete_medicine = $this->db->update('tbl_supplies_inventory', array('status' => 1));
+        $delete_supply = $this->db->update('tbl_supplies_inventory', array('status' => 1));
 
-        if ($delete_medicine) {
+        if ($delete_supply) {
             echo json_encode(array('status' => 'success',
                                 'message' => 'Medicine record successfully removed',
                                 'method' => 'DELETE'
@@ -286,11 +260,11 @@ class API
         } else {
             echo json_encode(array('status' => 'failed'));
         }
-      } else if (isset($_GET['med_release_id'])) {
-        $this->db->where('med_release_id', $_GET['med_release_id']);
-        $delete_medicine = $this->db->update('tbl_medicine_release', array('status' => 1));
+      } else if (isset($_GET['supply_release_id'])) {
+        $this->db->where('supply_release_id', $_GET['supply_release_id']);
+        $delete_supply = $this->db->update('tbl_supply_release', array('status' => 1));
 
-        if ($delete_medicine) {
+        if ($delete_supply) {
             echo json_encode(array('status' => 'success',
                                 'message' => 'Medicine release record successfully removed',
                                 'method' => 'DELETE'

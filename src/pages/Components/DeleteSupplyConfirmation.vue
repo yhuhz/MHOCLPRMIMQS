@@ -46,7 +46,7 @@ export default {
     const deleteSupplyRecord = () => {
       Loading.show();
 
-      if (true) {
+      if (!IDList.value.id.supply_release_id) {
         DeleteSupply({ supply_id: IDList.value.id }).then((response) => {
           Loading.hide();
           let status = response.status === "success" ? 0 : 1;
@@ -64,7 +64,7 @@ export default {
         });
       } else {
         DeleteSupplyRelease({
-          med_release_id: IDList.value.id.med_release_id,
+          supply_release_id: IDList.value.id.supply_release_id,
         }).then((response) => {
           Loading.hide();
           let status = response.status === "success" ? 0 : 1;
@@ -74,11 +74,11 @@ export default {
             classes: "text-white",
             message:
               status === 0
-                ? "Medicine release record deleted successfully"
-                : "Failed to delete medicine release record",
+                ? "Supply release record deleted successfully"
+                : "Failed to delete supply release record",
           });
 
-          FindSupplyDetails(IDList.value.id.medicine_id);
+          FindSupplyDetails(IDList.value.id.supply_id);
 
           ToggleDialogState();
         });

@@ -165,7 +165,7 @@ let EditSupplyRelease = (payload) => {
         // console.log(response.data.data);
         if (response.data.status === "success") {
           let objectIndex = SupplyRelease.value.findIndex(
-            (e) => e.med_release_id === payload.med_release_id
+            (e) => e.supply_release_id === payload.supply_release_id
           );
           // if index not found (-1) update nothing !
           // objectIndex !== -1 &&
@@ -215,12 +215,12 @@ let DeleteSupply = (payload) => {
 let DeleteSupplyRelease = (payload) => {
   return new Promise((resolve, reject) => {
     axios
-      .delete(pathlink + "?med_release_id=" + payload.med_release_id)
+      .delete(pathlink + "?supply_release_id=" + payload.supply_release_id)
       .then((response) => {
         console.log(response.data);
         if (response.data.status === "success") {
           let objectIndex = SupplyRelease.value.findIndex(
-            (e) => e.med_release_id === payload.med_release_id
+            (e) => e.supply_release_id === payload.supply_release_id
           );
           // if index not found (-1) delete nothing !
           objectIndex !== -1 && SupplyRelease.value.splice(objectIndex, 1);

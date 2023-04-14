@@ -181,7 +181,7 @@ export default {
         field: (row) =>
           row.first_name +
           " " +
-          (row.middle_name && row.middle_name + " ") +
+          (row.middle_name ? row.middle_name + " " : "") +
           row.last_name +
           (row.suffix ? " " + row.suffix : ""),
         sortable: true,

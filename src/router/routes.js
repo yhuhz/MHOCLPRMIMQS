@@ -129,6 +129,12 @@ const routes = [
         name: "supply-inventory",
         component: () => import("src/pages/Meds&Supplies/SupplyInventory.vue"),
       },
+      {
+        path: ":supply_id/supply-inventory-details",
+        name: "supply-inventory-details",
+        component: () =>
+          import("src/pages/Meds&Supplies/SupplyInventoryDetails.vue"),
+      },
     ],
   },
 

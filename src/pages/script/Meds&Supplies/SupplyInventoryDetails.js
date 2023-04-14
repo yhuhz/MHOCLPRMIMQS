@@ -1,23 +1,23 @@
 import { ref, watch } from "vue";
 import _ from "lodash";
 import {
-  FindMedicineDetails,
-  MedicineDetails,
-  MedicineRelease,
-  FindMedicineRelease,
-  AddMedicineRelease,
-  EditMedicineRelease,
-} from "src/composables/Medicine";
+  FindSupplyDetails,
+  SupplyDetails,
+  SupplyRelease,
+  FindSupplyRelease,
+  AddSupplyRelease,
+  EditSupplyRelease,
+} from "src/composables/Supply";
 import { Loading, useQuasar, SessionStorage, date } from "quasar";
 import { useRoute, useRouter } from "vue-router";
-import DeleteMedicineConfirmation from "../../Components/DeleteMedicineConfirmation.vue";
+import DeleteSupplyConfirmation from "../../Components/DeleteSupplyConfirmation.vue";
 import { ToggleDialogState } from "../../../composables/Triggers";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import { SetIDS } from "src/composables/IDS";
 import exportFile from "quasar/src/utils/export-file.js";
 
 export default {
-  components: { MHCDialog, DeleteMedicineConfirmation },
+  components: { MHCDialog, DeleteSupplyConfirmation },
   setup() {
     const $q = useQuasar();
     const route = useRoute();
@@ -30,34 +30,31 @@ export default {
     }
 
     Loading.show();
-    FindMedicineDetails(route.params.medicine_id).then((response) => {
+    FindSupplyDetails(route.params.supply_id).then((response) => {
       Loading.hide();
     });
-    MedicineRelease.value = [];
+    SupplyRelease.value = [];
 
-    let medicineDetails = ref({});
+    let supplyDetails = ref({});
     watch(
-      () => _.cloneDeep(MedicineDetails.value),
+      () => _.cloneDeep(SupplyDetails.value),
       () => {
-        medicineDetails.value = {
-          medicine_id: route.params.medicine_id,
-          generic_name: MedicineDetails.value.generic_name,
-          brand_name: MedicineDetails.value.brand_name,
-          med_classification: MedicineDetails.value.med_classification,
-          dosage_form: MedicineDetails.value.dosage_form,
-          dosage_strength: MedicineDetails.value.dosage_strength,
-          ptr_number: MedicineDetails.value.ptr_number,
-          batch_lot_number: MedicineDetails.value.batch_lot_number,
-          mfg_date: MedicineDetails.value.mfg_date,
-          exp_date: MedicineDetails.value.exp_date,
-          date_added: MedicineDetails.value.date_added,
-          quantity: MedicineDetails.value.quantity,
-          quantity_released: MedicineDetails.value.quantity_released,
+        supplyDetails.value = {
+          supply_id: route.params.supply_id,
+          supply_name: SupplyDetails.value.supply_name,
+          supply_type: SupplyDetails.value.supply_type,
+          mfg_date: SupplyDetails.value.mfg_date,
+          exp_date: SupplyDetails.value.exp_date,
+          date_added: SupplyDetails.value.date_added,
+          quantity: SupplyDetails.value.quantity,
+          quantity_released: SupplyDetails.value.quantity_released,
           in_stock:
-            MedicineDetails.value.quantity -
-            MedicineDetails.value.quantity_released,
-          procured_by: MedicineDetails.value.procured_by,
-          status: MedicineDetails.value.status,
+            SupplyDetails.value.quantity -
+            SupplyDetails.value.quantity_released,
+          quantity_type: SupplyDetails.value.quantity_type,
+          procured_by: SupplyDetails.value.procured_by,
+          added_by: SupplyDetails.value.added_by,
+          status: SupplyDetails.value.status,
         };
       }
     );
@@ -66,26 +63,26 @@ export default {
 
     const columns = ref([
       {
-        name: "med_release_id",
+        name: "supply_release_id",
         align: "left",
         label: "ID",
-        field: "med_release_id",
+        field: "supply_release_id",
         sortable: true,
       },
       {
-        name: "medicine_id",
+        name: "supply_id",
         align: "left",
-        label: "Medicine ID",
-        field: "medicine_id",
+        label: "Supply ID",
+        field: "supply_id",
         sortable: true,
         classes: "hidden",
         headerClasses: "hidden",
       },
       {
-        name: "name",
+        name: "user_name",
         align: "left",
         label: "Name",
-        field: (row) => (row.patient_id ? row.patient_name : row.doctor_name),
+        field: "user_name",
         sortable: true,
       },
       {
@@ -182,19 +179,16 @@ export default {
       };
       // console.log("payload", payload);
 
-      FindMedicineRelease(payload).then((response) => {
+      FindSupplyRelease(payload).then((response) => {
         loading.value = false;
       });
     };
 
     /**ADD MEDICINE RELEASE RECORD**/
-    let isAddNewMedicineRelease = ref(false);
-    let selectedReleaseCategory = ref("patient");
-    let patient_doctor_id = ref(null);
-    let newMedicineRelease = ref({
-      medicine_id: route.params.medicine_id,
-      patient_id: null,
-      doctor_id: null,
+    let isAddNewSupplyRelease = ref(false);
+    let newSupplyRelease = ref({
+      supply_id: route.params.supply_id,
+      user_id: null,
       department: null,
       quantity: null,
       released_by: keySession && keySession.user_id,
@@ -202,33 +196,24 @@ export default {
     });
 
     const onReset = () => {
-      newMedicineRelease.value = {
-        medicine_id: route.params.medicine_id,
-        patient_id: null,
-        doctor_id: null,
+      newSupplyRelease.value = {
+        supply_id: route.params.supply_id,
+        user_id: null,
         department: null,
         quantity: null,
         released_by: keySession && keySession.user_id,
         release_date: date.formatDate(new Date(), "YYYY-MM-DD"),
       };
-
-      patient_doctor_id.value = null;
     };
 
     const addReleaseRecord = () => {
-      if (selectedReleaseCategory.value === "patient") {
-        newMedicineRelease.value.patient_id = patient_doctor_id.value;
-      } else {
-        newMedicineRelease.value.doctor_id = patient_doctor_id.value;
-      }
+      newSupplyRelease.value.department =
+        filtersDepartment.indexOf(newSupplyRelease.value.department) + 1;
 
-      newMedicineRelease.value.department =
-        filtersDepartment.indexOf(newMedicineRelease.value.department) + 1;
-
-      // console.log(newMedicineRelease.value);
+      // console.log(newSupplyRelease.value);
 
       Loading.show();
-      AddMedicineRelease(newMedicineRelease.value).then((response) => {
+      AddSupplyRelease(newSupplyRelease.value).then((response) => {
         let status = response.status === "success" ? 0 : 1;
 
         $q.notify({
@@ -236,61 +221,42 @@ export default {
           classes: "text-white",
           message:
             status === 0
-              ? "Medicine release record added successfully"
-              : "Failed to add medicine release record",
+              ? "Supply release record added successfully"
+              : "Failed to add supply release record",
         });
 
-        FindMedicineDetails(route.params.medicine_id).then((response) => {
+        FindSupplyDetails(route.params.supply_id).then((response) => {
           Loading.hide();
         });
         status === 0 && onReset();
-        isAddNewMedicineRelease.value = false;
+        isAddNewSupplyRelease.value = false;
       });
     };
 
     /**EDIT MEDICINE RELEASE RECORD**/
-    let isEditMedicineRelease = ref(false);
+    let isEditSupplyRelease = ref(false);
     let editMedReleaseInfo = ref({});
-    let editReleaseCategory = ref(null);
-    let edit_patient_doctor_id = ref(null);
 
-    const openEditModal = (med_release_info) => {
-      isEditMedicineRelease.value = true;
-
-      edit_patient_doctor_id.value =
-        med_release_info.patient_id === null
-          ? med_release_info.doctor_id
-          : med_release_info.patient_id;
-
-      editReleaseCategory.value =
-        med_release_info.patient_id !== null ? "patient" : "others";
+    const openEditModal = (supply_release_info) => {
+      isEditSupplyRelease.value = true;
 
       editMedReleaseInfo.value = {
-        med_release_id: med_release_info.med_release_id,
-        medicine_id: route.params.medicine_id,
-        patient_id: med_release_info.patient_id,
-        doctor_id: med_release_info.doctor_id,
-        department: filtersDepartment[med_release_info.department - 1],
-        quantity: med_release_info.quantity,
-        released_by: med_release_info.released_by,
-        release_date: med_release_info.release_date,
+        supply_release_id: supply_release_info.supply_release_id,
+        supply_id: route.params.supply_id,
+        user_id: supply_release_info.user_id,
+        department: filtersDepartment[supply_release_info.department - 1],
+        quantity: supply_release_info.quantity,
+        released_by: supply_release_info.released_by,
+        release_date: supply_release_info.release_date,
       };
     };
 
-    const editMedicineRelease = () => {
-      if (editReleaseCategory.value === "patient") {
-        editMedReleaseInfo.value.patient_id = edit_patient_doctor_id.value;
-        editMedReleaseInfo.value.doctor_id = null;
-      } else {
-        editMedReleaseInfo.value.doctor_id = edit_patient_doctor_id.value;
-        editMedReleaseInfo.value.patient_id = null;
-      }
-
+    const editSupplyRelease = () => {
       editMedReleaseInfo.value.department =
         filtersDepartment.indexOf(editMedReleaseInfo.value.department) + 1;
 
       // console.log(editMedReleaseInfo.value);
-      EditMedicineRelease(editMedReleaseInfo.value).then((response) => {
+      EditSupplyRelease(editMedReleaseInfo.value).then((response) => {
         let status = response.status === "success" ? 0 : 1;
 
         $q.notify({
@@ -298,22 +264,22 @@ export default {
           classes: "text-white",
           message:
             status === 0
-              ? "Medicine release record edited successfully"
-              : "Failed to edit medicine release record",
+              ? "Supply release record edited successfully"
+              : "Failed to edit supply release record",
         });
 
-        FindMedicineDetails(route.params.medicine_id).then((response) => {
+        FindSupplyDetails(route.params.supply_id).then((response) => {
           Loading.hide();
         });
-        isEditMedicineRelease.value = false;
+        isEditSupplyRelease.value = false;
       });
     };
 
     /**DELETE MEDICINE RELEASE RECORD**/
-    const openDialog = (medicine_release_id) => {
+    const openDialog = (supply_release_id) => {
       SetIDS({
-        med_release_id: medicine_release_id,
-        medicine_id: route.params.medicine_id,
+        supply_release_id: supply_release_id,
+        supply_id: route.params.supply_id,
       });
       ToggleDialogState();
     };
@@ -340,7 +306,7 @@ export default {
       // naive encoding to csv format
       const content = [columns.value.map((col) => wrapCsvValue(col.label))]
         .concat(
-          MedicineRelease.value.map((row) =>
+          SupplyRelease.value.map((row) =>
             columns.value
               .map((col) =>
                 wrapCsvValue(
@@ -357,8 +323,8 @@ export default {
         .join("\r\n");
 
       const status = exportFile(
-        "Medicine Release for Medicine ID " +
-          route.params.medicine_id +
+        "Supply Release for Supply ID " +
+          route.params.supply_id +
           " Records.csv",
         content,
         "text/csv"
@@ -375,17 +341,16 @@ export default {
 
     return {
       columns,
-      isAddNewMedicineRelease,
-      selectedReleaseCategory,
+      isAddNewSupplyRelease,
       filtersDepartment,
       selectedFiltersDepartment,
       releaseTo,
       selectedReleaseTo,
       filterStatus,
       selectedFilterStatus,
-      MedicineDetails,
-      MedicineRelease,
-      medicineDetails,
+      SupplyDetails,
+      SupplyRelease,
+      supplyDetails,
       status_list,
       select_all_dept_change,
       dept_checkbox_disable,
@@ -396,16 +361,13 @@ export default {
       search,
       openDialog,
       exportTable,
-      newMedicineRelease,
-      patient_doctor_id,
+      newSupplyRelease,
       addReleaseRecord,
       onReset,
-      isEditMedicineRelease,
+      isEditSupplyRelease,
       editMedReleaseInfo,
-      editReleaseCategory,
-      edit_patient_doctor_id,
       openEditModal,
-      editMedicineRelease,
+      editSupplyRelease,
     };
   },
 };

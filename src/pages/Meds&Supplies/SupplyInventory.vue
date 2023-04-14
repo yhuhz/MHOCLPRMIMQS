@@ -533,8 +533,8 @@
                       class="drop-list"
                       @click="
                         $router.push({
-                          name: 'medicine-inventory-details',
-                          params: { medicine_id: props.row.medicine_id },
+                          name: 'supply-inventory-details',
+                          params: { supply_id: props.row.supply_id },
                         })
                       "
                     >

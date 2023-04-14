@@ -10,7 +10,7 @@
         class="q-mr-md"
         @click="$router.go(-1)"
       />
-      <h5 class="text-dark text-weight-bold">MEDICINE DETAILS</h5>
+      <h5 class="text-dark text-weight-bold">SUPPLY DETAILS</h5>
     </div>
 
     <div class="row q-px-md q-mb-xl">
@@ -21,74 +21,58 @@
           DETAILS
         </p>
         <div class="flex justify-between q-px-md">
-          <p class="text-dark">Medicine ID:</p>
-          <p class="text-primary">{{ medicineDetails.medicine_id }}</p>
+          <p class="text-dark">SUPPLY ID:</p>
+          <p class="text-primary">{{ supplyDetails.supply_id }}</p>
         </div>
         <div class="flex justify-between q-px-md">
-          <p class="text-dark">Generic Name:</p>
-          <p class="text-primary">{{ medicineDetails.generic_name }}</p>
+          <p class="text-dark">Supply Name:</p>
+          <p class="text-primary">{{ supplyDetails.supply_name }}</p>
         </div>
         <div class="flex justify-between q-px-md">
-          <p class="text-dark">Brand Name:</p>
-          <p class="text-primary">{{ medicineDetails.brand_name }}</p>
-        </div>
-        <div class="flex justify-between q-px-md">
-          <p class="text-dark">Classification:</p>
-          <p class="text-primary">{{ medicineDetails.med_classification }}</p>
-        </div>
-        <div class="flex justify-between q-px-md">
-          <p class="text-dark">Dosage Form:</p>
-          <p class="text-primary">{{ medicineDetails.dosage_form }}</p>
-        </div>
-        <div class="flex justify-between q-px-md">
-          <p class="text-dark">Dosage Strength:</p>
-          <p class="text-primary">{{ medicineDetails.dosage_strength }}</p>
-        </div>
-        <div class="flex justify-between q-px-md">
-          <p class="text-dark">PTR Number:</p>
-          <p class="text-primary">{{ medicineDetails.ptr_number }}</p>
-        </div>
-        <div class="flex justify-between q-px-md">
-          <p class="text-dark">Batch/Lot Number:</p>
-          <p class="text-primary">{{ medicineDetails.batch_lot_number }}</p>
+          <p class="text-dark">Supply Type:</p>
+          <p class="text-primary">{{ supplyDetails.supply_type }}</p>
         </div>
         <div class="flex justify-between q-px-md">
           <p class="text-dark">Manufacturing Date:</p>
-          <p class="text-primary">{{ medicineDetails.mfg_date }}</p>
+          <p class="text-primary">{{ supplyDetails.mfg_date }}</p>
         </div>
         <div class="flex justify-between q-px-md">
           <p class="text-dark">Expiration Date:</p>
-          <p class="text-primary">{{ medicineDetails.exp_date }}</p>
+          <p class="text-primary">{{ supplyDetails.exp_date }}</p>
         </div>
         <div class="flex justify-between q-px-md">
           <p class="text-dark">Date Added:</p>
-          <p class="text-primary">{{ medicineDetails.date_added }}</p>
+          <p class="text-primary">{{ supplyDetails.date_added }}</p>
         </div>
         <div class="flex justify-between q-px-md">
           <p class="text-dark">Quantity Received:</p>
-          <p class="text-primary">{{ medicineDetails.quantity }}</p>
+          <p class="text-primary">{{ supplyDetails.quantity }}</p>
         </div>
         <div class="flex justify-between q-px-md">
           <p class="text-dark">Quantity Released:</p>
-          <p class="text-primary">{{ medicineDetails.quantity_released }}</p>
+          <p class="text-primary">{{ supplyDetails.quantity_released }}</p>
         </div>
         <div class="flex justify-between q-px-md">
           <p class="text-dark">Available In Stock:</p>
-          <p class="text-primary">{{ medicineDetails.in_stock }}</p>
+          <p class="text-primary">{{ supplyDetails.in_stock }}</p>
+        </div>
+        <div class="flex justify-between q-px-md">
+          <p class="text-dark">Quantity Type:</p>
+          <p class="text-primary">{{ supplyDetails.quantity_type }}</p>
         </div>
         <div class="flex justify-between q-px-md">
           <p class="text-dark">Procured By:</p>
-          <p class="text-primary">{{ medicineDetails.procured_by }}</p>
+          <p class="text-primary">{{ supplyDetails.procured_by }}</p>
         </div>
         <div class="flex justify-between q-px-md">
           <p class="text-dark">Status:</p>
-          <p class="text-primary">{{ status_list[medicineDetails.status] }}</p>
+          <p class="text-primary">{{ status_list[supplyDetails.status] }}</p>
         </div>
       </div>
 
       <div class="col q-px-md">
         <p class="text-primary text-center text-weight-bold text-24">
-          MEDICINE RELEASE
+          SUPPLY RELEASE
         </p>
         <div class="flex justify-between">
           <div>
@@ -132,20 +116,6 @@
                       </div>
                     </div>
                     <div class="column q-ml-xl">
-                      <!-- Released To -->
-                      <label class="text-primary text-weight-bold"
-                        >Released To</label
-                      >
-                      <div v-for="(release, index) in releaseTo" :key="index">
-                        <q-checkbox
-                          v-model="selectedReleaseTo"
-                          :val="index"
-                          :label="release"
-                          size="xs"
-                          class="text-dark"
-                        />
-                      </div>
-
                       <label class="text-primary text-weight-bold q-pt-md"
                         >Status</label
                       >
@@ -267,20 +237,20 @@
             />
           </div>
 
-          <!-- Add New Medicine Release -->
+          <!-- Add New Supply Release -->
           <q-btn
-            @click="isAddNewMedicineRelease = true"
+            @click="isAddNewSupplyRelease = true"
             dense
             outline
             color="primary"
-            label="Add New Medicine Release"
+            label="Add New Supply Release"
             no-caps
             icon-right="bi-capsule-pill"
             padding="5px 12px"
           />
 
-          <!-- Medicine Release Modal -->
-          <q-dialog v-model="isAddNewMedicineRelease" persistent>
+          <!-- Supply Release Modal -->
+          <q-dialog v-model="isAddNewSupplyRelease" persistent>
             <q-card class="width-700">
               <div class="q-pa-md">
                 <div class="flex justify-end">
@@ -293,29 +263,10 @@
                   />
                 </div>
                 <p class="text-primary text-center text-weight-bold text-24">
-                  MEDICINE RELEASE
+                  SUPPLY RELEASE
                 </p>
 
                 <q-form @submit="addReleaseRecord" @reset="onReset">
-                  <div class="q-my-md q-ml-md">
-                    <q-radio
-                      v-model="selectedReleaseCategory"
-                      checked-icon="task_alt"
-                      unchecked-icon="panorama_fish_eye"
-                      val="patient"
-                      label="Patient"
-                      class="text-dark q-mr-md"
-                    />
-                    <q-radio
-                      v-model="selectedReleaseCategory"
-                      checked-icon="task_alt"
-                      unchecked-icon="panorama_fish_eye"
-                      val="others"
-                      label="Doctor/Dentist/Midwife/Staff"
-                      class="text-dark"
-                    />
-                  </div>
-
                   <div class="row q-mb-md q-px-lg">
                     <!-- ID -->
                     <div class="col q-mr-md">
@@ -329,17 +280,17 @@
                         placeholder="ex. 040823"
                         :input-style="{ color: '#525252' }"
                         class="q-mt-sm"
-                        v-model="patient_doctor_id"
+                        v-model="newSupplyRelease.user_id"
                         :rules="[
                           (val) => (val && val.length > 0) || 'Required field',
                         ]"
                       />
                     </div>
 
-                    <!-- Medicine ID -->
+                    <!-- Supply ID -->
                     <div class="col">
                       <label class="text-dark"
-                        >Medicine ID <span class="text-negative">*</span></label
+                        >Supply ID <span class="text-negative">*</span></label
                       >
                       <q-input
                         hide-bottom-space
@@ -348,7 +299,7 @@
                         :input-style="{ color: '#525252' }"
                         class="q-mt-sm bg-grey-4"
                         disable
-                        v-model="newMedicineRelease.medicine_id"
+                        v-model="newSupplyRelease.supply_id"
                         :rules="[
                           (val) => (val && val.length > 0) || 'Required field',
                         ]"
@@ -368,9 +319,12 @@
                         dense
                         outlined
                         class="q-mt-sm"
-                        v-model="newMedicineRelease.department"
+                        v-model="newSupplyRelease.department"
                         :rules="[
-                          (val) => (val && val.length > 0) || 'Required field',
+                          (val) =>
+                            (val && val.length > 0) ||
+                            !isNaN(val) ||
+                            'Required field',
                         ]"
                       />
                     </div>
@@ -387,7 +341,7 @@
                         placeholder="ex. 3"
                         :input-style="{ color: '#525252' }"
                         class="q-mt-sm"
-                        v-model="newMedicineRelease.quantity"
+                        v-model="newSupplyRelease.quantity"
                         :rules="[
                           (val) => (val && val.length > 0) || 'Required field',
                         ]"
@@ -426,7 +380,7 @@
         <div class="q-mt-lg">
           <q-table
             :columns="columns"
-            :rows="MedicineRelease"
+            :rows="SupplyRelease"
             :pagination="{ rowsPerPage: 10 }"
             :rows-per-page-options="[5, 10, 15, 20, 0]"
             :loading="loading"
@@ -468,7 +422,7 @@
                       <q-item
                         clickable
                         class="drop-list-delete"
-                        @click="openDialog(props.row.med_release_id)"
+                        @click="openDialog(props.row.supply_release_id)"
                       >
                         <q-item-section>Delete Record</q-item-section>
                         <q-item-section avatar>
@@ -491,9 +445,7 @@
                   icon-right="eva-download-outline"
                   color="primary"
                   class="button-100 download-btn"
-                  :disable="
-                    MedicineRelease && MedicineRelease[0] ? false : true
-                  "
+                  :disable="SupplyRelease && SupplyRelease[0] ? false : true"
                   @click="exportTable"
                 />
               </q-th>
@@ -503,8 +455,8 @@
       </div>
     </div>
 
-    <!-- Medicine Release Modal EDIT -->
-    <q-dialog v-model="isEditMedicineRelease" persistent>
+    <!-- Supply Release Modal EDIT -->
+    <q-dialog v-model="isEditSupplyRelease" persistent>
       <q-card class="width-700">
         <div class="q-pa-md">
           <div class="flex justify-end">
@@ -517,30 +469,27 @@
             />
           </div>
           <p class="text-primary text-center text-weight-bold text-24">
-            EDIT MEDICINE RELEASE
+            EDIT SUPPLY RELEASE
           </p>
 
-          <q-form @submit="editMedicineRelease">
-            <div class="q-my-md q-ml-md">
-              <q-radio
-                v-model="editReleaseCategory"
-                checked-icon="task_alt"
-                unchecked-icon="panorama_fish_eye"
-                val="patient"
-                label="Patient"
-                class="text-dark q-mr-md"
-              />
-              <q-radio
-                v-model="editReleaseCategory"
-                checked-icon="task_alt"
-                unchecked-icon="panorama_fish_eye"
-                val="others"
-                label="Doctor/Dentist/Midwife/Staff"
-                class="text-dark"
-              />
-            </div>
-
+          <q-form @submit="editSupplyRelease" @reset="onReset">
             <div class="row q-mb-md q-px-lg">
+              <!-- SUPPLY RELEASE ID -->
+              <div class="col q-mr-md">
+                <label class="text-dark"
+                  >Supply Release ID <span class="text-negative">*</span></label
+                >
+                <q-input
+                  hide-bottom-space
+                  dense
+                  outlined
+                  :input-style="{ color: '#525252' }"
+                  class="q-mt-sm bg-grey-4"
+                  disable
+                  v-model="editMedReleaseInfo.supply_release_id"
+                  :rules="[(val) => !isNaN(val) || 'Required field']"
+                />
+              </div>
               <!-- ID -->
               <div class="col q-mr-md">
                 <label class="text-dark"
@@ -553,14 +502,15 @@
                   placeholder="ex. 040823"
                   :input-style="{ color: '#525252' }"
                   class="q-mt-sm"
-                  v-model="edit_patient_doctor_id"
+                  v-model="editMedReleaseInfo.user_id"
+                  :rules="[(val) => !isNaN(val) || 'Required field']"
                 />
               </div>
 
-              <!-- Medicine ID -->
+              <!-- Supply ID -->
               <div class="col">
                 <label class="text-dark"
-                  >Medicine ID <span class="text-negative">*</span></label
+                  >Supply ID <span class="text-negative">*</span></label
                 >
                 <q-input
                   hide-bottom-space
@@ -569,7 +519,10 @@
                   :input-style="{ color: '#525252' }"
                   class="q-mt-sm bg-grey-4"
                   disable
-                  v-model="editMedReleaseInfo.medicine_id"
+                  v-model="editMedReleaseInfo.supply_id"
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Required field',
+                  ]"
                 />
               </div>
             </div>
@@ -587,6 +540,12 @@
                   outlined
                   class="q-mt-sm"
                   v-model="editMedReleaseInfo.department"
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) ||
+                      !isNaN(val) ||
+                      'Required field',
+                  ]"
                 />
               </div>
 
@@ -603,6 +562,7 @@
                   :input-style="{ color: '#525252' }"
                   class="q-mt-sm"
                   v-model="editMedReleaseInfo.quantity"
+                  :rules="[(val) => !isNaN(val) || 'Required field']"
                 />
               </div>
             </div>
@@ -622,11 +582,11 @@
         </div>
       </q-card>
     </q-dialog>
-    <MHCDialog :content="$options.components.DeleteMedicineConfirmation" />
+    <MHCDialog :content="$options.components.DeleteSupplyConfirmation" />
   </div>
 </template>
 
-<script src="../script/Meds&Supplies/MedicineInventoryDetails"></script>
+<script src="../script/Meds&Supplies/SupplyInventoryDetails"></script>
 
 <style lang="scss" scoped>
 @import "../styles/meds&supplies/medicine_inventory_details.scss";

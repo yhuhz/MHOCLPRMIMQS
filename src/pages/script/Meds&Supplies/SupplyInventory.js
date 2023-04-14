@@ -69,17 +69,17 @@ export default {
         sortable: true,
       },
       {
-        name: "quantity_type",
-        align: "left",
-        label: "Qty Type",
-        field: "quantity_type",
-        sortable: true,
-      },
-      {
         name: "in_stock",
         align: "left",
         label: "In Stock",
         field: "in_stock",
+        sortable: true,
+      },
+      {
+        name: "quantity_type",
+        align: "left",
+        label: "Qty Type",
+        field: "quantity_type",
         sortable: true,
       },
       {
