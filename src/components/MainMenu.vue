@@ -186,8 +186,10 @@
     <!-- Users -->
     <q-item
       clickable
-      class="text-white"
-      @click="$router.push({ name: 'administrator' })"
+      :class="
+        $route.name === 'manage-users' ? 'bg-primary text-white' : 'text-white'
+      "
+      @click="$router.push({ name: 'manage-users' })"
     >
       <q-item-section avatar>
         <q-icon name="account_circle" />

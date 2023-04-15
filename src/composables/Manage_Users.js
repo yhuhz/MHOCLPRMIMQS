@@ -9,11 +9,16 @@ let pathlink =
  * set the passed array to Users data.
  * @param {*} object
  */
-let GetUsers = () => {
+let GetUsers = (payload) => {
   return new Promise((resolve, reject) => {
     axios
-      .get(pathlink)
+      .get(pathlink, {
+        params: {
+          payload: payload,
+        },
+      })
       .then((response) => {
+        console.log(response.data);
         Users.value = response.data.data;
         resolve(response.data);
       })
@@ -136,4 +141,4 @@ let DeleteUser = (payload) => {
 /**
  * Export UsersList as readonly (real time copy of Users)
  */
-export { FindUsersByName, FindUsersByID };
+export { FindUsersByName, FindUsersByID, GetUsers, UsersList };

@@ -42,9 +42,48 @@ class API
           ));
 
       } else {
-        if (isset($_GET['user_id'])) {
-          $this->db->where('user_id', $_GET['user_id']);
+        $payload = (array) json_decode($_GET['payload']);
+
+        if (isset($payload['search_by'])) {
+          $search_by = (array) $payload['search_by'];
+
+          if (isset($search_by['search_string']) && $search_by['search_string'] != '') {
+            if ($search_by['search_category'] === 'Name') {
+              $this->db->where("CONCAT_WS(' ', REPLACE(first_name, ' ', ''), REPLACE(middle_name, ' ', ''), REPLACE(last_name, ' ', ''), REPLACE(suffix, ' ', '')) LIKE '%" . $search_by['search_string'] . "%'");
+
+            } else if ($search_by['search_category'] === 'Username') {
+              $this->db->where('username', '%' . $search_by['search_string'] . '%', 'LIKE');
+
+            } else if ($search_by['search_category'] === 'User ID') {
+              $this->db->where('user_id',  $search_by['search_string']);
+
+            } else if ($search_by['search_category'] === 'Phone Number') {
+              $this->db->where('phone_number', '%' . $search_by['search_string'] . '%', 'LIKE');
+
+            }
+          }
         }
+
+        if (isset($payload['filters'])) {
+          $filters = (array) $payload['filters'];
+
+          if (isset($filters['department']) && $filters['department'] != []) {
+            $this->db->where('department', $filters['department'], 'IN');
+          }
+
+          if (isset($filters['permission_level']) && $filters['permission_level'] != []) {
+            $this->db->where('permission_level', $filters['permission_level'], 'IN');
+          }
+
+          if (isset($filters['status']) && $filters['status'] != []) {
+            $this->db->where('status', $filters['status'], 'IN');
+          }
+
+          if (isset($filter['date_added']) && $filters['date_added'] != [] && $filters['date_added'][0] != '' && $filters['date_added'][1] != '') {
+            $this->db->where('date_added', $filter['date_added'], 'BETWEEN');
+          }
+        }
+
         $users = $this->db->get('tbl_users');
 
           echo json_encode(array('status' => 'success',
