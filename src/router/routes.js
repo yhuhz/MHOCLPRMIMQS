@@ -47,6 +47,19 @@ const routes = [
             component: () =>
               import("src/pages/Patients-Profile/OPD/AddOPDRecord.vue"),
           },
+          //Dental
+          {
+            path: ":record_id/:department/2/patient_records",
+            name: "Dental/patient_records",
+            component: () =>
+              import("src/pages/Patients-Profile/Dental/DentalDetails.vue"),
+          },
+          {
+            path: "new_record/:department/2-1/patient_records",
+            name: "Dental/patient_records/new",
+            component: () =>
+              import("src/pages/Patients-Profile/Dental/AddDentalRecord.vue"),
+          },
           //Prenatal
           {
             path: ":record_id/:department/3/patient_records",

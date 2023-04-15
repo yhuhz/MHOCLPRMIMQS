@@ -7,7 +7,7 @@ import { RecordDetails } from 'src/composables/Patients';
       <div class="flex justify-between">
         <div class="column items-center">
           <label class="text-primary text-weight-bold text-h4"
-            >OPD{{ $route.params.record_id }}</label
+            >New OPD Record</label
           >
         </div>
 

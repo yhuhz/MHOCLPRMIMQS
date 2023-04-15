@@ -6,7 +6,7 @@ import { RecordDetails } from 'src/composables/Patients';
     <div class="flex items-baseline justify-between">
       <div class="column items-center">
         <label class="text-primary text-weight-bold text-h4"
-          >PNL{{ $route.params.record_id }}</label
+          >New Prenatal Record</label
         >
       </div>
 

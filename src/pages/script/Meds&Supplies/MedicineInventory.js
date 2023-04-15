@@ -117,7 +117,7 @@ export default {
         name: "in_stock",
         align: "left",
         label: "In Stock",
-        field: "in_stock",
+        field: (row) => row.quantity - row.quantity_released,
         sortable: true,
       },
       {

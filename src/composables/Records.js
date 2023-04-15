@@ -46,7 +46,11 @@ let FindRecordDetails = (payload, department) => {
       })
       .then((response) => {
         console.log(response.data);
-        if (department === "OPD" || department === "Prenatal") {
+        if (
+          department === "OPD" ||
+          department === "Prenatal" ||
+          department === "Dental"
+        ) {
           RecordDetails.value = response.data.record;
           RecordArrays.value = response.data.array;
         } else {
@@ -110,7 +114,11 @@ let UpdateRecord = (payload, department) => {
       .then((response) => {
         if (response.data.status === "success") {
           console.log(response.data);
-          if (department === "OPD" || department === "Prenatal") {
+          if (
+            department === "OPD" ||
+            department === "Prenatal" ||
+            department === "Dental"
+          ) {
             RecordDetails.value = response.data.record;
             RecordArrays.value = response.data.array;
           } else {

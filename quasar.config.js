@@ -86,6 +86,10 @@ module.exports = configure(function (ctx) {
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-framework
     framework: {
+      iconSet: "svg-material-icons-outlined",
+      appIcons: {
+        favicon: "src/images/MHOLogo.png",
+      },
       config: {},
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack

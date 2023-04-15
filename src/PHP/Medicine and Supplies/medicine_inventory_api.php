@@ -186,11 +186,10 @@ class API
 
         foreach($medicine_inventory as $medicine) {
           $this->db->where('medicine_id', $medicine['medicine_id']);
-          $count = $this->db->getValue('tbl_medicine_release', 'CAST(SUM(quantity) as int)');
-          $medicine['in_stock'] = $medicine['quantity'] - $count;
+          $medicine['quantity_released'] = $this->db->getValue('tbl_medicine_release', 'CAST(SUM(quantity) as int)');
 
           if (isset($filter['in_stock']) && ($filter['in_stock'][0] != '') && ($filter['in_stock'][1] != '')) {
-            if ($medicine['in_stock'] >= $filter['in_stock'][0] && $medicine['in_stock'] <= $filter['in_stock'][1]) {
+            if ($medicine['quantity'] - $medicine['quantity_released'] >= $filter['in_stock'][0] && $medicine['quantity'] - $medicine['quantity_released'] <= $filter['in_stock'][1]) {
               array_push($medicine_array, $medicine);
             }
           } else {
