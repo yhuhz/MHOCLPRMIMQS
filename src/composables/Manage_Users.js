@@ -114,6 +114,20 @@ let UpdateUser = (payload) => {
   });
 };
 
+let ResetPassword = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(pathlink, payload)
+      .then((response) => {
+        console.log(response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 /**
  * This function accepts parameters of an array like this [1,2,3,4] then
  * delete the data in the Users based on this parameter.
@@ -141,4 +155,4 @@ let DeleteUser = (payload) => {
 /**
  * Export UsersList as readonly (real time copy of Users)
  */
-export { FindUsersByName, FindUsersByID, GetUsers, UsersList };
+export { FindUsersByName, FindUsersByID, GetUsers, UsersList, ResetPassword };

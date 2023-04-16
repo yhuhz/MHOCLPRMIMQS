@@ -4,7 +4,11 @@ import DeleteMedicineConfirmation from "../../Components/DeleteMedicineConfirmat
 import { ToggleDialogState } from "../../../composables/Triggers";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import { SetIDS } from "src/composables/IDS";
-import { GetUsers, UsersList } from "src/composables/Manage_Users";
+import {
+  GetUsers,
+  UsersList,
+  ResetPassword,
+} from "src/composables/Manage_Users";
 
 export default {
   components: { MHCDialog, DeleteMedicineConfirmation },
@@ -166,59 +170,86 @@ export default {
     };
 
     /**ADD MEDICINE RECORD**/
-    let newMedicineRecord = ref({
-      generic_name: null,
-      brand_name: null,
-      med_classification: null,
-      mfg_date: null,
-      exp_date: null,
-      quantity: null,
-      dosage_form: null,
-      dosage_strength: null,
-      batch_lot_number: null,
-      ptr_number: null,
-      procured_by: null,
+    let sexArray = ["Male", "Female"];
+    let newUserInfo = ref({
+      last_name: null,
+      first_name: null,
+      middle_name: null,
+      suffix: null,
+      birthdate: null,
+      sex: null,
+      department: null,
+      job_title: null,
+      permission_level: null,
       date_added: date.formatDate(new Date(), "YYYY-MM-DD"),
       added_by: keySession && keySession.user_id,
-      status: 0,
+      status: null,
     });
 
-    const addMedicineRecord = () => {
-      // console.log(newMedicineRecord.value);
-      Loading.show();
+    const addUser = () => {
+      newUserInfo.value.department =
+        filtersDepartment.indexOf(newUserInfo.value.department) + 1;
 
-      AddMedicine(newMedicineRecord.value).then((response) => {
-        Loading.hide();
-        let status = response.status === "success" ? 0 : 1;
+      newUserInfo.value.permission_level =
+        filtersPermission.indexOf(newUserInfo.value.permission_level) + 1;
 
-        $q.notify({
-          type: status === 0 ? "positive" : "negative",
-          classes: "text-white",
-          message:
-            status === 0
-              ? "Medicine record added successfully"
-              : "Failed to add medicine record",
-        });
-      });
+      newUserInfo.value.status = statusList.indexOf(newUserInfo.value.status);
+
+      console.log(newUserInfo.value);
+      //   Loading.show();
+
+      //   AddMedicine(newUserInfo.value).then((response) => {
+      //     Loading.hide();
+      //     let status = response.status === "success" ? 0 : 1;
+
+      //     $q.notify({
+      //       type: status === 0 ? "positive" : "negative",
+      //       classes: "text-white",
+      //       message:
+      //         status === 0
+      //           ? "Medicine record added successfully"
+      //           : "Failed to add medicine record",
+      //     });
+      //   });
     };
 
     const onReset = () => {
-      newMedicineRecord.value = {
-        generic_name: null,
-        brand_name: null,
-        med_classification: null,
-        mfg_date: null,
-        exp_date: null,
-        quantity: null,
-        dosage_form: null,
-        dosage_strength: null,
-        batch_lot_number: null,
-        ptr_number: null,
-        procured_by: null,
+      newUserInfo.value = {
+        last_name: null,
+        first_name: null,
+        middle_name: null,
+        suffix: null,
+        birthdate: null,
+        sex: null,
+        department: null,
+        job_title: null,
+        permission_level: null,
         date_added: date.formatDate(new Date(), "YYYY-MM-DD"),
-        added_by: keySession && keySession.user_id,
-        status: 0,
+        status: null,
       };
+    };
+
+    /**RESET PASSWORD**/
+    let isResetPassword = ref(false);
+    let resetPasswordID = ref(null);
+    let isPasswordSuccess = ref(false);
+    let successMessage = ref(null);
+
+    let openResetPassword = (user_id) => {
+      isResetPassword.value = true;
+      resetPasswordID.value = user_id;
+    };
+
+    const resetPassword = () => {
+      Loading.show();
+      ResetPassword({
+        mode: "Reset Password",
+        user_id: resetPasswordID.value,
+      }).then((response) => {
+        Loading.hide();
+        isPasswordSuccess.value = true;
+        successMessage.value = response.data;
+      });
     };
 
     /**EDIT MEDICINE RECORD**/
@@ -304,7 +335,7 @@ export default {
       filtersPermission,
       selectedFilterStatus,
       dateAdded,
-      addMedicineRecord,
+      addUser,
       onReset,
       openDialog,
       isEditMedicineStock,
@@ -313,6 +344,14 @@ export default {
       editMedicine,
       getUsers,
       UsersList,
+      isResetPassword,
+      resetPassword,
+      openResetPassword,
+      isPasswordSuccess,
+      successMessage,
+      resetPasswordID,
+      newUserInfo,
+      sexArray,
     };
   },
 };

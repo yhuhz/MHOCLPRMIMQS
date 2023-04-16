@@ -207,8 +207,8 @@
           <q-btn
             @click="isAddNewUser = true"
             outline
-            label="Add New Medicine Stock"
-            icon-right="bi-capsule-pill"
+            label="Add New User"
+            icon-right="person_add"
             no-caps
             color="primary"
           />
@@ -230,35 +230,58 @@
               <p
                 class="text-primary text-weight-bold text-24 text-center q-mb-xl"
               >
-                <q-icon name="bi-capsule-pill" class="q-mr-xs q-gutter-xs" />
-                ADD MEDICINE RECORD
+                <q-icon name="person_add" class="q-mr-xs q-gutter-xs" />
+                ADD NEW USER
               </p>
-              <q-form @submit="addMedicineRecord" @reset="onReset">
+              <q-form @submit="addUser" @reset="onReset">
                 <!-- First Row -->
                 <div class="row q-mb-md">
                   <div class="col">
-                    <label class="text-dark"
-                      >Generic Name <span class="text-negative">*</span></label
+                    <label class="text-primary text-bold"
+                      >First Name <span class="text-negative">*</span></label
                     >
                     <q-input
                       dense
                       outlined
-                      placeholder="ex. Paracetamol"
+                      class="q-mt-xs q-mr-md"
+                      v-model="newUserInfo.first_name"
+                      :rules="[
+                        (val) => (val && val.length > 0) || 'Required field',
+                      ]"
+                    />
+                  </div>
+
+                  <div class="col">
+                    <label class="text-primary text-bold">Middle Name</label>
+                    <q-input
+                      dense
+                      outlined
+                      class="q-mt-xs q-mr-md"
+                      v-model="newUserInfo.middle_name"
+                    />
+                  </div>
+
+                  <div class="col">
+                    <label class="text-primary text-bold"
+                      >Last Name <span class="text-negative">*</span></label
+                    >
+                    <q-input
+                      dense
+                      outlined
                       class="q-mr-md q-mt-xs"
-                      v-model="newMedicineRecord.generic_name"
+                      v-model="newUserInfo.last_name"
                       :rules="[
                         (val) => (val && val.length > 0) || 'Required field',
                       ]"
                     />
                   </div>
                   <div class="col">
-                    <label class="text-dark">Brand Name</label>
+                    <label class="text-primary text-bold">Suffix</label>
                     <q-input
                       dense
                       outlined
-                      placeholder="ex. Biogesic"
-                      class="q-mt-xs"
-                      v-model="newMedicineRecord.brand_name"
+                      class="q-mt-xs q-mr-md"
+                      v-model="newUserInfo.suffix"
                     />
                   </div>
                 </div>
@@ -266,66 +289,15 @@
                 <!-- Second Row -->
                 <div class="row q-mt-lg q-mb-md">
                   <div class="col">
-                    <label class="text-dark"
-                      >Therapeutic Classification
-                      <span class="text-negative">*</span></label
-                    >
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. Analgesic"
-                      class="q-mt-xs q-mr-md"
-                      v-model="newMedicineRecord.med_classification"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
-                    />
-                  </div>
-                  <div class="col">
-                    <label class="text-dark"
-                      >Manufacturing Date
-                      <span class="text-negative">*</span></label
-                    >
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="YYYY-MM-DD"
-                      class="q-mt-xs q-mr-md"
-                      v-model="newMedicineRecord.mfg_date"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
-                    >
-                      <template v-slot:append>
-                        <q-icon
-                          name="eva-calendar-outline"
-                          class="cursor-pointer"
-                        >
-                          <q-popup-proxy
-                            cover
-                            transition-show="scale"
-                            transition-hide="scale"
-                          >
-                            <q-date
-                              mask="YYYY-MM-DD"
-                              label="YYYY-MM-DD"
-                              v-model="newMedicineRecord.mfg_date"
-                            />
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-                    </q-input>
-                  </div>
-                  <div class="col">
-                    <label class="text-dark"
-                      >Expiry Date <span class="text-negative">*</span></label
+                    <label class="text-primary text-bold"
+                      >Birthdate <span class="text-negative">*</span></label
                     >
                     <q-input
                       dense
                       outlined
                       placeholder="YYYY-MM-DD"
                       class="q-mt-xs"
-                      v-model="newMedicineRecord.exp_date"
+                      v-model="newUserInfo.birthdate"
                       :rules="[
                         (val) => (val && val.length > 0) || 'Required field',
                       ]"
@@ -343,95 +315,111 @@
                             <q-date
                               mask="YYYY-MM-DD"
                               label="YYYY-MM-DD"
-                              v-model="newMedicineRecord.exp_date"
+                              v-model="newUserInfo.birthdate"
                             />
                           </q-popup-proxy>
                         </q-icon>
                       </template>
                     </q-input>
+                  </div>
+
+                  <div class="col q-ml-md">
+                    <label class="text-primary text-weight-bold"
+                      >Phone Number <span class="text-negative">*</span></label
+                    >
+                    <q-input
+                      dense
+                      outlined
+                      class="q-mr-md q-mt-xs"
+                      v-model="newUserInfo.phone_number"
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0 && val.length < 12) ||
+                          'Invalid phone number',
+                      ]"
+                    />
+                  </div>
+
+                  <div class="column q-ml-md">
+                    <!-- Released To -->
+                    <label class="text-primary text-weight-bold"
+                      >Sex <span class="text-negative">*</span></label
+                    >
+                    <div class="flex items-center q-mt-sm">
+                      <div v-for="(sex, index) in sexArray" :key="index">
+                        <q-radio
+                          v-model="newUserInfo.sex"
+                          :val="index"
+                          :label="sex"
+                          class="text-dark"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <!-- Third Row -->
                 <div class="row q-mt-lg q-mb-md">
                   <div class="col">
-                    <label class="text-dark"
-                      >Quantity Received
-                      <span class="text-negative">*</span></label
+                    <label class="text-primary text-weight-bold"
+                      >Department <span class="text-negative">*</span></label
+                    >
+                    <q-select
+                      v-model="newUserInfo.department"
+                      dense
+                      outlined
+                      :options="filtersDepartment"
+                      class="q-mt-xs q-mr-lg"
+                    />
+                  </div>
+
+                  <div class="col">
+                    <label class="text-primary text-weight-bold"
+                      >Job Title <span class="text-negative">*</span></label
                     >
                     <q-input
                       dense
                       outlined
-                      placeholder="ex. 350"
+                      placeholder="ex. Doctor"
                       class="q-mr-md q-mt-xs"
-                      v-model="newMedicineRecord.quantity"
+                      v-model="newUserInfo.job_title"
                       :rules="[
                         (val) => (val && val.length > 0) || 'Required field',
                       ]"
-                    />
-                  </div>
-                  <div class="col">
-                    <label class="text-dark"
-                      >Dosage Form <span class="text-negative">*</span></label
-                    >
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. Tablet"
-                      class="q-mt-xs q-mr-md"
-                      v-model="newMedicineRecord.dosage_form"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
-                    />
-                  </div>
-                  <div class="col">
-                    <label class="text-dark">Dosage Strength</label>
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. 500mg"
-                      class="q-mt-xs"
-                      v-model="newMedicineRecord.dosage_strength"
                     />
                   </div>
                 </div>
 
-                <!-- Fourth Row -->
                 <div class="row q-mt-lg q-mb-md">
                   <div class="col">
-                    <label class="text-dark">Batch/Lot Number</label>
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. 13-08-713"
-                      class="q-mr-md q-mt-xs"
-                      v-model="newMedicineRecord.batch_lot_number"
-                    />
-                  </div>
-                  <div class="col">
-                    <label class="text-dark">PTR Number</label>
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. 22-11-2101"
-                      class="q-mt-xs q-mr-md"
-                      v-model="newMedicineRecord.ptr_number"
-                    />
-                  </div>
-                  <div class="col">
-                    <label class="text-dark"
-                      >Source <span class="text-negative">*</span></label
+                    <!-- Released To -->
+                    <label class="text-primary text-weight-bold"
+                      >Permission Level
+                      <span class="text-negative">*</span></label
                     >
-                    <q-input
+                    <q-select
+                      v-model="newUserInfo.permission_level"
                       dense
                       outlined
-                      placeholder="ex. DOH"
-                      class="q-mt-xs"
-                      v-model="newMedicineRecord.procured_by"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
+                      :options="filtersPermission"
+                      class="q-mt-xs q-mr-lg"
+                      style="width: 200px"
+                    />
+                  </div>
+
+                  <div class="col q-ml-md">
+                    <!-- Released To -->
+                    <label class="text-primary text-weight-bold"
+                      >Status <span class="text-negative">*</span></label
+                    >
+
+                    <q-select
+                      v-model="newUserInfo.status"
+                      dense
+                      outlined
+                      :options="statusList"
+                      class="q-mt-xs q-mr-lg"
+                      style="width: 200px"
                     />
                   </div>
                 </div>
@@ -478,10 +466,11 @@
               <q-btn
                 dense
                 color="primary"
+                label="Action"
                 icon-right="more_vert"
                 no-caps
                 unelevated
-                class="action-btn"
+                class="button-100 action-btn"
               >
                 <q-menu
                   transition-show="jump-down"
@@ -493,16 +482,11 @@
                     <q-item
                       clickable
                       class="drop-list"
-                      @click="
-                        $router.push({
-                          name: 'medicine-inventory-details',
-                          params: { medicine_id: props.row.medicine_id },
-                        })
-                      "
+                      @click="openResetPassword(props.row.user_id)"
                     >
-                      <q-item-section>View Details</q-item-section>
+                      <q-item-section>Reset Password</q-item-section>
                       <q-item-section avatar>
-                        <q-icon size="xs" name="eva-eye-outline" />
+                        <q-icon size="xs" name="lock_reset" />
                       </q-item-section>
                     </q-item>
 
@@ -536,6 +520,84 @@
           </template>
         </q-table>
       </div>
+
+      <!-- Modal for Reset Password -->
+      <q-dialog persistent v-model="isResetPassword">
+        <q-card>
+          <div class="q-pa-lg" v-if="!isPasswordSuccess">
+            <div class="flex justify-end">
+              <q-btn
+                v-close-popup
+                dense
+                color="negative"
+                size="0.375rem"
+                icon="eva-close-outline"
+              />
+            </div>
+            <p
+              class="text-primary text-weight-bold text-24 text-center q-mb-lg"
+            >
+              <q-icon name="lock_reset" class="q-mr-xs q-gutter-xs" />
+              RESET PASSWORD
+            </p>
+            <p class="q-mb-lg" style="font-size: larger">
+              Are you sure you want to reset the password for user ID
+              <span class="text-bold">{{ resetPasswordID }}</span
+              >?
+            </p>
+
+            <div class="flex items-center justify-between">
+              <q-btn
+                v-close-popup
+                label="Cancel"
+                no-caps
+                color="grey-7"
+                class="button-100"
+              />
+
+              <q-btn
+                label="Yes"
+                no-caps
+                color="primary"
+                class="button-100"
+                @click="resetPassword"
+              />
+            </div>
+          </div>
+          <div class="q-pa-lg" v-else>
+            <div class="flex justify-end">
+              <q-btn
+                v-close-popup
+                dense
+                color="negative"
+                size="0.375rem"
+                icon="eva-close-outline"
+                @click="
+                  isPasswordSuccess = !isPasswordSuccess;
+                  isResetPassword = !isResetPassword;
+                "
+              />
+            </div>
+            <p
+              class="text-primary text-weight-bold text-24 text-center q-mb-lg"
+            >
+              <q-icon name="lock_reset" class="q-mr-xs q-gutter-xs" />
+              RESET PASSWORD
+            </p>
+            <p class="text-center" style="font-size: larger">
+              Password for user ID
+              <span class="text-bold">{{ resetPasswordID }}</span> has been
+              reset to:
+            </p>
+            <p
+              class="text-primary text-center text-bold"
+              style="font-size: x-large"
+            >
+              {{ successMessage }}
+            </p>
+          </div>
+        </q-card>
+      </q-dialog>
 
       <!-- Modal for Editing Medicine Record -->
       <q-dialog v-model="isEditMedicineStock" persistent>

@@ -41,6 +41,17 @@ class API
                                   'method' => 'GET'
           ));
 
+      } else if (isset($_GET['user_id'])) {
+
+        $this->db->where('user_id', $_GET['user_id']);
+        $user = $this->db->get('tbl_users');
+        unset($user['password']);
+
+        echo json_encode(array('status' => 'success',
+                                  'data' => $user,
+                                  'method' => 'GET'
+          ));
+
       } else {
         $payload = (array) json_decode($_GET['payload']);
 
@@ -84,7 +95,7 @@ class API
           }
         }
 
-        $users = $this->db->get('tbl_users');
+        $users = $this->db->get('tbl_users', null, 'user_id, username, first_name, middle_name, last_name, suffix, department, job_title, permission_level, phone_number, sex, birthdate, status');
 
           echo json_encode(array('status' => 'success',
                                 'data' => $users,
@@ -114,7 +125,6 @@ class API
         } else {
           if (password_verify($payload['password'], $attempt[0]['password'])) {
               unset($attempt[0]['password']);
-              unset($attempt[0]['is_deleted']);
               echo json_encode(array('status' => 'success',
                                   'data' => $attempt,
                                   'method' => 'POST'
@@ -188,7 +198,7 @@ class API
           unset($payload['mode']);
 
           //Random Generated Password
-          $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-@=+_';
+          $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@';
           $pass = array(); //remember to declare $pass as an array
           $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
           for ($i = 0; $i < 10; $i++) {
@@ -203,7 +213,7 @@ class API
 
           if ($update_pass) {
               echo json_encode(array('status' => 'success',
-                                      'data' => 'Password has been reset to ' . $password,
+                                      'data' => $password,
                                       'method' => 'PUT'
                       ));
           } else {
