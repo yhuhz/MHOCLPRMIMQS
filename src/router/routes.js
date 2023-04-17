@@ -155,6 +155,12 @@ const routes = [
         name: "manage-users",
         component: () => import("src/pages/Manage-Users/ManageUsers.vue"),
       },
+      // Manage Users
+      {
+        path: "queueing-system",
+        name: "queueing-system",
+        component: () => import("src/pages/Queueing-System/QueueUserView.vue"),
+      },
     ],
   },
 

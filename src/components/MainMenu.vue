@@ -212,6 +212,24 @@
         <q-item-label>Reports</q-item-label>
       </q-item-section>
     </q-item>
+
+    <!-- Queueing System -->
+    <q-item
+      clickable
+      :class="
+        $route.name === 'queueing-system'
+          ? 'bg-primary text-white'
+          : 'text-white'
+      "
+      @click="$router.push({ name: 'queueing-system' })"
+    >
+      <q-item-section avatar>
+        <q-icon name="format_list_numbered" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label>Queue</q-item-label>
+      </q-item-section>
+    </q-item>
   </div>
 </template>
 

@@ -300,6 +300,18 @@
                       </q-item-section>
                     </q-item>
 
+                    <!-- Add To Queue -->
+                    <q-item
+                      clickable
+                      class="drop-list"
+                      @click="openQueueModal(props.row)"
+                    >
+                      <q-item-section>Add To Queue</q-item-section>
+                      <q-item-section avatar>
+                        <q-icon size="xs" name="post_add" />
+                      </q-item-section>
+                    </q-item>
+
                     <!-- Edit -->
                     <q-item
                       clickable
@@ -414,24 +426,50 @@
                     </q-btn>
                   </q-td>
                 </template>
-
-                <!-- Table Header Slots -->
-                <template #header-cell-action="props">
-                  <q-th :props="props">
-                    <q-btn
-                      dense
-                      label="Download"
-                      icon-right="eva-download-outline"
-                      no-caps
-                      color="primary"
-                      unelevated
-                      :disable="PatientsList && PatientsList[0] ? false : true"
-                      class="button-100 download-btn"
-                      @click="exportTable()"
-                    />
-                  </q-th>
-                </template>
               </q-table>
+            </div>
+          </q-card>
+        </q-dialog>
+
+        <!-- Add Patient to Queue -->
+        <q-dialog v-model="queueOpenModal" persistent>
+          <q-card class="q-pa-md" style="width: 400px">
+            <div class="flex" style="justify-content: center">
+              <q-icon name="help_center" size="xl" color="primary" />
+            </div>
+            <p
+              class="text-primary text-weight-bold text-24 text-center q-mb-lg"
+            >
+              Which department would you like to add this patient to?
+            </p>
+
+            <div class="q-mb-md" style="justify-content: center">
+              <q-select
+                flat
+                outlined
+                dense
+                :options="departmentArrayQueue"
+                v-model="departmentQueue"
+              />
+            </div>
+
+            <div class="flex" style="justify-content: center">
+              <q-btn
+                dense
+                class="q-px-md q-mr-md"
+                label="Cancel"
+                icon="cancel"
+                color="grey-7"
+                @click="queueOpenModal = !queueOpenModal"
+              />
+              <q-btn
+                dense
+                class="q-px-md"
+                label="Add to Queue"
+                icon="post_add"
+                color="primary"
+                @click="addToQueue"
+              />
             </div>
           </q-card>
         </q-dialog>

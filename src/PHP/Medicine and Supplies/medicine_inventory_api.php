@@ -100,7 +100,7 @@ class API
 
           $this->db->join('tbl_medicine_inventory mi', 'mr.medicine_id=mi.medicine_id', 'LEFT');
 
-          $medicine_release_array = $this->db->get('tbl_medicine_release mr', null, 'med_release_id, mr.medicine_id, generic_name, brand_name, mr.quantity');
+          $medicine_release_array = $this->db->get('tbl_medicine_release mr', null, 'med_release_id, mr.medicine_id, generic_name, brand_name, mr.quantity, mr.release_date');
 
 
           echo json_encode(array('status' => 'success',

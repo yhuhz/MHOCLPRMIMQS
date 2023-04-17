@@ -13,12 +13,14 @@ import exportFile from "quasar/src/utils/export-file.js";
 import { SetIDS } from "src/composables/IDS";
 import { useRouter, useRoute } from "vue-router";
 import { LoginCredential, FindUser } from "src/composables/UserAccount";
+import { AddToQueue, QueueList } from "src/composables/Queue";
 
 export default {
   components: { MHCDialog, DeletePatientConfirmation },
   setup() {
     const router = useRouter();
     const route = useRoute();
+    const $q = useQuasar();
 
     //SESSION KEYS
     let keySession = SessionStorage.getItem("cred");
@@ -358,6 +360,13 @@ export default {
         sortable: true,
       },
       {
+        name: "release_date",
+        align: "left",
+        label: "Date",
+        field: "release_date",
+        sortable: true,
+      },
+      {
         name: "action",
         align: "left",
         label: "",
@@ -373,6 +382,60 @@ export default {
 
       FindMedicineReleasePerPatient(patient_id).then((response) => {
         loading.value = false;
+      });
+    };
+
+    /**ADD TO QUEUE**/
+    let queueOpenModal = ref(false);
+    let patientToQueue = ref(null);
+    let departmentArrayQueue = ref([]);
+    let departmentQueue = ref("OPD");
+    const openQueueModal = (patient_info) => {
+      queueOpenModal.value = true;
+      patientToQueue.value = patient_info.patient_id;
+
+      if (patient_info.sex === 0) {
+        departmentArrayQueue.value = ["OPD", "Dental", "Immunization"];
+      } else {
+        departmentArrayQueue.value = [
+          "OPD",
+          "Dental",
+          "Prenatal",
+          "Immunization",
+        ];
+      }
+    };
+    const addToQueue = () => {
+      if (departmentQueue.value === "OPD") {
+        departmentQueue.value = 1;
+      } else if (departmentQueue.value === "Dental") {
+        departmentQueue.value = 2;
+      } else if (departmentQueue.value === "Prenatal") {
+        departmentQueue.value = 3;
+      } else if (departmentQueue.value === "Immunization") {
+        departmentQueue.value = 7;
+      }
+
+      Loading.show();
+      AddToQueue({
+        patient_id: patientToQueue.value,
+        department: departmentQueue.value,
+      }).then((response) => {
+        Loading.hide();
+
+        let status = response.status === "success" ? 0 : 1;
+        $q.notify({
+          type: status === 0 ? "positive" : "negative",
+          classes: "text-white",
+          message:
+            status === 0
+              ? "Patient added to queue successfully"
+              : "Failed to add patient to queue",
+        });
+
+        (departmentQueue.value = "OPD"),
+          (patientToQueue.value = null),
+          (queueOpenModal.value = false);
       });
     };
 
@@ -405,6 +468,12 @@ export default {
       viewMedicineRelease,
       medicineReleaseColumn,
       MedReleasePerPatient,
+      queueOpenModal,
+      patientToQueue,
+      openQueueModal,
+      addToQueue,
+      departmentArrayQueue,
+      departmentQueue,
     };
   },
 };

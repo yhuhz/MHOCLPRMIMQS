@@ -150,7 +150,55 @@ import { DashboardData } from 'src/composables/Dashboard';
           </div>
         </q-card>
       </div>
+
+      <div class="grid-container q-pt-lg">
+        <fieldset class="grid-item1">
+          <legend class="text-primary text-bold q-px-sm">
+            Patients On Queue
+          </legend>
+          <q-select
+            flat
+            dense
+            outlined
+            label="Select Department"
+            :options="departmentList"
+            v-model="selectedDepartment"
+            @update:model-value="getDepartments"
+          />
+
+          <div class="q-mt-lg">
+            <ol>
+              <li
+                v-for="(queue, index) in QueueSpecific"
+                :key="index"
+                class="q-px-sm text-primary text-bold"
+              >
+                <p
+                  class="text-primary text-bold flex items-center justify-between"
+                >
+                  {{ queue.patient_id }}
+                  <span class="text-negative"
+                    ><q-btn
+                      class="q-px-sm"
+                      dense
+                      no-caps
+                      label="Remove"
+                      color="negative"
+                      @click="removeFromQueue(queue.queue_id)"
+                  /></span>
+                </p>
+              </li>
+            </ol>
+          </div>
+        </fieldset>
+
+        <fieldset class="grid-item2 q-ml-sm">
+          <legend class="text-primary text-bold q-px-sm">Charts</legend>
+          <!-- <canvas ref="chartCanvas" /> -->
+        </fieldset>
+      </div>
     </div>
+    <MHCDialog :content="$options.components.RemovePatientFromQueue" />
   </div>
 </template>
 
@@ -158,4 +206,27 @@ import { DashboardData } from 'src/composables/Dashboard';
 
 <style lang="scss">
 @import "../styles/dashboard/dashboard.scss";
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.grid-item1 {
+  grid-column: 1;
+  border: 2px solid #5f8d4e;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.grid-item2 {
+  grid-column: 2 / span 3;
+  border: 2px solid #5f8d4e;
+  border-radius: 5px;
+}
+
+.q-input {
+  border-color: #5f8d4e;
+}
 </style>
