@@ -21,6 +21,7 @@ import { DashboardData } from 'src/composables/Dashboard';
           square
           class="q-pt-md dashboard-card"
           style="background-color: #f1d356"
+          @click="renderChart"
         >
           <div class="flex justify-around items-center">
             <div>
@@ -195,6 +196,7 @@ import { DashboardData } from 'src/composables/Dashboard';
         <fieldset class="grid-item2 q-ml-sm">
           <legend class="text-primary text-bold q-px-sm">Charts</legend>
           <!-- <canvas ref="chartCanvas" /> -->
+          <canvas id="myChart"></canvas>
         </fieldset>
       </div>
     </div>

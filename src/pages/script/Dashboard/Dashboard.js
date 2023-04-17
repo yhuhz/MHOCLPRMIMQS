@@ -1,4 +1,5 @@
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
+import _ from "lodash";
 import { DashboardData, GetDashboardData } from "src/composables/Dashboard";
 import { useQuasar, SessionStorage, Loading } from "quasar";
 import { GetQueueSpecific, QueueSpecific } from "src/composables/Queue";
@@ -6,6 +7,7 @@ import MHCDialog from "../../../components/MHCDialog.vue";
 import RemovePatientFromQueue from "../../Components/RemovePatientFromQueue";
 import { ToggleDialogState } from "../../../composables/Triggers";
 import { SetIDS } from "src/composables/IDS";
+import Chart from "chart.js/auto";
 
 export default {
   components: { MHCDialog, RemovePatientFromQueue },
@@ -36,6 +38,7 @@ export default {
       };
       Loading.show();
       GetDashboardData(payload).then((response) => {
+        renderChart();
         Loading.hide();
       });
     };
@@ -90,6 +93,120 @@ export default {
 
     /**CHARTS**/
 
+    let chartToRender = ref(0);
+    let patientData = ref({});
+    let medicineData = ref({});
+    let supplyData = ref({});
+    let diseaseData = ref({});
+
+    watch(
+      () => _.cloneDeep(DashboardData.value),
+      () => {
+        // patientData.value = {
+        //   type: "bar",
+        //   labels: ["OPD", "Dental", "Prenatal", "Immunization"],
+        //   datasets: [
+        //     {
+        //       label: "Number of Patients",
+        //       data: [
+        //         DashboardData.value.opd_count,
+        //         DashboardData.value.dental_count,
+        //         DashboardData.value.prenatal_count,
+        //         DashboardData.value.immunization_count,
+        //       ],
+        //       borderWidth: 1,
+        //     },
+        //   ],
+        // };
+
+        patientData.value = {
+          type: "bar",
+          labels: ["OPD", "Dental", "Prenatal", "Immunization"],
+          label: "Number of New Records",
+          data: [
+            DashboardData.value.opd_count,
+            DashboardData.value.dental_count,
+            DashboardData.value.prenatal_count,
+            DashboardData.value.immunization_count,
+          ],
+        };
+
+        medicineData.value = {
+          type: "bar",
+          labels: ["OPD", "Dental", "Prenatal", "Immunization"],
+          label: "Number of New Records",
+          data: [
+            DashboardData.value.opd_count,
+            DashboardData.value.dental_count,
+            DashboardData.value.prenatal_count,
+            DashboardData.value.immunization_count,
+          ],
+        };
+      }
+    );
+    const chart = ref(null);
+
+    const renderChart = () => {
+      if (chart.value) {
+        chart.value.destroy();
+      }
+
+      const ctx = document.getElementById("myChart");
+
+      //   chart.value = new Chart(ctx, {
+      //     type: "bar",
+      //     data: {
+      //       labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      //       datasets: [
+      //         {
+      //           label: "# of Votes",
+      //           data: [12, 19, 3, 5, 2, 3],
+      //           borderWidth: 1,
+      //         },
+      //       ],
+      //     },
+      //     options: {
+      //       scales: {
+      //         y: {
+      //           beginAtZero: true,
+      //         },
+      //       },
+      //     },
+      //   });
+      // };
+
+      chart.value = new Chart(ctx, {
+        type: patientData.value.type,
+        data: {
+          labels: patientData.value.labels,
+          datasets: [
+            {
+              label: patientData.value.label,
+              data: patientData.value.data,
+              backgroundColor: [
+                "rgba(222, 187, 42, 0.5)",
+                "rgba(41, 119, 232, 0.5)",
+                "rgba(85, 161, 94, 0.5)",
+                "rgba(215, 85, 85, 0.5)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    };
+
+    // onMounted(() => {
+    //   renderChart();
+    // });
+
     return {
       selected,
       options,
@@ -101,6 +218,8 @@ export default {
       QueueSpecific,
       keySession,
       removeFromQueue,
+      chart,
+      renderChart,
     };
   },
 };
