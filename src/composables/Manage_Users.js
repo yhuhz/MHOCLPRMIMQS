@@ -97,14 +97,10 @@ let UpdateUser = (payload) => {
       .put(pathlink, payload)
       .then((response) => {
         if (response.data.status === "success") {
-          console.log(response.data);
-          let objectIndex = Users.value.findIndex((e) => e.id === payload.id);
-          // if index not found (-1) update nothing !
-          objectIndex !== -1 &&
-            Object.keys(Users.value[objectIndex]).forEach((key) => {
-              response.data.data[key] &&
-                (Users.value[objectIndex][key] = response.data.data[key]);
-            });
+          let objectIndex = Users.value.findIndex(
+            (e) => e.user_id === payload.user_id
+          );
+          Users.value[objectIndex] = response.data.data;
         } else [console.log(response.data)];
         resolve(response.data);
       })
@@ -136,10 +132,12 @@ let ResetPassword = (payload) => {
 let DeleteUser = (payload) => {
   return new Promise((resolve, reject) => {
     axios
-      .delete(pathlink + "?id=" + payload.id)
+      .delete(pathlink + "?user_id=" + payload.user_id)
       .then((response) => {
         if (response.data.status === "success") {
-          let objectIndex = Users.value.findIndex((e) => e.id === payload.id);
+          let objectIndex = Users.value.findIndex(
+            (e) => e.user_id === payload.user_id
+          );
           // if index not found (-1) delete nothing !
           objectIndex !== -1 && Users.value.splice(objectIndex, 1);
         } else {
@@ -155,4 +153,13 @@ let DeleteUser = (payload) => {
 /**
  * Export UsersList as readonly (real time copy of Users)
  */
-export { FindUsersByName, FindUsersByID, GetUsers, UsersList, ResetPassword };
+export {
+  FindUsersByName,
+  FindUsersByID,
+  GetUsers,
+  UsersList,
+  ResetPassword,
+  AddUser,
+  UpdateUser,
+  DeleteUser,
+};

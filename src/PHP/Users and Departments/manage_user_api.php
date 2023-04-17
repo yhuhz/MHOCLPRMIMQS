@@ -165,16 +165,17 @@ class API
         if ($payload['user_id']) {
 
           //set username
-          $username = array('username' => strtolower(trim($payload['last_name'].substr($payload['first_name'], 0, 1).(isset($payload['middle_name']) ? substr($payload['middle_name'], 0, 1) : null), " ")) . strtoupper(trim($dept)) . $payload['user_id']);
+          $username = array('username' => strtolower(str_replace(' ', '', (str_replace(' ', '', $payload['last_name']).substr($payload['first_name'], 0, 1).(isset($payload['middle_name']) ? substr($payload['middle_name'], 0, 1) : null)))) . strtoupper(trim($dept)) . $payload['user_id']);
 
           //update username based on user_id
           $this->db->where('user_id', $payload['user_id']);
           $update_username = $this->db->update('tbl_users', $username);
 
           //response message
-          $response = ['username'=>$username['username'], 'password'=>$password];
+          $payload['username'] = $username['username'];
+          $payload['password'] = $password;
           echo json_encode(array('status' => 'success',
-                                'data' => $response,
+                                'data' => $payload,
                                 'method' => 'POST'
                               ));
         } else {
@@ -264,11 +265,10 @@ class API
 
     public function httpDelete($payload)
     {
-        $payload = (array) $payload;
 
-        $this->db->where('user_id', $payload['user_id']);
+        $this->db->where('user_id', $_GET['user_id']);
         $payload['status'] = 1;
-        $delete_user = $this->db->update('tbl_users', $payload);
+        $delete_user = $this->db->update('tbl_users', array('status' => 2));
 
         if ($delete_user) {
             echo json_encode(array('status' => 'success',
