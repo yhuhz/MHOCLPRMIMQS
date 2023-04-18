@@ -1,4 +1,4 @@
-import { ref, watch, onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import _ from "lodash";
 import { DashboardData, GetDashboardData } from "src/composables/Dashboard";
 import { useQuasar, SessionStorage, Loading } from "quasar";
@@ -28,6 +28,7 @@ export default {
 
     Loading.show();
     GetDashboardData(payload).then((response) => {
+      renderChart();
       Loading.hide();
     });
 
@@ -93,7 +94,7 @@ export default {
 
     /**CHARTS**/
 
-    let chartToRender = ref(0);
+    let chartToRender = ref(1);
     let patientData = ref({});
     let medicineData = ref({});
     let supplyData = ref({});
@@ -175,37 +176,35 @@ export default {
       //   });
       // };
 
-      chart.value = new Chart(ctx, {
-        type: patientData.value.type,
-        data: {
-          labels: patientData.value.labels,
-          datasets: [
-            {
-              label: patientData.value.label,
-              data: patientData.value.data,
-              backgroundColor: [
-                "rgba(222, 187, 42, 0.5)",
-                "rgba(41, 119, 232, 0.5)",
-                "rgba(85, 161, 94, 0.5)",
-                "rgba(215, 85, 85, 0.5)",
-              ],
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
+      if (chartToRender.value === 1) {
+        chart.value = new Chart(ctx, {
+          type: patientData.value.type,
+          data: {
+            labels: patientData.value.labels,
+            datasets: [
+              {
+                label: patientData.value.label,
+                data: patientData.value.data,
+                backgroundColor: [
+                  "rgba(222, 187, 42, 0.5)",
+                  "rgba(41, 119, 232, 0.5)",
+                  "rgba(215, 85, 85, 0.5)",
+                  "rgba(85, 161, 94, 0.5)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
             },
           },
-        },
-      });
+        });
+      }
     };
-
-    // onMounted(() => {
-    //   renderChart();
-    // });
 
     return {
       selected,
@@ -220,6 +219,7 @@ export default {
       removeFromQueue,
       chart,
       renderChart,
+      chartToRender,
     };
   },
 };

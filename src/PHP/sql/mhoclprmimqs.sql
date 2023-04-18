@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2023 at 10:28 PM
+-- Generation Time: Apr 18, 2023 at 06:42 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -36,9 +36,10 @@ CREATE TABLE `tbl_dental` (
   `checkup_date` date NOT NULL,
   `complaint` varchar(5000) NOT NULL,
   `temperature` int(11) NOT NULL,
-  `blood_pressure` varchar(200) NOT NULL,
-  `checkup_results` varchar(5000) NOT NULL,
-  `next_checkup` date NOT NULL,
+  `blood_pressure_systole` int(11) NOT NULL,
+  `blood_pressure_diastole` int(11) NOT NULL,
+  `checkup_results` varchar(5000) DEFAULT NULL,
+  `next_checkup` date DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted	'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -46,9 +47,10 @@ CREATE TABLE `tbl_dental` (
 -- Dumping data for table `tbl_dental`
 --
 
-INSERT INTO `tbl_dental` (`dental_id`, `doctor_id`, `patient_id`, `checkup_date`, `complaint`, `temperature`, `blood_pressure`, `checkup_results`, `next_checkup`, `status`) VALUES
-(1, 68, '03212301', '2023-03-28', 'Toothache', 37, '120/60', 'Rotten tooth #4. Need to be extracted.', '2023-03-31', 0),
-(8, 68, '03212302', '2023-03-28', '', 0, '', '', '0000-00-00', 0);
+INSERT INTO `tbl_dental` (`dental_id`, `doctor_id`, `patient_id`, `checkup_date`, `complaint`, `temperature`, `blood_pressure_systole`, `blood_pressure_diastole`, `checkup_results`, `next_checkup`, `status`) VALUES
+(1, 68, '03212302', '2023-03-28', 'Toothache', 37, 120, 60, 'Rotten tooth #4. Need to be extracted.', '2023-03-31', 0),
+(9, 69, '03212302', '2023-04-16', 'Toothache', 35, 120, 60, 'Test Test', '2023-05-25', 0),
+(10, 69, '03212301', '2023-04-16', 'Toothache', 37, 120, 60, 'Tooth number 6 is for extraction.', '2023-04-30', 0);
 
 -- --------------------------------------------------------
 
@@ -60,47 +62,78 @@ CREATE TABLE `tbl_dental_chart` (
   `dental_chart_id` int(11) NOT NULL,
   `patient_id` varchar(200) NOT NULL,
   `tooth_number` varchar(200) NOT NULL,
-  `tooth_score` int(11) NOT NULL DEFAULT 0,
-  `comments` varchar(5000) NOT NULL
+  `tooth_score` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_dental_chart`
 --
 
-INSERT INTO `tbl_dental_chart` (`dental_chart_id`, `patient_id`, `tooth_number`, `tooth_score`, `comments`) VALUES
-(34, '03212302', '1', 2, 'Tooth is decayed'),
-(35, '03212302', '2', 0, ''),
-(36, '03212302', '3', 0, ''),
-(37, '03212302', '4', 0, ''),
-(38, '03212302', '5', 0, ''),
-(39, '03212302', '6', 0, ''),
-(40, '03212302', '7', 0, ''),
-(41, '03212302', '8', 0, ''),
-(42, '03212302', '9', 0, ''),
-(43, '03212302', '10', 0, ''),
-(44, '03212302', '11', 0, ''),
-(45, '03212302', '12', 0, ''),
-(46, '03212302', '13', 0, ''),
-(47, '03212302', '14', 0, ''),
-(48, '03212302', '15', 0, ''),
-(49, '03212302', '16', 0, ''),
-(50, '03212302', '17', 0, ''),
-(51, '03212302', '18', 0, ''),
-(52, '03212302', '19', 0, ''),
-(53, '03212302', '20', 0, ''),
-(54, '03212302', '21', 0, ''),
-(55, '03212302', '22', 0, ''),
-(56, '03212302', '23', 0, ''),
-(57, '03212302', '24', 0, ''),
-(58, '03212302', '25', 0, ''),
-(59, '03212302', '26', 0, ''),
-(60, '03212302', '27', 0, ''),
-(61, '03212302', '28', 0, ''),
-(62, '03212302', '29', 0, ''),
-(63, '03212302', '30', 0, ''),
-(64, '03212302', '31', 0, ''),
-(65, '03212302', '32', 0, '');
+INSERT INTO `tbl_dental_chart` (`dental_chart_id`, `patient_id`, `tooth_number`, `tooth_score`) VALUES
+(34, '03212302', '1', 3),
+(35, '03212302', '2', 0),
+(36, '03212302', '3', 0),
+(37, '03212302', '4', 4),
+(38, '03212302', '5', 0),
+(39, '03212302', '6', 0),
+(40, '03212302', '7', 0),
+(41, '03212302', '8', 5),
+(42, '03212302', '9', 0),
+(43, '03212302', '10', 0),
+(44, '03212302', '11', 0),
+(45, '03212302', '12', 0),
+(46, '03212302', '13', 0),
+(47, '03212302', '14', 0),
+(48, '03212302', '15', 0),
+(49, '03212302', '16', 0),
+(50, '03212302', '17', 0),
+(51, '03212302', '18', 0),
+(52, '03212302', '19', 0),
+(53, '03212302', '20', 0),
+(54, '03212302', '21', 0),
+(55, '03212302', '22', 0),
+(56, '03212302', '23', 0),
+(57, '03212302', '24', 0),
+(58, '03212302', '25', 0),
+(59, '03212302', '26', 0),
+(60, '03212302', '27', 0),
+(61, '03212302', '28', 0),
+(62, '03212302', '29', 0),
+(63, '03212302', '30', 0),
+(64, '03212302', '31', 0),
+(65, '03212302', '32', 0),
+(66, '03212301', '1', 0),
+(67, '03212301', '2', 0),
+(68, '03212301', '3', 0),
+(69, '03212301', '4', 0),
+(70, '03212301', '5', 0),
+(71, '03212301', '6', 4),
+(72, '03212301', '7', 0),
+(73, '03212301', '8', 0),
+(74, '03212301', '9', 0),
+(75, '03212301', '10', 0),
+(76, '03212301', '11', 0),
+(77, '03212301', '12', 0),
+(78, '03212301', '13', 0),
+(79, '03212301', '14', 0),
+(80, '03212301', '15', 0),
+(81, '03212301', '16', 0),
+(82, '03212301', '17', 0),
+(83, '03212301', '18', 0),
+(84, '03212301', '19', 0),
+(85, '03212301', '20', 0),
+(86, '03212301', '21', 0),
+(87, '03212301', '22', 0),
+(88, '03212301', '23', 0),
+(89, '03212301', '24', 0),
+(90, '03212301', '25', 0),
+(91, '03212301', '26', 0),
+(92, '03212301', '27', 0),
+(93, '03212301', '28', 0),
+(94, '03212301', '29', 0),
+(95, '03212301', '30', 0),
+(96, '03212301', '31', 0),
+(97, '03212301', '32', 0);
 
 -- --------------------------------------------------------
 
@@ -125,7 +158,8 @@ INSERT INTO `tbl_department` (`dept_id`, `dept_code`, `dept_name`, `status`) VAL
 (3, 'PNI', 'Prenatal and Immunization', 0),
 (4, 'PHM', 'Pharmacy', 0),
 (5, 'FD', 'Front Desk', 0),
-(6, 'ADMIN', 'Admin Office', 0);
+(6, 'ADMIN', 'Admin Office', 0),
+(7, 'IMZN', 'Immunization Only', 0);
 
 -- --------------------------------------------------------
 
@@ -186,7 +220,10 @@ CREATE TABLE `tbl_immunization` (
 
 INSERT INTO `tbl_immunization` (`immunization_id`, `immunizer_id`, `patient_id`, `immunization_date`, `next_immunization_date`, `vaccine_used`, `comments`, `status`) VALUES
 (1, 71, '03232307', '2023-04-04', '2023-06-25', 'MMR Vaccine', 'No allergic reactions', 0),
-(2, 71, '03232306', '2023-04-04', '2023-05-16', 'MMR Vaccine', 'No allergic reactions', 0);
+(2, 73, '03232306', '2023-04-04', '2023-05-16', 'MMR Vaccine', 'No allergic reactions', 0),
+(3, 69, '03232306', '2023-04-12', '2023-05-17', 'test vax', 'test com', 0),
+(4, 69, '03232306', '2023-04-12', '2023-04-22', 'test vax 2', 'test com 2', 0),
+(5, 69, '03232306', '2023-04-12', '2023-04-25', 'test vax 3', 'test com 3', 0);
 
 -- --------------------------------------------------------
 
@@ -217,7 +254,8 @@ CREATE TABLE `tbl_medicine_inventory` (
 --
 
 INSERT INTO `tbl_medicine_inventory` (`medicine_id`, `generic_name`, `brand_name`, `med_classification`, `dosage_strength`, `dosage_form`, `ptr_number`, `batch_lot_number`, `mfg_date`, `exp_date`, `quantity`, `procured_by`, `date_added`, `added_by`, `status`) VALUES
-(1, 'Paracetamol', 'Biogesic', 'Analgesic', '500mg/2mg', 'Tablet', '22-11-2101', '13-08-713', '2023-03-01', '2026-03-01', 500, 'DOH', '2023-04-01', 69, 0);
+(1, 'Paracetamol', 'Biogesic', 'Analgesic', '500mg/2mg', 'Tablet', '22-11-2101', '13-08-713', '2023-03-01', '2026-03-01', 500, 'DOH', '2023-04-01', 69, 0),
+(2, 'Ibuprofen', 'Medicol', 'test', 'test', 'test1', 'test', 'test', '2023-04-04', '2026-04-16', 200, 'LGU', '2023-04-13', 69, 0);
 
 -- --------------------------------------------------------
 
@@ -226,7 +264,7 @@ INSERT INTO `tbl_medicine_inventory` (`medicine_id`, `generic_name`, `brand_name
 --
 
 CREATE TABLE `tbl_medicine_release` (
-  `med_release_id` varchar(200) NOT NULL,
+  `med_release_id` int(11) NOT NULL,
   `patient_id` varchar(200) DEFAULT NULL,
   `doctor_id` int(11) DEFAULT NULL,
   `department` int(11) DEFAULT NULL,
@@ -242,7 +280,12 @@ CREATE TABLE `tbl_medicine_release` (
 --
 
 INSERT INTO `tbl_medicine_release` (`med_release_id`, `patient_id`, `doctor_id`, `department`, `medicine_id`, `quantity`, `release_date`, `released_by`, `status`) VALUES
-('', NULL, 69, 1, 1, 200, '2023-04-04', 69, 0);
+(1, NULL, 69, 1, 1, 100, '2023-04-04', 69, 0),
+(3, '03212301', NULL, 1, 1, 15, '2023-04-13', 69, 0),
+(4, '03212301', NULL, 2, 1, 10, '2023-04-13', 69, 0),
+(5, NULL, 69, 6, 1, 29, '2023-04-13', 69, 0),
+(7, '03232307', NULL, 1, 1, 3, '2023-04-15', 69, 0),
+(8, NULL, 68, 2, 2, 15, '2023-04-15', 69, 0);
 
 -- --------------------------------------------------------
 
@@ -255,7 +298,8 @@ CREATE TABLE `tbl_opd` (
   `patient_id` varchar(200) NOT NULL,
   `checkup_date` date NOT NULL,
   `temperature` int(11) DEFAULT NULL COMMENT 'celsius',
-  `blood_pressure` varchar(200) DEFAULT NULL,
+  `blood_pressure_systole` varchar(200) DEFAULT NULL,
+  `blood_pressure_diastole` int(11) NOT NULL,
   `height` int(11) DEFAULT NULL COMMENT 'cm',
   `weight` int(11) DEFAULT NULL COMMENT 'kg',
   `pulse_rate` int(11) DEFAULT NULL COMMENT 'per minute',
@@ -272,14 +316,14 @@ CREATE TABLE `tbl_opd` (
 -- Dumping data for table `tbl_opd`
 --
 
-INSERT INTO `tbl_opd` (`opd_id`, `patient_id`, `checkup_date`, `temperature`, `blood_pressure`, `height`, `weight`, `pulse_rate`, `oxygen_sat`, `complaint`, `preliminary_checkup_done_by`, `doctor_id`, `checkup_results`, `next_checkup`, `status`) VALUES
-(1, '03212301', '2023-03-14', 35, '120/60', 163, 70, 72, 75, 'Pain in the ass', 69, 72, 'Patient has no jowa', '2023-03-25', 0),
-(2, '03212301', '2023-03-08', 37, '120/60', 163, 70, 70, 72, 'Pain when urinating', 73, 69, 'Patient has UTI. Prescribed antibiotics. Patient should drink lots of fluids.', '2023-03-25', 0),
-(4, '03212302', '2023-01-12', 37, '120/60', 163, 70, 70, 72, 'Heartbroken', 73, 67, 'tesxt test', NULL, 0),
-(7, '03212301', '2023-04-06', 37, '120/60', 175, 63, 75, 88, 'Loss of apetite', 69, 69, NULL, NULL, 0),
-(8, '03212301', '2023-03-14', 35, '120/60', 163, 70, 72, 75, 'Pain in the ass', 71, 68, 'Patient has no jowa', '2023-03-25', 0),
-(10, '03212301', '2023-04-07', 38, '110/20', 167, 74, 88, 88, 'test', 69, 67, NULL, NULL, 1),
-(11, '03212301', '2023-04-20', 38, '120/60', 178, 56, 88, 88, 'test test', 70, 68, NULL, NULL, 0);
+INSERT INTO `tbl_opd` (`opd_id`, `patient_id`, `checkup_date`, `temperature`, `blood_pressure_systole`, `blood_pressure_diastole`, `height`, `weight`, `pulse_rate`, `oxygen_sat`, `complaint`, `preliminary_checkup_done_by`, `doctor_id`, `checkup_results`, `next_checkup`, `status`) VALUES
+(1, '03212301', '2023-03-14', 35, '120', 60, 163, 70, 72, 75, 'Pain in the ass', 69, 72, 'Patient has no jowa', '2023-03-25', 0),
+(2, '03212301', '2023-03-08', 37, '120', 60, 163, 70, 70, 72, 'Pain when urinating', 73, 69, 'Patient has UTI. Prescribed antibiotics. Patient should drink lots of fluids.', '2023-03-25', 0),
+(4, '03212302', '2023-01-12', 37, '120', 60, 163, 70, 70, 72, 'Heartbroken', 73, 67, 'test test', NULL, 0),
+(7, '03212301', '2023-04-06', 37, '120', 60, 175, 63, 75, 88, 'Loss of apetite', 69, 69, NULL, NULL, 0),
+(8, '03212301', '2023-03-14', 35, '120', 60, 163, 70, 72, 75, 'Pain in the ass', 71, 68, 'Patient has no jowa', '2023-03-25', 0),
+(10, '03212301', '2023-04-07', 38, '120', 60, 167, 74, 88, 88, 'test', 69, 67, NULL, NULL, 1),
+(11, '03212301', '2023-04-20', 38, '120', 60, 178, 56, 88, 88, 'test test', 70, 68, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -300,12 +344,11 @@ CREATE TABLE `tbl_opd_disease` (
 
 INSERT INTO `tbl_opd_disease` (`opd_disease_id`, `opd_id`, `opd_disease`, `date_added`) VALUES
 (5, 2, 'UTI', '2023-03-14'),
-(45, 8, 'Heartbroken', '0000-00-00'),
-(46, 8, 'Mahilig uminom', '0000-00-00'),
-(87, 1, 'Heartbroken', '0000-00-00'),
-(88, 1, 'Mahilig uminom', '0000-00-00'),
-(93, 4, 'test', '0000-00-00'),
-(94, 4, 'test', '0000-00-00');
+(112, 4, 'test', '2023-01-12'),
+(113, 4, 'test', '2023-01-12'),
+(114, 1, 'Heartbroken', '2023-03-14'),
+(115, 1, 'Mahilig Uminom', '2023-03-14'),
+(116, 8, 'test', '2023-03-14');
 
 -- --------------------------------------------------------
 
@@ -326,9 +369,9 @@ CREATE TABLE `tbl_opd_lab_results` (
 INSERT INTO `tbl_opd_lab_results` (`lab_result_id`, `opd_id`, `lab_result`) VALUES
 (7, 2, 'Blood in urine'),
 (8, 2, 'Bacteria in urine'),
-(32, 8, 'Walang jowa'),
-(53, 1, 'Walang jowa'),
-(56, 4, 'test');
+(64, 4, 'test'),
+(65, 1, 'Walang jowa'),
+(66, 8, 'Walang jowa');
 
 -- --------------------------------------------------------
 
@@ -358,7 +401,7 @@ CREATE TABLE `tbl_patient_info` (
 --
 
 INSERT INTO `tbl_patient_info` (`patient_id`, `household_id`, `last_name`, `first_name`, `middle_name`, `suffix`, `sex`, `birthdate`, `barangay`, `address`, `phone_number`, `added_by`, `date_added`, `status`) VALUES
-('03212301', 1, 'Grajo', 'Julius Albert', 'Areola', NULL, 0, '1996-09-09', 'Tagaytay', 'Camalig', '094685123123', 69, '2023-03-21', 0),
+('03212301', 1, 'Grajo', 'Julius Albert', 'Areola', NULL, 0, '1996-09-09', 'Tagaytay', 'Camalig', '09468512312', 69, '2023-03-21', 0),
 ('03212302', 2, 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, 0, '1978-10-10', 'Outside Camalig', 'Bacacay, Albay', '09269851328', 69, '2023-03-21', 0),
 ('03212303', 3, 'Boco', 'Roseler', 'Nasol', 'Jr', 0, '1969-02-10', 'Tagaytay', ' Tagaytay, Camalig, Albay', '09269874567', 69, '2023-03-21', 0),
 ('03232301', 2, 'Basmayor', 'Pia', 'Areola', NULL, 1, '1997-12-05', 'Bantonan', 'Bantonan, Camalig, Albay', '09812251321', 69, '2023-03-23', 0),
@@ -460,7 +503,8 @@ CREATE TABLE `tbl_prenatal_checkup` (
   `height` int(11) NOT NULL,
   `weight` int(11) NOT NULL,
   `temperature` int(11) NOT NULL,
-  `blood_pressure` varchar(200) NOT NULL,
+  `blood_pressure_systole` int(11) NOT NULL,
+  `blood_pressure_diastole` int(11) NOT NULL,
   `pulse_rate` int(11) DEFAULT NULL,
   `oxygen_sat` int(11) NOT NULL,
   `checkup_date` date NOT NULL,
@@ -473,11 +517,11 @@ CREATE TABLE `tbl_prenatal_checkup` (
 -- Dumping data for table `tbl_prenatal_checkup`
 --
 
-INSERT INTO `tbl_prenatal_checkup` (`prenatal_checkup_id`, `prenatal_id`, `height`, `weight`, `temperature`, `blood_pressure`, `pulse_rate`, `oxygen_sat`, `checkup_date`, `next_checkup`, `comments`, `status`) VALUES
-(1, 1, 156, 65, 37, '120/60', 77, 77, '2023-03-29', '2023-05-18', 'Pregnancy is normal. Patients needs lot of bed rest and vitamins.', 0),
-(2, 2, 175, 58, 37, '120/60', 77, 77, '2023-03-29', '2023-05-01', 'Pregnancy is okay. Patient needs to drink some vitamins.', 0),
-(3, 2, 175, 58, 37, '120/60', 77, 77, '2023-05-01', '2023-07-08', 'Pregnancy is okay.', 0),
-(4, 2, 175, 58, 37, '120/60', 77, 77, '2023-07-08', '2023-08-02', 'Pregnancy is okay.', 0);
+INSERT INTO `tbl_prenatal_checkup` (`prenatal_checkup_id`, `prenatal_id`, `height`, `weight`, `temperature`, `blood_pressure_systole`, `blood_pressure_diastole`, `pulse_rate`, `oxygen_sat`, `checkup_date`, `next_checkup`, `comments`, `status`) VALUES
+(1, 1, 156, 65, 37, 120, 60, 77, 77, '2023-03-29', '2023-05-18', 'Pregnancy is normal. Patients needs lot of bed rest and vitamins.', 0),
+(2, 2, 175, 58, 38, 120, 60, 77, 77, '2023-03-29', '2023-05-01', 'Pregnancy is okay. Patient needs to drink some vitamins.', 0),
+(3, 2, 175, 58, 37, 120, 60, 77, 77, '2023-05-01', '2023-07-08', 'Pregnancy is okay.', 0),
+(4, 2, 175, 58, 37, 120, 60, 77, 77, '2023-07-08', '2023-08-02', 'Pregnancy is okay.', 0);
 
 -- --------------------------------------------------------
 
@@ -506,10 +550,30 @@ INSERT INTO `tbl_pwd` (`pwd_id`, `patient_id`, `disability`, `status`) VALUES
 --
 
 CREATE TABLE `tbl_queue` (
-  `queue_number` varchar(200) NOT NULL,
+  `queue_id` int(11) NOT NULL,
+  `queue_number` int(11) NOT NULL,
   `patient_id` varchar(200) NOT NULL,
   `department` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_queue`
+--
+
+INSERT INTO `tbl_queue` (`queue_id`, `queue_number`, `patient_id`, `department`) VALUES
+(23, 3, '03212303', 1),
+(24, 1, '03232301', 2),
+(25, 2, '03232302', 2),
+(26, 1, '03232304', 3),
+(27, 1, '03232305', 7),
+(28, 2, '03232307', 7),
+(29, 2, '03232308', 3),
+(30, 3, '03232309', 3),
+(31, 4, '03232310', 3),
+(32, 4, '03232311', 1),
+(33, 3, '03232313', 2),
+(34, 3, '03232314', 7),
+(35, 5, '03212302', 1);
 
 -- --------------------------------------------------------
 
@@ -528,7 +592,7 @@ CREATE TABLE `tbl_senior_citizen` (
 --
 
 INSERT INTO `tbl_senior_citizen` (`senior_citizen_id`, `patient_id`, `status`) VALUES
-('12xc', '03212302', 0);
+('SC-0589', '03232315', 0);
 
 -- --------------------------------------------------------
 
@@ -544,6 +608,7 @@ CREATE TABLE `tbl_supplies_inventory` (
   `exp_date` date DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `quantity_type` varchar(200) NOT NULL,
+  `procured_by` varchar(200) NOT NULL,
   `date_added` date NOT NULL,
   `added_by` int(11) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
@@ -553,8 +618,11 @@ CREATE TABLE `tbl_supplies_inventory` (
 -- Dumping data for table `tbl_supplies_inventory`
 --
 
-INSERT INTO `tbl_supplies_inventory` (`supply_id`, `supply_name`, `supply_type`, `mfg_date`, `exp_date`, `quantity`, `quantity_type`, `date_added`, `added_by`, `status`) VALUES
-(1, 'Gloves', 'Gloves', '2022-04-05', '2026-04-15', 600, 'piece', '2023-04-04', 69, 0);
+INSERT INTO `tbl_supplies_inventory` (`supply_id`, `supply_name`, `supply_type`, `mfg_date`, `exp_date`, `quantity`, `quantity_type`, `procured_by`, `date_added`, `added_by`, `status`) VALUES
+(1, 'Gloves', 'Glove', '2022-04-05', '2026-04-15', 700, 'piece', 'LGU', '2023-04-04', 69, 0),
+(2, 'Pfizer Syringe', 'Syringe', '2023-03-01', '2026-03-01', 800, 'piece', 'DOH', '2023-04-14', 69, 0),
+(3, 'Test Kits', 'Test Kits', '2023-04-11', '2024-04-11', 400, 'piece', 'LGU', '2023-04-14', 69, 0),
+(4, 'Bandages', 'Bandage', '2023-04-15', '2027-04-15', 200, 'piece', 'DOH', '2023-04-14', 69, 0);
 
 -- --------------------------------------------------------
 
@@ -566,6 +634,7 @@ CREATE TABLE `tbl_supply_release` (
   `supply_release_id` int(11) NOT NULL,
   `supply_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `department` int(11) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `release_date` date NOT NULL,
   `released_by` int(11) NOT NULL,
@@ -576,8 +645,11 @@ CREATE TABLE `tbl_supply_release` (
 -- Dumping data for table `tbl_supply_release`
 --
 
-INSERT INTO `tbl_supply_release` (`supply_release_id`, `supply_id`, `user_id`, `quantity`, `release_date`, `released_by`, `status`) VALUES
-(1, 1, 69, 100, '2023-04-04', 69, 0);
+INSERT INTO `tbl_supply_release` (`supply_release_id`, `supply_id`, `user_id`, `department`, `quantity`, `release_date`, `released_by`, `status`) VALUES
+(1, 1, 68, 1, 100, '2023-04-04', 69, 0),
+(2, 1, 69, 2, 15, '2023-04-14', 69, 0),
+(3, 1, 70, 1, 5, '2023-04-14', 69, 0),
+(4, 2, 71, 3, 5, '2023-04-15', 69, 0);
 
 -- --------------------------------------------------------
 
@@ -608,13 +680,15 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`user_id`, `username`, `password`, `last_name`, `first_name`, `middle_name`, `suffix`, `birthdate`, `phone_number`, `sex`, `department`, `job_title`, `permission_level`, `date_added`, `status`) VALUES
-(67, 'basmayormbOPD67', '$2y$10$5yE/uCGotKWaf9WYBH/qNeG9BZhQl9rsTevsxGwgrAEzOHgyj7R8m', 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, '1998-05-05', '09488561235', 0, 1, 'Assistant', 2, '2023-03-18', 0),
-(68, 'bocornDNTL68', '$2y$10$rbeyU7K7Y7hkWhuDsvMI1eHIu24ZZO1ugsSyco2eYLePZYlWEj.aS', 'Boco', 'Roseler', 'Nasol', 'Jr', '1998-05-05', '09488561235', 0, 2, 'Doctor', 2, '2023-03-18', 0),
+(67, 'basmayormbOPD67', '$2y$10$ayRALUii2ePuoujphl5Bl.8BIdv61chP3L1zSm1KmazSsLXntC3kS', 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, '1998-05-05', '09488561235', 0, 2, 'Assistant', 3, '2023-03-18', 0),
+(68, 'bocornDNTL68', '$2y$10$U3vlvwlaUtZnCUG84W94tOTIAjNajkjiyPsUtIe1EDu8L9.E1tA1a', 'Boco', 'Roseler', 'Nasol', 'Jr', '1998-05-05', '09488561235', 0, 2, 'Doctor', 2, '2023-03-18', 0),
 (69, 'pogingAdmin69', '$2y$10$W4Q9MuV5gSnxM4oCZI6IGu25yxNiBtgz2pwlbk692WdjT5rLbTDt.', 'Grajo', 'Julius Albert', 'Areola', NULL, '1998-05-05', '09488561235', 0, 6, 'Office Staff', 1, '2023-03-18', 0),
 (70, 'ardaleseOPD70', '$2y$10$zcinjgZNSCPgsXHgHO/3Z.lXzG7s10mYtgvcExPP8497OA3lf3p6a', 'Ardales', 'Edmel', NULL, NULL, '1998-05-05', '09488561235', 0, 1, 'Doctor', 2, '2023-03-18', 0),
-(71, 'aperinlOPD71', '$2y$10$djgAWdpYRa9n2ALt/qMdCeAmkYvKvzNmjWzHPVYOBHQvpvq41DZte', 'Aperin', 'Lynnette', NULL, NULL, '1998-05-05', '09488561235', 0, 1, 'Midwife', 3, '2023-03-18', 0),
+(71, 'aperinlOPD71', '$2y$10$djgAWdpYRa9n2ALt/qMdCeAmkYvKvzNmjWzHPVYOBHQvpvq41DZte', 'Aperin', 'Lynnette', NULL, NULL, '1998-05-05', '09488561235', 1, 3, 'Midwife', 3, '2023-03-18', 0),
 (72, 'esplanasADMIN72', '$2y$10$IULIcy.DfQDA4je.5hQXR.n0EBgVu8pOMTeQ87msXbv2QqrDAVmAy', 'Esplana', 'Samuel', NULL, NULL, '1998-05-05', '09488561235', 0, 6, 'Office Staff', 1, '2023-03-18', 0),
-(73, 'de la cruzjsFD73', '$2y$10$A3H06BTjwU1dTNZaGR12Mue7o3Zp.uc1TNat99CHoCqrHHH3OjKT.', 'De La Cruz', 'Juan', 'Santos', NULL, '1998-05-05', '09488561235', 0, 5, 'Front Desk Staff', 2, '2023-03-19', 0);
+(73, 'delacruzjsFD73', '$2y$10$A3H06BTjwU1dTNZaGR12Mue7o3Zp.uc1TNat99CHoCqrHHH3OjKT.', 'De La Cruz', 'Juan', 'Santos', NULL, '1998-05-05', '09488561235', 0, 5, 'Front Desk Staff', 2, '2023-03-19', 0),
+(76, 'delacruzmsPNI76', '$2y$10$sMxeysoVPmyPS.VmR8hnMOMZjRJA0YIMbPKeeEo1CAvBfRVGLYcWO', 'De La Cruz', 'Maria Clara', 'Santa Ana', NULL, '1987-05-02', '09526132487', 1, 3, 'Midwife', 2, '2023-04-17', 2),
+(77, 'pogingFrontDesk69', '$2y$10$VUTf7mnWANzsktmWizA2Dug02JzrehvuqmMBVIY/CJIYsSn95OgU2', 'Grajo', 'Julius', 'Areola', NULL, '2023-07-19', '09748512354', 0, 5, 'Front Desk Staff', 2, '2023-04-18', 0);
 
 --
 -- Indexes for dumped tables
@@ -731,9 +805,9 @@ ALTER TABLE `tbl_pwd`
 -- Indexes for table `tbl_queue`
 --
 ALTER TABLE `tbl_queue`
-  ADD PRIMARY KEY (`queue_number`),
-  ADD UNIQUE KEY `patient_id` (`patient_id`),
-  ADD KEY `queue_fk_dept_id` (`department`);
+  ADD PRIMARY KEY (`queue_id`),
+  ADD KEY `queue_fk_dept_id` (`department`),
+  ADD KEY `patient_id` (`patient_id`);
 
 --
 -- Indexes for table `tbl_senior_citizen`
@@ -756,7 +830,8 @@ ALTER TABLE `tbl_supply_release`
   ADD PRIMARY KEY (`supply_release_id`),
   ADD KEY `supply_release_fk_supply_id` (`supply_id`),
   ADD KEY `supply_release_fk_released_by` (`released_by`),
-  ADD KEY `supply_release_fk_user_id` (`user_id`);
+  ADD KEY `supply_release_fk_user_id` (`user_id`),
+  ADD KEY `supply_release_fk_dept_id` (`department`);
 
 --
 -- Indexes for table `tbl_users`
@@ -774,19 +849,19 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_dental`
 --
 ALTER TABLE `tbl_dental`
-  MODIFY `dental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `dental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_dental_chart`
 --
 ALTER TABLE `tbl_dental_chart`
-  MODIFY `dental_chart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `dental_chart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `tbl_department`
 --
 ALTER TABLE `tbl_department`
-  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tbl_household`
@@ -798,61 +873,73 @@ ALTER TABLE `tbl_household`
 -- AUTO_INCREMENT for table `tbl_immunization`
 --
 ALTER TABLE `tbl_immunization`
-  MODIFY `immunization_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `immunization_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_medicine_inventory`
 --
 ALTER TABLE `tbl_medicine_inventory`
-  MODIFY `medicine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `medicine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbl_medicine_release`
+--
+ALTER TABLE `tbl_medicine_release`
+  MODIFY `med_release_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_opd`
 --
 ALTER TABLE `tbl_opd`
-  MODIFY `opd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `opd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tbl_opd_disease`
 --
 ALTER TABLE `tbl_opd_disease`
-  MODIFY `opd_disease_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `opd_disease_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 
 --
 -- AUTO_INCREMENT for table `tbl_opd_lab_results`
 --
 ALTER TABLE `tbl_opd_lab_results`
-  MODIFY `lab_result_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `lab_result_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `tbl_prenatal`
 --
 ALTER TABLE `tbl_prenatal`
-  MODIFY `prenatal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `prenatal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_prenatal_checkup`
 --
 ALTER TABLE `tbl_prenatal_checkup`
-  MODIFY `prenatal_checkup_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `prenatal_checkup_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tbl_queue`
+--
+ALTER TABLE `tbl_queue`
+  MODIFY `queue_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `tbl_supplies_inventory`
 --
 ALTER TABLE `tbl_supplies_inventory`
-  MODIFY `supply_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `supply_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_supply_release`
 --
 ALTER TABLE `tbl_supply_release`
-  MODIFY `supply_release_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `supply_release_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- Constraints for dumped tables
@@ -932,7 +1019,7 @@ ALTER TABLE `tbl_prenatal`
 -- Constraints for table `tbl_prenatal_checkup`
 --
 ALTER TABLE `tbl_prenatal_checkup`
-  ADD CONSTRAINT `prenatal_checkup_fk_prenatal_id` FOREIGN KEY (`prenatal_id`) REFERENCES `tbl_prenatal` (`prenatal_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `prenatal_checkup_fk_prenatal_id` FOREIGN KEY (`prenatal_id`) REFERENCES `tbl_prenatal` (`prenatal_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_pwd`
@@ -963,6 +1050,7 @@ ALTER TABLE `tbl_supplies_inventory`
 -- Constraints for table `tbl_supply_release`
 --
 ALTER TABLE `tbl_supply_release`
+  ADD CONSTRAINT `supply_release_fk_dept_id` FOREIGN KEY (`department`) REFERENCES `tbl_department` (`dept_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `supply_release_fk_released_by` FOREIGN KEY (`released_by`) REFERENCES `tbl_users` (`user_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `supply_release_fk_supply_id` FOREIGN KEY (`supply_id`) REFERENCES `tbl_supplies_inventory` (`supply_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `supply_release_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`user_id`) ON UPDATE CASCADE;

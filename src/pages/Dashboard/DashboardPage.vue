@@ -3,7 +3,8 @@ import { DashboardData } from 'src/composables/Dashboard';
 <template>
   <div class="dashboard">
     <div class="q-mx-md q-my-lg">
-      <div class="flex justify-end">
+      <div class="flex items-center justify-between q-mb-md">
+        <h5 class="text-weight-bold text-dark q-my-none">DASHBOARD</h5>
         <q-select
           class="q-mb-md q-mr-sm"
           outlined
@@ -21,7 +22,10 @@ import { DashboardData } from 'src/composables/Dashboard';
           square
           class="q-pt-md dashboard-card"
           style="background-color: #f1d356"
-          @click="renderChart"
+          @click="
+            renderChart();
+            chartToRender = 1;
+          "
         >
           <div class="flex justify-around items-center">
             <div>
@@ -86,7 +90,7 @@ import { DashboardData } from 'src/composables/Dashboard';
         <q-card
           square
           class="q-pt-md dashboard-card"
-          style="background-color: #6bcb77"
+          style="background-color: #ff6b6b"
         >
           <div class="flex justify-around items-center">
             <div>
@@ -111,7 +115,7 @@ import { DashboardData } from 'src/composables/Dashboard';
           </div>
           <div
             class="cursor-pointer text-white text-center view-graph"
-            style="background-color: #55a15e"
+            style="background-color: #d75555"
           >
             View Graph
             <q-icon name="east" />
@@ -122,7 +126,7 @@ import { DashboardData } from 'src/composables/Dashboard';
         <q-card
           square
           class="q-pt-md dashboard-card"
-          style="background-color: #ff6b6b"
+          style="background-color: #6bcb77"
         >
           <div class="flex justify-around items-center">
             <div>
@@ -144,7 +148,7 @@ import { DashboardData } from 'src/composables/Dashboard';
           </div>
           <div
             class="cursor-pointer text-white text-center view-graph"
-            style="background-color: #d75555"
+            style="background-color: #55a15e"
           >
             View Graph
             <q-icon name="east" />
@@ -174,20 +178,31 @@ import { DashboardData } from 'src/composables/Dashboard';
                 :key="index"
                 class="q-px-sm text-primary text-bold"
               >
-                <p
-                  class="text-primary text-bold flex items-center justify-between"
-                >
-                  {{ queue.patient_id }}
-                  <span class="text-negative"
-                    ><q-btn
-                      class="q-px-sm"
-                      dense
-                      no-caps
-                      label="Remove"
-                      color="negative"
-                      @click="removeFromQueue(queue.queue_id)"
-                  /></span>
-                </p>
+                <div class="flex justify-between items-baseline">
+                  <label
+                    class="text-primary text-bold flex items-center justify-between q-py-sm"
+                    style="cursor: pointer; font-size: 20px"
+                    clickable
+                    @click="
+                      $router.push({
+                        name: 'patient-details',
+                        params: {
+                          id: queue.patient_id,
+                        },
+                      })
+                    "
+                  >
+                    {{ queue.patient_id }}
+                  </label>
+                  <q-btn
+                    class="q-px-sm"
+                    dense
+                    no-caps
+                    label="Remove"
+                    color="negative"
+                    @click="removeFromQueue(queue.queue_id)"
+                  />
+                </div>
               </li>
             </ol>
           </div>
