@@ -50,47 +50,102 @@ class API
 
       //PATIENTS
       //Get Patient count
+      $this->db->where('status', [0, 1], 'BETWEEN');
       $this->db->where('date_added', $date_array, 'BETWEEN');
       $patient_count = $this->db->getValue('tbl_patient_info', "count(*)");
       $data_array['patient_count'] = $patient_count;
 
       //Get OPD count
+      $this->db->where('status', 0);
       $this->db->where('checkup_date', $date_array, 'BETWEEN');
       $opd_count = $this->db->getValue('tbl_opd', "count(*)");
       $data_array['opd_count'] = $opd_count;
 
       //Get Dental count
+      $this->db->where('status', 0);
       $this->db->where('checkup_date', $date_array, 'BETWEEN');
       $dental_count = $this->db->getValue('tbl_dental', "count(*)");
       $data_array['dental_count'] = $dental_count;
 
       //Get Prenatal count
+      $this->db->where('status', 0);
       $this->db->where('checkup_date', $date_array, 'BETWEEN');
       $prenatal_count = $this->db->getValue('tbl_prenatal_checkup', "count(*)");
       $data_array['prenatal_count'] = $prenatal_count;
 
       //Get Immunization count
+      $this->db->where('status', 0);
       $this->db->where('immunization_date', $date_array, 'BETWEEN');
       $immunization_count = $this->db->getValue('tbl_immunization', "count(*)");
       $data_array['immunization_count'] = $immunization_count;
 
       //MEDICINES
-      //Get medicine count
-      $medicine_count = $this->db->getValue('tbl_medicine_inventory', "SUM(quantity)");
-      $data_array['medicine_count'] = $medicine_count;
+      $this->db->where('status', 0);
+      $medicine_count = $this->db->get('tbl_medicine_inventory');
 
-      //Get medicine_release count
-      $medicine_release_count = $this->db->getValue('tbl_medicine_release', "SUM(quantity)");
-      $data_array['medicine_release_count'] = $medicine_release_count;
+      $med_array = [];
+
+      foreach ($medicine_count as $medicine) {
+          $this->db->where('medicine_id', $medicine['medicine_id']);
+          $count = $this->db->getValue('tbl_medicine_release', "SUM(quantity)");
+          $medicine['in_stock'] = $medicine['quantity'] - $count;
+          $to_push = array('med_classification' => $medicine['med_classification'], 'in_stock' => $medicine['in_stock']);
+          array_push($med_array, $to_push);
+      }
+
+      $merged_elements = array_reduce($med_array, function($result, $element) {
+          $classification = $element["med_classification"];
+          if (!array_key_exists($classification, $result)) {
+              $result[$classification] = array("med_classification" => $classification, "in_stock" => 0);
+          }
+          $result[$classification]["in_stock"] += $element["in_stock"];
+          return $result;
+      }, array());
+
+      $output = array();
+      foreach ($merged_elements as $element) {
+        $classification = $element["med_classification"];
+        array_push($output, $element);
+      }
+
+      $data_array['medicine_count'] = $output;
 
       //SUPPLIES
       //Get supplies count
-      $supply_count = $this->db->getValue('tbl_supplies_inventory', "SUM(quantity)");
-      $data_array['supply_count'] = $supply_count;
+      // $this->db->where('status', 0);
+      // $supply_count = $this->db->getValue('tbl_supplies_inventory', "SUM(quantity)");
+      // $data_array['supply_count'] = $supply_count;
 
-      //Get supplies release count
-      $supply_release_count = $this->db->getValue('tbl_supply_release', "SUM(quantity)");
-      $data_array['supply_release_count'] = $supply_release_count;
+      $this->db->where('status', 0);
+      $supply_count = $this->db->get('tbl_supplies_inventory');
+
+      $supply_array = [];
+
+      foreach ($supply_count as $supply) {
+          $this->db->where('supply_id', $supply['supply_id']);
+          $count = $this->db->getValue('tbl_supply_release', "SUM(quantity)");
+          $supply['in_stock'] = $supply['quantity'] - $count;
+          $to_push = array('supply_type' => $supply['supply_type'], 'in_stock' => $supply['in_stock']);
+          array_push($supply_array, $to_push);
+      }
+
+      $merged_elements = array_reduce($supply_array, function($result, $element) {
+          $classification = $element["supply_type"];
+          if (!array_key_exists($classification, $result)) {
+              $result[$classification] = array("supply_type" => $classification, "in_stock" => 0);
+          }
+          $result[$classification]["in_stock"] += $element["in_stock"];
+          return $result;
+      }, array());
+
+      $output = array();
+      foreach ($merged_elements as $element) {
+        $classification = $element["supply_type"];
+        array_push($output, $element);
+      }
+
+      $data_array['supply_count'] = $output;
+
 
       //DISEASES
       //Get diseases count

@@ -238,7 +238,8 @@ class API
       } else {
         //ADD MEDICINE RECORD
         $payload['medicine_id'] = $this->db->insert('tbl_medicine_inventory', $payload);
-        $payload['in_stock'] = $payload['quantity'];
+        $payload['quantity'] = (int) $payload['quantity'];
+        $payload['in_stock'] = (int) $payload['quantity'];
 
         if ($payload['medicine_id']) {
           echo json_encode(array('status' => 'success',

@@ -23,8 +23,8 @@ import { DashboardData } from 'src/composables/Dashboard';
           class="q-pt-md dashboard-card"
           style="background-color: #f1d356"
           @click="
-            renderChart();
             chartToRender = 1;
+            renderChart();
           "
         >
           <div class="flex justify-around items-center">
@@ -55,6 +55,10 @@ import { DashboardData } from 'src/composables/Dashboard';
           square
           class="q-pt-md dashboard-card"
           style="background-color: #4d96ff"
+          @click="
+            chartToRender = 2;
+            renderChart();
+          "
         >
           <div class="flex justify-around items-center">
             <div>
@@ -62,14 +66,7 @@ import { DashboardData } from 'src/composables/Dashboard';
                 class="q-mb-none text-weight-bold text-white"
                 style="font-size: 24px"
               >
-                {{
-                  Number(DashboardData.medicine_count) -
-                    Number(DashboardData.medicine_release_count) ===
-                  NaN
-                    ? 0
-                    : Number(DashboardData.medicine_count) -
-                      Number(DashboardData.medicine_release_count)
-                }}
+                {{ totalinStockMedicine }}
               </p>
               <p class="text-weight-bold text-white" style="font-size: 16px">
                 Medicines
@@ -91,6 +88,10 @@ import { DashboardData } from 'src/composables/Dashboard';
           square
           class="q-pt-md dashboard-card"
           style="background-color: #ff6b6b"
+          @click="
+            chartToRender = 3;
+            renderChart();
+          "
         >
           <div class="flex justify-around items-center">
             <div>
@@ -98,14 +99,7 @@ import { DashboardData } from 'src/composables/Dashboard';
                 class="q-mb-none text-weight-bold text-white"
                 style="font-size: 24px"
               >
-                {{
-                  Number(DashboardData.supply_count) -
-                    Number(DashboardData.supply_release_count) ===
-                  NaN
-                    ? 0
-                    : Number(DashboardData.supply_count) -
-                      Number(DashboardData.supply_release_count)
-                }}
+                {{ totalinStockSupply }}
               </p>
               <p class="text-weight-bold text-white" style="font-size: 16px">
                 Supplies
@@ -127,6 +121,10 @@ import { DashboardData } from 'src/composables/Dashboard';
           square
           class="q-pt-md dashboard-card"
           style="background-color: #6bcb77"
+          @click="
+            chartToRender = 4;
+            renderChart();
+          "
         >
           <div class="flex justify-around items-center">
             <div>
@@ -169,6 +167,7 @@ import { DashboardData } from 'src/composables/Dashboard';
             :options="departmentList"
             v-model="selectedDepartment"
             @update:model-value="getDepartments"
+            class="q-mt-md"
           />
 
           <div class="q-mt-lg">
@@ -181,7 +180,7 @@ import { DashboardData } from 'src/composables/Dashboard';
                 <div class="flex justify-between items-baseline">
                   <label
                     class="text-primary text-bold flex items-center justify-between q-py-sm"
-                    style="cursor: pointer; font-size: 20px"
+                    style="cursor: pointer; font-size: 16px"
                     clickable
                     @click="
                       $router.push({

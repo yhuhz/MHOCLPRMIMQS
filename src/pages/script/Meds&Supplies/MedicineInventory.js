@@ -267,6 +267,7 @@ export default {
 
       AddMedicine(newMedicineRecord.value).then((response) => {
         Loading.hide();
+        isAddNewMedicineStock.value = false;
         let status = response.status === "success" ? 0 : 1;
 
         $q.notify({
@@ -277,6 +278,8 @@ export default {
               ? "Medicine record added successfully"
               : "Failed to add medicine record",
         });
+
+        onReset();
       });
     };
 
