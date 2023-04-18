@@ -17,7 +17,7 @@ export default {
 
     //Session Storage
     let keySession = SessionStorage.getItem("cred");
-    if (keySession == NaN || keySession == null) {
+    if (!keySession) {
       router.push({ name: "login" });
     }
 
@@ -40,7 +40,7 @@ export default {
       totalinStockSupply.value = 0;
       let payload = {
         filter: selected.value,
-        department: keySession.department,
+        department: keySession && keySession.department,
       };
       Loading.show();
       GetDashboardData(payload).then((response) => {
@@ -53,11 +53,11 @@ export default {
     let departmentList = ref([]);
 
     if (keySession != NaN || keySession != null) {
-      if (keySession.department === 1) {
+      if (keySession && keySession.department === 1) {
         departmentList.value = ["OPD"];
-      } else if (keySession.department === 2) {
+      } else if (keySession && keySession.department === 2) {
         departmentList.value = ["Dental"];
-      } else if (keySession.department === 3) {
+      } else if (keySession && keySession.department === 3) {
         departmentList.value = ["Prenatal"];
       } else {
         departmentList.value = ["OPD", "Dental", "Prenatal", "Immunization"];
@@ -197,27 +197,6 @@ export default {
 
       const ctx = document.getElementById("myChart");
 
-      //   chart.value = new Chart(ctx, {
-      //     type: "bar",
-      //     data: {
-      //       labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-      //       datasets: [
-      //         {
-      //           label: "# of Votes",
-      //           data: [12, 19, 3, 5, 2, 3],
-      //           borderWidth: 1,
-      //         },
-      //       ],
-      //     },
-      //     options: {
-      //       scales: {
-      //         y: {
-      //           beginAtZero: true,
-      //         },
-      //       },
-      //     },
-      //   });
-      // };
       if (chartToRender.value === 1) {
         chart.value = new Chart(ctx, {
           type: patientData.value.type,
@@ -314,6 +293,27 @@ export default {
                   "rgba(215, 85, 85, 0.5)",
                   "rgba(85, 161, 94, 0.5)",
                 ],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      } else {
+        chart.value = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            datasets: [
+              {
+                label: "# of Votes",
+                data: [12, 19, 3, 5, 2, 3],
                 borderWidth: 1,
               },
             ],
