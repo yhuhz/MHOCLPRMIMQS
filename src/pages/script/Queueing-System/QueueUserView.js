@@ -77,6 +77,8 @@ export default {
       ToggleDialogState();
     };
 
+    let isHideButton = ref(false);
+
     return {
       QueueList,
       currentQueue,
@@ -84,6 +86,7 @@ export default {
       currentRouteName,
       clearQueue,
       keySession,
+      isHideButton,
     };
   },
 };

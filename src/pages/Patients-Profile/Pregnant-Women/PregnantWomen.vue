@@ -223,6 +223,12 @@
           <template #body-cell-action="props">
             <q-td :props="props">
               <q-btn
+                v-if="
+                  keySession &&
+                  (keySession.department === 6 ||
+                    keySession.department === 5 ||
+                    keySession.department === 3)
+                "
                 dense
                 color="primary"
                 label="View"
@@ -249,6 +255,7 @@
           <template #header-cell-action="props">
             <q-th :props="props">
               <q-btn
+                v-if="keySession && keySession.department === 6"
                 dense
                 label="Download"
                 icon-right="eva-download-outline"

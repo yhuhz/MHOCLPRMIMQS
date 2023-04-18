@@ -19,6 +19,7 @@ import { DashboardData } from 'src/composables/Dashboard';
       <div class="flex justify-between wrap">
         <!-- New Patient Card -->
         <q-card
+          clickable
           square
           class="q-pt-md dashboard-card"
           style="background-color: #f1d356"
@@ -52,6 +53,7 @@ import { DashboardData } from 'src/composables/Dashboard';
 
         <!-- Medicines Card -->
         <q-card
+          clickable
           square
           class="q-pt-md dashboard-card"
           style="background-color: #4d96ff"
@@ -85,6 +87,7 @@ import { DashboardData } from 'src/composables/Dashboard';
 
         <!-- Supplies Card -->
         <q-card
+          clickable
           square
           class="q-pt-md dashboard-card"
           style="background-color: #ff6b6b"
@@ -118,6 +121,7 @@ import { DashboardData } from 'src/composables/Dashboard';
 
         <!-- Disease Card -->
         <q-card
+          clickable
           square
           class="q-pt-md dashboard-card"
           style="background-color: #6bcb77"

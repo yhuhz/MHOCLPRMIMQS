@@ -65,6 +65,7 @@ class API
         // return;
 
         //ADD HOUSEHOLD
+        $household['date_added'] = date("Y-m-d");
         $household['household_id'] = $this->db->insert('tbl_household', $household);
         $household['patient_count'] = 0;
 

@@ -12,47 +12,57 @@ import { RecordDetails } from 'src/composables/Patients';
         </div>
 
         <!-- Action Button -->
-        <div v-if="!editForm">
-          <q-btn
-            @click="editForm = !editForm"
-            dense
-            label="Edit"
-            icon="eva-edit-outline"
-            no-caps
-            color="primary"
-            class="q-px-lg"
-          />
-          <q-btn
-            dense
-            label="Delete"
-            icon="eva-trash-2-outline"
-            no-caps
-            class="q-px-lg q-ml-sm"
-            color="negative"
-            @click="openDialog"
-          />
-        </div>
+        <div
+          v-if="
+            keySession &&
+            (keySession.department === 1 ||
+              keySession.department === 5 ||
+              keySession.department === 6) &&
+            keySession.permission_level !== 3
+          "
+        >
+          <div v-if="!editForm">
+            <q-btn
+              @click="editForm = !editForm"
+              dense
+              label="Edit"
+              icon="eva-edit-outline"
+              no-caps
+              color="primary"
+              class="q-px-lg"
+            />
+            <q-btn
+              dense
+              label="Delete"
+              icon="eva-trash-2-outline"
+              no-caps
+              class="q-px-lg q-ml-sm"
+              color="negative"
+              @click="openDialog"
+            />
+          </div>
 
-        <div v-if="editForm">
-          <q-btn
-            dense
-            label="Save"
-            type="submit"
-            icon="save"
-            no-caps
-            color="primary"
-            class="q-px-lg"
-          />
-          <q-btn
-            @click="cancelFunction"
-            dense
-            label="Cancel"
-            icon="close"
-            no-caps
-            class="q-px-lg q-ml-sm"
-            outline
-            color="primary"
-          />
+          <div v-if="editForm">
+            <q-btn
+              dense
+              label="Save"
+              type="submit"
+              icon="save"
+              no-caps
+              color="primary"
+              class="q-px-lg"
+            />
+            <q-btn
+              @click="cancelFunction"
+              dense
+              label="Cancel"
+              icon="close"
+              no-caps
+              class="q-px-lg q-ml-sm"
+              outline
+              color="primary"
+            />
+          </div>
         </div>
       </div>
 

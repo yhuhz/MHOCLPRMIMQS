@@ -10,13 +10,21 @@ import {
   UpdateHousehold,
 } from "src/composables/Household";
 import { SetIDS } from "src/composables/IDS";
-import { Loading, useQuasar } from "quasar";
+import { Loading, useQuasar, SessionStorage } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
+import { useRouter } from "vue-router";
 
 export default {
   components: { MHCDialog, DeleteHouseholdConfirmation },
   setup() {
     const $q = useQuasar();
+    const router = useRouter();
+
+    //SESSION KEYS
+    let keySession = SessionStorage.getItem("cred");
+    if (keySession == NaN || keySession == null) {
+      router.push({ name: "login" });
+    }
 
     let searchBy = ref(["Household Name", "Household ID"]);
     let selectedSearchBy = ref("Household Name");
@@ -233,6 +241,7 @@ export default {
       dateAdded,
       status_array_model,
       exportTable,
+      keySession,
     };
   },
 };

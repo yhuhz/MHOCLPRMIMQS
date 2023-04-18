@@ -180,6 +180,7 @@ export default {
       addCheckup,
       removeCheckup,
       undoRemoveCheckup,
+      keySession,
     };
   },
 };

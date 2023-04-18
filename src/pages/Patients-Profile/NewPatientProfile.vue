@@ -288,6 +288,11 @@
                   dense
                   outlined
                   :input-style="{ color: '#525252' }"
+                  :rules="[
+                    (val) =>
+                      (val && (val.length > 11 || val.length < 12)) ||
+                      'Required field',
+                  ]"
                 />
               </div>
               <div class="col">

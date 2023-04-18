@@ -51,6 +51,10 @@
         </q-item>
 
         <q-item
+          v-if="
+            keySession &&
+            (keySession.department === 5 || keySession.department === 6)
+          "
           clickable
           class="list-text text-white"
           @click="$router.push({ name: 'add-edit-patient-record' })"
@@ -136,6 +140,10 @@
 
     <!-- Meds and Supplies -->
     <q-expansion-item
+      v-if="
+        keySession &&
+        (keySession.department === 6 || keySession.department === 4)
+      "
       label="Meds & Supplies"
       icon="fa fa-prescription-bottle-medical"
       class="text-white"
@@ -185,6 +193,7 @@
 
     <!-- Users -->
     <q-item
+      v-if="keySession && keySession.department === 6"
       clickable
       :class="
         $route.name === 'manage-users' ? 'bg-primary text-white' : 'text-white'
@@ -201,6 +210,7 @@
 
     <!-- Reports -->
     <q-item
+      v-if="keySession && keySession.department === 6"
       clickable
       class="text-white"
       @click="$router.push({ name: 'reports' })"
@@ -237,11 +247,18 @@
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { SessionStorage } from "quasar";
 
 export default defineComponent({
   name: "MainMenu",
   setup() {
     const route = useRoute();
+    const router = useRouter();
+
+    let keySession = SessionStorage.getItem("cred");
+    if (keySession == NaN || keySession == null) {
+      router.push({ name: "login" });
+    }
 
     let patient_route_names = [
       "search-patients",
@@ -291,6 +308,7 @@ export default defineComponent({
     return {
       isPatientProfileOpen,
       isPatientDetails,
+      keySession,
     };
   },
 });

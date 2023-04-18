@@ -302,6 +302,11 @@
 
                     <!-- Add To Queue -->
                     <q-item
+                      v-if="
+                        keySession &&
+                        (keySession.department === 5 ||
+                          keySession.department === 6)
+                      "
                       clickable
                       class="drop-list"
                       @click="openQueueModal(props.row)"
@@ -314,6 +319,11 @@
 
                     <!-- Edit -->
                     <q-item
+                      v-if="
+                        keySession &&
+                        (keySession.department === 5 ||
+                          keySession.department === 6)
+                      "
                       clickable
                       class="drop-list"
                       @click="
@@ -333,6 +343,11 @@
 
                     <!-- Delete -->
                     <q-item
+                      v-if="
+                        keySession &&
+                        (keySession.department === 5 ||
+                          keySession.department === 6)
+                      "
                       clickable
                       class="drop-list-delete"
                       @click="deletePatientRecord(props.row.patient_id)"
@@ -358,6 +373,7 @@
           <template #header-cell-action="props">
             <q-th :props="props">
               <q-btn
+                v-if="keySession && keySession.department === 6"
                 dense
                 label="Download"
                 icon-right="eva-download-outline"
@@ -409,6 +425,11 @@
                 <template v-slot:body-cell-action="props">
                   <q-td :props="props">
                     <q-btn
+                      v-if="
+                        keySession &&
+                        (keySession.department === 4 ||
+                          keySession.department === 6)
+                      "
                       dense
                       color="primary"
                       label="View"

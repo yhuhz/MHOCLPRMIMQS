@@ -194,6 +194,7 @@ export default {
       openDialog,
       lab_results,
       disease,
+      keySession,
     };
   },
 };

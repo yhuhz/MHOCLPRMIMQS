@@ -1,0 +1,45 @@
+.patients-profile {
+  background-color: #5f8d4e;
+  border-radius: 5px;
+}
+
+.column {
+  width: 350px;
+  gap: 20px 0;
+
+  .card-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+.report-area {
+  border: 2px solid #5f8d4e;
+  border-radius: 5px;
+
+  .report-title {
+    // margin-top: 100px;
+
+    .report {
+      font-size: 2rem;
+      margin-bottom: 0;
+    }
+
+    .report-from {
+      font-size: 1rem;
+    }
+  }
+}
+
+.record-label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

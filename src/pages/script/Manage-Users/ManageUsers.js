@@ -221,6 +221,7 @@ export default {
           isAddUserFail.value = true;
         }
 
+        onReset();
         // $q.notify({
         //   type: status === 0 ? "positive" : "negative",
         //   classes: "text-white",
@@ -244,7 +245,7 @@ export default {
         department: null,
         job_title: null,
         permission_level: null,
-        status: null,
+        status: "Active",
       };
     };
 

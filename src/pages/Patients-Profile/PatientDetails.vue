@@ -18,6 +18,10 @@
       <div class="col-3 q-pa-md first-col leftSide col" style="width: 300px">
         <div>
           <q-btn
+            v-if="
+              keySession &&
+              (keySession.department === 5 || keySession.department === 6)
+            "
             class="float-right cursor-pointer q-mt-xs"
             icon="eva-edit-outline"
             size="xs"
@@ -130,6 +134,7 @@
         <div class="row q-my-lg">
           <div class="col">
             <q-btn
+              v-if="keySession.permission_level !== 3"
               dense
               color="primary"
               outline
@@ -139,7 +144,14 @@
               padding="4px 8px"
               icon="eva-folder-add-outline"
               class="create-btn"
-              :disable="selectedDepartment != null ? false : true"
+              :disable="
+                keySession &&
+                keySession.permission_level !== 3 &&
+                isbtnDisabled === false &&
+                selectedDepartment != null
+                  ? false
+                  : true
+              "
               @click="
                 $router.push({
                   name: selectedDepartment + '/patient_records/new',

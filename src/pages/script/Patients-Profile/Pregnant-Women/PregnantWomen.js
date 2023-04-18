@@ -1,11 +1,19 @@
 import { ref } from "vue";
 import { GetPatients, Prenatal } from "src/composables/Patients";
-import { Loading, useQuasar } from "quasar";
+import { Loading, useQuasar, SessionStorage } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const $q = useQuasar();
+    const router = useRouter();
+
+    //SESSION KEYS
+    let keySession = SessionStorage.getItem("cred");
+    if (keySession == NaN || keySession == null) {
+      router.push({ name: "login" });
+    }
 
     let searchBy = ref(["Prenatal ID", "Patient ID", "Name"]);
     let selectedSearchBy = ref("Prenatal ID");
@@ -291,6 +299,7 @@ export default {
       brgy_checkbox_disable,
       select_all_brgy_change,
       exportTable,
+      keySession,
     };
   },
 };

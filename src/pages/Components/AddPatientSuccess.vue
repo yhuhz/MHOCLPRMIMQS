@@ -1,9 +1,14 @@
 <template>
   <div class="width-450">
-    <q-icon name="eva-trash-2-outline" size="100px" color="primary" />
-    <h6 class="text-primary no-margin">Are you sure?</h6>
+    <q-icon name="check_circle" size="100px" color="primary" />
+    <h6 class="text-primary no-margin">Patient Record Added Successfully!</h6>
     <p class="text-dark m-width-250">
-      Patient Added Successfully! Patient ID: {{ IDList.id }}
+      <span class="text-bold" style="font-size: large"
+        >Patient ID:
+        <span class="text-primary text-bold" style="font-size: large">{{
+          IDList.id
+        }}</span></span
+      ><br /><br />
       Would you like to add more records or go to patient details?
     </p>
     <div class="flex justify-around q-mt-md">

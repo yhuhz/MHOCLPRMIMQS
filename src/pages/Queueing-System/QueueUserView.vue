@@ -4,10 +4,17 @@
       <p class="text-weight-medium text-dark" style="font-size: 1.8rem">
         Now Serving
       </p>
+
+      <q-btn
+        color="primary"
+        :label="isHideButton ? 'Show Buttons' : 'Hide Buttons'"
+        :icon="isHideButton ? 'visibility' : 'visibility_off'"
+        class="fixed-top-right q-mt-xl"
+        @click="isHideButton = !isHideButton"
+      />
     </div>
 
     <div class="queue-box q-mt-lg">
-      <!-- OPD -->
       <div>
         <div class="queue-opd q-pt-md">
           <p class="queue-number text-center">
@@ -24,7 +31,9 @@
         <div
           class="flex"
           style="width: 100%; justify-content: center"
-          v-if="keySession && keySession.department === 5"
+          v-if="
+            keySession && keySession.department === 5 && isHideButton === false
+          "
         >
           <q-btn
             dense
@@ -55,7 +64,9 @@
         <div
           class="flex"
           style="width: 100%; justify-content: center"
-          v-if="keySession && keySession.department === 5"
+          v-if="
+            keySession && keySession.department === 5 && isHideButton === false
+          "
         >
           <q-btn
             dense
@@ -86,7 +97,9 @@
         <div
           class="flex"
           style="width: 100%; justify-content: center"
-          v-if="keySession && keySession.department === 5"
+          v-if="
+            keySession && keySession.department === 5 && isHideButton === false
+          "
         >
           <q-btn
             dense
@@ -119,7 +132,9 @@
         <div
           class="flex"
           style="width: 100%; justify-content: center"
-          v-if="keySession && keySession.department === 5"
+          v-if="
+            keySession && keySession.department === 5 && isHideButton === false
+          "
         >
           <q-btn
             dense

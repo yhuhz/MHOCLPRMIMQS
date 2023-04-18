@@ -96,6 +96,11 @@
         <!-- Add Household -->
         <div class="flex justify-end negative-margin-38">
           <q-btn
+            v-if="
+              keySession &&
+              (keySession.department === 5 || keySession.department === 6) &&
+              keySession.permission_level !== 3
+            "
             @click="isAddHousehold = true"
             outline
             label="Add Household"
@@ -199,6 +204,11 @@
 
                     <!-- Edit -->
                     <q-item
+                      v-if="
+                        keySession &&
+                        (keySession.department === 6 ||
+                          keySession.department === 5)
+                      "
                       clickable
                       class="drop-list"
                       @click="
@@ -273,6 +283,11 @@
 
                     <!-- Delete -->
                     <q-item
+                      v-if="
+                        keySession &&
+                        (keySession.department === 6 ||
+                          keySession.department === 5)
+                      "
                       clickable
                       class="drop-list-delete"
                       @click="deleteRecord(props.row.household_id)"
@@ -292,6 +307,7 @@
           <template #header-cell-action="props">
             <q-th :props="props">
               <q-btn
+                v-if="keySession && keySession.department === 6"
                 dense
                 label="Download"
                 icon-right="eva-download-outline"

@@ -135,6 +135,7 @@ export default {
       userOptions,
       userFilterFunction,
       openDialog,
+      keySession,
     };
   },
 };

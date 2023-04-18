@@ -15,8 +15,9 @@
 
         <div class="flex items-center cursor-pointer">
           <q-avatar>
-            <!-- <img src="https://cdn.quasar.dev/img/avatar.png" /> -->
-            <q-icon name="person" />
+            <q-img :src="avatarLink" />
+            <!-- <img src="../images/outpatient.png" /> -->
+            <!-- <q-icon name="person" /> -->
           </q-avatar>
           <q-toolbar-title class="account-name">
             {{ name }}
@@ -394,6 +395,13 @@ import {
 } from "src/composables/UserAccount.js";
 import _ from "lodash";
 import { useQuasar, SessionStorage } from "quasar";
+import outpatientImage from "../images/outpatient.png";
+import dentalImage from "../images/dental.png";
+import prenatalImage from "../images/prenatal.png";
+import pharmacyImage from "../images/pharmacy.png";
+import frontdeskImage from "../images/frontdesk.png";
+import adminImage from "../images/admin.png";
+import defaultImage from "../images/default.png";
 
 export default defineComponent({
   name: "MainLayout",
@@ -410,6 +418,25 @@ export default defineComponent({
     let keySession = SessionStorage.getItem("cred");
     if (keySession === null) {
       router.push({ name: "login" });
+    }
+
+    //USER AVATAR
+    let avatarLink = null;
+
+    if (keySession && keySession.department === 1) {
+      avatarLink = outpatientImage;
+    } else if (keySession && keySession.department === 2) {
+      avatarLink = dentalImage;
+    } else if (keySession && keySession.department === 3) {
+      avatarLink = prenatalImage;
+    } else if (keySession && keySession.department === 4) {
+      avatarLink = pharmacyImage;
+    } else if (keySession && keySession.department === 5) {
+      avatarLink = frontdeskImage;
+    } else if (keySession && keySession.department === 6) {
+      avatarLink = adminImage;
+    } else {
+      avatarLink = defaultImage;
     }
 
     //RETRIEVE USER ACCOUNT FROM DB
@@ -529,6 +556,7 @@ export default defineComponent({
       onReset,
       logout,
       keySession,
+      avatarLink,
     };
   },
 });

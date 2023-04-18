@@ -260,6 +260,7 @@ export default {
       dental_chart,
       bgColor,
       getOverlayColor,
+      keySession,
     };
   },
 };

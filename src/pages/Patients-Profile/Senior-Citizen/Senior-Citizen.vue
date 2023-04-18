@@ -260,6 +260,7 @@
           <template #header-cell-action="props">
             <q-th :props="props">
               <q-btn
+                v-if="keySession && keySession.department === 6"
                 dense
                 label="Download"
                 icon-right="eva-download-outline"

@@ -91,11 +91,50 @@ export default {
       },
     ];
 
+    let isbtnDisabled = ref(true);
+    let departments = ["OPD", "Dental", "Prenatal", "Immunization"];
+
+    if (selectedDepartment.value === "Immunization") {
+      if (keySession.department === 3) {
+        isbtnDisabled.value = false;
+      } else {
+        isbtnDisabled.value = true;
+      }
+    } else {
+      if (
+        keySession &&
+        keySession.department ===
+          departments.indexOf(selectedDepartment.value) + 1
+      ) {
+        isbtnDisabled.value = false;
+      } else {
+        isbtnDisabled.value = true;
+      }
+    }
+
     const getRecords = () => {
       GetRecords({
         patient_id: route.params.id,
         record_type: selectedDepartment.value,
       });
+
+      if (selectedDepartment.value === "Immunization") {
+        if (keySession.department === 3) {
+          isbtnDisabled.value = false;
+        } else {
+          isbtnDisabled.value = true;
+        }
+      } else {
+        if (
+          keySession &&
+          keySession.department ===
+            departments.indexOf(selectedDepartment.value) + 1
+        ) {
+          isbtnDisabled.value = false;
+        } else {
+          isbtnDisabled.value = true;
+        }
+      }
     };
 
     const onRowClick = (evt, row) => {
@@ -132,6 +171,7 @@ export default {
       getRecords,
       PatientRecords,
       onRowClick,
+      isbtnDisabled,
     };
   },
 };
