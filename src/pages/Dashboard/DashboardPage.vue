@@ -159,7 +159,10 @@ import { DashboardData } from 'src/composables/Dashboard';
       </div>
 
       <div class="grid-container q-pt-lg">
-        <fieldset class="grid-item1">
+        <fieldset
+          class="grid-item1"
+          v-if="keySession && keySession.department !== 4"
+        >
           <legend class="text-primary text-bold q-px-sm">
             Patients On Queue
           </legend>
@@ -198,6 +201,7 @@ import { DashboardData } from 'src/composables/Dashboard';
                     {{ queue.patient_id }}
                   </label>
                   <q-btn
+                    v-if="keySession && keySession.permission_level !== 3"
                     class="q-px-sm"
                     dense
                     no-caps
