@@ -269,6 +269,7 @@
 
           <!-- Add New Medicine Release -->
           <q-btn
+            v-if="keySession && keySession.permission_level !== 3"
             @click="isAddNewMedicineRelease = true"
             dense
             outline
@@ -479,6 +480,7 @@
             <template #body-cell-action="props">
               <q-td :props="props">
                 <q-btn
+                  v-if="keySession && keySession.permission_level !== 3"
                   dense
                   color="primary"
                   label="Action"

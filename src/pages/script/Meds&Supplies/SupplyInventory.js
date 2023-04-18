@@ -356,6 +356,7 @@ export default {
       editSupplyRecord,
       editSupply,
       exportTable,
+      keySession,
     };
   },
 };

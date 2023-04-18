@@ -501,6 +501,7 @@ export default {
       patientOptions,
       userFilterFunction,
       userOptions,
+      keySession,
     };
   },
 };

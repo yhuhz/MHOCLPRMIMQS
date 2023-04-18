@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2023 at 06:42 AM
+-- Generation Time: Apr 18, 2023 at 10:39 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -170,6 +170,7 @@ INSERT INTO `tbl_department` (`dept_id`, `dept_code`, `dept_name`, `status`) VAL
 CREATE TABLE `tbl_household` (
   `household_id` int(11) NOT NULL,
   `household_name` varchar(200) NOT NULL,
+  `date_added` date DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted	'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -177,25 +178,25 @@ CREATE TABLE `tbl_household` (
 -- Dumping data for table `tbl_household`
 --
 
-INSERT INTO `tbl_household` (`household_id`, `household_name`, `status`) VALUES
-(1, 'Grajo', 0),
-(2, 'Basmayor', 0),
-(3, 'Boco', 0),
-(4, 'Abaranto', 0),
-(5, 'Melgar', 0),
-(6, 'Bas', 0),
-(7, 'Malaya', 0),
-(8, 'Arena', 0),
-(9, 'Cabala', 0),
-(10, 'Dalit', 0),
-(11, 'Ronda', 0),
-(12, 'Alcala', 0),
-(13, 'Andes', 0),
-(14, 'Armenta', 0),
-(15, 'Miralles', 0),
-(16, 'Cruz', 0),
-(17, 'Hiram', 0),
-(18, 'Reolo', 0);
+INSERT INTO `tbl_household` (`household_id`, `household_name`, `date_added`, `status`) VALUES
+(1, 'Grajo', '2023-03-01', 0),
+(2, 'Basmayor', '2023-03-01', 0),
+(3, 'Boco', '2023-03-01', 0),
+(4, 'Abaranto', '2023-03-01', 0),
+(5, 'Melgar', '2023-03-01', 0),
+(6, 'Bas', '2023-03-01', 0),
+(7, 'Malaya', '2023-03-01', 0),
+(8, 'Arena', '2023-03-01', 0),
+(9, 'Cabala', '2023-03-01', 0),
+(10, 'Dalit', '2023-03-01', 0),
+(11, 'Ronda', '2023-03-01', 0),
+(12, 'Alcala', '2023-03-01', 0),
+(13, 'Andes', '2023-03-01', 0),
+(14, 'Armenta', '2023-03-01', 0),
+(15, 'Miralles', '2023-03-01', 0),
+(16, 'Cruz', '2023-03-01', 0),
+(17, 'Hiram', '2023-03-01', 0),
+(18, 'Reolo', '2023-03-01', 0);
 
 -- --------------------------------------------------------
 
@@ -255,7 +256,9 @@ CREATE TABLE `tbl_medicine_inventory` (
 
 INSERT INTO `tbl_medicine_inventory` (`medicine_id`, `generic_name`, `brand_name`, `med_classification`, `dosage_strength`, `dosage_form`, `ptr_number`, `batch_lot_number`, `mfg_date`, `exp_date`, `quantity`, `procured_by`, `date_added`, `added_by`, `status`) VALUES
 (1, 'Paracetamol', 'Biogesic', 'Analgesic', '500mg/2mg', 'Tablet', '22-11-2101', '13-08-713', '2023-03-01', '2026-03-01', 500, 'DOH', '2023-04-01', 69, 0),
-(2, 'Ibuprofen', 'Medicol', 'test', 'test', 'test1', 'test', 'test', '2023-04-04', '2026-04-16', 200, 'LGU', '2023-04-13', 69, 0);
+(2, 'Ibuprofen', 'Medicol', 'test', 'test', 'test1', 'test', 'test', '2023-04-04', '2026-04-16', 200, 'LGU', '2023-04-13', 69, 0),
+(3, 'Paracetamol', 'Biogesic', 'Analgesic', '500mg', 'Tablet', '1456-1578', '13-08-247', '2023-04-02', '2027-04-15', 400, 'DOH', '2023-04-18', 69, 0),
+(4, 'Vitex negundo L. Lagundi Leaf', 'Ascof Lagundi', 'Cough Suppressant', '600mg', 'Capsule', '12478', '157-25', '2023-04-17', '2028-04-05', 150, 'DOH', '2023-04-18', 69, 0);
 
 -- --------------------------------------------------------
 
@@ -402,7 +405,7 @@ CREATE TABLE `tbl_patient_info` (
 
 INSERT INTO `tbl_patient_info` (`patient_id`, `household_id`, `last_name`, `first_name`, `middle_name`, `suffix`, `sex`, `birthdate`, `barangay`, `address`, `phone_number`, `added_by`, `date_added`, `status`) VALUES
 ('03212301', 1, 'Grajo', 'Julius Albert', 'Areola', NULL, 0, '1996-09-09', 'Tagaytay', 'Camalig', '09468512312', 69, '2023-03-21', 0),
-('03212302', 2, 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, 0, '1978-10-10', 'Outside Camalig', 'Bacacay, Albay', '09269851328', 69, '2023-03-21', 0),
+('03212302', 2, 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, 0, '1978-10-10', 'Outside Camalig', 'Bacacay, Albay', '09269851328', 82, '2023-03-21', 0),
 ('03212303', 3, 'Boco', 'Roseler', 'Nasol', 'Jr', 0, '1969-02-10', 'Tagaytay', ' Tagaytay, Camalig, Albay', '09269874567', 69, '2023-03-21', 0),
 ('03232301', 2, 'Basmayor', 'Pia', 'Areola', NULL, 1, '1997-12-05', 'Bantonan', 'Bantonan, Camalig, Albay', '09812251321', 69, '2023-03-23', 0),
 ('03232302', 4, 'Abaranto', 'Cecillo', 'Romulo', NULL, 0, '1996-09-09', 'Tagaytay', 'Tagaytay, Camalig, Albay', '09269851328', 69, '2023-03-23', 0),
@@ -463,7 +466,8 @@ INSERT INTO `tbl_patient_info` (`patient_id`, `household_id`, `last_name`, `firs
 ('04032308', 8, 'Moya', 'Jayley Rose', 'Andes', NULL, 1, '2020-03-18', 'Bariw', 'Bariw, Camalig, Albay', '09269952365', 69, '2023-04-03', 0),
 ('04032309', 9, 'Yap', 'John Albet', 'Alejo', NULL, 0, '2023-03-23', 'Miti', 'Miti, Camalig, Albay', '09269761328', 69, '2023-04-03', 0),
 ('04032310', 10, 'Atun', 'Rhian Mae', 'Abiera', NULL, 1, '2023-03-19', 'Bongabong', 'Bongabong, Camalig, Albay', '09267743557', 69, '2023-04-03', 0),
-('04042301', 1, 'De La Cruz', 'Antonio', NULL, NULL, 0, '2015-04-04', 'Baligang', 'Baligang, Camalig', '09451237851', 69, '2023-04-04', 0);
+('04042301', 1, 'De La Cruz', 'Antonio', NULL, NULL, 0, '2015-04-04', 'Baligang', 'Baligang, Camalig', '09451237851', 69, '2023-04-04', 0),
+('04192301', 1, 'Grajo', 'Dominic', 'Marquez', NULL, 0, '2004-04-06', 'Tagaytay', '', '09459821321', 82, '2023-04-19', 0);
 
 -- --------------------------------------------------------
 
@@ -541,7 +545,8 @@ CREATE TABLE `tbl_pwd` (
 --
 
 INSERT INTO `tbl_pwd` (`pwd_id`, `patient_id`, `disability`, `status`) VALUES
-('12test', '03212302', 'Erectile Dysfunction', 0);
+('12test', '03212302', 'Learning Disability', 0),
+('PWD-0125', '04192301', 'Physical Disability', 0);
 
 -- --------------------------------------------------------
 
@@ -688,7 +693,11 @@ INSERT INTO `tbl_users` (`user_id`, `username`, `password`, `last_name`, `first_
 (72, 'esplanasADMIN72', '$2y$10$IULIcy.DfQDA4je.5hQXR.n0EBgVu8pOMTeQ87msXbv2QqrDAVmAy', 'Esplana', 'Samuel', NULL, NULL, '1998-05-05', '09488561235', 0, 6, 'Office Staff', 1, '2023-03-18', 0),
 (73, 'delacruzjsFD73', '$2y$10$A3H06BTjwU1dTNZaGR12Mue7o3Zp.uc1TNat99CHoCqrHHH3OjKT.', 'De La Cruz', 'Juan', 'Santos', NULL, '1998-05-05', '09488561235', 0, 5, 'Front Desk Staff', 2, '2023-03-19', 0),
 (76, 'delacruzmsPNI76', '$2y$10$sMxeysoVPmyPS.VmR8hnMOMZjRJA0YIMbPKeeEo1CAvBfRVGLYcWO', 'De La Cruz', 'Maria Clara', 'Santa Ana', NULL, '1987-05-02', '09526132487', 1, 3, 'Midwife', 2, '2023-04-17', 2),
-(77, 'pogingFrontDesk69', '$2y$10$VUTf7mnWANzsktmWizA2Dug02JzrehvuqmMBVIY/CJIYsSn95OgU2', 'Grajo', 'Julius', 'Areola', NULL, '2023-07-19', '09748512354', 0, 5, 'Front Desk Staff', 2, '2023-04-18', 0);
+(78, 'OPDTest', '$2y$10$PK9tpiVLemvbcvC5tIK7nOMf0maJnzgLYsjpTdaPhLj7onyGruj6e', 'Edit and View', 'OPD', NULL, NULL, '2023-03-01', '12345678910', 0, 1, 'OPD Test', 2, '2023-04-19', 0),
+(79, 'DentalTest', '$2y$10$x9dXPGoeGaJZKHQxYVhiwOfBAh8z4IFBzgy4we/V2z8pYAkGibE52', 'Edit and View', 'Dental', NULL, NULL, '2023-04-01', '12345678912', 0, 2, 'Dental Test', 2, '2023-04-19', 0),
+(80, 'PrenatalTest', '$2y$10$083AAV4ff0XhBi/P8yA8vOuFEQUFCVt65O6MaYT5Y98laPFwXC/oa', 'Edit and View', 'Prenatal', NULL, NULL, '2023-04-01', '12345678901', 1, 3, 'Prenatal Test', 2, '2023-04-19', 0),
+(81, 'PharmacyTest', '$2y$10$5HMd0USyWfvSn/zfVAl4euLj87Px3qZRAt7AK9zP7pdAlupUzCuly', 'Test', 'Pharmacy', NULL, NULL, '2023-04-01', '01234567845', 0, 4, 'Pharmacy Test', 3, '2023-04-19', 0),
+(82, 'FrontDeskTest', '$2y$10$3YUQwqlEFKCbDxBDMte2TehZID237gh1JLWO10Fuazdvf70FrrPHK', 'Desk', 'Front', NULL, NULL, '2023-04-01', '12345678901', 0, 5, 'Front Desk Test', 2, '2023-04-19', 0);
 
 --
 -- Indexes for dumped tables
@@ -879,7 +888,7 @@ ALTER TABLE `tbl_immunization`
 -- AUTO_INCREMENT for table `tbl_medicine_inventory`
 --
 ALTER TABLE `tbl_medicine_inventory`
-  MODIFY `medicine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `medicine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_medicine_release`
@@ -921,7 +930,7 @@ ALTER TABLE `tbl_prenatal_checkup`
 -- AUTO_INCREMENT for table `tbl_queue`
 --
 ALTER TABLE `tbl_queue`
-  MODIFY `queue_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `queue_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `tbl_supplies_inventory`
@@ -939,7 +948,7 @@ ALTER TABLE `tbl_supply_release`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- Constraints for dumped tables

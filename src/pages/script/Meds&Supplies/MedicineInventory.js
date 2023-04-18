@@ -442,6 +442,7 @@ export default {
       editMedicineRecord,
       editMedicine,
       exportTable,
+      keySession,
     };
   },
 };

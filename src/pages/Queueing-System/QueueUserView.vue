@@ -6,6 +6,7 @@
       </p>
 
       <q-btn
+        v-if="keySession && keySession.department === 5"
         color="primary"
         :label="isHideButton ? 'Show Buttons' : 'Hide Buttons'"
         :icon="isHideButton ? 'visibility' : 'visibility_off'"
@@ -28,14 +29,13 @@
             <p class="text-center text-white q-py-sm department">Opd</p>
           </div>
         </div>
-        <div
-          class="flex"
-          style="width: 100%; justify-content: center"
-          v-if="
-            keySession && keySession.department === 5 && isHideButton === false
-          "
-        >
+        <div class="flex" style="width: 100%; justify-content: center">
           <q-btn
+            v-if="
+              keySession &&
+              keySession.department === 5 &&
+              isHideButton === false
+            "
             dense
             color="negative"
             label="CLEAR OPD QUEUE"

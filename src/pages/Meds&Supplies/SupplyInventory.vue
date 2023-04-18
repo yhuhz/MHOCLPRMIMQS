@@ -290,6 +290,7 @@
         <!-- Add New Supply Stock -->
         <div>
           <q-btn
+            v-if="keySession && keySession.permission_level !== 3"
             @click="isAddNewSupplyStock = true"
             outline
             label="Add New Supply Stock"
@@ -546,6 +547,7 @@
 
                     <!-- Edit -->
                     <q-item
+                      v-if="keySession && keySession.permission_level !== 3"
                       clickable
                       class="drop-list"
                       @click="editRecordModal(props.row)"
@@ -558,6 +560,7 @@
 
                     <!-- Delete -->
                     <q-item
+                      v-if="keySession && keySession.permission_level !== 3"
                       clickable
                       class="drop-list-delete"
                       @click="openDialog(props.row.supply_id)"

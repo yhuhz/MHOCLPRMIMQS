@@ -414,6 +414,7 @@ export default {
       editSupplyRelease,
       userFilterFunction,
       userOptions,
+      keySession,
     };
   },
 };

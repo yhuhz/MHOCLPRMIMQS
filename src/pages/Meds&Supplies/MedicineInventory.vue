@@ -290,6 +290,7 @@
         <!-- Add New Medicine Stock -->
         <div>
           <q-btn
+            v-if="keySession && keySession.permission_level !== 3"
             @click="isAddNewMedicineStock = true"
             outline
             label="Add New Medicine Stock"
@@ -594,6 +595,7 @@
 
                     <!-- Edit -->
                     <q-item
+                      v-if="keySession && keySession.permission_level !== 3"
                       clickable
                       class="drop-list"
                       @click="editRecordModal(props.row)"
@@ -606,6 +608,7 @@
 
                     <!-- Delete -->
                     <q-item
+                      v-if="keySession && keySession.permission_level !== 3"
                       clickable
                       class="drop-list-delete"
                       @click="openDialog(props.row.medicine_id)"
