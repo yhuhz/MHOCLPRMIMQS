@@ -378,7 +378,11 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <q-scroll-area
+        :style="$q.screen.width < 768 ? 'height: 600px' : 'height: 1000px'"
+      >
+        <router-view />
+      </q-scroll-area>
     </q-page-container>
   </q-layout>
 </template>
