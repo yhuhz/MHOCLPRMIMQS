@@ -359,21 +359,23 @@
       class="bg-dark"
     >
       <q-list separator>
-        <div class="q-my-lg">
-          <div class="flex justify-center items-center">
-            <q-avatar class="q-mb-md">
-              <!-- <img src="https://cdn.quasar.dev/img/boy-avatar.png" /> -->
-              <img src="../images/MHOLogo.png" />
-            </q-avatar>
+        <q-scroll-area style="height: 600px">
+          <div class="q-my-lg">
+            <div class="flex justify-center items-center">
+              <q-avatar class="q-mb-md">
+                <!-- <img src="https://cdn.quasar.dev/img/boy-avatar.png" /> -->
+                <img src="../images/MHOLogo.png" />
+              </q-avatar>
+            </div>
+            <div class="text-center" v-show="!miniState">
+              <p class="text-white text-weight-bold" style="font-size: 1.2rem">
+                {{ keySession && keySession.job_title.toUpperCase() }}
+              </p>
+            </div>
           </div>
-          <div class="text-center" v-show="!miniState">
-            <p class="text-white text-weight-bold" style="font-size: 1.2rem">
-              {{ keySession && keySession.job_title.toUpperCase() }}
-            </p>
-          </div>
-        </div>
 
-        <MainMenu />
+          <MainMenu />
+        </q-scroll-area>
       </q-list>
     </q-drawer>
 
