@@ -1,5 +1,6 @@
 import { onMounted, ref, watch } from "vue";
 import _ from "lodash";
+import { throttle } from "lodash";
 import { DashboardData, GetDashboardData } from "src/composables/Dashboard";
 import { useQuasar, SessionStorage, Loading } from "quasar";
 import {
@@ -32,6 +33,10 @@ export default {
       filter: selected.value,
       department: keySession && keySession.department,
     };
+
+    const renderChartFunc = throttle(() => {
+      // code to render chart
+    }, 500);
 
     Loading.show();
     GetDashboardData(payload).then((response) => {
@@ -245,7 +250,7 @@ export default {
     );
     const chart = ref(null);
 
-    const renderChart = () => {
+    const renderChart = throttle(() => {
       if (chart.value) {
         chart.value.destroy();
       }
@@ -272,6 +277,7 @@ export default {
             ],
           },
           options: {
+            animation: false,
             scales: {
               y: {
                 beginAtZero: true,
@@ -299,6 +305,7 @@ export default {
             ],
           },
           options: {
+            animation: false,
             scales: {
               y: {
                 beginAtZero: true,
@@ -326,6 +333,7 @@ export default {
             ],
           },
           options: {
+            animation: false,
             scales: {
               y: {
                 beginAtZero: true,
@@ -353,6 +361,7 @@ export default {
             ],
           },
           options: {
+            animation: false,
             scales: {
               y: {
                 beginAtZero: true,
@@ -374,6 +383,7 @@ export default {
             ],
           },
           options: {
+            animation: false,
             scales: {
               y: {
                 beginAtZero: true,
@@ -382,7 +392,7 @@ export default {
           },
         });
       }
-    };
+    }, 0);
 
     return {
       selected,

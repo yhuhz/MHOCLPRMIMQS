@@ -193,7 +193,11 @@
 
     <!-- Users -->
     <q-item
-      v-if="keySession && keySession.department === 6"
+      v-if="
+        keySession &&
+        keySession.department === 6 &&
+        keySession.permission_level === 1
+      "
       clickable
       :class="
         $route.name === 'manage-users' ? 'bg-primary text-white' : 'text-white'
@@ -225,6 +229,10 @@
 
     <!-- Queueing System -->
     <q-item
+      v-if="
+        keySession &&
+        (keySession.department === 5 || keySession.department === 6)
+      "
       clickable
       :class="
         $route.name === 'queueing-system'
