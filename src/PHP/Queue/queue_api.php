@@ -77,20 +77,17 @@ class API
         // print_r($check_queue); return;
 
         if ($check_queue === []) {
-          $this->db->where('department', $payload['department']);
-        $queue = $this->db->get('tbl_queue');
-
-        // print_r($queue[array_key_last($queue)]); return;
-
-        //ADD TO QUEUE
-        $payload['queue_number'] = ($queue !== [] ? $queue[array_key_last($queue)]['queue_number'] +1 : 1) ;
-        $this->db->insert('tbl_queue', $payload);
+          //ADD TO QUEUE
+          if ($payload['is_priority'] === 1) {
+            $payload['queue_number'] = 'Priority ' . $payload['queue_number'];
+          }
+          $this->db->insert('tbl_queue', $payload);
 
 
-          echo json_encode(array('status' => 'success',
-                                    'data' => $payload,
-                                    'method' => 'POST'
-                                  ));
+            echo json_encode(array('status' => 'success',
+                                      'data' => $payload,
+                                      'method' => 'POST'
+                                    ));
         } else {
           echo json_encode(array('status' => 'fail',
                                     'data' => 'Patient already on queue',
@@ -105,21 +102,20 @@ class API
     public function httpPut($payload)
     {
         $payload = (array) $payload;
-        // $user_id = $payload['user_id'];
 
-        //EDIT HOUSEHOLD INFO
-        $this->db->where('household_id', $payload['household_id']);
-        $household = $this->db->update('tbl_household', $payload);
 
-        $this->db->where('household_id', $payload['household_id']);
-        $payload['patient_count'] = $this->db->getValue('tbl_patient_info', 'count(*)');
+        $this->db->where('queue_id', $payload['next_patient']);
+        $this->db->update('tbl_queue', array('is_current' => 1));
 
-        if ($household) {
+        if ($payload['current_patient'] !== null) {
+          $this->db->where('queue_id', $payload['current_patient']);
+          $this->db->delete('tbl_queue');
+        }
+
           echo json_encode(array('status' => 'success',
                                   'data' => $payload,
                                   'method' => 'PUT'
                                 ));
-        }
 
 
     }

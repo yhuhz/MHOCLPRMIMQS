@@ -15,9 +15,7 @@ import { RecordDetails } from 'src/composables/Patients';
         <div
           v-if="
             keySession &&
-            (keySession.department === 1 ||
-              keySession.department === 5 ||
-              keySession.department === 6) &&
+            (keySession.department === 1 || keySession.department === 5) &&
             keySession.permission_level !== 3
           "
         >

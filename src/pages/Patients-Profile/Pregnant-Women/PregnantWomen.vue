@@ -220,33 +220,62 @@
           class="mhc-table"
         >
           <!-- Table Row Slots -->
-          <template #body-cell-action="props">
+          <template v-slot:body-cell-action="props">
             <q-td :props="props">
               <q-btn
-                v-if="
-                  keySession &&
-                  (keySession.department === 6 ||
-                    keySession.department === 5 ||
-                    keySession.department === 3)
-                "
                 dense
                 color="primary"
-                label="View"
-                icon-right="visibility"
+                label="Action"
+                icon-right="more_vert"
                 no-caps
                 unelevated
                 class="button-100 action-btn"
-                @click="
-                  $router.push({
-                    name: 'Prenatal/patient_records',
-                    params: {
-                      id: props.row.patient_id,
-                      record_id: props.row.prenatal_id,
-                      department: 'Prenatal',
-                    },
-                  })
-                "
               >
+                <q-menu
+                  transition-show="jump-down"
+                  transition-hide="jump-up"
+                  style="width: 250px"
+                >
+                  <q-list separator dense>
+                    <!-- View -->
+                    <q-item
+                      clickable
+                      class="drop-list"
+                      @click="
+                        $router.push({
+                          name: 'Prenatal/patient_records',
+                          params: {
+                            id: props.row.patient_id,
+                            record_id: props.row.prenatal_id,
+                            department: 'Prenatal',
+                          },
+                        })
+                      "
+                    >
+                      <q-item-section>View Details</q-item-section>
+                      <q-item-section avatar>
+                        <q-icon size="xs" name="eva-eye-outline" />
+                      </q-item-section>
+                    </q-item>
+
+                    <!-- Add To Queue -->
+                    <q-item
+                      v-if="
+                        keySession &&
+                        (keySession.department === 5 ||
+                          keySession.department === 6)
+                      "
+                      clickable
+                      class="drop-list"
+                      @click="openQueueModal(props.row)"
+                    >
+                      <q-item-section>Add To Priority Queue</q-item-section>
+                      <q-item-section avatar>
+                        <q-icon size="xs" name="post_add" />
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
               </q-btn>
             </q-td>
           </template>
@@ -269,6 +298,65 @@
             </q-th>
           </template>
         </q-table>
+
+        <!-- Add Patient to Queue -->
+        <q-dialog v-model="queueOpenModal" persistent>
+          <q-card class="q-pa-md" style="width: 400px">
+            <div class="flex" style="justify-content: center">
+              <q-icon name="help_center" size="xl" color="primary" />
+            </div>
+            <p
+              class="text-primary text-weight-bold text-24 text-center q-mb-lg"
+            >
+              Which department would you like to add this patient to?
+            </p>
+
+            <q-form @submit="addToQueue">
+              <div
+                class="q-mb-md flex items-center justify-between"
+                style="justify-content: center"
+              >
+                <q-input
+                  outlined
+                  dense
+                  class="q-mr-md"
+                  v-model="queueNumber"
+                  label="Number"
+                  style="width: 150px"
+                  hide-bottom-space
+                  :rules="[(val) => (!isNaN(val) && val > 0) || '']"
+                />
+                <q-select
+                  flat
+                  outlined
+                  dense
+                  style="width: 200px"
+                  :options="departmentArrayQueue"
+                  v-model="departmentQueue"
+                />
+              </div>
+
+              <div class="flex" style="justify-content: center">
+                <q-btn
+                  dense
+                  class="q-px-md q-mr-md"
+                  label="Cancel"
+                  icon="cancel"
+                  color="grey-7"
+                  @click="queueOpenModal = !queueOpenModal"
+                />
+                <q-btn
+                  dense
+                  class="q-px-md"
+                  label="Add to Queue"
+                  type="submit"
+                  icon="post_add"
+                  color="primary"
+                />
+              </div>
+            </q-form>
+          </q-card>
+        </q-dialog>
       </div>
     </div>
   </div>

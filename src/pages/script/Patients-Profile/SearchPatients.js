@@ -388,8 +388,10 @@ export default {
     /**ADD TO QUEUE**/
     let queueOpenModal = ref(false);
     let patientToQueue = ref(null);
+    let queueNumber = ref(null);
     let departmentArrayQueue = ref([]);
     let departmentQueue = ref("OPD");
+
     const openQueueModal = (patient_info) => {
       queueOpenModal.value = true;
       patientToQueue.value = patient_info.patient_id;
@@ -420,6 +422,8 @@ export default {
       AddToQueue({
         patient_id: patientToQueue.value,
         department: departmentQueue.value,
+        queue_number: queueNumber.value,
+        is_priority: 0,
       }).then((response) => {
         Loading.hide();
 
@@ -435,6 +439,7 @@ export default {
 
         (departmentQueue.value = "OPD"),
           (patientToQueue.value = null),
+          (queueNumber.value = null),
           (queueOpenModal.value = false);
       });
     };
@@ -474,6 +479,7 @@ export default {
       addToQueue,
       departmentArrayQueue,
       departmentQueue,
+      queueNumber,
     };
   },
 };

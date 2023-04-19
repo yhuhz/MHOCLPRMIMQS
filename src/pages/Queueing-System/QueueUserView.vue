@@ -23,7 +23,9 @@
           <p class="queue-number text-center">
             {{
               currentQueue.OPD != null
-                ? "OPD" + currentQueue.OPD
+                ? currentQueue.OPD.substring(0, 8) === "Priority"
+                  ? currentQueue.OPD
+                  : "OPD" + currentQueue.OPD
                 : "No Patients"
             }}
           </p>
@@ -55,7 +57,9 @@
           <p class="queue-number text-center">
             {{
               currentQueue.Dental != null
-                ? "DNTL" + currentQueue.Dental
+                ? currentQueue.Dental.substring(0, 8) === "Priority"
+                  ? currentQueue.Dental
+                  : "DNTL" + currentQueue.Dental
                 : "No Patients"
             }}
           </p>
@@ -88,7 +92,9 @@
           <p class="queue-number text-center">
             {{
               currentQueue.Prenatal != null
-                ? "PNL" + currentQueue.Prenatal
+                ? currentQueue.Prenatal.substring(0, 8) === "Priority"
+                  ? currentQueue.Prenatal
+                  : "PNL" + currentQueue.Prenatal
                 : "No Patients"
             }}
           </p>
@@ -121,7 +127,9 @@
           <p class="queue-number text-center">
             {{
               currentQueue.Immunization != null
-                ? "IMZN" + currentQueue.Immunization
+                ? currentQueue.Immunization.substring(0, 8) === "Priority"
+                  ? currentQueue.Immunization
+                  : "IMZN" + currentQueue.Immunization
                 : "No Patients"
             }}
           </p>

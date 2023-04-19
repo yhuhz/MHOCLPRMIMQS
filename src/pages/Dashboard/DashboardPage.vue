@@ -178,40 +178,146 @@ import { DashboardData } from 'src/composables/Dashboard';
           />
 
           <div class="q-mt-lg">
-            <ol>
-              <li
-                v-for="(queue, index) in QueueSpecific"
-                :key="index"
-                class="q-px-sm text-primary text-bold"
-              >
-                <div class="flex justify-between items-baseline">
+            <div>
+              <fieldset class="inside-container current">
+                <legend class="text-bold q-px-sm" style="color: #55a15e">
+                  Current
+                </legend>
+
+                <div class="text-center text-bold" style="color: #55a15e">
                   <label
-                    class="text-primary text-bold flex items-center justify-between q-py-sm"
-                    style="cursor: pointer; font-size: 16px"
+                    style="font-size: x-large; cursor: pointer"
                     clickable
                     @click="
                       $router.push({
                         name: 'patient-details',
                         params: {
-                          id: queue.patient_id,
+                          id: currentPatient.patient_id,
                         },
                       })
                     "
+                    >{{ currentPatient && currentPatient.patient_id }}</label
                   >
-                    {{ queue.patient_id }}
-                  </label>
-                  <q-btn
-                    v-if="keySession && keySession.permission_level !== 3"
-                    class="q-px-sm"
-                    dense
-                    no-caps
-                    label="Remove"
-                    color="negative"
-                    @click="removeFromQueue(queue.queue_id)"
-                  />
                 </div>
-              </li>
-            </ol>
+              </fieldset>
+            </div>
+            <div>
+              <fieldset class="inside-container priority q-mt-lg">
+                <legend class="text-amber-8 text-bold q-px-sm">Priority</legend>
+
+                <ol>
+                  <li
+                    v-for="(queue, index) in priorityPatients"
+                    :key="index"
+                    class="q-px-sm text-amber-9 text-bold"
+                  >
+                    <div class="flex justify-between items-baseline">
+                      <label
+                        class="text-amber-9 text-bold"
+                        style="cursor: pointer; font-size: 16px"
+                        clickable
+                        @click="
+                          $router.push({
+                            name: 'patient-details',
+                            params: {
+                              id: currentPatient.patient_id,
+                            },
+                          })
+                        "
+                      >
+                        {{ queue.patient_id }}
+                      </label>
+                      <q-btn
+                        v-if="keySession && keySession.department === 5"
+                        class="q-px-sm"
+                        dense
+                        flat
+                        icon="delete"
+                        @click="removeFromQueue(queue.queue_id)"
+                      />
+                    </div>
+                  </li>
+                </ol>
+
+                <q-btn
+                  v-if="
+                    priorityPatients &&
+                    priorityPatients[0] &&
+                    keySession &&
+                    (keySession.department === 5 ||
+                      keySession.department === 1 ||
+                      keySession.department === 2 ||
+                      keySession.department === 3)
+                  "
+                  color="amber-8"
+                  label="Call in next patient"
+                  class="q-mt-md"
+                  icon="mic"
+                  style="width: 100%; font-size: 12px"
+                  @click="callInNextPriority"
+                />
+              </fieldset>
+            </div>
+
+            <div>
+              <fieldset class="inside-container in-queue q-mt-lg">
+                <legend class="text-primary text-bold q-px-sm">
+                  Patients in Queue
+                </legend>
+
+                <ol>
+                  <li
+                    v-for="(queue, index) in otherPatients"
+                    :key="index"
+                    class="q-px-sm text-primary text-bold"
+                  >
+                    <div class="flex justify-between items-baseline">
+                      <label
+                        class="text-primary text-bold"
+                        style="cursor: pointer; font-size: 16px"
+                        clickable
+                        @click="
+                          $router.push({
+                            name: 'patient-details',
+                            params: {
+                              id: currentPatient.patient_id,
+                            },
+                          })
+                        "
+                      >
+                        {{ queue.patient_id }}
+                      </label>
+                      <q-btn
+                        v-if="keySession && keySession.department === 5"
+                        class="q-pa-none"
+                        dense
+                        flat
+                        icon="delete"
+                        @click="removeFromQueue(queue.queue_id)"
+                      />
+                    </div>
+                  </li>
+                </ol>
+
+                <q-btn
+                  v-if="
+                    otherPatients &&
+                    otherPatients[0] &&
+                    keySession &&
+                    (keySession.department === 5 ||
+                      keySession.department === 1 ||
+                      keySession.department === 2 ||
+                      keySession.department === 3)
+                  "
+                  color="primary"
+                  label="Call in next patient"
+                  class="q-mt-md"
+                  icon="mic"
+                  style="width: 100%; font-size: 12px"
+                  @click="callInNextPatient"
+                />
+              </fieldset>
+            </div>
           </div>
         </fieldset>
 
@@ -252,5 +358,21 @@ import { DashboardData } from 'src/composables/Dashboard';
 
 .q-input {
   border-color: #5f8d4e;
+}
+
+.inside-container {
+  border-radius: 5px;
+}
+
+.current {
+  border: 2px solid #6bcb77;
+}
+
+.priority {
+  border: 2px solid #ffa000;
+}
+
+.in-queue {
+  border: 2px solid #5f8d4e;
 }
 </style>

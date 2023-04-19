@@ -18,10 +18,7 @@
       <div class="col-3 q-pa-md first-col leftSide col" style="width: 300px">
         <div>
           <q-btn
-            v-if="
-              keySession &&
-              (keySession.department === 5 || keySession.department === 6)
-            "
+            v-if="keySession && keySession.department === 5"
             class="float-right cursor-pointer q-mt-xs"
             icon="eva-edit-outline"
             size="xs"

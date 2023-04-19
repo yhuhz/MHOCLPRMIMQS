@@ -464,34 +464,50 @@
               Which department would you like to add this patient to?
             </p>
 
-            <div class="q-mb-md" style="justify-content: center">
-              <q-select
-                flat
-                outlined
-                dense
-                :options="departmentArrayQueue"
-                v-model="departmentQueue"
-              />
-            </div>
+            <q-form @submit="addToQueue">
+              <div
+                class="q-mb-md flex items-center justify-between"
+                style="justify-content: center"
+              >
+                <q-input
+                  outlined
+                  dense
+                  class="q-mr-md"
+                  v-model="queueNumber"
+                  label="Number"
+                  style="width: 150px"
+                  hide-bottom-space
+                  :rules="[(val) => (!isNaN(val) && val > 0) || '']"
+                />
+                <q-select
+                  flat
+                  outlined
+                  dense
+                  style="width: 200px"
+                  :options="departmentArrayQueue"
+                  v-model="departmentQueue"
+                />
+              </div>
 
-            <div class="flex" style="justify-content: center">
-              <q-btn
-                dense
-                class="q-px-md q-mr-md"
-                label="Cancel"
-                icon="cancel"
-                color="grey-7"
-                @click="queueOpenModal = !queueOpenModal"
-              />
-              <q-btn
-                dense
-                class="q-px-md"
-                label="Add to Queue"
-                icon="post_add"
-                color="primary"
-                @click="addToQueue"
-              />
-            </div>
+              <div class="flex" style="justify-content: center">
+                <q-btn
+                  dense
+                  class="q-px-md q-mr-md"
+                  label="Cancel"
+                  icon="cancel"
+                  color="grey-7"
+                  @click="queueOpenModal = !queueOpenModal"
+                />
+                <q-btn
+                  dense
+                  class="q-px-md"
+                  label="Add to Queue"
+                  type="submit"
+                  icon="post_add"
+                  color="primary"
+                />
+              </div>
+            </q-form>
           </q-card>
         </q-dialog>
       </div>

@@ -36,7 +36,7 @@ let GetQueueSpecific = (payload) => {
       })
       .then((response) => {
         // console.log("Get data from DB to queue");
-        console.log(response.data.data);
+        console.log("Queue Specific", response.data);
         QueueSpecific.value = response.data.data;
         resolve(response.data);
       })
@@ -73,17 +73,25 @@ let AddToQueue = (payload) => {
  * updates the Queue specific data based on the id passed in the object.
  * @param {*} object
  */
-let UpdateHousehold = (payload) => {
+/**CALL IN NEXT PATIENT**/
+let CallNextPatient = (payload) => {
   return new Promise((resolve, reject) => {
     axios
       .put(pathlink, payload)
       .then((response) => {
         if (response.data.status === "success") {
-          let objectIndex = Queue.value.findIndex(
-            (e) => e.household_id === payload.household_id
+          let objectIndex = QueueSpecific.value.findIndex(
+            (e) => e.queue_id === payload.next_patient
           );
           // if index not found (-1) update nothing !
-          Queue.value[objectIndex] = response.data.data;
+          QueueSpecific.value[objectIndex].is_current = 1;
+
+          let objectIndexDelete = QueueSpecific.value.findIndex(
+            (e) => e.queue_id === payload.current_patient
+          );
+          // if index not found (-1) update nothing !
+          objectIndexDelete !== -1 &&
+            QueueSpecific.value.splice(objectIndexDelete, 1);
         } else [console.log(response.data)];
         resolve(response.data);
       })
@@ -149,12 +157,13 @@ let ClearDepartmentQueue = (payload) => {
  * Export QueueList as readonly (real time copy of Queue)
  */
 export {
+  Queue,
   QueueList,
   GetQueue,
   QueueSpecific,
   GetQueueSpecific,
   AddToQueue,
-  UpdateHousehold,
+  CallNextPatient,
   RemovePatientFromQueue,
   ClearDepartmentQueue,
 };

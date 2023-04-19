@@ -2,7 +2,11 @@ import { onMounted, ref, watch } from "vue";
 import _ from "lodash";
 import { DashboardData, GetDashboardData } from "src/composables/Dashboard";
 import { useQuasar, SessionStorage, Loading } from "quasar";
-import { GetQueueSpecific, QueueSpecific } from "src/composables/Queue";
+import {
+  GetQueueSpecific,
+  QueueSpecific,
+  CallNextPatient,
+} from "src/composables/Queue";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import RemovePatientFromQueue from "../../Components/RemovePatientFromQueue";
 import { ToggleDialogState } from "../../../composables/Triggers";
@@ -79,6 +83,10 @@ export default {
     GetQueueSpecific(dept.value);
 
     const getDepartments = () => {
+      currentPatient.value = null;
+      priorityPatients.value = [];
+      otherPatients.value = [];
+
       if (selectedDepartment.value === "OPD") {
         dept.value = 1;
       } else if (selectedDepartment.value === "Dental") {
@@ -95,6 +103,53 @@ export default {
     const removeFromQueue = (queue_id) => {
       SetIDS(queue_id);
       ToggleDialogState();
+    };
+
+    let currentPatient = ref(null);
+    let priorityPatients = ref([]);
+    let otherPatients = ref([]);
+
+    watch(
+      () => _.cloneDeep(QueueSpecific.value),
+      () => {
+        QueueSpecific.value.forEach((q) => {
+          if (q.is_current === 1) {
+            currentPatient.value = q;
+          } else if (q.is_current === 0 && q.is_priority === 1) {
+            priorityPatients.value.push(q);
+          } else if (q.is_current === 0 && q.is_priority === 0) {
+            otherPatients.value.push(q);
+          }
+        });
+      }
+    );
+
+    const callInNextPriority = () => {
+      Loading.show();
+      CallNextPatient({
+        current_patient:
+          currentPatient.value !== null ? currentPatient.value.queue_id : null,
+        next_patient: priorityPatients.value[0].queue_id,
+      }).then((response) => {
+        Loading.hide();
+        priorityPatients.value = [];
+        otherPatients.value = [];
+        GetQueueSpecific(dept.value);
+      });
+    };
+
+    const callInNextPatient = () => {
+      Loading.show();
+      CallNextPatient({
+        current_patient:
+          currentPatient.value !== null ? currentPatient.value.queue_id : null,
+        next_patient: otherPatients.value[0].queue_id,
+      }).then((response) => {
+        Loading.hide();
+        priorityPatients.value = [];
+        otherPatients.value = [];
+        GetQueueSpecific(dept.value);
+      });
     };
 
     /**CHARTS**/
@@ -345,6 +400,11 @@ export default {
       chartToRender,
       totalinStockMedicine,
       totalinStockSupply,
+      currentPatient,
+      priorityPatients,
+      otherPatients,
+      callInNextPriority,
+      callInNextPatient,
     };
   },
 };

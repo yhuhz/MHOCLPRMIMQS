@@ -1,7 +1,7 @@
 import { ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import _ from "lodash";
-import { GetQueue, QueueList } from "src/composables/Queue";
+import { GetQueue, QueueList, Queue } from "src/composables/Queue";
 import { Loading, SessionStorage } from "quasar";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import ClearDepartmentQueueConfirm from "../../Components/ClearDepartmentQueueConfirm.vue";
@@ -51,17 +51,29 @@ export default {
     watch(
       () => _.cloneDeep(QueueList.value),
       () => {
-        currentQueue.value = {
-          OPD: QueueList.value.OPD[0] && QueueList.value.OPD[0].queue_number,
-          Dental:
-            QueueList.value.Dental[0] && QueueList.value.Dental[0].queue_number,
-          Prenatal:
-            QueueList.value.Prenatal[0] &&
-            QueueList.value.Prenatal[0].queue_number,
-          Immunization:
-            QueueList.value.Immunization[0] &&
-            QueueList.value.Immunization[0].queue_number,
-        };
+        QueueList.value.OPD.forEach((q) => {
+          if (q.is_current === 1) {
+            currentQueue.value.OPD = q.queue_number;
+          }
+        });
+
+        QueueList.value.Dental.forEach((q) => {
+          if (q.is_current === 1) {
+            currentQueue.value.Dental = q.queue_number;
+          }
+        });
+
+        QueueList.value.Prenatal.forEach((q) => {
+          if (q.is_current === 1) {
+            currentQueue.value.Prenatal = q.queue_number;
+          }
+        });
+
+        QueueList.value.Immunization.forEach((q) => {
+          if (q.is_current === 1) {
+            currentQueue.value.Immunization = q.queue_number;
+          }
+        });
 
         waitingQueue.value = {
           OPD: QueueList.value.OPD.length - 1,
