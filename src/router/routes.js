@@ -5,6 +5,11 @@ const routes = [
     component: () => import("pages/LoginPage.vue"),
   },
   {
+    path: "/queue-view",
+    name: "queue-view",
+    component: () => import("src/pages/Queueing-System/QueueView.vue"),
+  },
+  {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
