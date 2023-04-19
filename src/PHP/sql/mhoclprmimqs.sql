@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2023 at 10:39 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Apr 19, 2023 at 04:17 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -41,7 +41,7 @@ CREATE TABLE `tbl_dental` (
   `checkup_results` varchar(5000) DEFAULT NULL,
   `next_checkup` date DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_dental`
@@ -50,7 +50,9 @@ CREATE TABLE `tbl_dental` (
 INSERT INTO `tbl_dental` (`dental_id`, `doctor_id`, `patient_id`, `checkup_date`, `complaint`, `temperature`, `blood_pressure_systole`, `blood_pressure_diastole`, `checkup_results`, `next_checkup`, `status`) VALUES
 (1, 68, '03212302', '2023-03-28', 'Toothache', 37, 120, 60, 'Rotten tooth #4. Need to be extracted.', '2023-03-31', 0),
 (9, 69, '03212302', '2023-04-16', 'Toothache', 35, 120, 60, 'Test Test', '2023-05-25', 0),
-(10, 69, '03212301', '2023-04-16', 'Toothache', 37, 120, 60, 'Tooth number 6 is for extraction.', '2023-04-30', 0);
+(10, 69, '03212301', '2023-04-16', 'Toothache', 37, 120, 60, 'Tooth number 6 is for extraction.', '2023-04-30', 0),
+(11, 82, '03232317', '2023-04-19', 'Toothache', 35, 120, 60, 'first molar decayed. tooth extraction needed', NULL, 0),
+(12, 82, '03232327', '2023-04-19', 'toothache', 34, 120, 60, 'tooth severely decayed. needs to be extracted', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -63,7 +65,7 @@ CREATE TABLE `tbl_dental_chart` (
   `patient_id` varchar(200) NOT NULL,
   `tooth_number` varchar(200) NOT NULL,
   `tooth_score` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_dental_chart`
@@ -133,7 +135,71 @@ INSERT INTO `tbl_dental_chart` (`dental_chart_id`, `patient_id`, `tooth_number`,
 (94, '03212301', '29', 0),
 (95, '03212301', '30', 0),
 (96, '03212301', '31', 0),
-(97, '03212301', '32', 0);
+(97, '03212301', '32', 0),
+(98, '03232317', '1', 0),
+(99, '03232317', '2', 0),
+(100, '03232317', '3', 1),
+(101, '03232317', '4', 0),
+(102, '03232317', '5', 0),
+(103, '03232317', '6', 0),
+(104, '03232317', '7', 0),
+(105, '03232317', '8', 0),
+(106, '03232317', '9', 0),
+(107, '03232317', '10', 0),
+(108, '03232317', '11', 0),
+(109, '03232317', '12', 0),
+(110, '03232317', '13', 0),
+(111, '03232317', '14', 0),
+(112, '03232317', '15', 0),
+(113, '03232317', '16', 0),
+(114, '03232317', '17', 0),
+(115, '03232317', '18', 0),
+(116, '03232317', '19', 0),
+(117, '03232317', '20', 0),
+(118, '03232317', '21', 0),
+(119, '03232317', '22', 0),
+(120, '03232317', '23', 0),
+(121, '03232317', '24', 0),
+(122, '03232317', '25', 0),
+(123, '03232317', '26', 0),
+(124, '03232317', '27', 0),
+(125, '03232317', '28', 0),
+(126, '03232317', '29', 0),
+(127, '03232317', '30', 0),
+(128, '03232317', '31', 0),
+(129, '03232317', '32', 0),
+(130, '03232327', '1', 0),
+(131, '03232327', '2', 0),
+(132, '03232327', '3', 0),
+(133, '03232327', '4', 0),
+(134, '03232327', '5', 0),
+(135, '03232327', '6', 0),
+(136, '03232327', '7', 0),
+(137, '03232327', '8', 0),
+(138, '03232327', '9', 0),
+(139, '03232327', '10', 0),
+(140, '03232327', '11', 0),
+(141, '03232327', '12', 0),
+(142, '03232327', '13', 0),
+(143, '03232327', '14', 4),
+(144, '03232327', '15', 0),
+(145, '03232327', '16', 0),
+(146, '03232327', '17', 0),
+(147, '03232327', '18', 0),
+(148, '03232327', '19', 0),
+(149, '03232327', '20', 0),
+(150, '03232327', '21', 0),
+(151, '03232327', '22', 0),
+(152, '03232327', '23', 0),
+(153, '03232327', '24', 0),
+(154, '03232327', '25', 0),
+(155, '03232327', '26', 0),
+(156, '03232327', '27', 0),
+(157, '03232327', '28', 0),
+(158, '03232327', '29', 0),
+(159, '03232327', '30', 0),
+(160, '03232327', '31', 0),
+(161, '03232327', '32', 0);
 
 -- --------------------------------------------------------
 
@@ -146,7 +212,7 @@ CREATE TABLE `tbl_department` (
   `dept_code` varchar(200) NOT NULL,
   `dept_name` varchar(200) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = suspended, 2 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_department`
@@ -172,7 +238,7 @@ CREATE TABLE `tbl_household` (
   `household_name` varchar(200) NOT NULL,
   `date_added` date DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_household`
@@ -213,7 +279,7 @@ CREATE TABLE `tbl_immunization` (
   `vaccine_used` varchar(5000) NOT NULL,
   `comments` varchar(5000) DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted	'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_immunization`
@@ -248,7 +314,7 @@ CREATE TABLE `tbl_medicine_inventory` (
   `date_added` date NOT NULL,
   `added_by` int(11) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_medicine_inventory`
@@ -276,7 +342,7 @@ CREATE TABLE `tbl_medicine_release` (
   `release_date` date NOT NULL,
   `released_by` int(11) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_medicine_release`
@@ -313,7 +379,7 @@ CREATE TABLE `tbl_opd` (
   `checkup_results` varchar(5000) DEFAULT NULL,
   `next_checkup` date DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_opd`
@@ -326,7 +392,21 @@ INSERT INTO `tbl_opd` (`opd_id`, `patient_id`, `checkup_date`, `temperature`, `b
 (7, '03212301', '2023-04-06', 37, '120', 60, 175, 63, 75, 88, 'Loss of apetite', 69, 69, NULL, NULL, 0),
 (8, '03212301', '2023-03-14', 35, '120', 60, 163, 70, 72, 75, 'Pain in the ass', 71, 68, 'Patient has no jowa', '2023-03-25', 0),
 (10, '03212301', '2023-04-07', 38, '120', 60, 167, 74, 88, 88, 'test', 69, 67, NULL, NULL, 1),
-(11, '03212301', '2023-04-20', 38, '120', 60, 178, 56, 88, 88, 'test test', 70, 68, NULL, NULL, 0);
+(11, '03212301', '2023-04-20', 38, '120', 60, 178, 56, 88, 88, 'test test', 70, 68, NULL, NULL, 0),
+(16, '03232302', '2023-04-19', 36, '130', 80, 154, 67, 3, 40, 'Stomachache', 82, 72, NULL, NULL, 0),
+(17, '03232307', '2023-04-19', 36, '130', 70, 155, 55, 5, 50, 'Headache', 82, 68, NULL, NULL, 0),
+(18, '03212303', '2023-04-19', 35, '120', 80, 160, 68, 5, 40, 'Headache', 82, 72, NULL, NULL, 0),
+(19, '03232304', '2023-04-19', 36, '120', 60, 165, 60, 5, 40, 'Headache', 82, 72, NULL, NULL, 0),
+(20, '03232308', '2023-04-19', 35, '120', 60, 160, 60, 6, 40, 'Stomachache', 82, 72, NULL, NULL, 0),
+(21, '03232315', '2023-04-19', 37, '140', 80, 170, 69, 5, 30, 'Headache', 82, 72, NULL, NULL, 0),
+(22, '03232316', '2023-04-19', 35, '120', 30, 170, 60, 5, 30, 'Backpain', 82, 67, NULL, NULL, 0),
+(23, '03232321', '2023-04-19', 36, '130', 70, 158, 66, 7, 40, 'Stomachache', 82, 72, NULL, NULL, 0),
+(24, '03232326', '2023-04-19', 36, '130', 60, 166, 65, 5, 55, 'Measles', 82, 72, NULL, NULL, 0),
+(25, '03232325', '2023-04-19', 36, '120', 60, 172, 63, 6, 38, 'backpain', 82, 72, NULL, NULL, 0),
+(26, '03232324', '2023-04-19', 37, '130', 40, 166, 65, 4, 32, 'stomachache', 82, 72, NULL, NULL, 0),
+(27, '03232317', '2023-04-19', 35, '130', 60, 168, 63, 3, 63, 'headache', 82, 72, NULL, NULL, 0),
+(28, '03232312', '2023-04-19', 36, '120', 60, 165, 66, 5, 45, 'stomachache', 82, 72, NULL, NULL, 0),
+(29, '03232347', '2023-04-19', 35, '120', 60, 155, 59, 4, 36, 'stomachache', 82, 72, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -339,7 +419,7 @@ CREATE TABLE `tbl_opd_disease` (
   `opd_id` int(11) NOT NULL,
   `opd_disease` varchar(200) NOT NULL,
   `date_added` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_opd_disease`
@@ -351,7 +431,18 @@ INSERT INTO `tbl_opd_disease` (`opd_disease_id`, `opd_id`, `opd_disease`, `date_
 (113, 4, 'test', '2023-01-12'),
 (114, 1, 'Heartbroken', '2023-03-14'),
 (115, 1, 'Mahilig Uminom', '2023-03-14'),
-(116, 8, 'test', '2023-03-14');
+(116, 8, 'test', '2023-03-14'),
+(117, 19, 'Migraine', '2023-04-19'),
+(118, 19, 'frequent headaches at night', '2023-04-19'),
+(119, 20, 'frequent stomach pain', '2023-04-19'),
+(120, 22, 'lower back pain', '2023-04-19'),
+(121, 22, 'chills', '2023-04-19'),
+(122, 25, 'frequent stomach pain', '2023-04-19'),
+(123, 26, 'frequent stomach pain', '2023-04-19'),
+(124, 27, 'migraine', '2023-04-19'),
+(125, 23, 'frequent stomach pains', '2023-04-19'),
+(126, 28, 'frequent stomach pains', '2023-04-19'),
+(127, 29, 'frequent stomach pains', '2023-04-19');
 
 -- --------------------------------------------------------
 
@@ -363,7 +454,7 @@ CREATE TABLE `tbl_opd_lab_results` (
   `lab_result_id` int(11) NOT NULL,
   `opd_id` int(11) NOT NULL,
   `lab_result` varchar(5000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_opd_lab_results`
@@ -374,7 +465,12 @@ INSERT INTO `tbl_opd_lab_results` (`lab_result_id`, `opd_id`, `lab_result`) VALU
 (8, 2, 'Bacteria in urine'),
 (64, 4, 'test'),
 (65, 1, 'Walang jowa'),
-(66, 8, 'Walang jowa');
+(66, 8, 'Walang jowa'),
+(67, 20, 'ulcer'),
+(68, 22, 'UTI'),
+(69, 26, 'ulcer'),
+(70, 23, 'ulcer'),
+(71, 28, 'ulcer');
 
 -- --------------------------------------------------------
 
@@ -397,7 +493,7 @@ CREATE TABLE `tbl_patient_info` (
   `added_by` int(11) NOT NULL,
   `date_added` date NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deceased, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_patient_info`
@@ -467,7 +563,13 @@ INSERT INTO `tbl_patient_info` (`patient_id`, `household_id`, `last_name`, `firs
 ('04032309', 9, 'Yap', 'John Albet', 'Alejo', NULL, 0, '2023-03-23', 'Miti', 'Miti, Camalig, Albay', '09269761328', 69, '2023-04-03', 0),
 ('04032310', 10, 'Atun', 'Rhian Mae', 'Abiera', NULL, 1, '2023-03-19', 'Bongabong', 'Bongabong, Camalig, Albay', '09267743557', 69, '2023-04-03', 0),
 ('04042301', 1, 'De La Cruz', 'Antonio', NULL, NULL, 0, '2015-04-04', 'Baligang', 'Baligang, Camalig', '09451237851', 69, '2023-04-04', 0),
-('04192301', 1, 'Grajo', 'Dominic', 'Marquez', NULL, 0, '2004-04-06', 'Tagaytay', '', '09459821321', 82, '2023-04-19', 0);
+('04192301', 1, 'Grajo', 'Dominic', 'Marquez', NULL, 0, '2004-04-06', 'Tagaytay', '', '09459821321', 82, '2023-04-19', 0),
+('04192302', 7, 'Antonino', 'Nicanor', 'Azagra', NULL, 0, '1936-03-02', 'Ilawod', '', 'NA', 82, '2023-04-19', 0),
+('04192303', 12, 'Madrilejos', 'Corazon', 'Espina', NULL, 1, '1940-06-20', 'Palanog', '', 'NA', 82, '2023-04-19', 0),
+('04192304', 13, 'Andes', 'Rodrigo', 'Peralta', 'Sr.', 0, '1941-08-19', 'Baligang', '', 'NA', 82, '2023-04-19', 0),
+('04192305', 14, 'Armenta', 'Salome', 'Rios', NULL, 0, '1944-01-06', 'Bantonan', '', 'NA', 82, '2023-04-19', 0),
+('04192306', 18, 'Reolo', 'Lourdes', 'Regalado', NULL, 1, '1946-05-08', 'Gapo', '', 'NA', 82, '2023-04-19', 0),
+('04192307', 15, 'Millares', 'Natividad', 'Renoso', NULL, 0, '1939-09-23', 'Magogon', '', 'NA', 82, '2023-04-19', 0);
 
 -- --------------------------------------------------------
 
@@ -485,7 +587,7 @@ CREATE TABLE `tbl_prenatal` (
   `midwifes_notes` varchar(5000) DEFAULT NULL,
   `date_added` date NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_prenatal`
@@ -515,7 +617,7 @@ CREATE TABLE `tbl_prenatal_checkup` (
   `next_checkup` date DEFAULT NULL,
   `comments` varchar(5000) DEFAULT NULL,
   `status` int(3) NOT NULL COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_prenatal_checkup`
@@ -538,7 +640,7 @@ CREATE TABLE `tbl_pwd` (
   `patient_id` varchar(200) NOT NULL,
   `disability` varchar(500) DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deceased, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_pwd`
@@ -546,7 +648,10 @@ CREATE TABLE `tbl_pwd` (
 
 INSERT INTO `tbl_pwd` (`pwd_id`, `patient_id`, `disability`, `status`) VALUES
 ('12test', '03212302', 'Learning Disability', 0),
-('PWD-0125', '04192301', 'Physical Disability', 0);
+('PWD-0125', '04192301', 'Physical Disability', 0),
+('PWD-1103', '04192304', 'Physical Disability', 0),
+('PWD-1900', '04192305', 'Physical Disability', 0),
+('PWD-3001', '04192306', 'Physical Disability', 0);
 
 -- --------------------------------------------------------
 
@@ -559,7 +664,7 @@ CREATE TABLE `tbl_queue` (
   `queue_number` int(11) NOT NULL,
   `patient_id` varchar(200) NOT NULL,
   `department` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_queue`
@@ -590,14 +695,20 @@ CREATE TABLE `tbl_senior_citizen` (
   `senior_citizen_id` varchar(200) NOT NULL,
   `patient_id` varchar(200) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deceased, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_senior_citizen`
 --
 
 INSERT INTO `tbl_senior_citizen` (`senior_citizen_id`, `patient_id`, `status`) VALUES
-('SC-0589', '03232315', 0);
+('SC-0589', '03232315', 0),
+('SC-1102', '04192302', 0),
+('SC-3340', '04192306', 0),
+('SC-4423', '04192305', 0),
+('SC-5244', '04192304', 0),
+('SC-5560', '04192303', 0),
+('SC-7022', '04192307', 0);
 
 -- --------------------------------------------------------
 
@@ -617,7 +728,7 @@ CREATE TABLE `tbl_supplies_inventory` (
   `date_added` date NOT NULL,
   `added_by` int(11) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_supplies_inventory`
@@ -644,7 +755,7 @@ CREATE TABLE `tbl_supply_release` (
   `release_date` date NOT NULL,
   `released_by` int(11) NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_supply_release`
@@ -678,7 +789,7 @@ CREATE TABLE `tbl_users` (
   `permission_level` int(5) NOT NULL COMMENT '0 - no access, 1 - admin, 2 - doctors, 3 - front_desk, 4 - view',
   `date_added` date NOT NULL,
   `status` int(3) NOT NULL DEFAULT 0 COMMENT '0 = active, 1 = suspended, 2 = deleted'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_users`
@@ -858,13 +969,13 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_dental`
 --
 ALTER TABLE `tbl_dental`
-  MODIFY `dental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `dental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tbl_dental_chart`
 --
 ALTER TABLE `tbl_dental_chart`
-  MODIFY `dental_chart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `dental_chart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
 
 --
 -- AUTO_INCREMENT for table `tbl_department`
@@ -900,19 +1011,19 @@ ALTER TABLE `tbl_medicine_release`
 -- AUTO_INCREMENT for table `tbl_opd`
 --
 ALTER TABLE `tbl_opd`
-  MODIFY `opd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `opd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `tbl_opd_disease`
 --
 ALTER TABLE `tbl_opd_disease`
-  MODIFY `opd_disease_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+  MODIFY `opd_disease_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 
 --
 -- AUTO_INCREMENT for table `tbl_opd_lab_results`
 --
 ALTER TABLE `tbl_opd_lab_results`
-  MODIFY `lab_result_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `lab_result_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `tbl_prenatal`

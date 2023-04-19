@@ -10,7 +10,9 @@
         color="primary"
         :label="isHideButton ? 'Show Buttons' : 'Hide Buttons'"
         :icon="isHideButton ? 'visibility' : 'visibility_off'"
-        class="fixed-top-right q-mt-xl"
+        :class="
+          $q.screen.height < 769 ? 'fixed-top-right' : 'fixed-top-right q-mt-xl'
+        "
         @click="isHideButton = !isHideButton"
       />
     </div>
@@ -139,7 +141,7 @@
           <q-btn
             dense
             color="negative"
-            label="CLEAR immunization QUEUE"
+            label="CLEAR IMZN QUEUE"
             icon="delete"
             class="q-px-md"
             style="width: 100%"

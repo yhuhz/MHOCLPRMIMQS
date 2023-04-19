@@ -16,8 +16,6 @@
         <div class="flex items-center cursor-pointer">
           <q-avatar>
             <q-img :src="avatarLink" />
-            <!-- <img src="../images/outpatient.png" /> -->
-            <!-- <q-icon name="person" /> -->
           </q-avatar>
           <q-toolbar-title class="account-name">
             {{ name }}
@@ -359,7 +357,7 @@
       class="bg-dark"
     >
       <q-list separator>
-        <q-scroll-area style="height: 600px">
+        <q-scroll-area :style="{ height: $q.screen.height - 50 + 'px' }">
           <div class="q-my-lg">
             <div class="flex justify-center items-center">
               <q-avatar class="q-mb-md">
@@ -380,9 +378,7 @@
     </q-drawer>
 
     <q-page-container>
-      <q-scroll-area
-        :style="$q.screen.height < 800 ? 'height: 600px' : 'height: 1000px'"
-      >
+      <q-scroll-area :style="{ height: $q.screen.height - 50 + 'px' }">
         <router-view />
       </q-scroll-area>
     </q-page-container>

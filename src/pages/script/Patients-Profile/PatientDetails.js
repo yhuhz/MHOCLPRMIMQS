@@ -95,7 +95,7 @@ export default {
     let departments = ["OPD", "Dental", "Prenatal", "Immunization"];
 
     if (selectedDepartment.value === "Immunization") {
-      if (keySession.department === 3) {
+      if (keySession.department === 3 || keySession.department === 5) {
         isbtnDisabled.value = false;
       } else {
         isbtnDisabled.value = true;
@@ -103,8 +103,9 @@ export default {
     } else {
       if (
         keySession &&
-        keySession.department ===
-          departments.indexOf(selectedDepartment.value) + 1
+        (keySession.department ===
+          departments.indexOf(selectedDepartment.value) + 1 ||
+          keySession.department === 5)
       ) {
         isbtnDisabled.value = false;
       } else {
@@ -119,7 +120,7 @@ export default {
       });
 
       if (selectedDepartment.value === "Immunization") {
-        if (keySession.department === 3) {
+        if (keySession.department === 3 || keySession.department === 5) {
           isbtnDisabled.value = false;
         } else {
           isbtnDisabled.value = true;
@@ -127,8 +128,9 @@ export default {
       } else {
         if (
           keySession &&
-          keySession.department ===
-            departments.indexOf(selectedDepartment.value) + 1
+          (keySession.department ===
+            departments.indexOf(selectedDepartment.value) + 1 ||
+            keySession.department === 5)
         ) {
           isbtnDisabled.value = false;
         } else {

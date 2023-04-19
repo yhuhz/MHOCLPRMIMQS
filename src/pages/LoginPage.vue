@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="text-center">
-      <h5 class="system-name primary-text-color text-weight-bold">
+      <h5 class="system-name primary-text-color text-weight-bold q-my-md">
         LAN-BASED PATIENT RECORD AND MEDICINE INVENTORY <br />
         MANAGEMENT WITH QUEUEING SYSTEM
       </h5>

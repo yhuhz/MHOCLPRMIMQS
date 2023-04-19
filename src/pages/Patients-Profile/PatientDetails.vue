@@ -134,7 +134,7 @@
         <div class="row q-my-lg">
           <div class="col">
             <q-btn
-              v-if="keySession.permission_level !== 3"
+              v-if="keySession && keySession.permission_level !== 3"
               dense
               color="primary"
               outline
