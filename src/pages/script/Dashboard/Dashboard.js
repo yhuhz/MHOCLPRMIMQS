@@ -401,7 +401,7 @@ export default {
       setTimeout(() => {
         const rect = chartDiv.value.getBoundingClientRect();
         chartHeight.value = rect.height;
-        console.log("myDivHeight:", chartHeight.value);
+        // console.log("myDivHeight:", chartHeight.value);
       }, 1000);
     });
 

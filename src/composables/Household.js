@@ -20,7 +20,7 @@ let FindHouseholdByID = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         Households.value = response.data.data;
         resolve(response.data);
       })
@@ -61,7 +61,7 @@ let AddHousehold = (payload) => {
       .post(pathlink, payload)
       .then((response) => {
         if (response.data.status === "success") {
-          console.log(response.data);
+          // console.log(response.data);
           Households.value.push(response.data.data);
         } else {
           console.log(response.data);

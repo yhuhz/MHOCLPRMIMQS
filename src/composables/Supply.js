@@ -18,7 +18,7 @@ let GetSupplies = (payload) => {
         params: { payload: payload },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
 
         if (response.data.status === "success") {
           Supplies.value = response.data.data;
@@ -43,7 +43,7 @@ let FindSupplyDetails = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         SupplyDetails.value = response.data.data;
         resolve(response.data);
       })
@@ -62,7 +62,7 @@ let FindSupplyRelease = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         SupplyRelease.value = response.data.data;
         resolve(response.data);
       })
@@ -82,7 +82,7 @@ let AddSupply = (payload) => {
     axios
       .post(pathlink, payload)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.status === "success") {
           try {
             Supplies.value.push(response.data.data);
@@ -106,7 +106,7 @@ let AddSupplyRelease = (payload) => {
     axios
       .post(pathlink, payload)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.status === "success") {
           try {
             SupplyRelease.value.push(response.data.data);
@@ -217,7 +217,7 @@ let DeleteSupplyRelease = (payload) => {
     axios
       .delete(pathlink + "?supply_release_id=" + payload.supply_release_id)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.status === "success") {
           let objectIndex = SupplyRelease.value.findIndex(
             (e) => e.supply_release_id === payload.supply_release_id

@@ -16,7 +16,7 @@
     </div>
 
     <div class="queue-box q-mt-lg">
-      <div class="q-mb-xl">
+      <div class="q-mb-lg">
         <div class="queue-opd shadow-5">
           <div class="bg-yellow-8 department">
             <p class="text-center text-white q-py-sm department">Opd</p>
@@ -32,7 +32,7 @@
           </p>
         </div>
         <div
-          class="flex"
+          class="flex q-mt-md"
           style="width: 100%; justify-content: center"
           v-if="
             keySession && keySession.department === 5 && isHideButton === false
@@ -67,7 +67,7 @@
           </p>
         </div>
         <div
-          class="flex"
+          class="flex q-mt-md"
           style="width: 100%; justify-content: center"
           v-if="
             keySession && keySession.department === 5 && isHideButton === false
@@ -102,7 +102,7 @@
           </p>
         </div>
         <div
-          class="flex"
+          class="flex q-mt-md"
           style="width: 100%; justify-content: center"
           v-if="
             keySession && keySession.department === 5 && isHideButton === false
@@ -139,7 +139,7 @@
           </p>
         </div>
         <div
-          class="flex"
+          class="flex q-mt-md"
           style="width: 100%; justify-content: center"
           v-if="
             keySession && keySession.department === 5 && isHideButton === false
@@ -159,7 +159,7 @@
     </div>
 
     <!-- Waiting on queue -->
-    <div class="q-mt-xl">
+    <div class="q-mt-lg">
       <p
         class="text-center text-dark text-weight-medium"
         style="font-size: 1.8rem"

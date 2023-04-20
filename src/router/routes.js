@@ -99,6 +99,11 @@ const routes = [
           },
         ],
       },
+      {
+        path: "search-records",
+        name: "search-records",
+        component: () => import("pages/Patients-Profile/SearchRecords.vue"),
+      },
       // Household
       {
         path: "household-records",

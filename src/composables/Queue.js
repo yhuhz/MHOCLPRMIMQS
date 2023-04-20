@@ -36,7 +36,7 @@ let GetQueueSpecific = (payload) => {
       })
       .then((response) => {
         // console.log("Get data from DB to queue");
-        console.log("Queue Specific", response.data);
+        // console.log("Queue Specific", response.data);
         QueueSpecific.value = response.data.data;
         resolve(response.data);
       })
@@ -57,7 +57,7 @@ let AddToQueue = (payload) => {
       .post(pathlink, payload)
       .then((response) => {
         if (response.data.status === "success") {
-          console.log(response.data);
+          // console.log(response.data);
         } else {
           console.log(response.data);
         }

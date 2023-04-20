@@ -30,15 +30,23 @@ class API
 
         if ($payload['record_type'] === "OPD") {
           $this->db->where('status', 0 );
+
+          $this->db->orderBy('checkup_date', 'ASC');
           $record = $this->db->get('tbl_opd', null, 'opd_id as record_id, checkup_date as date');
         } else if ($payload['record_type'] === "Dental") {
           $this->db->where('status', 0 );
+
+          $this->db->orderBy('checkup_date', 'ASC');
           $record = $this->db->get('tbl_dental', null, 'dental_id as record_id, checkup_date as date');
         } else if ($payload['record_type'] === "Prenatal") {
           $this->db->where('status', 0 );
+
+          $this->db->orderBy('date_added', 'ASC');
           $record = $this->db->get('tbl_prenatal', null, 'prenatal_id as record_id, date_added as date');
         } else if ($payload['record_type'] === "Immunization") {
           $this->db->where('status', 0 );
+
+          $this->db->orderBy('immunization_date', 'ASC');
           $record = $this->db->get('tbl_immunization', null, 'immunization_id as record_id, immunization_date as date');
         }
 
@@ -53,6 +61,8 @@ class API
         $this->db->join('tbl_pwd pw', 'pw.patient_id=p.patient_id', 'LEFT');
         $this->db->join('tbl_senior_citizen sc', 'sc.patient_id=p.patient_id', 'LEFT');
         $this->db->where('p.patient_id',$payload['patient_id']);
+
+        $this->db->orderBy('first_name', 'ASC');
         $patient = $this->db->get('tbl_patient_info p', null, 'p.patient_id, first_name, middle_name, last_name, suffix, household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, barangay, address, pw.pwd_id, pw.disability, sc.senior_citizen_id');
 
         if ($patient != []) {
@@ -115,6 +125,8 @@ class API
 
         $this->db->join('tbl_patient_info p', 'p.patient_id=pw.patient_id', 'LEFT');
         $this->db->join('tbl_household hh', 'hh.household_id=p.household_id', 'LEFT');
+
+        $this->db->orderBy('first_name', 'ASC');
         $patients = $this->db->get('tbl_pwd pw', null, 'pw.patient_id, concat(first_name, " ", last_name, " ", coalesce(suffix, "")) as name, first_name, middle_name, last_name, suffix, hh.household_name, p.household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, pw.pwd_id, pw.disability, barangay, address');
 
         if ($patients) {
@@ -180,6 +192,8 @@ class API
 
         $this->db->join('tbl_patient_info p', 'p.patient_id=sc.patient_id', 'LEFT');
         $this->db->join('tbl_household hh', 'hh.household_id=p.household_id', 'LEFT');
+
+        $this->db->orderBy('first_name', 'ASC');
         $patients = $this->db->get('tbl_senior_citizen sc', null, 'sc.patient_id, concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name, first_name, middle_name, last_name, suffix, hh.household_name, p.household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, sc.senior_citizen_id, barangay, address');
 
         if ($patients) {
@@ -335,6 +349,8 @@ class API
         }
 
         $this->db->join('tbl_household hh', 'hh.household_id=p.household_id', 'LEFT');
+
+        $this->db->orderBy('first_name', 'ASC');
         $patients = $this->db->get('tbl_patient_info p', null, 'patient_id, concat(first_name, " ", last_name, IFNULL(CONCAT(" ", suffix), "")) as name, first_name, middle_name, last_name, suffix, hh.household_name, p.household_id, sex, birthdate, FLOOR(DATEDIFF(CURRENT_DATE, birthdate)/365) as age, phone_number, p.status, barangay, address');
 
         if ($patients) {

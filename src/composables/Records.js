@@ -45,7 +45,7 @@ let FindRecordDetails = (payload, department) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (
           department === "OPD" ||
           department === "Prenatal" ||
@@ -113,7 +113,7 @@ let UpdateRecord = (payload, department) => {
       .put(pathlink, payload)
       .then((response) => {
         if (response.data.status === "success") {
-          console.log(response.data);
+          // console.log(response.data);
           if (
             department === "OPD" ||
             department === "Prenatal" ||
@@ -139,7 +139,7 @@ let UpdateRecord = (payload, department) => {
  * @param {*} array
  */
 let DeleteRecord = (payload, department) => {
-  console.log(payload);
+  // console.log(payload);
   let pathlink =
     "http://localhost/MHOCLPRMIMQS/src/PHP/Patient Records/" +
     department.toLowerCase() +
@@ -148,7 +148,7 @@ let DeleteRecord = (payload, department) => {
     axios
       .delete(pathlink + "?record_id=" + payload.record_id)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.status === "success") {
           let objectIndex = PatientRecords.value.findIndex(
             (e) => e.record_id === Number(payload.record_id)

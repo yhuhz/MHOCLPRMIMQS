@@ -19,7 +19,7 @@ let GetMedicines = (payload) => {
         params: { payload: payload },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
 
         if (response.data.status === "success") {
           Medicines.value = response.data.data;
@@ -44,7 +44,7 @@ let FindMedicineDetails = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         MedicineDetails.value = response.data.data;
         resolve(response.data);
       })
@@ -63,7 +63,7 @@ let FindMedicineRelease = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         MedicineRelease.value = response.data.data;
         resolve(response.data);
       })
@@ -82,7 +82,7 @@ let FindMedicineReleasePerPatient = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         MedReleasePerPatient.value = response.data.data;
         resolve(response.data);
       })
@@ -111,7 +111,7 @@ let AddMedicine = (payload) => {
             Medicines.value.push(response.data.data);
           }
         } else {
-          console.log(response.data);
+          // console.log(response.data);
         }
         resolve(response.data);
       })
@@ -126,7 +126,7 @@ let AddMedicineRelease = (payload) => {
     axios
       .post(pathlink, payload)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.status === "success") {
           try {
             MedicineRelease.value.push(response.data.data);
@@ -237,7 +237,7 @@ let DeleteMedicineRelease = (payload) => {
     axios
       .delete(pathlink + "?med_release_id=" + payload.med_release_id)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.status === "success") {
           let objectIndex = MedicineRelease.value.findIndex(
             (e) => e.med_release_id === payload.med_release_id

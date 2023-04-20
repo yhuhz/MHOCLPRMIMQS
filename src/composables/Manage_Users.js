@@ -18,7 +18,7 @@ let GetUsers = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         Users.value = response.data.data;
         resolve(response.data);
       })
@@ -74,7 +74,7 @@ let AddUser = (payload) => {
       .post(pathlink, payload)
       .then((response) => {
         if (response.data.status === "success") {
-          console.log(response.data);
+          // console.log(response.data);
           Users.value.push(response.data.data);
         } else {
           console.log(response.data);
@@ -115,7 +115,7 @@ let ResetPassword = (payload) => {
     axios
       .put(pathlink, payload)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         resolve(response.data);
       })
       .catch((error) => {

@@ -20,7 +20,7 @@ let GetPatients = (payload) => {
         params: { payload: payload },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
 
         if (typeof payload.pwd != "undefined") {
           PWD.value = response.data.data;
@@ -88,7 +88,7 @@ let AddPatient = (payload) => {
     axios
       .post(pathlink, payload)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.status === "success") {
           // Patients.value.push(response.data.data);
         } else {
@@ -111,7 +111,7 @@ let EditPatient = (payload) => {
     axios
       .put(pathlink, payload)
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         if (response.data.status === "success") {
           let objectIndex = Patients.value.findIndex(
             (e) => e.patient_id === payload.personal_info.patient_id

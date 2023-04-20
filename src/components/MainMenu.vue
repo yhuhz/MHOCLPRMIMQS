@@ -75,6 +75,22 @@
         <q-item
           clickable
           class="list-text text-white"
+          @click="$router.push({ name: 'search-records' })"
+          :class="
+            $route.name === 'search-records'
+              ? 'bg-primary list-text text-white'
+              : 'list-text text-white'
+          "
+        >
+          <q-item-section avatar>
+            <q-icon size="xs" name="medical_information" class="q-ml-md" />
+          </q-item-section>
+          <q-item-section class="q-ml-md">Health Records</q-item-section>
+        </q-item>
+
+        <q-item
+          clickable
+          class="list-text text-white"
           @click="$router.push({ name: 'household-records' })"
           :class="
             $route.name === 'household-records'

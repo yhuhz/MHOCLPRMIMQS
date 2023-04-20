@@ -15,7 +15,7 @@ let GetDashboardData = (payload) => {
     axios
       .get(pathlink, { params: { dashboard_filter: payload } })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         DashboardData.value = response.data.data;
         resolve(response.data);
       })
