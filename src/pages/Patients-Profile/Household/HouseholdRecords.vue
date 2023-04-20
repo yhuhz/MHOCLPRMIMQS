@@ -98,7 +98,9 @@
           <q-btn
             v-if="
               keySession &&
-              (keySession.department === 5 || keySession.department === 6) &&
+              (keySession.department === 5 ||
+                (keySession.department === 6 &&
+                  keySession.permission_level === 1)) &&
               keySession.permission_level !== 3
             "
             @click="isAddHousehold = true"

@@ -225,7 +225,10 @@
           class="flex justify-end"
           v-if="
             keySession &&
-            (keySession.department === 6 || keySession.department === 5) &&
+            ((keySession.department === 6 &&
+              keySession.permission_level === 1 &&
+              keySession.permission_level === 1) ||
+              keySession.department === 5) &&
             keySession.permission_level != 3
           "
         >

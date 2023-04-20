@@ -10,16 +10,17 @@
         color="primary"
         :label="isHideButton ? 'Show Buttons' : 'Hide Buttons'"
         :icon="isHideButton ? 'visibility' : 'visibility_off'"
-        :class="
-          $q.screen.height < 769 ? 'fixed-top-right' : 'fixed-top-right q-mt-xl'
-        "
+        class="fixed-top-right"
         @click="isHideButton = !isHideButton"
       />
     </div>
 
     <div class="queue-box q-mt-lg">
-      <div>
-        <div class="queue-opd q-pt-md">
+      <div class="q-mb-xl">
+        <div class="queue-opd shadow-5">
+          <div class="bg-yellow-8 department">
+            <p class="text-center text-white q-py-sm department">Opd</p>
+          </div>
           <p class="queue-number text-center">
             {{
               currentQueue.OPD != null
@@ -29,17 +30,15 @@
                 : "No Patients"
             }}
           </p>
-          <div class="bg-yellow-8">
-            <p class="text-center text-white q-py-sm department">Opd</p>
-          </div>
         </div>
-        <div class="flex" style="width: 100%; justify-content: center">
+        <div
+          class="flex"
+          style="width: 100%; justify-content: center"
+          v-if="
+            keySession && keySession.department === 5 && isHideButton === false
+          "
+        >
           <q-btn
-            v-if="
-              keySession &&
-              keySession.department === 5 &&
-              isHideButton === false
-            "
             dense
             color="negative"
             label="CLEAR OPD QUEUE"
@@ -53,7 +52,10 @@
 
       <!-- Dental -->
       <div>
-        <div class="queue-dental q-pt-md">
+        <div class="queue-dental shadow-5">
+          <div class="bg-yellow-8 department">
+            <p class="text-center text-white q-py-sm department">Dental</p>
+          </div>
           <p class="queue-number text-center">
             {{
               currentQueue.Dental != null
@@ -63,9 +65,6 @@
                 : "No Patients"
             }}
           </p>
-          <div class="bg-yellow-8">
-            <p class="text-center text-white q-py-sm department">Dental</p>
-          </div>
         </div>
         <div
           class="flex"
@@ -88,7 +87,10 @@
 
       <!-- Prenatal -->
       <div>
-        <div class="queue-prenatal q-pt-md">
+        <div class="queue-prenatal shadow-5">
+          <div class="department">
+            <p class="text-center text-white q-py-sm">Prenatal</p>
+          </div>
           <p class="queue-number text-center">
             {{
               currentQueue.Prenatal != null
@@ -98,9 +100,6 @@
                 : "No Patients"
             }}
           </p>
-          <div class="department">
-            <p class="text-center text-white q-py-sm">Prenatal</p>
-          </div>
         </div>
         <div
           class="flex"
@@ -123,7 +122,12 @@
 
       <!-- Immunization -->
       <div>
-        <div class="queue-imzn q-pt-md">
+        <div class="queue-imzn shadow-5">
+          <div class="bg-yellow-8 department">
+            <p class="text-center text-white q-py-sm department">
+              Immunization
+            </p>
+          </div>
           <p class="queue-number text-center">
             {{
               currentQueue.Immunization != null
@@ -133,11 +137,6 @@
                 : "No Patients"
             }}
           </p>
-          <div class="bg-yellow-8">
-            <p class="text-center text-white q-py-sm department">
-              Immunization
-            </p>
-          </div>
         </div>
         <div
           class="flex"
@@ -165,7 +164,7 @@
         class="text-center text-dark text-weight-medium"
         style="font-size: 1.8rem"
       >
-        Waiting on Queue
+        Number of Patients Waiting on Queue
       </p>
 
       <!-- Box -->
@@ -220,7 +219,7 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   .queue-number {
-    font-size: 2.5rem;
+    font-size: 40px;
     letter-spacing: 2px;
     font-weight: bold;
     color: #fff;
@@ -230,14 +229,17 @@
   }
 
   .department {
-    font-size: 1.15rem;
+    font-size: 30px;
     letter-spacing: 2px;
     font-weight: 500;
     text-transform: uppercase;
+    border-radius: 5px 5px 0px 0px;
   }
 
   .queue-opd {
     background-color: #f1d356;
+    height: 200px;
+    border-radius: 5px;
 
     .department {
       background-color: #debb2a;
@@ -245,6 +247,8 @@
   }
   .queue-dental {
     background-color: #4d96ff;
+    height: 200px;
+    border-radius: 5px;
 
     .department {
       background-color: #2977e8;
@@ -253,6 +257,8 @@
 
   .queue-prenatal {
     background-color: #e59494;
+    height: 200px;
+    border-radius: 5px;
 
     .department {
       background-color: #db6868;
@@ -260,6 +266,8 @@
   }
   .queue-imzn {
     background-color: #7fa471;
+    height: 200px;
+    border-radius: 5px;
 
     .department {
       background-color: #3f8327;
@@ -274,14 +282,15 @@
   .box {
     display: inline-grid;
     border: 2px solid #548d4e;
-    height: 150px;
+    border-radius: 10px;
+    height: 200px;
     justify-content: center;
     align-items: center;
   }
 }
 
 .queue-waiting {
-  font-size: 2.5rem;
+  font-size: 4.5rem;
   letter-spacing: 2px;
   font-weight: bold;
   color: #fff;

@@ -394,6 +394,23 @@ export default {
       }
     }, 0);
 
+    const chartDiv = ref(null);
+    const chartHeight = ref(null);
+
+    onMounted(() => {
+      setTimeout(() => {
+        const rect = chartDiv.value.getBoundingClientRect();
+        chartHeight.value = rect.height;
+        console.log("myDivHeight:", chartHeight.value);
+      }, 1000);
+    });
+
+    watch(chartHeight, () => {
+      if (chart.value) {
+        chart.value.resize();
+      }
+    });
+
     return {
       selected,
       options,
@@ -415,6 +432,8 @@ export default {
       otherPatients,
       callInNextPriority,
       callInNextPatient,
+      chartDiv,
+      chartHeight,
     };
   },
 };

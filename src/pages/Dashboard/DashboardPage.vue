@@ -163,168 +163,175 @@ import { DashboardData } from 'src/composables/Dashboard';
           class="grid-item1"
           v-if="keySession && keySession.department !== 4"
         >
-          <legend class="text-primary text-bold q-px-sm">
-            Patients On Queue
-          </legend>
-          <q-select
-            flat
-            dense
-            outlined
-            label="Select Department"
-            :options="departmentList"
-            v-model="selectedDepartment"
-            @update:model-value="getDepartments"
-            class="q-mt-md"
-          />
+          <legend class="text-primary text-bold q-px-sm">QUEUE</legend>
+          <q-scroll-area :style="{ height: chartHeight + 'px' }">
+            <q-select
+              flat
+              dense
+              outlined
+              label="Select Department"
+              :options="departmentList"
+              v-model="selectedDepartment"
+              @update:model-value="getDepartments"
+              class="q-mt-md"
+            />
 
-          <div class="q-mt-lg">
-            <div>
-              <fieldset class="inside-container current">
-                <legend class="text-bold q-px-sm" style="color: #55a15e">
-                  Current
-                </legend>
+            <div class="q-mt-lg">
+              <div>
+                <fieldset class="inside-container current">
+                  <legend class="text-bold q-px-sm" style="color: #55a15e">
+                    Current
+                  </legend>
 
-                <div class="text-center text-bold" style="color: #55a15e">
-                  <label
-                    style="font-size: x-large; cursor: pointer"
-                    clickable
-                    @click="
-                      $router.push({
-                        name: 'patient-details',
-                        params: {
-                          id: currentPatient.patient_id,
-                        },
-                      })
+                  <div class="text-center text-bold" style="color: #55a15e">
+                    <label
+                      style="font-size: x-large; cursor: pointer"
+                      clickable
+                      @click="
+                        $router.push({
+                          name: 'patient-details',
+                          params: {
+                            id: currentPatient.patient_id,
+                          },
+                        })
+                      "
+                      >{{ currentPatient && currentPatient.patient_id }}</label
+                    >
+                  </div>
+                </fieldset>
+              </div>
+              <div>
+                <fieldset class="inside-container priority q-mt-lg">
+                  <legend class="text-amber-8 text-bold q-px-sm">
+                    Priority
+                  </legend>
+
+                  <ol>
+                    <li
+                      v-for="(queue, index) in priorityPatients"
+                      :key="index"
+                      class="q-px-sm text-amber-9 text-bold"
+                    >
+                      <div class="flex justify-between items-baseline">
+                        <label
+                          class="text-amber-9 text-bold"
+                          style="cursor: pointer; font-size: 16px"
+                          clickable
+                          @click="
+                            $router.push({
+                              name: 'patient-details',
+                              params: {
+                                id: currentPatient.patient_id,
+                              },
+                            })
+                          "
+                        >
+                          {{ queue.patient_id }}
+                        </label>
+                        <q-btn
+                          v-if="keySession && keySession.department === 5"
+                          class="q-px-sm"
+                          dense
+                          flat
+                          icon="delete"
+                          @click="removeFromQueue(queue.queue_id)"
+                        />
+                      </div>
+                    </li>
+                  </ol>
+
+                  <q-btn
+                    v-if="
+                      priorityPatients &&
+                      priorityPatients[0] &&
+                      keySession &&
+                      (keySession.department === 5 ||
+                        keySession.department === 1 ||
+                        keySession.department === 2 ||
+                        keySession.department === 3)
                     "
-                    >{{ currentPatient && currentPatient.patient_id }}</label
-                  >
-                </div>
-              </fieldset>
+                    color="amber-8"
+                    label="Call in next patient"
+                    class="q-mt-md"
+                    icon="mic"
+                    style="width: 100%; font-size: 12px"
+                    @click="callInNextPriority"
+                  />
+                </fieldset>
+              </div>
+
+              <div>
+                <fieldset class="inside-container in-queue q-mt-lg">
+                  <legend class="text-primary text-bold q-px-sm">
+                    Patients in Queue
+                  </legend>
+
+                  <ol>
+                    <li
+                      v-for="(queue, index) in otherPatients"
+                      :key="index"
+                      class="q-px-sm text-primary text-bold"
+                    >
+                      <div class="flex justify-between items-baseline">
+                        <label
+                          class="text-primary text-bold"
+                          style="cursor: pointer; font-size: 16px"
+                          clickable
+                          @click="
+                            $router.push({
+                              name: 'patient-details',
+                              params: {
+                                id: currentPatient.patient_id,
+                              },
+                            })
+                          "
+                        >
+                          {{ queue.patient_id }}
+                        </label>
+                        <q-btn
+                          v-if="keySession && keySession.department === 5"
+                          class="q-pa-none"
+                          dense
+                          flat
+                          icon="delete"
+                          @click="removeFromQueue(queue.queue_id)"
+                        />
+                      </div>
+                    </li>
+                  </ol>
+
+                  <q-btn
+                    v-if="
+                      otherPatients &&
+                      otherPatients[0] &&
+                      keySession &&
+                      (keySession.department === 5 ||
+                        keySession.department === 1 ||
+                        keySession.department === 2 ||
+                        keySession.department === 3)
+                    "
+                    color="primary"
+                    label="Call in next patient"
+                    class="q-mt-md"
+                    icon="mic"
+                    style="width: 100%; font-size: 12px"
+                    @click="callInNextPatient"
+                  />
+                </fieldset>
+              </div>
             </div>
-            <div>
-              <fieldset class="inside-container priority q-mt-lg">
-                <legend class="text-amber-8 text-bold q-px-sm">Priority</legend>
-
-                <ol>
-                  <li
-                    v-for="(queue, index) in priorityPatients"
-                    :key="index"
-                    class="q-px-sm text-amber-9 text-bold"
-                  >
-                    <div class="flex justify-between items-baseline">
-                      <label
-                        class="text-amber-9 text-bold"
-                        style="cursor: pointer; font-size: 16px"
-                        clickable
-                        @click="
-                          $router.push({
-                            name: 'patient-details',
-                            params: {
-                              id: currentPatient.patient_id,
-                            },
-                          })
-                        "
-                      >
-                        {{ queue.patient_id }}
-                      </label>
-                      <q-btn
-                        v-if="keySession && keySession.department === 5"
-                        class="q-px-sm"
-                        dense
-                        flat
-                        icon="delete"
-                        @click="removeFromQueue(queue.queue_id)"
-                      />
-                    </div>
-                  </li>
-                </ol>
-
-                <q-btn
-                  v-if="
-                    priorityPatients &&
-                    priorityPatients[0] &&
-                    keySession &&
-                    (keySession.department === 5 ||
-                      keySession.department === 1 ||
-                      keySession.department === 2 ||
-                      keySession.department === 3)
-                  "
-                  color="amber-8"
-                  label="Call in next patient"
-                  class="q-mt-md"
-                  icon="mic"
-                  style="width: 100%; font-size: 12px"
-                  @click="callInNextPriority"
-                />
-              </fieldset>
-            </div>
-
-            <div>
-              <fieldset class="inside-container in-queue q-mt-lg">
-                <legend class="text-primary text-bold q-px-sm">
-                  Patients in Queue
-                </legend>
-
-                <ol>
-                  <li
-                    v-for="(queue, index) in otherPatients"
-                    :key="index"
-                    class="q-px-sm text-primary text-bold"
-                  >
-                    <div class="flex justify-between items-baseline">
-                      <label
-                        class="text-primary text-bold"
-                        style="cursor: pointer; font-size: 16px"
-                        clickable
-                        @click="
-                          $router.push({
-                            name: 'patient-details',
-                            params: {
-                              id: currentPatient.patient_id,
-                            },
-                          })
-                        "
-                      >
-                        {{ queue.patient_id }}
-                      </label>
-                      <q-btn
-                        v-if="keySession && keySession.department === 5"
-                        class="q-pa-none"
-                        dense
-                        flat
-                        icon="delete"
-                        @click="removeFromQueue(queue.queue_id)"
-                      />
-                    </div>
-                  </li>
-                </ol>
-
-                <q-btn
-                  v-if="
-                    otherPatients &&
-                    otherPatients[0] &&
-                    keySession &&
-                    (keySession.department === 5 ||
-                      keySession.department === 1 ||
-                      keySession.department === 2 ||
-                      keySession.department === 3)
-                  "
-                  color="primary"
-                  label="Call in next patient"
-                  class="q-mt-md"
-                  icon="mic"
-                  style="width: 100%; font-size: 12px"
-                  @click="callInNextPatient"
-                />
-              </fieldset>
-            </div>
-          </div>
+          </q-scroll-area>
         </fieldset>
 
         <fieldset class="grid-item2 q-ml-sm">
-          <legend class="text-primary text-bold q-px-sm">Charts</legend>
+          <legend class="text-primary text-bold q-px-sm">CHARTS</legend>
           <!-- <canvas ref="chartCanvas" /> -->
-          <canvas id="myChart"></canvas>
+          <div
+            ref="chartDiv"
+            style="display: inline-block; height: 100%; width: 100%"
+          >
+            <canvas id="myChart" ref="canvas"></canvas>
+          </div>
         </fieldset>
       </div>
     </div>
