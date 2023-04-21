@@ -26,28 +26,90 @@ class API
 
       if (isset($payload['record_type'])) {
 
-        $this->db->where('patient_id', $payload['patient_id']);
-
+        //OPD
         if ($payload['record_type'] === "OPD") {
-          $this->db->where('status', 0 );
+          $this->db->join('tbl_patient_info p', 'p.patient_id=opd.patient_id', 'LEFT');
+
+          if (isset($payload['record_id'])) {
+            $this->db->where('opd_id', $payload['record_id']);
+          }
+
+          if (isset($payload['patient_id'])) {
+            $this->db->where('opd.patient_id', $payload['patient_id']);
+          }
+
+          if (isset($payload['status'])) {
+            $this->db->where('opd.status', $payload['status'], 'IN');
+          } else {
+            $this->db->where('opd.status', 0 );
+          }
 
           $this->db->orderBy('checkup_date', 'ASC');
-          $record = $this->db->get('tbl_opd', null, 'opd_id as record_id, checkup_date as date');
+          $record = $this->db->get('tbl_opd opd', null, 'opd_id as record_id, checkup_date as date, p.first_name, p.middle_name, p.last_name, p.suffix, p.patient_id');
+
+        //DENTAL
         } else if ($payload['record_type'] === "Dental") {
-          $this->db->where('status', 0 );
+          $this->db->join('tbl_patient_info p', 'p.patient_id=d.patient_id', 'LEFT');
+
+          if (isset($payload['record_id'])) {
+            $this->db->where('dental_id', $payload['record_id']);
+          }
+
+          if (isset($payload['patient_id'])) {
+            $this->db->where('d.patient_id', $payload['patient_id']);
+          }
+
+          if (isset($payload['status'])) {
+            $this->db->where('d.status', $payload['status'], 'IN');
+          } else {
+            $this->db->where('d.status', 0 );
+          }
 
           $this->db->orderBy('checkup_date', 'ASC');
-          $record = $this->db->get('tbl_dental', null, 'dental_id as record_id, checkup_date as date');
+          $record = $this->db->get('tbl_dental d', null, 'dental_id as record_id, checkup_date as date, p.first_name, p.middle_name, p.last_name, p.suffix, p.patient_id');
+
+        //PRENTAL
         } else if ($payload['record_type'] === "Prenatal") {
-          $this->db->where('status', 0 );
+
+          $this->db->join('tbl_patient_info p', 'p.patient_id=pnl.patient_id', 'LEFT');
+
+          if (isset($payload['record_id'])) {
+            $this->db->where('prenatal_id', $payload['record_id']);
+          }
+
+          if (isset($payload['patient_id'])) {
+            $this->db->where('pnl.patient_id', $payload['patient_id']);
+          }
+          if (isset($payload['status'])) {
+            $this->db->where('pnl.status', $payload['status'], 'IN');
+          } else {
+            $this->db->where('pnl.status', 0 );
+          }
 
           $this->db->orderBy('date_added', 'ASC');
-          $record = $this->db->get('tbl_prenatal', null, 'prenatal_id as record_id, date_added as date');
+          $record = $this->db->get('tbl_prenatal pnl', null, 'prenatal_id as record_id, date_added as date, p.first_name, p.middle_name, p.last_name, p.suffix, p.patient_id');
+
+        //IMMUNIZATION
         } else if ($payload['record_type'] === "Immunization") {
-          $this->db->where('status', 0 );
+          $this->db->join('tbl_patient_info p', 'p.patient_id=i.patient_id', 'LEFT');
+
+          if (isset($payload['record_id'])) {
+            $this->db->where('immunization_id', $payload['record_id']);
+          }
+
+          if (isset($payload['patient_id'])) {
+            $this->db->where('i.patient_id', $payload['patient_id']);
+          }
+
+
+          if (isset($payload['status'])) {
+            $this->db->where('i.status', $payload['status'], 'IN');
+          } else {
+            $this->db->where('i.status', 0 );
+          }
 
           $this->db->orderBy('immunization_date', 'ASC');
-          $record = $this->db->get('tbl_immunization', null, 'immunization_id as record_id, immunization_date as date');
+          $record = $this->db->get('tbl_immunization i', null, 'immunization_id as record_id, immunization_date as date, p.first_name, p.middle_name, p.last_name, p.suffix, p.patient_id');
         }
 
         if ($record != []) {

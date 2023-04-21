@@ -68,6 +68,7 @@
                   Make sure that the household already has a record. For new
                   households, click
                   <span
+                    style="cursor: pointer"
                     class="text-primary"
                     @click="$router.push({ name: 'household-records' })"
                     >here</span
@@ -288,11 +289,6 @@
                   dense
                   outlined
                   :input-style="{ color: '#525252' }"
-                  :rules="[
-                    (val) =>
-                      (val && (val.length > 11 || val.length < 12)) ||
-                      'Required field',
-                  ]"
                 />
               </div>
               <div class="col">

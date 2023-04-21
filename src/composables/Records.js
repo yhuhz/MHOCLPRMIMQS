@@ -3,6 +3,7 @@ import { ref, readonly } from "vue";
 let RecordDetails = ref([]);
 let PatientRecords = ref([]);
 let RecordArrays = ref([]);
+let HealthRecords = ref([]);
 // let pathlink =
 //   "http://localhost/MHOCLPRMIMQS/src/PHP/RecordDetails and Household/patient_api.php";
 /**
@@ -13,7 +14,7 @@ let RecordArrays = ref([]);
 
 let GetRecords = (payload) => {
   let pathlink =
-    "http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/patient_api.php";
+    "http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/records_api.php";
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
@@ -24,6 +25,27 @@ let GetRecords = (payload) => {
       .then((response) => {
         // console.log(response.data);
         PatientRecords.value = response.data.data;
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let GetRecordsForTable = (payload) => {
+  let pathlink =
+    "http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/records_api.php";
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          payload: payload,
+        },
+      })
+      .then((response) => {
+        // console.log(response.data);
+        HealthRecords.value = response.data.data;
         resolve(response.data);
       })
       .catch((error) => {
@@ -177,4 +199,6 @@ export {
   DeleteRecord,
   AddRecord,
   RecordArrays,
+  HealthRecords,
+  GetRecordsForTable,
 };
