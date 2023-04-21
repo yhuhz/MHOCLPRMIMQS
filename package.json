@@ -2,7 +2,7 @@
   "name": "mhoclprmimqs",
   "version": "0.0.1",
   "description": "This is a capstone project of the 4th Year IT Students at Forbes College",
-  "productName": "Municipal Health Office of Camalig LAN-Based Patient Record and Medicine Inventory Management with Queueing System",
+  "productName": "MHOCLPRMIMQS",
   "author": "yhuhz <julius.albert.grajo@gmail.com>",
   "private": true,
   "scripts": {

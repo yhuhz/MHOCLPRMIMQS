@@ -23,8 +23,10 @@ class API
       if (isset($_GET['department'])) {
         // print_r($_GET['department']); return;
 
+        $this->db->join('tbl_patient_info p', 'p.patient_id=q.patient_id', 'LEFT');
+
         $this->db->where('department', $_GET['department']);
-        $queue = $this->db->get('tbl_queue');
+        $queue = $this->db->get('tbl_queue q', null, 'queue_id, queue_number, q.patient_id, q.department, q.is_current, q.is_priority, p.first_name, p.middle_name, p.last_name, p.suffix');
 
           echo json_encode(array('status' => 'success',
                                     'data' => $queue,
@@ -77,10 +79,20 @@ class API
         // print_r($check_queue); return;
 
         if ($check_queue === []) {
+
+          //CHECK IF NO OTHER PERSON IN THE QUEUE
+          $this->db->where('department', $payload['department']);
+          $current_queue = $this->db->get('tbl_queue');
+
           //ADD TO QUEUE
           if ($payload['is_priority'] === 1) {
             $payload['queue_number'] = 'Priority ' . $payload['queue_number'];
           }
+
+          if($current_queue === []) {
+            $payload['is_current'] = 1;
+          }
+
           $this->db->insert('tbl_queue', $payload);
 
 

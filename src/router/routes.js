@@ -23,6 +23,12 @@ const routes = [
         name: "dashboard",
         component: () => import("pages/Dashboard/DashboardPage.vue"),
       },
+      //Home Page for non-admin and non-front desk
+      {
+        path: "home",
+        name: "home",
+        component: () => import("pages/Dashboard/HomePage.vue"),
+      },
       // Patients Profile
       {
         path: "search-patients",

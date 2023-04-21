@@ -14,7 +14,7 @@
           </div>
           <p class="queue-number text-center">
             {{
-              currentQueue.OPD != null
+              currentQueue.OPD != null && currentQueue.OPD.length !== 0
                 ? currentQueue.OPD.substring(0, 8) === "Priority"
                   ? currentQueue.OPD
                   : "OPD" + currentQueue.OPD

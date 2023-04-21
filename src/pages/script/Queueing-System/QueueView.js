@@ -22,8 +22,9 @@ export default {
       currentRouteName.value = route.name;
       if (currentRouteName.value === "queue-view") {
         GetQueue();
+        // console.log("current queue", currentQueue.value);
       }
-    }, 10000); // interval in milliseconds
+    }, 1000); // interval in milliseconds
 
     let currentQueue = ref({
       OPD: null,
@@ -42,29 +43,45 @@ export default {
     watch(
       () => _.cloneDeep(QueueList.value),
       () => {
-        QueueList.value.OPD.forEach((q) => {
-          if (q.is_current === 1) {
-            currentQueue.value.OPD = q.queue_number;
-          }
-        });
+        if (QueueList.value.OPD.length != 0) {
+          QueueList.value.OPD.forEach((q) => {
+            if (q.is_current === 1) {
+              currentQueue.value.OPD = q.queue_number;
+            }
+          });
+        } else {
+          currentQueue.value.OPD = null;
+        }
 
-        QueueList.value.Dental.forEach((q) => {
-          if (q.is_current === 1) {
-            currentQueue.value.Dental = q.queue_number;
-          }
-        });
+        if (QueueList.value.Dental.length != 0) {
+          QueueList.value.Dental.forEach((q) => {
+            if (q.is_current === 1) {
+              currentQueue.value.Dental = q.queue_number;
+            }
+          });
+        } else {
+          currentQueue.value.Dental = null;
+        }
 
-        QueueList.value.Prenatal.forEach((q) => {
-          if (q.is_current === 1) {
-            currentQueue.value.Prenatal = q.queue_number;
-          }
-        });
+        if (QueueList.value.Prenatal.length != 0) {
+          QueueList.value.Prenatal.forEach((q) => {
+            if (q.is_current === 1) {
+              currentQueue.value.Prenatal = q.queue_number;
+            }
+          });
+        } else {
+          currentQueue.value.Prenatal = null;
+        }
 
-        QueueList.value.Immunization.forEach((q) => {
-          if (q.is_current === 1) {
-            currentQueue.value.Immunization = q.queue_number;
-          }
-        });
+        if (QueueList.value.Immunization.length != 0) {
+          QueueList.value.Immunization.forEach((q) => {
+            if (q.is_current === 1) {
+              currentQueue.value.Immunization = q.queue_number;
+            }
+          });
+        } else {
+          currentQueue.value.Immunization = null;
+        }
 
         waitingQueue.value = {
           OPD: QueueList.value.OPD.length - 1,
