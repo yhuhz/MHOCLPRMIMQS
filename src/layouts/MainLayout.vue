@@ -55,7 +55,7 @@
                     </p>
                   </div>
                   <q-form @submit="updateUser" @reset="onReset">
-                    <label>Username</label>
+                    <label>Username <span class="text-negative">*</span></label>
                     <div class="row">
                       <div class="col">
                         <q-input

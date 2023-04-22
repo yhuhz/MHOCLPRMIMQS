@@ -13,7 +13,12 @@ import exportFile from "quasar/src/utils/export-file.js";
 import { SetIDS } from "src/composables/IDS";
 import { useRouter, useRoute } from "vue-router";
 import { LoginCredential, FindUser } from "src/composables/UserAccount";
-import { AddToQueue, QueueList } from "src/composables/Queue";
+import {
+  AddToQueue,
+  QueueList,
+  GetLastQueueNumber,
+  LastQueueNumber,
+} from "src/composables/Queue";
 
 export default {
   components: { MHCDialog, DeletePatientConfirmation },
@@ -393,6 +398,14 @@ export default {
     let departmentQueue = ref("OPD");
 
     const openQueueModal = (patient_info) => {
+      departmentQueue.value = "OPD";
+      GetLastQueueNumber({
+        department: 1,
+        priority: 0,
+      }).then((response) => {
+        queueNumber.value = LastQueueNumber.value;
+      });
+
       queueOpenModal.value = true;
       patientToQueue.value = patient_info.patient_id;
 
@@ -407,6 +420,29 @@ export default {
         ];
       }
     };
+
+    const departmentChange = () => {
+      if (departmentQueue.value === "OPD") {
+        departmentQueue.value = 1;
+      } else if (departmentQueue.value === "Dental") {
+        departmentQueue.value = 2;
+      } else if (departmentQueue.value === "Prenatal") {
+        departmentQueue.value = 3;
+      } else if (departmentQueue.value === "Immunization") {
+        departmentQueue.value = 7;
+      }
+
+      let dept = ["", "OPD", "Dental", "Prenatal", "", "", "", "Immunization"];
+
+      GetLastQueueNumber({
+        department: departmentQueue.value,
+        priority: 0,
+      }).then((response) => {
+        queueNumber.value = LastQueueNumber.value;
+        departmentQueue.value = dept[departmentQueue.value];
+      });
+    };
+
     const addToQueue = () => {
       if (departmentQueue.value === "OPD") {
         departmentQueue.value = 1;
@@ -480,6 +516,7 @@ export default {
       departmentArrayQueue,
       departmentQueue,
       queueNumber,
+      departmentChange,
     };
   },
 };

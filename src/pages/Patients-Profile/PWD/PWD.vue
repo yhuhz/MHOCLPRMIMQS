@@ -342,6 +342,7 @@
                   style="width: 200px"
                   :options="departmentArrayQueue"
                   v-model="departmentQueue"
+                  @update:model-value="departmentChange"
                 />
               </div>
 

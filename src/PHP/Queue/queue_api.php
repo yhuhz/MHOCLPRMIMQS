@@ -33,6 +33,34 @@ class API
                                     'method' => 'GET'
                                   ));
 
+      } else if (isset($_GET['priority'])) {
+
+        if (isset($_GET['department_specific'])) {
+          $this->db->where('department', $_GET['department_specific']);
+        }
+
+        $this->db->where('is_priority', $_GET['priority']);
+        $this->db->orderBy('queue_id', 'DESC');
+        $queue = $this->db->get('tbl_queue', null, 'queue_number');
+
+        if ($queue != []) {
+          $queue = $queue[0]['queue_number'];
+          if(substr($queue, 0, 1) === 'P') {
+            $queue = trim($queue, 'Priority ');
+            $queue = intVal($queue) + 1;
+          } else {
+            $queue = intVal($queue) + 1;
+          }
+
+        } else {
+          $queue = 1;
+        }
+
+          echo json_encode(array('status' => 'success',
+                                    'data' => $queue,
+                                    'method' => 'GET'
+                                  ));
+
       } else {
         $this->db->where('department', 1);
         $this->db->orderBy('queue_number', 'asc');

@@ -3,6 +3,7 @@ import { ref, readonly } from "vue";
 let Queue = ref([]);
 let QueueList = readonly(Queue);
 let QueueSpecific = ref([]);
+let LastQueueNumber = ref([]);
 let pathlink = "http://localhost/MHOCLPRMIMQS/src/PHP/Queue/queue_api.php";
 /**
  * This function accepts parameters of an array then
@@ -38,6 +39,26 @@ let GetQueueSpecific = (payload) => {
         // console.log("Get data from DB to queue");
         // console.log("Queue Specific", response.data);
         QueueSpecific.value = response.data.data;
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let GetLastQueueNumber = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          department_specific: payload.department,
+          priority: payload.priority,
+        },
+      })
+      .then((response) => {
+        // console.log(response.data);
+        LastQueueNumber.value = response.data.data;
         resolve(response.data);
       })
       .catch((error) => {
@@ -167,4 +188,6 @@ export {
   CallNextPatient,
   RemovePatientFromQueue,
   ClearDepartmentQueue,
+  LastQueueNumber,
+  GetLastQueueNumber,
 };

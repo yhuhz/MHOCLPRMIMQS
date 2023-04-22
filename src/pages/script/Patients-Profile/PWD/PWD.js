@@ -3,7 +3,11 @@ import { GetPatients, PWD } from "src/composables/Patients";
 import { Loading, useQuasar, SessionStorage } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
 import { useRouter } from "vue-router";
-import { AddToQueue } from "src/composables/Queue";
+import {
+  AddToQueue,
+  GetLastQueueNumber,
+  LastQueueNumber,
+} from "src/composables/Queue";
 
 export default {
   setup() {
@@ -255,6 +259,14 @@ export default {
     let departmentQueue = ref("OPD");
 
     const openQueueModal = (patient_info) => {
+      departmentQueue.value = "OPD";
+      GetLastQueueNumber({
+        department: null,
+        priority: 1,
+      }).then((response) => {
+        queueNumber.value = LastQueueNumber.value;
+      });
+
       queueOpenModal.value = true;
       patientToQueue.value = patient_info.patient_id;
 
@@ -269,6 +281,16 @@ export default {
         ];
       }
     };
+
+    const departmentChange = () => {
+      GetLastQueueNumber({
+        department: null,
+        priority: 1,
+      }).then((response) => {
+        queueNumber.value = LastQueueNumber.value;
+      });
+    };
+
     const addToQueue = () => {
       if (departmentQueue.value === "OPD") {
         departmentQueue.value = 1;
@@ -335,6 +357,7 @@ export default {
       departmentQueue,
       openQueueModal,
       addToQueue,
+      departmentChange,
     };
   },
 };
