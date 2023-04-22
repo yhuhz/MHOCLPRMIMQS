@@ -19,7 +19,7 @@ export default {
           if (LoginCredential.value[0].status === 0) {
             SessionStorage.set("cred", response.data[0]);
             router.push({
-              name: "dashboard",
+              name: "home",
             });
           } else if (LoginCredential.value[0].status === 1) {
             $q.notify({

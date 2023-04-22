@@ -62,7 +62,7 @@ export default {
           classes: "text-white",
           message:
             status === 0
-              ? "Department's queue cleared successfully successfully"
+              ? "Department's queue cleared successfully"
               : "Failed to clear department's queue",
         });
 

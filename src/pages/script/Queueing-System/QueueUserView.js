@@ -32,7 +32,7 @@ export default {
       if (currentRouteName.value === "queueing-system") {
         GetQueue();
       }
-    }, 10000); // interval in milliseconds
+    }, 1000); // interval in milliseconds
 
     let currentQueue = ref({
       OPD: null,
@@ -105,7 +105,7 @@ export default {
       ToggleDialogState();
     };
 
-    let isHideButton = ref(false);
+    let isHideButton = ref(true);
 
     return {
       QueueList,

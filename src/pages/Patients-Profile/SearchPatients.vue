@@ -226,10 +226,8 @@
           v-if="
             keySession &&
             ((keySession.department === 6 &&
-              keySession.permission_level === 1 &&
-              keySession.permission_level === 1) ||
-              keySession.department === 5) &&
-            keySession.permission_level != 3
+              keySession.permission_level !== 3) ||
+              (keySession.department === 5 && keySession.permission_level != 3))
           "
         >
           <q-btn
@@ -324,8 +322,10 @@
                     <q-item
                       v-if="
                         keySession &&
-                        (keySession.department === 5 ||
-                          keySession.department === 6)
+                        ((keySession.department === 6 &&
+                          keySession.permission_level !== 3) ||
+                          (keySession.department === 5 &&
+                            keySession.permission_level != 3))
                       "
                       clickable
                       class="drop-list"

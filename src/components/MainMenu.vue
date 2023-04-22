@@ -1,5 +1,20 @@
 <template>
   <div>
+    <!-- Home -->
+    <q-item
+      clickable
+      exact
+      :class="$route.name === 'home' ? 'bg-primary text-white' : 'text-white'"
+      @click="$router.push({ name: 'home' })"
+    >
+      <q-item-section avatar>
+        <q-icon name="home" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label>Home</q-item-label>
+      </q-item-section>
+    </q-item>
+
     <!-- Dashboard -->
     <q-item
       clickable
@@ -16,21 +31,6 @@
         <q-item-label>Dashboard</q-item-label>
       </q-item-section>
     </q-item>
-
-    <!-- Home -->
-    <!-- <q-item
-      clickable
-      exact
-      :class="$route.name === 'home' ? 'bg-primary text-white' : 'text-white'"
-      @click="$router.push({ name: 'home' })"
-    >
-      <q-item-section avatar>
-        <q-icon name="home" />
-      </q-item-section>
-      <q-item-section>
-        <q-item-label>Home</q-item-label>
-      </q-item-section>
-    </q-item> -->
 
     <!-- Patients Profile -->
     <q-expansion-item
@@ -68,7 +68,9 @@
         <q-item
           v-if="
             keySession &&
-            (keySession.department === 5 || keySession.department === 6)
+            ((keySession.department === 6 &&
+              keySession.permission_level !== 3) ||
+              (keySession.department === 5 && keySession.permission_level != 3))
           "
           clickable
           class="list-text text-white"

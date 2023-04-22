@@ -1,26 +1,33 @@
 <template>
   <div class="dashboard">
-    <div class="q-mx-md q-my-lg">
-      <div class="flex items-center justify-between q-mb-md">
-        <h5 class="text-weight-bold text-dark q-my-none">HOME</h5>
-        <q-select
-          class="q-mb-md q-mr-sm"
-          outlined
-          dense
-          v-model="selected"
-          :options="options"
-          style="width: 150px"
-          @update:model-value="setDashboard()"
-        />
+    <div class="q-mx-md q-my-md q-pa-lg">
+      <div class="text-center text-primary">
+        <label class="text-bold" style="font-size: 30px"
+          >Hello {{ keySession && keySession.first_name }}</label
+        >
+        <p class="content q-mt-sm">What would you like to do today?</p>
       </div>
-
-      <div class="grid-container">
+      <div class="row q-mt-lg">
         <fieldset
-          class="grid-item1 q-pa-md"
+          class="column queue q-pa-md q-mr-lg shadow-5"
           v-if="keySession && keySession.department !== 4"
         >
-          <legend class="text-primary text-bold q-px-sm">QUEUE</legend>
+          <!-- <legend class="text-primary text-bold q-px-sm">QUEUE</legend> -->
           <!-- <q-scroll-area :style="{ height: chartHeight + 'px' }"> -->
+
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <q-icon name="list" size="90px" color="primary" />
+            <label class="text-primary text-bold" style="font-size: 25px"
+              >Patient Queue</label
+            >
+          </div>
           <q-select
             flat
             dense
@@ -29,18 +36,29 @@
             :options="departmentList"
             v-model="selectedDepartment"
             @update:model-value="getDepartments"
+            class="q-mt-md"
           />
 
-          <div class="q-mt-md">
+          <div class="q-mt-lg">
             <div>
               <fieldset class="inside-container current">
-                <legend class="text-bold q-px-sm" style="color: #55a15e">
-                  Current
+                <legend
+                  class="text-bold text-center q-px-sm"
+                  style="color: #55a15e"
+                >
+                  CURRENT PATIENT
                 </legend>
 
-                <div class="text-center text-bold" style="color: #55a15e">
+                <div
+                  class="text-center text-bold"
+                  v-if="currentPatient && currentPatient.patient_id"
+                >
                   <div
-                    style="font-size: x-large; cursor: pointer"
+                    :style="
+                      currentPatient && currentPatient.is_priority === 1
+                        ? 'font-size: x-large; cursor: pointer; color: #ff8f00'
+                        : 'font-size: x-large; cursor: pointer; color: #55a15e'
+                    "
                     @click="
                       $router.push({
                         name: 'patient-details',
@@ -52,7 +70,13 @@
                   >
                     {{ currentPatient && currentPatient.patient_id }}
                   </div>
-                  <div>
+                  <div
+                    :style="
+                      currentPatient && currentPatient.is_priority === 1
+                        ? 'color: #ff8f00'
+                        : 'color: #55a15e'
+                    "
+                  >
                     {{
                       currentPatient &&
                       currentPatient.first_name +
@@ -67,10 +91,13 @@
                     }}
                   </div>
                 </div>
+                <div v-else class="text-primary text-center text-bold text-20">
+                  No Patient
+                </div>
               </fieldset>
             </div>
 
-            <div class="q-mt-md text-center">
+            <div class="q-mt-lg text-center">
               <label class="text-primary text-bold q-px-sm">
                 Call in Next Patient
               </label>
@@ -89,6 +116,7 @@
                       ? false
                       : true
                   "
+                  @click="callInNextPriority"
                 >
                   <div style="display: flex; align-items: center">
                     <q-icon name="priority_high" size="30px" />
@@ -113,6 +141,7 @@
                       ? false
                       : true
                   "
+                  @click="callInNextPatient"
                 >
                   <div style="display: flex; align-items: center">
                     <q-icon name="mic" size="30px" />
@@ -121,6 +150,109 @@
                     >
                   </div>
                 </q-btn>
+              </div>
+            </div>
+
+            <div
+              class="q-mt-sm"
+              v-if="
+                keySession &&
+                keySession.department === 5 &&
+                keySession.permission_level !== 3
+              "
+            >
+              <div style="text-align: center">
+                <q-btn
+                  flat
+                  no-caps
+                  dense
+                  label="Show Priority Patients"
+                  color="primary"
+                  :icon-right="
+                    showPriority ? 'arrow_drop_up' : 'arrow_drop_down'
+                  "
+                  @click="showPriority = !showPriority"
+                />
+                <div v-if="showPriority">
+                  <ol>
+                    <li
+                      v-for="(queue, index) in priorityPatients"
+                      :key="index"
+                      class="q-px-sm text-amber-9 text-bold"
+                    >
+                      <div class="flex justify-between items-center">
+                        <label
+                          class="text-amber-9 text-bold"
+                          style="cursor: pointer; font-size: 16px"
+                          clickable
+                          @click="
+                            $router.push({
+                              name: 'patient-details',
+                              params: {
+                                id: currentPatient.patient_id,
+                              },
+                            })
+                          "
+                        >
+                          {{ queue.patient_id }}
+                        </label>
+                        <q-icon
+                          v-if="keySession && keySession.department === 5"
+                          color="negative"
+                          size="20px"
+                          name="delete"
+                          @click="removeFromQueue(queue.queue_id)"
+                        />
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+
+              <div style="text-align: center">
+                <q-btn
+                  flat
+                  no-caps
+                  dense
+                  label="Show Other Patients"
+                  color="primary"
+                  :icon-right="showOthers ? 'arrow_drop_up' : 'arrow_drop_down'"
+                  @click="showOthers = !showOthers"
+                />
+                <div v-if="showOthers">
+                  <ol>
+                    <li
+                      v-for="(queue, index) in otherPatients"
+                      :key="index"
+                      class="q-px-sm text-primary text-bold"
+                    >
+                      <div class="flex justify-between items-center">
+                        <label
+                          class="text-primary text-bold"
+                          style="cursor: pointer; font-size: 16px"
+                          clickable
+                          @click="
+                            $router.push({
+                              name: 'patient-details',
+                              params: {
+                                id: currentPatient.patient_id,
+                              },
+                            })
+                          "
+                        >
+                          {{ queue.patient_id }}
+                        </label>
+                        <q-icon
+                          v-if="keySession && keySession.department === 5"
+                          color="negative"
+                          name="delete"
+                          size="20px"
+                          @click="removeFromQueue(queue.queue_id)"
+                        />
+                      </div>
+                    </li>
+                  </ol>
+                </div>
               </div>
             </div>
 
@@ -247,16 +379,142 @@
           <!-- </q-scroll-area> -->
         </fieldset>
 
-        <fieldset class="grid-item2 q-ml-sm">
-          <legend class="text-primary text-bold q-px-sm">CHARTS</legend>
-          <!-- <canvas ref="chartCanvas" /> -->
-          <div
-            ref="chartDiv"
-            style="display: inline-block; height: 100%; width: 100%"
-          >
-            <canvas id="myChart" ref="canvas"></canvas>
+        <div class="col to-do">
+          <div class="to-do-grid">
+            <div
+              class="to-do-box shadow-5"
+              @click="$router.push({ name: 'search-patients' })"
+            >
+              <q-icon name="group" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label"
+                >View Patient Profiles</label
+              >
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              v-if="
+                keySession &&
+                ((keySession.department === 5 &&
+                  keySession.permission_level !== 3) ||
+                  (keySession.department === 6 &&
+                    keySession.permission_level === 1))
+              "
+              @click="$router.push({ name: 'add-edit-patient-record' })"
+            >
+              <q-icon name="person_add" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label">Add Patient Profile</label>
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              @click="$router.push({ name: 'search-records' })"
+            >
+              <q-icon
+                name="medical_information"
+                size="100px"
+                class="to-do-label"
+              />
+              <label class="text-center to-do-label"
+                >Search Health Records</label
+              >
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              @click="$router.push({ name: 'household-records' })"
+            >
+              <q-icon name="home" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label"
+                >View Household Records</label
+              >
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              @click="$router.push({ name: 'pwd-records' })"
+            >
+              <q-icon name="accessible" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label">View PWD Records</label>
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              @click="$router.push({ name: 'senior-citizen-records' })"
+            >
+              <q-icon name="elderly" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label"
+                >View Senior Citizen Records</label
+              >
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              @click="$router.push({ name: 'pregnant-women-records' })"
+            >
+              <q-icon name="pregnant_woman" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label"
+                >View Pregnancy Records</label
+              >
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              v-if="
+                keySession &&
+                (keySession.department === 4 ||
+                  (keySession.department === 6 &&
+                    keySession.permission_level === 1))
+              "
+              @click="$router.push({ name: 'medicine-inventory' })"
+            >
+              <q-icon name="medication" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label"
+                >View Medicine Inventory</label
+              >
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              v-if="
+                keySession &&
+                (keySession.department === 4 ||
+                  (keySession.department === 6 &&
+                    keySession.permission_level === 1))
+              "
+              @click="$router.push({ name: 'supply-inventory' })"
+            >
+              <q-icon name="vaccines" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label"
+                >View Supplies Inventory</label
+              >
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              v-if="
+                keySession &&
+                keySession.department === 6 &&
+                keySession.permission_level === 1
+              "
+              @click="$router.push({ name: 'manage-users' })"
+            >
+              <q-icon name="account_circle" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label"
+                >Manage User Accounts</label
+              >
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              v-if="keySession && keySession.department === 6"
+              @click="$router.push({ name: 'reports' })"
+            >
+              <q-icon name="description" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label">Generate Reports</label>
+            </div>
           </div>
-        </fieldset>
+        </div>
       </div>
     </div>
     <MHCDialog :content="$options.components.RemovePatientFromQueue" />
@@ -266,25 +524,19 @@
 <script src="../script/Dashboard/Home.js"></script>
 
 <style lang="scss">
-@import "../styles/dashboard/dashboard.scss";
-
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+.content {
+  justify-content: center;
+  align-items: center;
 }
 
-.grid-item1 {
-  grid-column: 1;
+.queue {
   border: 2px solid #5f8d4e;
-  border-radius: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
+  border-radius: 10px;
+  width: 300px;
 }
 
-.grid-item2 {
-  grid-column: 2 / span 3;
-  border: 2px solid #5f8d4e;
-  border-radius: 5px;
+.to-do {
+  width: auto;
 }
 
 .q-input {
@@ -305,5 +557,45 @@
 
 .in-queue {
   border: 2px solid #5f8d4e;
+}
+
+.to-do-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.to-do-box {
+  cursor: pointer;
+  border: 2px solid #5f8d4e;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 10px;
+}
+
+.to-do-box {
+  border: 2px solid #5f8d4e;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 10px;
+
+  .to-do-label {
+    color: #5f8d4e;
+  }
+}
+
+.to-do-box:hover {
+  border: 2px solid rgba(95, 141, 78, 0.8);
+  background-color: rgba(95, 141, 78, 0.8);
+
+  .to-do-label {
+    color: white;
+  }
 }
 </style>
