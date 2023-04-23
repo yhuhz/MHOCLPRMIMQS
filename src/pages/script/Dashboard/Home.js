@@ -42,7 +42,7 @@ export default {
       } else if (keySession && keySession.department === 2) {
         departmentList.value = ["Dental"];
       } else if (keySession && keySession.department === 3) {
-        departmentList.value = ["Prenatal"];
+        departmentList.value = ["Prenatal", "Immunization"];
       } else {
         departmentList.value = ["OPD", "Dental", "Prenatal", "Immunization"];
       }

@@ -129,9 +129,15 @@
         <q-separator class="q-my-lg" color="dark" />
 
         <div class="row q-my-lg">
-          <div class="col">
+          <div
+            class="col"
+            v-if="
+              keySession &&
+              keySession.department !== 4 &&
+              keySession.permission_level !== 3
+            "
+          >
             <q-btn
-              v-if="keySession && keySession.permission_level !== 3"
               dense
               color="primary"
               outline

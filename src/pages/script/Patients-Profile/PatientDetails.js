@@ -34,6 +34,10 @@ export default {
     let status = ["Active", "Deceased", "Deleted"];
     let sex = ["Male", "Female"];
     let departmentList = ref([]);
+
+    let selectedDepartment = ref(
+      route.params.department != null ? route.params.department : null
+    );
     watch(
       () => _.cloneDeep(PatientDetails.value),
       () => {
@@ -48,16 +52,29 @@ export default {
             ? ""
             : " " + PatientDetails.value.suffix);
 
-        if (PatientDetails.value.sex != 1) {
-          departmentList.value = ["OPD", "Dental", "Immunization"];
+        if (keySession && keySession.department === 1) {
+          departmentList.value = ["OPD"];
+        } else if (keySession && keySession.department === 2) {
+          departmentList.value = ["Dental"];
+        } else if (keySession && keySession.department === 3) {
+          if (PatientDetails.value.sex === 1) {
+            departmentList.value = ["Prenatal", "Immunization"];
+          } else {
+            departmentList.value = ["Immunization"];
+          }
         } else {
-          departmentList.value = ["OPD", "Dental", "Prenatal", "Immunization"];
+          if (PatientDetails.value.sex != 1) {
+            departmentList.value = ["OPD", "Dental", "Immunization"];
+          } else {
+            departmentList.value = [
+              "OPD",
+              "Dental",
+              "Prenatal",
+              "Immunization",
+            ];
+          }
         }
       }
-    );
-
-    let selectedDepartment = ref(
-      route.params.department != null ? route.params.department : null
     );
 
     if (selectedDepartment.value != null) {

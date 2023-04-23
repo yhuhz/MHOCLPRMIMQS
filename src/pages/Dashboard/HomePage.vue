@@ -261,6 +261,7 @@
           <div class="to-do-grid">
             <div
               class="to-do-box shadow-5"
+              v-if="keySession && keySession.department === 6"
               @click="$router.push({ name: 'dashboard' })"
             >
               <q-icon name="bar_chart" size="100px" class="to-do-label" />
