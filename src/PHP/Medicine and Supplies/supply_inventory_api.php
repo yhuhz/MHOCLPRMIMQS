@@ -80,7 +80,6 @@ class API
       } else {
         //GET SUPPLY INVENTORY
       $payload = (array) json_decode($_GET['payload']);
-      // print_r($payload); return;
 
       //check if there are parameters
       if (isset($payload['search_by'])) {
@@ -106,7 +105,6 @@ class API
       }
 
       //FILTER
-      // $this->db->join('tbl_supply_release sr', 'sr.supply_id=si.supply_id', 'LEFT');
 
       if (isset($payload['filter'])) {
         $filter = (array) $payload['filter'];
@@ -142,6 +140,7 @@ class API
 
       foreach($supply_inventory as $supply) {
         $this->db->where('supply_id', $supply['supply_id']);
+        $this->db->where('status', 0);
         $count = $this->db->getValue('tbl_supply_release', 'CAST(SUM(quantity) as int)');
         $supply['in_stock'] = $supply['quantity'] - $count;
 

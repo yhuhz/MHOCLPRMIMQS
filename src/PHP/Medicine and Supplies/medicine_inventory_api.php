@@ -110,7 +110,6 @@ class API
       } else {
         //GET MEDICINE INVENTORY
         $payload = (array) json_decode($_GET['payload']);
-        // print_r($payload); return;
 
         //check if there are parameters
         if (isset($payload['search_by'])) {
@@ -148,15 +147,9 @@ class API
         }
 
         //FILTER
-        // $this->db->join('tbl_medicine_release mr', 'mi.medicine_id=mr.medicine_id', 'LEFT');
 
         if (isset($payload['filter'])) {
           $filter = (array) $payload['filter'];
-
-          //Stock filter
-          // if (isset($filter['in_stock']) && ($filter['in_stock'][0] != '') && ($filter['in_stock'][1] != '')) {
-          //   $this->db->where('mi.quantity - IFNULL(mr.quantity, 0)', $filter['in_stock'], 'BETWEEN');
-          // }
 
           //Status filter
           if (isset($filter['status'])) {
@@ -179,13 +172,12 @@ class API
           }
         }
 
-        // $medicine_inventory = $this->db->get('tbl_medicine_inventory mi', null, 'mi.medicine_id, generic_name, brand_name, med_classification, dosage_strength, dosage_form, ptr_number, batch_lot_number, mfg_date, exp_date, mi.quantity, mi.quantity - SUM(COALESCE(mr.quantity, 0)) as in_stock, procured_by, date_added, added_by, mi.status');
-
         $medicine_inventory = $this->db->get('tbl_medicine_inventory');
         $medicine_array = [];
 
         foreach($medicine_inventory as $medicine) {
           $this->db->where('medicine_id', $medicine['medicine_id']);
+          $this->db->where('status', 0);
           $medicine['quantity_released'] = $this->db->getValue('tbl_medicine_release', 'CAST(SUM(quantity) as int)');
 
           if (isset($filter['in_stock']) && ($filter['in_stock'][0] != '') && ($filter['in_stock'][1] != '')) {

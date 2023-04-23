@@ -87,6 +87,7 @@ class API
 
       foreach ($medicine_count as $medicine) {
           $this->db->where('medicine_id', $medicine['medicine_id']);
+          $this->db->where('status', 0);
           $count = $this->db->getValue('tbl_medicine_release', "SUM(quantity)");
           $medicine['in_stock'] = $medicine['quantity'] - $count;
           $to_push = array('med_classification' => $medicine['med_classification'], 'in_stock' => $medicine['in_stock']);
@@ -111,11 +112,6 @@ class API
       $data_array['medicine_count'] = $output;
 
       //SUPPLIES
-      //Get supplies count
-      // $this->db->where('status', 0);
-      // $supply_count = $this->db->getValue('tbl_supplies_inventory', "SUM(quantity)");
-      // $data_array['supply_count'] = $supply_count;
-
       $this->db->where('status', 0);
       $supply_count = $this->db->get('tbl_supplies_inventory');
 
@@ -123,6 +119,7 @@ class API
 
       foreach ($supply_count as $supply) {
           $this->db->where('supply_id', $supply['supply_id']);
+          $this->db->where('status', 0);
           $count = $this->db->getValue('tbl_supply_release', "SUM(quantity)");
           $supply['in_stock'] = $supply['quantity'] - $count;
           $to_push = array('supply_type' => $supply['supply_type'], 'in_stock' => $supply['in_stock']);
