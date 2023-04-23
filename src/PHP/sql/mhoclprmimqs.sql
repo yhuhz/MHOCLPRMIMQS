@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2023 at 07:52 PM
+-- Generation Time: Apr 23, 2023 at 07:50 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -322,8 +322,8 @@ CREATE TABLE `tbl_medicine_inventory` (
 
 INSERT INTO `tbl_medicine_inventory` (`medicine_id`, `generic_name`, `brand_name`, `med_classification`, `dosage_strength`, `dosage_form`, `ptr_number`, `batch_lot_number`, `mfg_date`, `exp_date`, `quantity`, `procured_by`, `date_added`, `added_by`, `status`) VALUES
 (1, 'Paracetamol', 'Biogesic', 'Analgesic', '500mg/2mg', 'Tablet', '22-11-2101', '13-08-713', '2023-03-01', '2026-03-01', 500, 'DOH', '2023-04-01', 69, 0),
-(2, 'Ibuprofen', 'Medicol', 'test', 'test', 'test1', 'test', 'test', '2023-04-04', '2026-04-16', 200, 'LGU', '2023-04-13', 69, 0),
-(3, 'Paracetamol', 'Biogesic', 'Analgesic', '500mg', 'Tablet', '1456-1578', '13-08-247', '2023-04-02', '2027-04-15', 400, 'DOH', '2023-04-18', 69, 0),
+(2, 'Ibuprofen', 'Medicol', 'NSAID', 'test', 'test1', 'test', 'test', '2023-04-04', '2026-04-16', 200, 'LGU', '2023-04-13', 69, 0),
+(3, 'met', 'Biogesic', 'Analgesic', '500mg', 'Tablet', '1456-1578', '13-08-247', '2023-04-17', '2027-04-26', 0, 'DOH', '2023-04-18', 69, 0),
 (4, 'Vitex negundo L. Lagundi Leaf', 'Ascof Lagundi', 'Cough Suppressant', '600mg', 'Capsule', '12478', '157-25', '2023-04-17', '2028-04-05', 150, 'DOH', '2023-04-18', 69, 0);
 
 -- --------------------------------------------------------
@@ -386,11 +386,11 @@ CREATE TABLE `tbl_opd` (
 --
 
 INSERT INTO `tbl_opd` (`opd_id`, `patient_id`, `checkup_date`, `temperature`, `blood_pressure_systole`, `blood_pressure_diastole`, `height`, `weight`, `pulse_rate`, `oxygen_sat`, `complaint`, `preliminary_checkup_done_by`, `doctor_id`, `checkup_results`, `next_checkup`, `status`) VALUES
-(1, '03212301', '2023-03-14', 35, '120', 60, 163, 70, 72, 75, 'Pain in the ass', 69, 72, 'Patient has no jowa', '2023-03-25', 0),
+(1, '03212301', '2023-03-14', 35, '120', 60, 163, 70, 72, 75, 'Pain in the lower area', 69, 72, 'Patient has no jowa', '2023-03-25', 0),
 (2, '03212301', '2023-03-08', 37, '120', 60, 163, 70, 70, 72, 'Pain when urinating', 73, 69, 'Patient has UTI. Prescribed antibiotics. Patient should drink lots of fluids.', '2023-03-25', 0),
-(4, '03212302', '2023-01-12', 37, '120', 60, 163, 70, 70, 72, 'Heartbroken', 73, 67, 'test test', NULL, 0),
+(4, '03212302', '2023-01-12', 37, '120', 60, 163, 70, 70, 72, 'Heartbroken', 73, 67, 'Patient should take some bed rest', '2023-05-11', 0),
 (7, '03212301', '2023-04-06', 37, '120', 60, 175, 63, 75, 88, 'Loss of apetite', 69, 69, NULL, NULL, 0),
-(8, '03212301', '2023-03-14', 35, '120', 60, 163, 70, 72, 75, 'Pain in the ass', 71, 68, 'Patient has no jowa', '2023-03-25', 0),
+(8, '03212301', '2023-03-14', 35, '120', 60, 163, 70, 72, 75, 'Pain in the lower area', 71, 68, 'Patient has no jowa', '2023-03-25', 0),
 (10, '03212301', '2023-04-07', 38, '120', 60, 167, 74, 88, 88, 'test', 69, 67, NULL, NULL, 1),
 (11, '03212301', '2023-04-20', 38, '120', 60, 178, 56, 88, 88, 'test test', 70, 68, NULL, NULL, 0),
 (16, '03232302', '2023-04-19', 36, '130', 80, 154, 67, 3, 40, 'Stomachache', 82, 72, NULL, NULL, 0),
@@ -402,10 +402,10 @@ INSERT INTO `tbl_opd` (`opd_id`, `patient_id`, `checkup_date`, `temperature`, `b
 (22, '03232316', '2023-04-19', 35, '120', 30, 170, 60, 5, 30, 'Backpain', 82, 67, NULL, NULL, 0),
 (23, '03232321', '2023-04-19', 36, '130', 70, 158, 66, 7, 40, 'Stomachache', 82, 72, NULL, NULL, 0),
 (24, '03232326', '2023-04-19', 36, '130', 60, 166, 65, 5, 55, 'Measles', 82, 72, NULL, NULL, 0),
-(25, '03232325', '2023-04-19', 36, '120', 60, 172, 63, 6, 38, 'backpain', 82, 72, NULL, NULL, 0),
-(26, '03232324', '2023-04-19', 37, '130', 40, 166, 65, 4, 32, 'stomachache', 82, 72, NULL, NULL, 0),
-(27, '03232317', '2023-04-19', 35, '130', 60, 168, 63, 3, 63, 'headache', 82, 72, NULL, NULL, 0),
-(28, '03232312', '2023-04-19', 36, '120', 60, 165, 66, 5, 45, 'stomachache', 82, 72, NULL, NULL, 0),
+(25, '03232325', '2023-04-19', 36, '120', 60, 172, 63, 6, 38, 'Stomachache', 82, 72, NULL, NULL, 0),
+(26, '03232324', '2023-04-19', 37, '130', 40, 166, 65, 4, 32, 'Stomachache', 82, 72, NULL, NULL, 0),
+(27, '03232317', '2023-04-19', 35, '130', 60, 168, 63, 3, 63, 'Headache', 82, 72, NULL, NULL, 0),
+(28, '03232312', '2023-04-19', 36, '120', 60, 165, 66, 5, 45, 'Stomachache', 82, 72, NULL, NULL, 0),
 (29, '03232347', '2023-04-19', 35, '120', 60, 155, 59, 4, 36, 'stomachache', 82, 72, NULL, NULL, 0);
 
 -- --------------------------------------------------------
@@ -426,23 +426,22 @@ CREATE TABLE `tbl_opd_disease` (
 --
 
 INSERT INTO `tbl_opd_disease` (`opd_disease_id`, `opd_id`, `opd_disease`, `date_added`) VALUES
-(5, 2, 'UTI', '2023-03-14'),
-(112, 4, 'test', '2023-01-12'),
-(113, 4, 'test', '2023-01-12'),
-(114, 1, 'Heartbroken', '2023-03-14'),
-(115, 1, 'Mahilig Uminom', '2023-03-14'),
-(116, 8, 'test', '2023-03-14'),
-(117, 19, 'Migraine', '2023-04-19'),
-(118, 19, 'frequent headaches at night', '2023-04-19'),
-(119, 20, 'frequent stomach pain', '2023-04-19'),
-(120, 22, 'lower back pain', '2023-04-19'),
-(121, 22, 'chills', '2023-04-19'),
-(122, 25, 'frequent stomach pain', '2023-04-19'),
-(123, 26, 'frequent stomach pain', '2023-04-19'),
-(124, 27, 'migraine', '2023-04-19'),
-(125, 23, 'frequent stomach pains', '2023-04-19'),
-(126, 28, 'frequent stomach pains', '2023-04-19'),
-(127, 29, 'frequent stomach pains', '2023-04-19');
+(141, 2, 'UTI', '2023-03-08'),
+(144, 1, 'Stress', '2023-03-14'),
+(145, 1, 'Hemorrhoids', '2023-03-14'),
+(146, 8, 'UTI', '2023-03-14'),
+(147, 23, 'Ulcer', '2023-04-19'),
+(148, 26, 'Ulcer', '2023-04-19'),
+(149, 27, 'Dengue', '2023-04-19'),
+(150, 28, 'Food poisoning', '2023-04-19'),
+(151, 22, 'Internal Bleeding', '2023-04-19'),
+(152, 22, 'Hemorrhoids', '2023-04-19'),
+(153, 20, 'Ulcer', '2023-04-19'),
+(154, 19, 'Migraine', '2023-04-19'),
+(155, 29, 'Ulcer', '2023-04-19'),
+(156, 25, 'Ulcer', '2023-04-19'),
+(157, 4, 'UTI', '2023-01-12'),
+(158, 4, 'Dengue', '2023-01-12');
 
 -- --------------------------------------------------------
 
@@ -461,16 +460,16 @@ CREATE TABLE `tbl_opd_lab_results` (
 --
 
 INSERT INTO `tbl_opd_lab_results` (`lab_result_id`, `opd_id`, `lab_result`) VALUES
-(7, 2, 'Blood in urine'),
-(8, 2, 'Bacteria in urine'),
-(64, 4, 'test'),
-(65, 1, 'Walang jowa'),
-(66, 8, 'Walang jowa'),
-(67, 20, 'ulcer'),
-(68, 22, 'UTI'),
-(69, 26, 'ulcer'),
-(70, 23, 'ulcer'),
-(71, 28, 'ulcer');
+(79, 2, 'Blood in urine'),
+(80, 2, 'Bacteria in urine'),
+(82, 1, 'Walang jowa'),
+(83, 8, 'Walang jowa'),
+(84, 23, 'Scarred stomach lining'),
+(85, 26, 'Scarred stomach lining'),
+(86, 28, 'Salmonella in vomit'),
+(87, 22, 'Virus in urine'),
+(88, 20, 'Scarred stomach lining'),
+(89, 4, 'Low blood count');
 
 -- --------------------------------------------------------
 
@@ -673,16 +672,12 @@ CREATE TABLE `tbl_queue` (
 --
 
 INSERT INTO `tbl_queue` (`queue_id`, `queue_number`, `patient_id`, `department`, `is_priority`, `is_current`) VALUES
-(50, '4', '03232302', 1, 0, 0),
-(52, '2', '03232304', 2, 0, 1),
-(53, '3', '03232305', 2, 0, 0),
-(57, 'Priority 4', '04192305', 2, 1, 0),
-(58, 'Priority 5', '04192306', 3, 1, 1),
-(59, 'Priority 6', '03232315', 1, 1, 1),
-(60, 'Priority 7', '04192302', 1, 1, 0),
-(61, 'Priority 8', '04192303', 1, 1, 0),
-(62, 'Priority 9', '03232303', 3, 1, 0),
-(63, '1', '03232307', 7, 0, 1);
+(122, 'Priority 1', '04192301', 1, 1, 1),
+(123, 'Priority 2', '04192306', 1, 1, 0),
+(124, 'Priority 3', '04192301', 2, 1, 1),
+(125, 'Priority 4', '04192303', 7, 1, 1),
+(126, 'Priority 5', '04192302', 1, 1, 0),
+(127, 'Priority 6', '03232301', 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -797,17 +792,17 @@ CREATE TABLE `tbl_users` (
 INSERT INTO `tbl_users` (`user_id`, `username`, `password`, `last_name`, `first_name`, `middle_name`, `suffix`, `birthdate`, `phone_number`, `sex`, `department`, `job_title`, `permission_level`, `date_added`, `status`) VALUES
 (67, 'basmayormbOPD67', '$2y$10$ayRALUii2ePuoujphl5Bl.8BIdv61chP3L1zSm1KmazSsLXntC3kS', 'Basmayor', 'Mark Kenneth', 'Bataller', NULL, '1998-05-05', '09488561235', 0, 2, 'Assistant', 3, '2023-03-18', 0),
 (68, 'bocornDNTL68', '$2y$10$U3vlvwlaUtZnCUG84W94tOTIAjNajkjiyPsUtIe1EDu8L9.E1tA1a', 'Boco', 'Roseler', 'Nasol', 'Jr', '1998-05-05', '09488561235', 0, 2, 'Doctor', 2, '2023-03-18', 0),
-(69, 'pogingAdmin69', '$2y$10$W4Q9MuV5gSnxM4oCZI6IGu25yxNiBtgz2pwlbk692WdjT5rLbTDt.', 'Grajo', 'Julius Albert', 'Areola', NULL, '1998-05-05', '09488561235', 0, 6, 'Office Staff', 1, '2023-03-18', 0),
+(69, 'pogingAdmin69', '$2y$10$W4Q9MuV5gSnxM4oCZI6IGu25yxNiBtgz2pwlbk692WdjT5rLbTDt.', 'Grajo', 'Julius Albert', '', NULL, '1998-05-05', '09488561235', 0, 6, 'Office Staff', 1, '2023-03-18', 0),
 (70, 'ardaleseOPD70', '$2y$10$zcinjgZNSCPgsXHgHO/3Z.lXzG7s10mYtgvcExPP8497OA3lf3p6a', 'Ardales', 'Edmel', NULL, NULL, '1998-05-05', '09488561235', 0, 1, 'Doctor', 2, '2023-03-18', 0),
 (71, 'aperinlOPD71', '$2y$10$djgAWdpYRa9n2ALt/qMdCeAmkYvKvzNmjWzHPVYOBHQvpvq41DZte', 'Aperin', 'Lynnette', NULL, NULL, '1998-05-05', '09488561235', 1, 3, 'Midwife', 3, '2023-03-18', 0),
 (72, 'esplanasADMIN72', '$2y$10$IULIcy.DfQDA4je.5hQXR.n0EBgVu8pOMTeQ87msXbv2QqrDAVmAy', 'Esplana', 'Samuel', NULL, NULL, '1998-05-05', '09488561235', 0, 6, 'Office Staff', 1, '2023-03-18', 0),
 (73, 'delacruzjsFD73', '$2y$10$A3H06BTjwU1dTNZaGR12Mue7o3Zp.uc1TNat99CHoCqrHHH3OjKT.', 'De La Cruz', 'Juan', 'Santos', NULL, '1998-05-05', '09488561235', 0, 5, 'Front Desk Staff', 2, '2023-03-19', 0),
 (76, 'delacruzmsPNI76', '$2y$10$sMxeysoVPmyPS.VmR8hnMOMZjRJA0YIMbPKeeEo1CAvBfRVGLYcWO', 'De La Cruz', 'Maria Clara', 'Santa Ana', NULL, '1987-05-02', '09526132487', 1, 3, 'Midwife', 2, '2023-04-17', 2),
-(78, 'OPDTest', '$2y$10$PK9tpiVLemvbcvC5tIK7nOMf0maJnzgLYsjpTdaPhLj7onyGruj6e', 'Edit and View', 'OPD', NULL, NULL, '2023-03-01', '12345678910', 0, 1, 'OPD Test', 2, '2023-04-19', 0),
-(79, 'DentalTest', '$2y$10$x9dXPGoeGaJZKHQxYVhiwOfBAh8z4IFBzgy4we/V2z8pYAkGibE52', 'Edit and View', 'Dental', NULL, NULL, '2023-04-01', '12345678912', 0, 2, 'Dental Test', 2, '2023-04-19', 0),
-(80, 'PrenatalTest', '$2y$10$083AAV4ff0XhBi/P8yA8vOuFEQUFCVt65O6MaYT5Y98laPFwXC/oa', 'Edit and View', 'Prenatal', NULL, NULL, '2023-04-01', '12345678901', 1, 3, 'Prenatal Test', 2, '2023-04-19', 0),
-(81, 'PharmacyTest', '$2y$10$5HMd0USyWfvSn/zfVAl4euLj87Px3qZRAt7AK9zP7pdAlupUzCuly', 'Test', 'Pharmacy', NULL, NULL, '2023-04-01', '01234567845', 0, 4, 'Pharmacy Test', 3, '2023-04-19', 0),
-(82, 'FrontDeskTest', '$2y$10$3YUQwqlEFKCbDxBDMte2TehZID237gh1JLWO10Fuazdvf70FrrPHK', 'Desk', 'Front', NULL, NULL, '2023-04-01', '12345678901', 0, 5, 'Front Desk Test', 2, '2023-04-19', 0);
+(78, 'OPDTest', '$2y$10$PK9tpiVLemvbcvC5tIK7nOMf0maJnzgLYsjpTdaPhLj7onyGruj6e', 'Edit and View', 'OPD', NULL, NULL, '2023-03-01', '12345678910', 0, 1, 'OPD Staff', 2, '2023-04-19', 0),
+(79, 'DentalTest', '$2y$10$x9dXPGoeGaJZKHQxYVhiwOfBAh8z4IFBzgy4we/V2z8pYAkGibE52', 'Edit and View', 'Dental', NULL, NULL, '2023-04-01', '12345678912', 0, 2, 'Dental Staff', 2, '2023-04-19', 0),
+(80, 'PrenatalTest', '$2y$10$083AAV4ff0XhBi/P8yA8vOuFEQUFCVt65O6MaYT5Y98laPFwXC/oa', 'Edit and View', 'Prenatal', NULL, NULL, '2023-04-01', '12345678901', 1, 3, 'Prenatal Staff', 2, '2023-04-19', 0),
+(81, 'PharmacyTest', '$2y$10$5HMd0USyWfvSn/zfVAl4euLj87Px3qZRAt7AK9zP7pdAlupUzCuly', 'Test', 'Pharmacy', NULL, NULL, '2023-04-01', '01234567845', 0, 4, 'Pharmacy Staff', 3, '2023-04-19', 0),
+(82, 'FrontDeskTest', '$2y$10$3YUQwqlEFKCbDxBDMte2TehZID237gh1JLWO10Fuazdvf70FrrPHK', 'Desk', 'Front', NULL, NULL, '2023-04-01', '12345678901', 0, 5, 'Front Desk Staff', 2, '2023-04-19', 0);
 
 --
 -- Indexes for dumped tables
@@ -1016,13 +1011,13 @@ ALTER TABLE `tbl_opd`
 -- AUTO_INCREMENT for table `tbl_opd_disease`
 --
 ALTER TABLE `tbl_opd_disease`
-  MODIFY `opd_disease_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `opd_disease_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
 
 --
 -- AUTO_INCREMENT for table `tbl_opd_lab_results`
 --
 ALTER TABLE `tbl_opd_lab_results`
-  MODIFY `lab_result_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `lab_result_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `tbl_prenatal`
@@ -1040,7 +1035,7 @@ ALTER TABLE `tbl_prenatal_checkup`
 -- AUTO_INCREMENT for table `tbl_queue`
 --
 ALTER TABLE `tbl_queue`
-  MODIFY `queue_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `queue_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 
 --
 -- AUTO_INCREMENT for table `tbl_supplies_inventory`
