@@ -15,8 +15,10 @@ import { RecordDetails } from 'src/composables/Patients';
         <div
           v-if="
             keySession &&
-            (keySession.department === 1 || keySession.department === 5) &&
-            keySession.permission_level !== 3
+            (((keySession.department === 1 || keySession.department === 5) &&
+              keySession.permission_level !== 3) ||
+              (keySession.department === 6 &&
+                keySession.permission_level === 1))
           "
         >
           <div v-if="!editForm">
@@ -74,9 +76,6 @@ import { RecordDetails } from 'src/composables/Patients';
           </div>
           <div class="flex justify-between items-baseline q-px-md">
             <p class="text-primary text-weight-bold">Done by</p>
-            <!-- <p class="text-primary">
-              {{ RecordDetails.preliminary_checkup_done_by_name }}
-            </p> -->
             <q-select
               hide-bottom-space
               outlined
@@ -188,7 +187,6 @@ import { RecordDetails } from 'src/composables/Patients';
           <div class="q-px-md">
             <div class="flex justify-between items-baseline">
               <p class="text-primary text-weight-bold">Doctor:</p>
-              <!-- <p class="text-primary">{{ RecordDetails.doctor_name }}</p> -->
               <q-select
                 hide-bottom-space
                 outlined
@@ -295,7 +293,7 @@ import { RecordDetails } from 'src/composables/Patients';
               </q-input>
             </div>
 
-            <!-- notes -->
+            <!-- Notes -->
             <div
               class="text-primary q-mb-md"
               style="border-top: 1px solid; overflow: auto"

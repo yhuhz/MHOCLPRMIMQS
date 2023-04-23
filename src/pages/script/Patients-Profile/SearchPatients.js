@@ -107,29 +107,17 @@ export default {
 
     let gender_array_model = ref([0, 1]);
     let status_array_model = ref([0]);
-    let brgy_array_model = ref([]);
+    let brgy_array_model = ref(barangayList);
 
-    let select_all_brgy = ref(true);
     let brgy_checkbox_disable = ref(false);
 
     let sex = ["Male", "Female"];
 
-    if (select_all_brgy.value === true) {
+    const select_all_brgy = () => {
       brgy_array_model.value = barangayList;
-      brgy_checkbox_disable.value = true;
-    } else {
+    };
+    const select_none_brgy = () => {
       brgy_array_model.value = [];
-      brgy_checkbox_disable.value = false;
-    }
-
-    const select_all_brgy_change = () => {
-      if (select_all_brgy.value === true) {
-        brgy_array_model.value = barangayList;
-        brgy_checkbox_disable.value = true;
-      } else {
-        brgy_array_model.value = [];
-        brgy_checkbox_disable.value = false;
-      }
     };
 
     let loading = ref(false);
@@ -492,9 +480,8 @@ export default {
       gender_array_model,
       dateAdded,
       columns,
-      select_all_brgy,
       brgy_checkbox_disable,
-      select_all_brgy_change,
+      select_all_brgy,
       age,
       searchPatients,
       searchString,
@@ -517,6 +504,7 @@ export default {
       departmentQueue,
       queueNumber,
       departmentChange,
+      select_none_brgy,
     };
   },
 };

@@ -170,11 +170,22 @@
                       >Barangay</label
                     >
                     <div>
-                      <q-checkbox
-                        v-model="select_all_brgy"
+                      <q-btn
+                        dense
                         label="Select All"
-                        class="text-dark"
-                        @update:model-value="select_all_brgy_change()"
+                        class="q-mt-md q-px-md"
+                        color="primary"
+                        no-caps
+                        @click="select_all_brgy"
+                      />
+
+                      <q-btn
+                        dense
+                        label="Select None"
+                        class="q-mt-md q-ml-md q-px-md"
+                        color="primary"
+                        no-caps
+                        @click="select_none_brgy"
                       />
                       <div class="brgy q-mt-sm">
                         <div v-for="(brgy, index) in barangayList" :key="index">

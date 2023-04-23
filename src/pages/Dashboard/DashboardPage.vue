@@ -158,130 +158,9 @@ import { DashboardData } from 'src/composables/Dashboard';
         </q-card>
       </div>
 
-      <div class="grid-container q-mt-md">
-        <fieldset
-          class="grid-item1 q-pa-md"
-          v-if="keySession && keySession.department !== 4"
-        >
-          <legend class="text-primary text-bold q-px-sm">QUEUE</legend>
-
-          <q-select
-            flat
-            dense
-            outlined
-            label="Select Department"
-            :options="departmentList"
-            v-model="selectedDepartment"
-            @update:model-value="getDepartments"
-          />
-
-          <div class="q-mt-md">
-            <div>
-              <fieldset class="inside-container current">
-                <legend class="text-bold q-px-sm" style="color: #55a15e">
-                  Current
-                </legend>
-
-                <div class="text-center text-bold" style="color: #55a15e">
-                  <div
-                    style="font-size: x-large; cursor: pointer"
-                    @click="
-                      $router.push({
-                        name: 'patient-details',
-                        params: {
-                          id: currentPatient.patient_id,
-                        },
-                      })
-                    "
-                  >
-                    {{ currentPatient && currentPatient.patient_id }}
-                  </div>
-                  <div>
-                    {{
-                      currentPatient &&
-                      currentPatient.first_name +
-                        (currentPatient.middle_name
-                          ? " " + currentPatient.middle_name
-                          : "") +
-                        " " +
-                        currentPatient.last_name +
-                        (currentPatient.suffix
-                          ? " " + currentPatient.suffix
-                          : "")
-                    }}
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-
-            <div class="q-mt-md text-center">
-              <label class="text-primary text-bold q-px-sm">
-                Call in Next Patient
-              </label>
-              <div class="q-mt-sm">
-                <q-btn
-                  style="width: 100%"
-                  color="amber-9"
-                  :disable="
-                    priorityPatients &&
-                    priorityPatients[0] &&
-                    keySession &&
-                    (keySession.department === 5 ||
-                      keySession.department === 1 ||
-                      keySession.department === 2 ||
-                      keySession.department === 3)
-                      ? false
-                      : true
-                  "
-                  @click="callInNextPriority"
-                >
-                  <div style="display: flex; align-items: center">
-                    <q-icon name="priority_high" size="30px" />
-                    <label style="margin-left: 5px"
-                      >priority patients ({{ priorityPatients.length }})</label
-                    >
-                  </div>
-                </q-btn>
-
-                <q-btn
-                  style="width: 100%"
-                  class="q-mt-sm"
-                  color="primary"
-                  :disable="
-                    otherPatients &&
-                    otherPatients[0] &&
-                    keySession &&
-                    (keySession.department === 5 ||
-                      keySession.department === 1 ||
-                      keySession.department === 2 ||
-                      keySession.department === 3)
-                      ? false
-                      : true
-                  "
-                  @click="callInNextPatient"
-                >
-                  <div style="display: flex; align-items: center">
-                    <q-icon name="mic" size="30px" />
-                    <label style="margin-left: 5px"
-                      >Other patients ({{ otherPatients.length }})</label
-                    >
-                  </div>
-                </q-btn>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset class="grid-item2 q-ml-sm">
-          <legend class="text-primary text-bold q-px-sm">CHARTS</legend>
-          <!-- <canvas ref="chartCanvas" /> -->
-          <div
-            ref="chartDiv"
-            style="display: inline-block; height: 100%; width: 100%"
-          >
-            <canvas id="myChart" ref="canvas"></canvas>
-          </div>
-        </fieldset>
+      <!-- <canvas ref="chartCanvas" /> -->
+      <div class="q-mt-md">
+        <canvas id="myChart" ref="canvas"></canvas>
       </div>
     </div>
     <MHCDialog :content="$options.components.RemovePatientFromQueue" />
@@ -293,21 +172,7 @@ import { DashboardData } from 'src/composables/Dashboard';
 <style lang="scss">
 @import "../styles/dashboard/dashboard.scss";
 
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-
-.grid-item1 {
-  grid-column: 1;
-  border: 2px solid #5f8d4e;
-  border-radius: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
 .grid-item2 {
-  grid-column: 2 / span 3;
   border: 2px solid #5f8d4e;
   border-radius: 5px;
 }

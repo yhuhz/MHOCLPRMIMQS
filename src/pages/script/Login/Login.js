@@ -8,6 +8,12 @@ export default {
     const router = useRouter();
     const $q = useQuasar();
 
+    //Session Storage
+    let keySession = SessionStorage.getItem("cred");
+    if (keySession) {
+      router.push({ name: "home" });
+    }
+
     let loginDetails = ref({
       username: null,
       password: null,

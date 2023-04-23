@@ -46,6 +46,7 @@
             class="q-ml-lg"
             input-class="text-primary"
             style="width: 200px"
+            @update:model-value="searchRecords"
           />
 
           <!-- Search -->
@@ -84,16 +85,7 @@
                 no-caps
                 unelevated
                 class="button-100 action-btn"
-                @click="
-                  $router.push({
-                    name: setDepartment + '/patient_records',
-                    params: {
-                      id: props.row.patient_id,
-                      record_id: props.row.record_id,
-                      department: setDepartment,
-                    },
-                  })
-                "
+                @click="rowClick(props.row)"
               />
             </q-td>
           </template>

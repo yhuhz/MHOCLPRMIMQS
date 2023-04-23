@@ -107,6 +107,7 @@ class API
         foreach ($payload['disease'] as $disease) {
           $disease = (array) $disease;
           $disease['opd_id'] = $payload['opd_id'];
+          $disease['date_added'] = $payload['checkup_date'];
           $disease['opd_disease_id'] = $this->db->insert('tbl_opd_disease', $disease);
 
           if ($disease['opd_disease_id']) {

@@ -23,9 +23,10 @@
         $route.name === 'dashboard' ? 'bg-primary text-white' : 'text-white'
       "
       @click="$router.push({ name: 'dashboard' })"
+      v-if="keySession && keySession.department === 6"
     >
       <q-item-section avatar>
-        <q-icon name="dashboard" />
+        <q-icon name="bar_chart" />
       </q-item-section>
       <q-item-section>
         <q-item-label>Dashboard</q-item-label>
@@ -303,6 +304,7 @@ export default defineComponent({
 
     let patient_route_names = [
       "search-patients",
+      "search-records",
       "add-edit-patient-record",
       "patient-details",
       "OPD/patient_records",

@@ -15,8 +15,10 @@ import { RecordDetails } from 'src/composables/Patients';
         <div
           v-if="
             keySession &&
-            (keySession.department === 2 || keySession.department === 5) &&
-            keySession.permission_level !== 3
+            (((keySession.department === 2 || keySession.department === 5) &&
+              keySession.permission_level !== 3) ||
+              (keySession.department === 6 &&
+                keySession.permission_level === 1))
           "
         >
           <div v-if="!editForm">
@@ -359,13 +361,14 @@ import { RecordDetails } from 'src/composables/Patients';
           <!-- Tooth Area -->
           <div class="q-px-md q-my-md grid-dental">
             <div
+              class="grid-item"
               v-for="(teeth, index) in dental_chart"
               :key="index"
-              class="grid-item"
             >
-              <!-- Tooth score -->
-              <div class="q-mb-xs">
-                <select
+              <div>
+                <!-- Tooth score -->
+                <div class="q-mb-xs">
+                  <!-- <select
                   :disabled="!editForm"
                   v-model="teeth.tooth_score"
                   style="width: 90%"
@@ -378,35 +381,33 @@ import { RecordDetails } from 'src/composables/Patients';
                   >
                     {{ score }}
                   </option>
-                </select>
-                <!-- <q-select
-                  dense
-                  flat
-                  outlined
-                  hide-bottom-space
-                  :readonly="!editForm"
-                  v-model="teeth.tooth_score"
-                  :options="scoreOptions"
-                  size="sm"
-                  class="no-padding"
-                  style="width: 40px"
-                /> -->
-              </div>
-              <!-- :style="`width: 90%; background-color: ${
-                    bgColor[teeth.tooth_score - 1]
-                  }`" -->
+                </select> -->
+                  <q-select
+                    dense
+                    flat
+                    outlined
+                    hide-bottom-space
+                    :readonly="!editForm"
+                    v-model="teeth.tooth_score"
+                    :options="scoreOptions"
+                    style="width: 40px"
+                  />
+                </div>
 
-              <!-- Tooth image -->
-              <div>
-                <q-img
-                  :src="index < 16 ? upperTeeth[index] : lowerTeeth[index - 16]"
-                />
-                <!-- This div is for background of tooth depends on score -->
-              </div>
+                <!-- Tooth image -->
+                <div>
+                  <q-img
+                    :src="
+                      index < 16 ? upperTeeth[index] : lowerTeeth[index - 16]
+                    "
+                  />
+                  <!-- This div is for background of tooth depends on score -->
+                </div>
 
-              <p class="no-margin text-center text-primary text-weight-bold">
-                {{ index + 1 }}
-              </p>
+                <p class="no-margin text-center text-primary text-weight-bold">
+                  {{ index + 1 }}
+                </p>
+              </div>
             </div>
           </div>
         </div>

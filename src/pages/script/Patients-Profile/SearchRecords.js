@@ -16,7 +16,7 @@ export default {
       router.push({ name: "login" });
     }
 
-    HealthRecords.value = [];
+    // HealthRecords.value = [];
 
     let loading = ref(false);
     let searchString = ref(null);
@@ -41,7 +41,6 @@ export default {
     }
 
     let selectedDepartment = ref(departmentOptions.value[0]);
-    let setDepartment = ref(null);
 
     let statusArray = ["Active", "Deleted"];
 
@@ -55,7 +54,6 @@ export default {
 
       GetRecordsForTable(payload).then((response) => {
         loading.value = false;
-        setDepartment.value = payload.department;
       });
     };
 
@@ -91,7 +89,7 @@ export default {
         name: "department",
         align: "left",
         label: "Department",
-        field: (row) => setDepartment.value,
+        field: (row) => selectedDepartment.value,
         sortable: true,
       },
       {
@@ -110,6 +108,18 @@ export default {
       },
     ];
 
+    const rowClick = (patient_info) => {
+      let routeData = router.resolve({
+        name: selectedDepartment.value + "/patient_records",
+        params: {
+          id: patient_info.patient_id,
+          record_id: patient_info.record_id,
+          department: selectedDepartment.value,
+        },
+      });
+      window.open(routeData.href, "_blank");
+    };
+
     return {
       columns,
       searchBy,
@@ -121,7 +131,7 @@ export default {
       selectedDepartment,
       searchRecords,
       searchString,
-      setDepartment,
+      rowClick,
     };
   },
 };

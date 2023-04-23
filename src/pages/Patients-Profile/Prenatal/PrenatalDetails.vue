@@ -14,8 +14,9 @@ import { RecordDetails } from 'src/composables/Patients';
       <div
         v-if="
           keySession &&
-          (keySession.department === 2 || keySession.department === 5) &&
-          keySession.permission_level !== 3
+          (((keySession.department === 3 || keySession.department === 5) &&
+            keySession.permission_level !== 3) ||
+            (keySession.department === 6 && keySession.permission_level === 1))
         "
       >
         <div v-if="!editForm">

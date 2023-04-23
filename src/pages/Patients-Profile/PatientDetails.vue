@@ -144,8 +144,7 @@
               :disable="
                 keySession &&
                 keySession.permission_level !== 3 &&
-                isbtnDisabled === false &&
-                selectedDepartment != null
+                selectedDepartment !== null
                   ? false
                   : true
               "

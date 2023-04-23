@@ -183,11 +183,22 @@
                       >Barangay</label
                     >
                     <div>
-                      <q-checkbox
-                        v-model="select_all_brgy"
+                      <q-btn
+                        dense
                         label="Select All"
-                        class="text-dark"
-                        @update:model-value="select_all_brgy_change()"
+                        class="q-mt-md q-px-md"
+                        color="primary"
+                        no-caps
+                        @click="select_all_brgy"
+                      />
+
+                      <q-btn
+                        dense
+                        label="Select None"
+                        class="q-mt-md q-ml-md q-px-md"
+                        color="primary"
+                        no-caps
+                        @click="select_none_brgy"
                       />
                       <div class="brgy q-mt-sm">
                         <div v-for="(brgy, index) in barangayList" :key="index">
@@ -323,7 +334,7 @@
                       v-if="
                         keySession &&
                         ((keySession.department === 6 &&
-                          keySession.permission_level !== 3) ||
+                          keySession.permission_level === 1) ||
                           (keySession.department === 5 &&
                             keySession.permission_level != 3))
                       "
