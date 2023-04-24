@@ -277,6 +277,7 @@ export default {
             ],
           },
           options: {
+            maintainAspectRatio: false,
             animation: false,
             scales: {
               y: {
@@ -305,6 +306,7 @@ export default {
             ],
           },
           options: {
+            maintainAspectRatio: false,
             animation: false,
             scales: {
               y: {
@@ -333,6 +335,7 @@ export default {
             ],
           },
           options: {
+            maintainAspectRatio: false,
             animation: false,
             scales: {
               y: {
@@ -361,6 +364,7 @@ export default {
             ],
           },
           options: {
+            maintainAspectRatio: false,
             animation: false,
             scales: {
               y: {
@@ -383,6 +387,7 @@ export default {
             ],
           },
           options: {
+            maintainAspectRatio: false,
             animation: false,
             scales: {
               y: {

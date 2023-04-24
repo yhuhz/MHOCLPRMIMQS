@@ -159,8 +159,11 @@ import { DashboardData } from 'src/composables/Dashboard';
       </div>
 
       <!-- <canvas ref="chartCanvas" /> -->
-      <div class="q-mt-md">
-        <canvas id="myChart" ref="canvas"></canvas>
+      <div
+        class="flex items-center q-mt-md chartDiv"
+        :style="{ height: $q.screen.height - 350 + 'px' }"
+      >
+        <canvas class="q-px-md" id="myChart" ref="canvas"></canvas>
       </div>
     </div>
     <MHCDialog :content="$options.components.RemovePatientFromQueue" />
@@ -171,6 +174,12 @@ import { DashboardData } from 'src/composables/Dashboard';
 
 <style lang="scss">
 @import "../styles/dashboard/dashboard.scss";
+
+.chartDiv,
+#myChart {
+  width: 100%;
+  justify-content: center;
+}
 
 .grid-item2 {
   border: 2px solid #5f8d4e;

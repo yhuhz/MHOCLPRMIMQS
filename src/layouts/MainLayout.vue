@@ -359,11 +359,8 @@
       <q-list separator>
         <q-scroll-area :style="{ height: $q.screen.height - 50 + 'px' }">
           <div class="q-my-lg">
-            <div class="flex justify-center items-center">
-              <q-avatar class="q-mb-md">
-                <!-- <img src="https://cdn.quasar.dev/img/boy-avatar.png" /> -->
-                <img src="../images/MHOLogo.png" />
-              </q-avatar>
+            <div class="flex justify-center items-center q-mb-md">
+              <q-img src="../images/MHOLogo.png" width="70px" />
             </div>
             <div class="text-center" v-show="!miniState">
               <p class="text-white text-weight-bold" style="font-size: 1.2rem">
