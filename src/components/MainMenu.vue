@@ -163,6 +163,11 @@
               ? 'bg-primary list-text text-white'
               : 'list-text text-white'
           "
+          v-if="
+            keySession &&
+            keySession.department !== 1 &&
+            keySession.department !== 2
+          "
         >
           <q-item-section avatar>
             <q-icon size="xs" name="fa fa-person-pregnant" class="q-ml-md" />

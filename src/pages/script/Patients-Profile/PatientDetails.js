@@ -74,6 +74,16 @@ export default {
             ];
           }
         }
+
+        selectedDepartment.value =
+          route.params.department != null
+            ? route.params.department
+            : departmentList.value[0];
+
+        GetRecords({
+          patient_id: route.params.id,
+          record_type: selectedDepartment.value,
+        });
       }
     );
 

@@ -30,11 +30,13 @@
             flat
             dense
             outlined
-            label="Select Department"
             :options="departmentList"
             v-model="selectedDepartment"
             @update:model-value="getDepartments"
             class="q-mt-md"
+            :readonly="
+              departmentList && departmentList.length === 1 ? true : false
+            "
           />
 
           <div class="q-mt-lg">
@@ -188,7 +190,7 @@
                             $router.push({
                               name: 'patient-details',
                               params: {
-                                id: currentPatient.patient_id,
+                                id: queue.patient_id,
                               },
                             })
                           "
@@ -234,7 +236,7 @@
                             $router.push({
                               name: 'patient-details',
                               params: {
-                                id: currentPatient.patient_id,
+                                id: queue.patient_id,
                               },
                             })
                           "
@@ -339,6 +341,11 @@
             <div
               class="to-do-box shadow-5"
               @click="$router.push({ name: 'pregnant-women-records' })"
+              v-if="
+                keySession &&
+                keySession.department !== 1 &&
+                keySession.department !== 2
+              "
             >
               <q-icon name="pregnant_woman" size="100px" class="to-do-label" />
               <label class="text-center to-do-label"
