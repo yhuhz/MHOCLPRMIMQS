@@ -75,7 +75,7 @@ export default {
         name: "in_stock",
         align: "left",
         label: "In Stock",
-        field: "in_stock",
+        field: (row) => row.quantity - row.quantity_released,
         sortable: true,
       },
       {
@@ -271,8 +271,8 @@ export default {
           classes: "text-white",
           message:
             status === 0
-              ? "Medicine record edited successfully"
-              : "Failed to edit medicine record",
+              ? "Supply record edited successfully"
+              : "Failed to edit supply record",
         });
       });
     };

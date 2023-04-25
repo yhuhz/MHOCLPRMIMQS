@@ -472,8 +472,9 @@
                           v-model="newUserInfo.department"
                           dense
                           outlined
-                          :options="filtersDepartment"
+                          :options="departmentArray"
                           class="q-mt-xs"
+                          @update:model-value="changeDepartment"
                         />
                       </div>
 
@@ -507,8 +508,14 @@
                           v-model="newUserInfo.permission_level"
                           dense
                           outlined
-                          :options="filtersPermission"
+                          :options="permissionArray"
                           class="q-mt-xs"
+                          :disable="isPermissionDisabled"
+                          :rules="[
+                            (val) =>
+                              (val && val.length > 0) || 'Required field',
+                          ]"
+                          @update:model-value="changePermission"
                         />
                       </div>
 
@@ -917,8 +924,9 @@
                       v-model="editUserInfo.department"
                       dense
                       outlined
-                      :options="filtersDepartment"
+                      :options="departmentArray"
                       class="q-mt-xs"
+                      @update:model-value="editChangeDepartment"
                     />
                   </div>
 
@@ -951,8 +959,9 @@
                       v-model="editUserInfo.permission_level"
                       dense
                       outlined
-                      :options="filtersPermission"
+                      :options="permissionArray"
                       class="q-mt-xs"
+                      @update:model-value="editChangePermission"
                     />
                   </div>
 

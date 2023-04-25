@@ -173,6 +173,15 @@ export default {
 
     /**ADD USER**/
     let sexArray = ["Male", "Female"];
+    let permissionArray = ref(["Administrator", "Edit and View", "View Only"]);
+    let departmentArray = ref([
+      "Outpatient Department",
+      "Dental",
+      "Prenatal and Immunization",
+      "Pharmacy",
+      "Front Desk",
+      "Admin Office",
+    ]);
     let newUserInfo = ref({
       last_name: null,
       first_name: null,
@@ -186,6 +195,38 @@ export default {
       permission_level: null,
       status: statusList[0],
     });
+
+    let isPermissionDisabled = ref(true);
+    const changeDepartment = () => {
+      if (newUserInfo.value.department !== "Admin Office") {
+        permissionArray.value = ["Edit and View", "View Only"];
+      } else {
+        permissionArray.value = ["Administrator", "Edit and View", "View Only"];
+      }
+      newUserInfo.value.permission_level = null;
+      isPermissionDisabled.value = false;
+    };
+
+    const changePermission = () => {
+      if (newUserInfo.value.permission_level === "Administrator") {
+        departmentArray.value = [
+          "Outpatient Department",
+          "Dental",
+          "Prenatal and Immunization",
+          "Pharmacy",
+          "Front Desk",
+          "Admin Office",
+        ];
+      } else {
+        departmentArray.value = [
+          "Outpatient Department",
+          "Dental",
+          "Prenatal and Immunization",
+          "Pharmacy",
+          "Front Desk",
+        ];
+      }
+    };
 
     let isAddUserSuccess = ref(false);
     let userSuccess = ref({
@@ -303,6 +344,36 @@ export default {
       };
     };
 
+    const editChangePermission = () => {
+      if (editUserInfo.value.permission_level === "Administrator") {
+        departmentArray.value = [
+          "Outpatient Department",
+          "Dental",
+          "Prenatal and Immunization",
+          "Pharmacy",
+          "Front Desk",
+          "Admin Office",
+        ];
+      } else {
+        departmentArray.value = [
+          "Outpatient Department",
+          "Dental",
+          "Prenatal and Immunization",
+          "Pharmacy",
+          "Front Desk",
+        ];
+      }
+    };
+
+    const editChangeDepartment = () => {
+      if (editUserInfo.value.department !== "Admin Office") {
+        permissionArray.value = ["Edit and View", "View Only"];
+      } else {
+        permissionArray.value = ["Administrator", "Edit and View", "View Only"];
+      }
+      editUserInfo.value.permission_level = null;
+    };
+
     const editUser = () => {
       Loading.show();
 
@@ -374,6 +445,13 @@ export default {
       userSuccess,
       isAddUserFail,
       isPasswordFail,
+      isPermissionDisabled,
+      changeDepartment,
+      permissionArray,
+      changePermission,
+      departmentArray,
+      editChangeDepartment,
+      editChangePermission,
     };
   },
 };

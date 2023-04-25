@@ -109,11 +109,6 @@ class API
       if (isset($payload['filter'])) {
         $filter = (array) $payload['filter'];
 
-        // //Stock filter
-        // if (isset($filter['in_stock'])) {
-        //   $this->db->where('si.quantity - IFNULL(sr.quantity, 0)', $filter['in_stock'], 'BETWEEN');
-        // }
-
         //Status filter
         if (isset($filter['status'])) {
           $this->db->where('status', $filter['status'], 'IN');
@@ -142,10 +137,10 @@ class API
         $this->db->where('supply_id', $supply['supply_id']);
         $this->db->where('status', 0);
         $count = $this->db->getValue('tbl_supply_release', 'CAST(SUM(quantity) as int)');
-        $supply['in_stock'] = $supply['quantity'] - $count;
+        $supply['quantity_released'] = $count;
 
         if (isset($filter['in_stock']) && ($filter['in_stock'][0] != '') && ($filter['in_stock'][1] != '')) {
-          if ($supply['in_stock'] >= $filter['in_stock'][0] && $supply['in_stock'] <= $filter['in_stock'][1]) {
+          if ($supply['quantity'] - $supply['quantity_released'] >= $filter['in_stock'][0] && $supply['quantity'] - $supply['quantity_released'] <= $filter['in_stock'][1]) {
             array_push($supply_array, $supply);
           }
         } else {
@@ -234,7 +229,7 @@ class API
 
           $this->db->where('supply_id', $payload['supply_id']);
           $count = $this->db->getValue('tbl_supply_release', 'CAST(SUM(quantity) as int)');
-          $payload['in_stock'] = $payload['quantity'] - $count;
+          $payload['quantity_released'] = $count;
 
           echo json_encode(array('status' => 'success',
                                   'data' => $payload,

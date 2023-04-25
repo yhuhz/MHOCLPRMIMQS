@@ -277,13 +277,13 @@ class API
       } else {
         //EDIT MEDICINE RECORD
         $this->db->where('medicine_id', $payload['medicine_id']);
-        $household = $this->db->update('tbl_medicine_inventory', $payload);
+        $medicine = $this->db->update('tbl_medicine_inventory', $payload);
 
-        if ($household) {
+        if ($medicine) {
 
           $this->db->where('medicine_id', $payload['medicine_id']);
           $count = $this->db->getValue('tbl_medicine_release', 'SUM(quantity)');
-          $payload['in_stock'] = $count === null ? $payload['quantity'] : ($count[0] - $payload['quantity']);
+          $payload['quantity_released'] = $count;
 
           echo json_encode(array('status' => 'success',
                                   'data' => $payload,

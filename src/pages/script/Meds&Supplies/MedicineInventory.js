@@ -164,27 +164,6 @@ export default {
       },
     ]);
 
-    const rows = ref([
-      // {
-      //   id: "1",
-      //   genericName: "Paracetamol",
-      //   brandName: "Biogesic",
-      //   classification: "Analgesic",
-      //   expirationDate: "02/25/2026",
-      //   received: "500",
-      //   inStock: "300",
-      // },
-      // {
-      //   id: "2",
-      //   genericName: "Paracetamol",
-      //   brandName: "Biogesic",
-      //   classification: "Analgesic",
-      //   expirationDate: "01/16/2026",
-      //   received: "400",
-      //   inStock: "200",
-      // },
-    ]);
-
     let showFilterModal = ref(false);
     let isAddNewMedicineStock = ref(false);
 
@@ -422,7 +401,6 @@ export default {
       searchBy,
       searchString,
       columns,
-      rows,
       showFilterModal,
       isAddNewMedicineStock,
       statusList,
