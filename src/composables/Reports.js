@@ -5,7 +5,7 @@ let MedicineData = ref([]);
 let SupplyData = ref([]);
 let SelectedDate = ref([]);
 
-let pathlink = "http://localhost/MHOCLPRMIMQS/src/PHP/Reports/reports_api.php";
+let pathlink = "http://localhost/MHOCLPRMIMQS/PHP/Reports/reports_api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to Login data.

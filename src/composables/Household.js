@@ -4,7 +4,7 @@ let Households = ref([]);
 let HouseholdsList = readonly(Households);
 let HouseholdDetails = ref([]);
 let pathlink =
-  "http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/household_api.php";
+  "http://localhost/MHOCLPRMIMQS/PHP/Patients and Household/household_api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to Households data.

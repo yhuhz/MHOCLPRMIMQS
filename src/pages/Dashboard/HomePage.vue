@@ -408,6 +408,34 @@
               <q-icon name="description" size="100px" class="to-do-label" />
               <label class="text-center to-do-label">Generate Reports</label>
             </div>
+
+            <div
+              class="to-do-box shadow-5"
+              v-if="
+                keySession &&
+                keySession.department === 6 &&
+                keySession.permission_level === 1
+              "
+              @click="BackupDatabase"
+            >
+              <q-icon name="cloud_download" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label">Backup Database</label>
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              v-if="
+                keySession &&
+                keySession.department === 6 &&
+                keySession.permission_level === 1
+              "
+              @click="BackupDatabase"
+            >
+              <q-icon name="cloud_upload" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label"
+                >Restore Database to last Backup</label
+              >
+            </div>
           </div>
         </div>
       </div>

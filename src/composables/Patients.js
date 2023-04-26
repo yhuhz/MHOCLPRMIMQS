@@ -7,7 +7,7 @@ let PWD = ref([]);
 let SC = ref([]);
 let Prenatal = ref([]);
 let pathlink =
-  "http://localhost/MHOCLPRMIMQS/src/PHP/Patients and Household/patient_api.php";
+  "http://localhost/MHOCLPRMIMQS/PHP/Patients and Household/patient_api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to Patients data.

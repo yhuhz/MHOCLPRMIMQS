@@ -4,7 +4,7 @@ let LoginRecord = ref([]);
 let LoginCredential = readonly(LoginRecord);
 
 let pathlink =
-  "http://localhost/MHOCLPRMIMQS/src/PHP/Users and Departments/manage_user_api.php";
+  "http://localhost/MHOCLPRMIMQS/PHP/Users and Departments/manage_user_api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to Login data.

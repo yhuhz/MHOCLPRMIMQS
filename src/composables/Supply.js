@@ -5,7 +5,7 @@ let SuppliesList = readonly(Supplies);
 let SupplyDetails = ref([]);
 let SupplyRelease = ref([]);
 let pathlink =
-  "http://localhost/MHOCLPRMIMQS/src/PHP/Medicine and Supplies/supply_inventory_api.php";
+  "http://localhost/MHOCLPRMIMQS/PHP/Medicine and Supplies/supply_inventory_api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to Supplies data.

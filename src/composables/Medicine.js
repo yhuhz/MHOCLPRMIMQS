@@ -6,7 +6,7 @@ let MedicineDetails = ref([]);
 let MedicineRelease = ref([]);
 let MedReleasePerPatient = ref([]);
 let pathlink =
-  "http://localhost/MHOCLPRMIMQS/src/PHP/Medicine and Supplies/medicine_inventory_api.php";
+  "http://localhost/MHOCLPRMIMQS/PHP/Medicine and Supplies/medicine_inventory_api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to Medicines data.
