@@ -416,7 +416,7 @@
                 keySession.department === 6 &&
                 keySession.permission_level === 1
               "
-              @click="BackupDatabase"
+              @click="backupDB"
             >
               <q-icon name="cloud_download" size="100px" class="to-do-label" />
               <label class="text-center to-do-label">Backup Database</label>
@@ -429,13 +429,52 @@
                 keySession.department === 6 &&
                 keySession.permission_level === 1
               "
-              @click="RestoreDatabase"
+              @click="isRestoreDB = true"
             >
               <q-icon name="cloud_upload" size="100px" class="to-do-label" />
               <label class="text-center to-do-label"
                 >Restore Database to last Backup</label
               >
             </div>
+
+            <q-dialog persistent v-model="isRestoreDB">
+              <q-card>
+                <div class="q-pa-lg text-center" style="width: 400px">
+                  <q-icon name="cloud_upload" size="100px" color="primary" />
+                  <div>
+                    <p
+                      class="text-primary text-weight-bold text-24 text-center"
+                    >
+                      Are you sure?
+                    </p>
+                    <p class="text-grey-7 text-center">
+                      This will restore the database to its previous version.
+                      <span class="text-negative text-center"
+                        >This process cannot be undone!</span
+                      >
+                    </p>
+                  </div>
+
+                  <div class="flex items-center justify-between q-mt-lg">
+                    <q-btn
+                      v-close-popup
+                      label="Cancel"
+                      no-caps
+                      color="grey-7"
+                      class="button-120"
+                    />
+
+                    <q-btn
+                      label="Yes"
+                      no-caps
+                      color="primary"
+                      class="button-120"
+                      @click="restoreDB"
+                    />
+                  </div>
+                </div>
+              </q-card>
+            </q-dialog>
           </div>
         </div>
       </div>

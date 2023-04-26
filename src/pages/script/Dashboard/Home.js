@@ -20,6 +20,7 @@ export default {
   components: { MHCDialog, RemovePatientFromQueue },
   setup() {
     const router = useRouter();
+    const $q = useQuasar();
 
     //Session Storage
     let keySession = SessionStorage.getItem("cred");
@@ -138,6 +139,46 @@ export default {
     let showPriority = ref(false);
     let showOthers = ref(false);
 
+    let isRestoreDB = ref(false);
+
+    const backupDB = () => {
+      BackupDatabase().then((response) => {
+        if (response.status === "success") {
+          $q.notify({
+            type: "positive",
+            classes: "text-white",
+            message: "Database backed up successfully",
+          });
+        } else {
+          $q.notify({
+            type: "negative",
+            classes: "text-white",
+            message: "Failed to back up database",
+          });
+        }
+      });
+    };
+
+    const restoreDB = () => {
+      RestoreDatabase().then((response) => {
+        if (response.status === "success") {
+          $q.notify({
+            type: "positive",
+            classes: "text-white",
+            message: "Database restored successfully",
+          });
+        } else {
+          $q.notify({
+            type: "negative",
+            classes: "text-white",
+            message: "Failed to restore database",
+          });
+        }
+
+        isRestoreDB.value = false;
+      });
+    };
+
     return {
       selected,
       options,
@@ -154,8 +195,9 @@ export default {
       callInNextPatient,
       showPriority,
       showOthers,
-      BackupDatabase,
-      RestoreDatabase,
+      backupDB,
+      restoreDB,
+      isRestoreDB,
     };
   },
 };

@@ -401,6 +401,7 @@ import pharmacyImage from "../images/pharmacy.png";
 import frontdeskImage from "../images/frontdesk.png";
 import adminImage from "../images/admin.png";
 import defaultImage from "../images/default.png";
+import { BackupDatabase } from "src/composables/Database";
 
 export default defineComponent({
   name: "MainLayout",
@@ -418,6 +419,43 @@ export default defineComponent({
     if (keySession === null) {
       router.push({ name: "login" });
     }
+
+    // Get current date and time
+    let now = ref();
+
+    // Get day of the week (0-6, where 0 is Sunday and 6 is Saturday)
+    let dayOfWeek = ref();
+
+    // Get current time in 24-hour format (e.g. "14:30")
+    let time = ref();
+
+    setInterval(() => {
+      now.value = new Date();
+      dayOfWeek.value = now.value.getDay();
+      time.value = now.value.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      // console.log(time.value == "05:28 AM");
+      if (dayOfWeek.value === 4 && time.value === "05:30 AM") {
+        BackupDatabase().then((response) => {
+          if (response.status === "success") {
+            $q.notify({
+              type: "positive",
+              classes: "text-white",
+              message: "Database backed up successfully",
+            });
+          } else {
+            $q.notify({
+              type: "negative",
+              classes: "text-white",
+              message: "Failed to back up database",
+            });
+          }
+        });
+      }
+    }, 35000); // interval in milliseconds
 
     //USER AVATAR
     let avatarLink = null;

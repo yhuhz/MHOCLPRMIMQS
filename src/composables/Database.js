@@ -13,7 +13,7 @@ let BackupDatabase = () => {
     axios
       .get(pathlink)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         resolve(response.data);
       })
       .catch((error) => {
@@ -27,7 +27,7 @@ let RestoreDatabase = () => {
     axios
       .post(pathlink)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         resolve(response.data);
       })
       .catch((error) => {
