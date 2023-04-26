@@ -2,7 +2,7 @@ import axios from "axios";
 import { ref, readonly } from "vue";
 let DashboardData = ref([]);
 
-let pathlink = "http://localhost/MHOCLPRMIMQS/PHP/Dashboard/dashboard_api.php";
+let pathlink = "http://localhost/MHOCLPRMIMQS PHP/Dashboard/dashboard_api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to Login data.

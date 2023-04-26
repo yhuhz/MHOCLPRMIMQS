@@ -3,7 +3,7 @@ import { ref, readonly } from "vue";
 let Users = ref([]);
 let UsersList = readonly(Users);
 let pathlink =
-  "http://localhost/MHOCLPRMIMQS/PHP/Users and Departments/manage_user_api.php";
+  "http://localhost/MHOCLPRMIMQS PHP/Users and Departments/manage_user_api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to Users data.

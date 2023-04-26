@@ -5,7 +5,7 @@ let PatientRecords = ref([]);
 let RecordArrays = ref([]);
 let HealthRecords = ref([]);
 // let pathlink =
-//   "http://localhost/MHOCLPRMIMQS/PHP/RecordDetails and Household/patient_api.php";
+//   "http://localhost/MHOCLPRMIMQS PHP/RecordDetails and Household/patient_api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to RecordDetails data.
@@ -14,7 +14,7 @@ let HealthRecords = ref([]);
 
 let GetRecords = (payload) => {
   let pathlink =
-    "http://localhost/MHOCLPRMIMQS/PHP/Patients and Household/records_api.php";
+    "http://localhost/MHOCLPRMIMQS PHP/Patients and Household/records_api.php";
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
@@ -35,7 +35,7 @@ let GetRecords = (payload) => {
 
 let GetRecordsForTable = (payload) => {
   let pathlink =
-    "http://localhost/MHOCLPRMIMQS/PHP/Patients and Household/records_api.php";
+    "http://localhost/MHOCLPRMIMQS PHP/Patients and Household/records_api.php";
   return new Promise((resolve, reject) => {
     axios
       .get(pathlink, {
@@ -56,7 +56,7 @@ let GetRecordsForTable = (payload) => {
 
 let FindRecordDetails = (payload, department) => {
   let pathlink =
-    "http://localhost/MHOCLPRMIMQS/PHP/Patient Records/" +
+    "http://localhost/MHOCLPRMIMQS PHP/Patient Records/" +
     department.toLowerCase() +
     "_api.php";
   return new Promise((resolve, reject) => {
@@ -94,7 +94,7 @@ let FindRecordDetails = (payload, department) => {
  */
 let AddRecord = (payload, department) => {
   let pathlink =
-    "http://localhost/MHOCLPRMIMQS/PHP/Patient Records/" +
+    "http://localhost/MHOCLPRMIMQS PHP/Patient Records/" +
     department.toLowerCase() +
     "_api.php";
   return new Promise((resolve, reject) => {
@@ -126,7 +126,7 @@ let AddRecord = (payload, department) => {
  */
 let UpdateRecord = (payload, department) => {
   let pathlink =
-    "http://localhost/MHOCLPRMIMQS/PHP/Patient Records/" +
+    "http://localhost/MHOCLPRMIMQS PHP/Patient Records/" +
     department.toLowerCase() +
     "_api.php";
 
@@ -163,7 +163,7 @@ let UpdateRecord = (payload, department) => {
 let DeleteRecord = (payload, department) => {
   // console.log(payload);
   let pathlink =
-    "http://localhost/MHOCLPRMIMQS/PHP/Patient Records/" +
+    "http://localhost/MHOCLPRMIMQS PHP/Patient Records/" +
     department.toLowerCase() +
     "_api.php";
   return new Promise((resolve, reject) => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ref, readonly } from "vue";
 
-let pathlink = "http://localhost/MHOCLPRMIMQS/PHP/Dashboard/backup_db_api.php";
+let pathlink = "http://localhost/MHOCLPRMIMQS PHP/Dashboard/backup_db_api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to Login data.

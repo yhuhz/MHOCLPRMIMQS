@@ -4,7 +4,7 @@ let Queue = ref([]);
 let QueueList = readonly(Queue);
 let QueueSpecific = ref([]);
 let LastQueueNumber = ref([]);
-let pathlink = "http://localhost/MHOCLPRMIMQS/PHP/Queue/queue_api.php";
+let pathlink = "http://localhost/MHOCLPRMIMQS PHP/Queue/queue_api.php";
 /**
  * This function accepts parameters of an array then
  * set the passed array to Queue data.
