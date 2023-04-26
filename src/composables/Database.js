@@ -22,7 +22,21 @@ let BackupDatabase = () => {
   });
 };
 
+let RestoreDatabase = () => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(pathlink)
+      .then((response) => {
+        console.log(response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 /**
  * Export LoginList as readonly (real time copy of Login)
  */
-export { BackupDatabase };
+export { BackupDatabase, RestoreDatabase };

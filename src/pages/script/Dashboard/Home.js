@@ -8,7 +8,7 @@ import {
   QueueSpecific,
   CallNextPatient,
 } from "src/composables/Queue";
-import { BackupDatabase } from "src/composables/Database";
+import { BackupDatabase, RestoreDatabase } from "src/composables/Database";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import RemovePatientFromQueue from "../../Components/RemovePatientFromQueue";
 import { ToggleDialogState } from "../../../composables/Triggers";
@@ -155,6 +155,7 @@ export default {
       showPriority,
       showOthers,
       BackupDatabase,
+      RestoreDatabase,
     };
   },
 };

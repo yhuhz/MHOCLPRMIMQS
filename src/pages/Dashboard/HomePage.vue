@@ -429,7 +429,7 @@
                 keySession.department === 6 &&
                 keySession.permission_level === 1
               "
-              @click="BackupDatabase"
+              @click="RestoreDatabase"
             >
               <q-icon name="cloud_upload" size="100px" class="to-do-label" />
               <label class="text-center to-do-label"
