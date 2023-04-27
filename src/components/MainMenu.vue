@@ -255,8 +255,10 @@
     <q-item
       v-if="keySession && keySession.department === 6"
       clickable
-      class="text-white"
       @click="$router.push({ name: 'reports' })"
+      :class="
+        $route.name === 'reports' ? 'bg-primary text-white' : 'text-white'
+      "
     >
       <q-item-section avatar>
         <q-icon name="description" />
@@ -278,7 +280,7 @@
           ? 'bg-primary text-white'
           : 'text-white'
       "
-      @click="$router.push({ name: 'queueing-system' })"
+      @click="queueClick"
     >
       <q-item-section avatar>
         <q-icon name="format_list_numbered" />
@@ -353,10 +355,18 @@ export default defineComponent({
         isPatientDetails.value = "list-text text-white";
       }
     });
+
+    const queueClick = () => {
+      let routeData = router.resolve({
+        name: "queue-view",
+      });
+      window.open(routeData.href, "_blank");
+    };
     return {
       isPatientProfileOpen,
       isPatientDetails,
       keySession,
+      queueClick,
     };
   },
 });

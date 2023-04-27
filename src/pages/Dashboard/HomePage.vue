@@ -90,6 +90,16 @@
                           : "")
                     }}
                   </div>
+                  <q-btn
+                    dense
+                    no-caps
+                    color="primary"
+                    label="Done"
+                    icon="how_to_reg"
+                    class="q-mt-xs"
+                    style="width: 100%"
+                    @click="doneCurrentPatient"
+                  />
                 </div>
                 <div v-else class="text-primary text-center text-bold text-20">
                   No Patient

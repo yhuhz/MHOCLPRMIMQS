@@ -16,9 +16,6 @@ export default {
 
     //Session Storage
     let keySession = SessionStorage.getItem("cred");
-    if (keySession == NaN || keySession == null) {
-      router.push({ name: "login" });
-    }
 
     Loading.show();
     GetQueue().then((response) => {
@@ -29,12 +26,13 @@ export default {
 
     setInterval(() => {
       currentRouteName.value = route.name;
-      if (currentRouteName.value === "queueing-system") {
+      if (currentRouteName.value === "queue-view") {
         GetQueue();
       }
     }, 1000); // interval in milliseconds
 
     let currentQueue = ref({
+      Front_Desk: null,
       OPD: null,
       Dental: null,
       Prenatal: null,
@@ -42,6 +40,7 @@ export default {
     });
 
     let waitingQueue = ref({
+      Front_Desk: null,
       OPD: null,
       Dental: null,
       Prenatal: null,
@@ -51,6 +50,16 @@ export default {
     watch(
       () => _.cloneDeep(QueueList.value),
       () => {
+        if (QueueList.value.Front_Desk.length != 0) {
+          QueueList.value.Front_Desk.forEach((q) => {
+            if (q.is_current === 1) {
+              currentQueue.value.Front_Desk = q.queue_number;
+            }
+          });
+        } else {
+          currentQueue.value.Front_Desk = null;
+        }
+
         if (QueueList.value.OPD.length != 0) {
           QueueList.value.OPD.forEach((q) => {
             if (q.is_current === 1) {
@@ -92,6 +101,7 @@ export default {
         }
 
         waitingQueue.value = {
+          Front_Desk: QueueList.value.Front_Desk.length - 1,
           OPD: QueueList.value.OPD.length - 1,
           Dental: QueueList.value.Dental.length - 1,
           Prenatal: QueueList.value.Prenatal.length - 1,

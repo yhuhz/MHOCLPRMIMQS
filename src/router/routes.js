@@ -7,7 +7,7 @@ const routes = [
   {
     path: "/queue-view",
     name: "queue-view",
-    component: () => import("src/pages/Queueing-System/QueueView.vue"),
+    component: () => import("src/pages/Queueing-System/QueueUserView.vue"),
   },
   {
     path: "/",
@@ -175,12 +175,6 @@ const routes = [
         path: "reports",
         name: "reports",
         component: () => import("src/pages/Reports/GenerateReports.vue"),
-      },
-      // Queueing System
-      {
-        path: "queueing-system",
-        name: "queueing-system",
-        component: () => import("src/pages/Queueing-System/QueueUserView.vue"),
       },
     ],
   },

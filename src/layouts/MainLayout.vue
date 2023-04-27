@@ -438,7 +438,7 @@ export default defineComponent({
       });
 
       // console.log(time.value == "05:28 AM");
-      if (dayOfWeek.value === 4 && time.value === "05:30 AM") {
+      if (dayOfWeek.value === 5 && time.value === "04:55 PM") {
         BackupDatabase().then((response) => {
           if (response.status === "success") {
             $q.notify({

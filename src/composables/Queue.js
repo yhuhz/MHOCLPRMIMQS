@@ -123,6 +123,30 @@ let CallNextPatient = (payload) => {
   });
 };
 
+/**DONE PATIENT**/
+let DonePatient = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(pathlink, payload)
+      .then((response) => {
+        // console.log(response.data);
+        if (response.data.status === "success") {
+          let objectIndex = QueueSpecific.value.findIndex(
+            (e) => e.queue_id === payload.current_patient
+          );
+          // if index not found (-1) delete nothing !
+          objectIndex !== -1 && QueueSpecific.value.splice(objectIndex, 1);
+        } else {
+          console.log(response.data);
+        }
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 /**
  * This function accepts parameters of an array like this [1,2,3,4] then
  * delete the data in the Queue based on this parameter.
@@ -190,4 +214,5 @@ export {
   ClearDepartmentQueue,
   LastQueueNumber,
   GetLastQueueNumber,
+  DonePatient,
 };

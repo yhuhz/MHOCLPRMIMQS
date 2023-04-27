@@ -7,6 +7,7 @@ import {
   GetQueueSpecific,
   QueueSpecific,
   CallNextPatient,
+  DonePatient,
 } from "src/composables/Queue";
 import { BackupDatabase, RestoreDatabase } from "src/composables/Database";
 import MHCDialog from "../../../components/MHCDialog.vue";
@@ -28,12 +29,8 @@ export default {
       router.push({ name: "login" });
     }
 
-    let selected = ref("This Week");
-    let options = ["This Week", "This Month", "This Year"];
-
     /**QUEUE**/
     let payload = {
-      filter: selected.value,
       department: keySession && keySession.department,
     };
     let departmentList = ref([]);
@@ -46,13 +43,21 @@ export default {
       } else if (keySession && keySession.department === 3) {
         departmentList.value = ["Prenatal", "Immunization"];
       } else {
-        departmentList.value = ["OPD", "Dental", "Prenatal", "Immunization"];
+        departmentList.value = [
+          "Front Desk",
+          "OPD",
+          "Dental",
+          "Prenatal",
+          "Immunization",
+        ];
       }
     }
     let selectedDepartment = ref(departmentList.value[0]);
 
     let dept = ref(null);
-    if (selectedDepartment.value === "OPD") {
+    if (selectedDepartment.value === "Front Desk") {
+      dept.value = 5;
+    } else if (selectedDepartment.value === "OPD") {
       dept.value = 1;
     } else if (selectedDepartment.value === "Dental") {
       dept.value = 2;
@@ -61,7 +66,7 @@ export default {
     } else if (selectedDepartment.value === "Immunization") {
       dept.value = 7;
     }
-    // console.log(payload.value);
+
     GetQueueSpecific(dept.value);
 
     const getDepartments = () => {
@@ -69,7 +74,9 @@ export default {
       priorityPatients.value = [];
       otherPatients.value = [];
 
-      if (selectedDepartment.value === "OPD") {
+      if (selectedDepartment.value === "Front Desk") {
+        dept.value = 5;
+      } else if (selectedDepartment.value === "OPD") {
         dept.value = 1;
       } else if (selectedDepartment.value === "Dental") {
         dept.value = 2;
@@ -78,7 +85,7 @@ export default {
       } else if (selectedDepartment.value === "Immunization") {
         dept.value = 7;
       }
-      // console.log(payload.value);
+
       GetQueueSpecific(dept.value);
     };
 
@@ -114,6 +121,8 @@ export default {
         current_patient:
           currentPatient.value !== null ? currentPatient.value.queue_id : null,
         next_patient: priorityPatients.value[0].queue_id,
+        department: dept.value,
+        priority: 1,
       }).then((response) => {
         Loading.hide();
         priorityPatients.value = [];
@@ -128,8 +137,26 @@ export default {
         current_patient:
           currentPatient.value !== null ? currentPatient.value.queue_id : null,
         next_patient: otherPatients.value[0].queue_id,
+        department: dept.value,
+        priority: 0,
       }).then((response) => {
         Loading.hide();
+        priorityPatients.value = [];
+        otherPatients.value = [];
+        GetQueueSpecific(dept.value);
+      });
+    };
+
+    const doneCurrentPatient = () => {
+      Loading.show();
+      DonePatient({
+        current_patient: currentPatient.value.queue_id,
+        department: dept.value,
+        priority: currentPatient.value.is_priority,
+        done: true,
+      }).then((response) => {
+        Loading.hide();
+        currentPatient.value = null;
         priorityPatients.value = [];
         otherPatients.value = [];
         GetQueueSpecific(dept.value);
@@ -180,8 +207,6 @@ export default {
     };
 
     return {
-      selected,
-      options,
       departmentList,
       selectedDepartment,
       getDepartments,
@@ -198,6 +223,7 @@ export default {
       backupDB,
       restoreDB,
       isRestoreDB,
+      doneCurrentPatient,
     };
   },
 };

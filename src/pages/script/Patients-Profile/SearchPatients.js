@@ -383,12 +383,12 @@ export default {
     let patientToQueue = ref(null);
     let queueNumber = ref(null);
     let departmentArrayQueue = ref([]);
-    let departmentQueue = ref("OPD");
+    let departmentQueue = ref("Front Desk");
 
     const openQueueModal = (patient_info) => {
-      departmentQueue.value = "OPD";
+      departmentQueue.value = "Front Desk";
       GetLastQueueNumber({
-        department: 1,
+        department: 5,
         priority: 0,
       }).then((response) => {
         queueNumber.value = LastQueueNumber.value;
@@ -398,10 +398,10 @@ export default {
       patientToQueue.value = patient_info.patient_id;
 
       if (patient_info.sex === 0) {
-        departmentArrayQueue.value = ["OPD", "Dental", "Immunization"];
+        departmentArrayQueue.value = ["Front Desk", "Dental", "Immunization"];
       } else {
         departmentArrayQueue.value = [
-          "OPD",
+          "Front Desk",
           "Dental",
           "Prenatal",
           "Immunization",
@@ -410,8 +410,8 @@ export default {
     };
 
     const departmentChange = () => {
-      if (departmentQueue.value === "OPD") {
-        departmentQueue.value = 1;
+      if (departmentQueue.value === "Front Desk") {
+        departmentQueue.value = 5;
       } else if (departmentQueue.value === "Dental") {
         departmentQueue.value = 2;
       } else if (departmentQueue.value === "Prenatal") {
@@ -420,7 +420,16 @@ export default {
         departmentQueue.value = 7;
       }
 
-      let dept = ["", "OPD", "Dental", "Prenatal", "", "", "", "Immunization"];
+      let dept = [
+        "",
+        "OPD",
+        "Dental",
+        "Prenatal",
+        "",
+        "Front Desk",
+        "",
+        "Immunization",
+      ];
 
       GetLastQueueNumber({
         department: departmentQueue.value,
@@ -432,8 +441,8 @@ export default {
     };
 
     const addToQueue = () => {
-      if (departmentQueue.value === "OPD") {
-        departmentQueue.value = 1;
+      if (departmentQueue.value === "Front Desk") {
+        departmentQueue.value = 5;
       } else if (departmentQueue.value === "Dental") {
         departmentQueue.value = 2;
       } else if (departmentQueue.value === "Prenatal") {
@@ -461,7 +470,7 @@ export default {
               : "Failed to add patient to queue",
         });
 
-        (departmentQueue.value = "OPD"),
+        (departmentQueue.value = "Front Desk"),
           (patientToQueue.value = null),
           (queueNumber.value = null),
           (queueOpenModal.value = false);

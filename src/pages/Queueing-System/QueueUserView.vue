@@ -1,6 +1,6 @@
 <template>
   <div class="queuue q-px-lg">
-    <div class="text-center q-mt-lg">
+    <div class="text-center q-mt-xl">
       <p class="text-weight-medium text-dark" style="font-size: 1.8rem">
         Now Serving
       </p>
@@ -15,11 +15,49 @@
       />
     </div>
 
-    <div class="queue-box q-mt-lg">
+    <div class="queue-box q-mt-md q-pa-lg">
+      <!-- Front Desk -->
+      <div class="q-mb-lg">
+        <div class="queue-front-desk shadow-5">
+          <div class="bg-yellow-8 department">
+            <p class="text-center text-white q-py-sm department">Front Desk</p>
+          </div>
+          <p class="queue-number text-center">
+            {{
+              currentQueue.Front_Desk != null
+                ? currentQueue.Front_Desk.substring(0, 8) === "Priority"
+                  ? currentQueue.Front_Desk
+                  : "OPD" + currentQueue.Front_Desk
+                : "No Patients"
+            }}
+          </p>
+        </div>
+        <div
+          class="flex q-mt-md"
+          style="width: 100%; justify-content: center"
+          v-if="
+            keySession && keySession.department === 5 && isHideButton === false
+          "
+        >
+          <q-btn
+            dense
+            color="negative"
+            label="CLEAR OPD QUEUE"
+            icon="delete"
+            class="q-px-md"
+            style="width: 100%"
+            @click="clearQueue(5)"
+          />
+        </div>
+      </div>
+
+      <!-- Doctor's Office -->
       <div class="q-mb-lg">
         <div class="queue-opd shadow-5">
           <div class="bg-yellow-8 department">
-            <p class="text-center text-white q-py-sm department">Opd</p>
+            <p class="text-center text-white q-py-sm department">
+              Doctor's Office
+            </p>
           </div>
           <p class="queue-number text-center">
             {{
@@ -158,55 +196,6 @@
       </div>
     </div>
 
-    <!-- Waiting on queue -->
-    <div class="q-mt-lg">
-      <p
-        class="text-center text-dark text-weight-medium"
-        style="font-size: 1.8rem"
-      >
-        Number of Patients Waiting on Queue
-      </p>
-
-      <!-- Box -->
-      <div class="waiting-box">
-        <div class="box">
-          <p class="queue-waiting text-primary text-center">
-            {{
-              waitingQueue.OPD != null && waitingQueue.OPD > 0
-                ? waitingQueue.OPD
-                : ""
-            }}
-          </p>
-        </div>
-        <div class="box">
-          <p class="queue-waiting text-primary text-center">
-            {{
-              waitingQueue.Dental != null && waitingQueue.Dental > 0
-                ? waitingQueue.Dental
-                : ""
-            }}
-          </p>
-        </div>
-        <div class="box">
-          <p class="queue-waiting text-primary text-center">
-            {{
-              waitingQueue.Prenatal != null && waitingQueue.Prenatal > 0
-                ? waitingQueue.Prenatal
-                : ""
-            }}
-          </p>
-        </div>
-        <div class="box">
-          <p class="queue-waiting text-primary text-center">
-            {{
-              waitingQueue.Immunization != null && waitingQueue.Immunization > 0
-                ? waitingQueue.Immunization
-                : ""
-            }}
-          </p>
-        </div>
-      </div>
-    </div>
     <MHCDialog :content="$options.components.ClearDepartmentQueueConfirm" />
   </div>
 </template>
@@ -216,8 +205,8 @@
 <style lang="scss" scoped>
 .queue-box {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
   .queue-number {
     font-size: 40px;
     letter-spacing: 2px;
@@ -234,6 +223,16 @@
     font-weight: 500;
     text-transform: uppercase;
     border-radius: 5px 5px 0px 0px;
+  }
+
+  .queue-front-desk {
+    background-color: #f78bf7;
+    height: 200px;
+    border-radius: 5px;
+
+    .department {
+      background-color: #ee37ee;
+    }
   }
 
   .queue-opd {
@@ -276,7 +275,7 @@
 }
 .waiting-box {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
 
   .box {

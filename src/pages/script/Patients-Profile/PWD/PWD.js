@@ -244,10 +244,10 @@ export default {
     let patientToQueue = ref(null);
     let queueNumber = ref(null);
     let departmentArrayQueue = ref([]);
-    let departmentQueue = ref("OPD");
+    let departmentQueue = ref("Front Desk");
 
     const openQueueModal = (patient_info) => {
-      departmentQueue.value = "OPD";
+      departmentQueue.value = "Front Desk";
       GetLastQueueNumber({
         department: null,
         priority: 1,
@@ -259,10 +259,10 @@ export default {
       patientToQueue.value = patient_info.patient_id;
 
       if (patient_info.sex === 0) {
-        departmentArrayQueue.value = ["OPD", "Dental", "Immunization"];
+        departmentArrayQueue.value = ["Front Desk", "Dental", "Immunization"];
       } else {
         departmentArrayQueue.value = [
-          "OPD",
+          "Front Desk",
           "Dental",
           "Prenatal",
           "Immunization",
@@ -280,8 +280,8 @@ export default {
     };
 
     const addToQueue = () => {
-      if (departmentQueue.value === "OPD") {
-        departmentQueue.value = 1;
+      if (departmentQueue.value === "Front Desk") {
+        departmentQueue.value = 5;
       } else if (departmentQueue.value === "Dental") {
         departmentQueue.value = 2;
       } else if (departmentQueue.value === "Prenatal") {
