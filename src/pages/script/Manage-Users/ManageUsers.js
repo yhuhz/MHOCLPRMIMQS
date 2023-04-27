@@ -263,14 +263,6 @@ export default {
         }
 
         onReset();
-        // $q.notify({
-        //   type: status === 0 ? "positive" : "negative",
-        //   classes: "text-white",
-        //   message:
-        //     status === 0
-        //       ? "Medicine record added successfully"
-        //       : "Failed to add medicine record",
-        // });
       });
     };
 
@@ -342,10 +334,10 @@ export default {
         permission_level: filtersPermission[record.permission_level - 1],
         status: statusList[record.status],
       };
-    };
 
-    const editChangePermission = () => {
       if (editUserInfo.value.permission_level === "Administrator") {
+        departmentArray.value = ["Admin Office"];
+      } else {
         departmentArray.value = [
           "Outpatient Department",
           "Dental",
@@ -354,6 +346,18 @@ export default {
           "Front Desk",
           "Admin Office",
         ];
+      }
+
+      if (editUserInfo.value.department !== "Admin Office") {
+        permissionArray.value = ["Edit and View", "View Only"];
+      } else {
+        permissionArray.value = ["Administrator", "Edit and View", "View Only"];
+      }
+    };
+
+    const editChangePermission = () => {
+      if (editUserInfo.value.permission_level === "Administrator") {
+        departmentArray.value = ["Admin Office"];
       } else {
         departmentArray.value = [
           "Outpatient Department",
@@ -361,6 +365,7 @@ export default {
           "Prenatal and Immunization",
           "Pharmacy",
           "Front Desk",
+          "Admin Office",
         ];
       }
     };
