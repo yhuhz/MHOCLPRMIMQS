@@ -91,6 +91,7 @@
                     }}
                   </div>
                   <q-btn
+                    v-if="keySession && keySession.department !== 6"
                     dense
                     no-caps
                     color="primary"

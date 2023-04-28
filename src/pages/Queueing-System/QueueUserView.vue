@@ -28,7 +28,7 @@
                 ? currentQueue.Front_Desk.substring(0, 8) === "Priority"
                   ? currentQueue.Front_Desk
                   : "OPD" + currentQueue.Front_Desk
-                : "No Patients"
+                : ""
             }}
           </p>
         </div>
@@ -65,7 +65,7 @@
                 ? currentQueue.OPD.substring(0, 8) === "Priority"
                   ? currentQueue.OPD
                   : "OPD" + currentQueue.OPD
-                : "No Patients"
+                : ""
             }}
           </p>
         </div>
@@ -100,7 +100,7 @@
                 ? currentQueue.Dental.substring(0, 8) === "Priority"
                   ? currentQueue.Dental
                   : "DNTL" + currentQueue.Dental
-                : "No Patients"
+                : ""
             }}
           </p>
         </div>
@@ -135,7 +135,7 @@
                 ? currentQueue.Prenatal.substring(0, 8) === "Priority"
                   ? currentQueue.Prenatal
                   : "PNL" + currentQueue.Prenatal
-                : "No Patients"
+                : ""
             }}
           </p>
         </div>
@@ -172,7 +172,7 @@
                 ? currentQueue.Immunization.substring(0, 8) === "Priority"
                   ? currentQueue.Immunization
                   : "IMZN" + currentQueue.Immunization
-                : "No Patients"
+                : ""
             }}
           </p>
         </div>
