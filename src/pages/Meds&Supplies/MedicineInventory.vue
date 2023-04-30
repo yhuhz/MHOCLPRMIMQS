@@ -558,6 +558,27 @@
           dense
           class="mhc-table"
         >
+          <!-- In Stock -->
+          <template #body-cell-in_stock="props">
+            <q-td
+              :props="props"
+              :style="
+                props.row.quantity - props.row.quantity_released <= 100
+                  ? 'color: red'
+                  : ''
+              "
+            >
+              {{ props.row.quantity - props.row.quantity_released }}
+            </q-td>
+          </template>
+
+          <!-- Exp Date -->
+          <template #body-cell-exp_date="props">
+            <q-td :props="props" :class="getExpDateClass(props.row)">
+              {{ props.row.exp_date }}
+            </q-td>
+          </template>
+
           <!-- Table Row Slots -->
           <template #body-cell-action="props">
             <q-td :props="props">

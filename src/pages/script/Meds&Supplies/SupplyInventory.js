@@ -129,6 +129,16 @@ export default {
       },
     ]);
 
+    //Get Date Diff for exp_date
+    let dateToday = date.formatDate(Date.now(), "YYYY-MM-DD");
+    const getExpDateClass = (row) => {
+      const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+      const diffDays = Math.round(
+        (new Date(row.exp_date) - new Date(dateToday)) / oneDay
+      );
+      return diffDays <= 100 ? "text-red" : "";
+    };
+
     let showFilterModal = ref(false);
     let isAddNewSupplyStock = ref(false);
 
@@ -357,6 +367,7 @@ export default {
       editSupply,
       exportTable,
       keySession,
+      getExpDateClass,
     };
   },
 };
