@@ -440,7 +440,7 @@
                 keySession.department === 6 &&
                 keySession.permission_level === 1
               "
-              @click="isRestoreDB = true"
+              @click="openRestoreDBModal"
             >
               <q-icon name="cloud_upload" size="100px" class="to-do-label" />
               <label class="text-center to-do-label"
@@ -466,6 +466,19 @@
                     </p>
                   </div>
 
+                  <div class="text-center">
+                    <q-separator size="2px" color="primary" />
+                    <p style="font-size: small" class="q-mt-md text-grey-7">
+                      Which database version would you like to restore?
+                    </p>
+                    <q-select
+                      dense
+                      outlined
+                      :options="DBList"
+                      v-model="selectedDB"
+                    />
+                  </div>
+
                   <div class="flex items-center justify-between q-mt-lg">
                     <q-btn
                       v-close-popup
@@ -480,6 +493,7 @@
                       no-caps
                       color="primary"
                       class="button-120"
+                      :disable="selectedDB === null ? true : false"
                       @click="restoreDB"
                     />
                   </div>

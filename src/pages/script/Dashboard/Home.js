@@ -9,7 +9,12 @@ import {
   CallNextPatient,
   DonePatient,
 } from "src/composables/Queue";
-import { BackupDatabase, RestoreDatabase } from "src/composables/Database";
+import {
+  BackupDatabase,
+  RestoreDatabase,
+  GetDBList,
+  DBList,
+} from "src/composables/Database";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import RemovePatientFromQueue from "../../Components/RemovePatientFromQueue";
 import { ToggleDialogState } from "../../../composables/Triggers";
@@ -166,7 +171,9 @@ export default {
     let showPriority = ref(false);
     let showOthers = ref(false);
 
+    /** DATABASE **/
     let isRestoreDB = ref(false);
+    let selectedDB = ref(null);
 
     const backupDB = () => {
       BackupDatabase().then((response) => {
@@ -186,8 +193,18 @@ export default {
       });
     };
 
+    const openRestoreDBModal = () => {
+      isRestoreDB.value = true;
+      Loading.show();
+      GetDBList().then((response) => {
+        Loading.hide();
+      });
+    };
+
     const restoreDB = () => {
-      RestoreDatabase().then((response) => {
+      Loading.show();
+      RestoreDatabase({ db: selectedDB.value }).then((response) => {
+        Loading.hide();
         if (response.status === "success") {
           $q.notify({
             type: "positive",
@@ -224,6 +241,9 @@ export default {
       restoreDB,
       isRestoreDB,
       doneCurrentPatient,
+      openRestoreDBModal,
+      DBList,
+      selectedDB,
     };
   },
 };
