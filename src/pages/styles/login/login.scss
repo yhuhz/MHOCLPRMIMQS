@@ -1,4 +1,9 @@
 .login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+
   .system-name {
     font-size: 24px;
   }
@@ -10,6 +15,5 @@
     //   background-color: #5F8D4E;
     //   color: #fff;
     // }
-
   }
 }
