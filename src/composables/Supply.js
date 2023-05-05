@@ -62,7 +62,7 @@ let FindSupplyRelease = (payload) => {
         },
       })
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         SupplyRelease.value = response.data.data;
         resolve(response.data);
       })

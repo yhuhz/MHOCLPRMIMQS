@@ -174,6 +174,18 @@ export default {
 
     let loading = ref(false);
 
+    //Fetch data on load
+    let payload = {
+      medicine_id: route.params.medicine_id,
+      department: selectedFiltersDepartment.value,
+      released_to: selectedReleaseTo.value,
+      status: selectedFilterStatus.value,
+      quantity_released: quantityReleased.value,
+      date_release: dateReleased.value,
+    };
+
+    FindMedicineRelease(payload);
+
     const search = () => {
       loading.value = true;
       let payload = {
