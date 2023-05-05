@@ -1,5 +1,8 @@
 <template>
-  <div class="login">
+  <div
+    class="login"
+    :style="$q.screen.height > 768 ? 'height: 80vh' : 'height: 100vh'"
+  >
     <div>
       <div class="text-center">
         <h5 class="system-name primary-text-color text-weight-bold q-my-md">
