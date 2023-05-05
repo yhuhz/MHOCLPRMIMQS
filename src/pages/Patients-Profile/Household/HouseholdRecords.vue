@@ -194,7 +194,7 @@
                       @click="
                         $router.push({
                           name: 'search-patients',
-                          query: { household_id: props.row.household_id },
+                          params: { household_id: props.row.household_id },
                         })
                       "
                     >

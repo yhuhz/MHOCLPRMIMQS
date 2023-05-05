@@ -118,30 +118,7 @@ export default {
       "Front Desk",
       "Admin Office",
     ];
-    let selectedFiltersDepartment = ref([]);
-    let select_all_dept = ref(true);
-    let dept_checkbox_disable = ref(false);
-
-    if (select_all_dept.value === true) {
-      filtersDepartment.forEach((element, index) => {
-        selectedFiltersDepartment.value.push(index + 1);
-      });
-      dept_checkbox_disable.value = true;
-    } else {
-      selectedFiltersDepartment.value = [];
-      dept_checkbox_disable.value = false;
-    }
-
-    const select_all_dept_change = () => {
-      if (select_all_dept.value === true) {
-        filtersDepartment.forEach((element, index) => {
-          selectedFiltersDepartment.value.push(index + 1);
-        });
-      } else {
-        selectedFiltersDepartment.value = [];
-        dept_checkbox_disable.value = false;
-      }
-    };
+    let selectedFiltersDepartment = ref([0, 1, 2, 3, 4, 5, 6]);
 
     //Permission Level
     let filtersPermission = ["Administrator", "Edit and View", "View Only"];
@@ -421,10 +398,7 @@ export default {
       isAddNewUser,
       statusList,
       filtersDepartment,
-      select_all_dept,
-      dept_checkbox_disable,
       selectedFiltersDepartment,
-      select_all_dept_change,
       selectedFiltersPermission,
       filtersPermission,
       selectedFilterStatus,

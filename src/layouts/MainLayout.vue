@@ -357,7 +357,10 @@
       class="bg-dark"
     >
       <q-list separator>
-        <q-scroll-area :style="{ height: $q.screen.height - 50 + 'px' }">
+        <q-scroll-area
+          :visible="false"
+          :style="{ height: $q.screen.height - 50 + 'px' }"
+        >
           <div class="q-my-lg">
             <div class="flex justify-center items-center q-mb-md">
               <q-img src="../images/MHOLogo.png" width="70px" />
@@ -375,7 +378,10 @@
     </q-drawer>
 
     <q-page-container>
-      <q-scroll-area :style="{ height: $q.screen.height - 50 + 'px' }">
+      <q-scroll-area
+        :visible="false"
+        :style="{ height: $q.screen.height - 50 + 'px' }"
+      >
         <router-view />
       </q-scroll-area>
     </q-page-container>

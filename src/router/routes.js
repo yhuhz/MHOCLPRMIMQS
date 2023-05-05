@@ -31,7 +31,7 @@ const routes = [
       },
       // Patients Profile
       {
-        path: "search-patients",
+        path: "search-patients/:household_id?",
         name: "search-patients",
         component: () => import("pages/Patients-Profile/SearchPatients.vue"),
       },

@@ -55,13 +55,7 @@
                     <label class="text-primary text-weight-bold"
                       >Department</label
                     >
-                    <q-checkbox
-                      v-model="select_all_dept"
-                      label="Select All"
-                      class="text-dark"
-                      size="xs"
-                      @update:model-value="select_all_dept_change"
-                    />
+
                     <div
                       v-for="(department, index) in filtersDepartment"
                       :key="index"
@@ -72,7 +66,6 @@
                         :label="department"
                         size="xs"
                         class="text-dark"
-                        :disable="dept_checkbox_disable"
                       />
                     </div>
                   </div>
