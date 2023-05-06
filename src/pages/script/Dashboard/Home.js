@@ -198,6 +198,7 @@ export default {
       Loading.show();
       GetDBList().then((response) => {
         Loading.hide();
+        selectedDB.value = response.data[0];
       });
     };
 
