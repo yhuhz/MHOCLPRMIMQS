@@ -343,7 +343,7 @@
                       @click="
                         $router.push({
                           name: 'add-edit-patient-record',
-                          query: {
+                          params: {
                             id: props.row.patient_id,
                           },
                         })

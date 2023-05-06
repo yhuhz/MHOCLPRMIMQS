@@ -85,25 +85,26 @@ export default {
 
     let sexArray = ["Male", "Female"];
 
-    //Address
-    let municipality = ref(null);
-    let barangay = ref(null);
     let brgyDisable = ref(true);
+    let municipality = ref();
 
     const municipalityFunction = () => {
-      brgyDisable.value = false;
       if (municipality.value === "Outside Camalig") {
-        barangay.value = "Outside Camalig";
+        personalInformation.value.barangay = "Outside Camalig";
         brgyDisable.value = true;
+      } else {
+        personalInformation.value.barangay = null;
+        brgyDisable.value = false;
       }
     };
-    let address = ref(null);
 
     // Personl Information
     let personalInformation = ref({
       patient_id: null,
       household_id: null,
       status: "Active",
+      barangay: null,
+      address: null,
       last_name: null,
       first_name: null,
       middle_name: null,
@@ -125,10 +126,6 @@ export default {
 
     const onReset = () => {
       // console.log("mun", municipality.value);
-      //Address
-      barangay.value = null;
-      municipality.value = null;
-      address.value = null;
 
       // Personl Information
       personalInformation.value = {
@@ -137,6 +134,8 @@ export default {
         last_name: null,
         first_name: null,
         middle_name: null,
+        barangay: null,
+        address: null,
         suffix: null,
         birthdate: null,
         phone_number: null,
@@ -154,9 +153,9 @@ export default {
     };
 
     /**FOR EDIT**/
-    if (route.query.id) {
+    if (route.params.id) {
       Loading.show();
-      FindPatient({ patient_id: route.query.id }).then((response) => {
+      FindPatient({ patient_id: route.params.id }).then((response) => {
         Loading.hide();
       });
 
@@ -172,14 +171,14 @@ export default {
           } else {
             municipality.value = "Outside Camalig";
           }
-          barangay.value = info.barangay;
-          address.value = info.address;
 
           //Personal Info
           personalInformation.value = {
             patient_id: info.patient_id,
             household_id: info.household_id,
             status: statusList[info.status],
+            barangay: info.barangay,
+            address: info.address,
             last_name: info.last_name,
             first_name: info.first_name,
             middle_name: info.middle_name,
@@ -290,11 +289,8 @@ export default {
     const addPatient = () => {
       if (
         personalInformation.value.household_id &&
-        personalInformation.value.sex &&
-        barangay.value
+        personalInformation.value.sex
       ) {
-        personalInformation.value.barangay = barangay.value;
-        personalInformation.value.address = personalInformation.value.address;
         personalInformation.value.added_by = keySession.user_id;
         personalInformation.value.sex = sexArray.indexOf(
           personalInformation.value.sex
@@ -337,11 +333,8 @@ export default {
     const editPatientRecord = () => {
       if (
         personalInformation.value.household_id &&
-        personalInformation.value.sex &&
-        barangay.value
+        personalInformation.value.sex
       ) {
-        personalInformation.value.barangay = barangay.value;
-        personalInformation.value.address = personalInformation.value.address;
         personalInformation.value.added_by = keySession.user_id;
         personalInformation.value.sex = sexArray.indexOf(
           personalInformation.value.sex
@@ -379,7 +372,7 @@ export default {
     };
 
     const onSubmit = () => {
-      if (route.query.id) {
+      if (route.params.id) {
         editPatientRecord();
       } else {
         addPatient();
@@ -390,9 +383,6 @@ export default {
       route,
       statusList,
       barangayList,
-      barangay,
-      municipality,
-      address,
       personalInformation,
       isPWD,
       isSeniorCitizen,
@@ -408,6 +398,7 @@ export default {
       onChangeSC,
       scDisable,
       updateBirthdate,
+      municipality,
     };
   },
 };

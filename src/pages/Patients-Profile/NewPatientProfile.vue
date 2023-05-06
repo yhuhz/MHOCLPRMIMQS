@@ -144,7 +144,7 @@
                 <q-select
                   dense
                   outlined
-                  v-model="barangay"
+                  v-model="personalInformation.barangay"
                   :options="barangayList"
                   class="q-mt-sm"
                   :disable="brgyDisable"
@@ -166,7 +166,7 @@
                 </label>
                 <q-input
                   outlined
-                  v-model="address"
+                  v-model="personalInformation.address"
                   dense
                   :input-style="{ color: '#525252' }"
                   placeholder="example: 123 South St., Cotmon, Camalig, Albay"

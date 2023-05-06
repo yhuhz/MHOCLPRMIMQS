@@ -150,14 +150,14 @@ export default {
     };
 
     /**FOR PATIENTS UNDER HOUSEHOLD ID**/
-    if (route.query.household_id) {
+    if (route.params.household_id) {
       selectedSearchBy.value = "Household ID";
-      searchString.value = route.query.household_id;
+      searchString.value = route.params.household_id;
 
       let payload = {
         search_by: {
           search_category: "Household ID",
-          search_string: route.query.household_id,
+          search_string: route.params.household_id,
         },
       };
 

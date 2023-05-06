@@ -88,7 +88,7 @@ let AddPatient = (payload) => {
     axios
       .post(pathlink, payload)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         if (response.data.status === "success") {
           // Patients.value.push(response.data.data);
         } else {
