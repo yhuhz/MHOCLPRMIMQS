@@ -232,7 +232,7 @@
 
               <!-- Change Password Dialog Box -->
               <q-dialog persistent v-model="changePass">
-                <q-card class="q-px-md q-py-lg" style="min-width: 350px">
+                <q-card class="q-px-md q-py-lg" style="width: 350px">
                   <q-form @submit="changePassword">
                     <div class="flex justify-center items-center">
                       <p class="text-primary q-mr-md">
@@ -246,6 +246,14 @@
                       </p>
                     </div>
 
+                    <div class="text-center text-grey-7 text-caption q-mb-md">
+                      <label
+                        >Your new password should contain at least 1 uppercase
+                        letter, 1 lowercase letter, a number, a special
+                        character, and must be at least 8 characters</label
+                      >
+                    </div>
+
                     <div class="row">
                       <div class="col">
                         <label>New Password</label>
@@ -257,9 +265,10 @@
                           class="q-mt-sm"
                           :rules="[
                             (val) =>
-                              (val && val.length > 6) ||
-                              'Password must contain at least 7 characters',
+                              (val && val.length > 6 && passCheck) ||
+                              'Invalid Password',
                           ]"
+                          @update:model-value="passwordCheck()"
                         >
                           <template v-slot:append>
                             <q-icon
@@ -287,10 +296,6 @@
                           outlined
                           :type="showConfirmPassword ? 'password' : 'text'"
                           class="q-mt-sm"
-                          :rules="[
-                            (val) =>
-                              val === newPassword || 'Password does not match',
-                          ]"
                         >
                           <template v-slot:append>
                             <q-icon
@@ -311,6 +316,13 @@
                       </div>
                     </div>
 
+                    <div
+                      class="text-caption text-negative"
+                      v-if="newPassword !== confirmPassword"
+                    >
+                      Passwords do not match
+                    </div>
+
                     <div class="row justify-between items-center q-mt-lg">
                       <q-btn
                         type="submit"
@@ -319,6 +331,10 @@
                         label="Submit"
                         no-caps
                         style="width: 150px"
+                        :disable="
+                          newPassword !== confirmPassword ||
+                          (!newPassword && !confirmPassword)
+                        "
                       />
                       <q-btn
                         v-close-popup
@@ -357,10 +373,7 @@
       class="bg-dark"
     >
       <q-list separator>
-        <q-scroll-area
-          :visible="false"
-          :style="{ height: $q.screen.height - 50 + 'px' }"
-        >
+        <q-scroll-area :style="{ height: $q.screen.height - 50 + 'px' }">
           <div class="q-my-lg">
             <div class="flex justify-center items-center q-mb-md">
               <q-img src="../images/MHOLogo.png" width="70px" />
@@ -378,10 +391,7 @@
     </q-drawer>
 
     <q-page-container>
-      <q-scroll-area
-        :visible="false"
-        :style="{ height: $q.screen.height - 50 + 'px' }"
-      >
+      <q-scroll-area :style="{ height: $q.screen.height - 50 + 'px' }">
         <router-view />
       </q-scroll-area>
     </q-page-container>
@@ -549,6 +559,21 @@ export default defineComponent({
       FindUser(keySession.user_id);
     };
 
+    /**Password Test**/
+    //Password should contain at least 1 uppercase letter, 1 lowercase letter, a number, a special character, and at least 8 characters
+    let passCheck = ref(false);
+    const passwordCheck = () => {
+      let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!*_\-]).{8,}$/;
+      passCheck.value = passwordRegex.test(newPassword.value);
+      isSamePassword.value = newPassword.value === confirmPassword.value;
+    };
+
+    let isSamePassword = ref(false);
+    //Check if passwords are the same
+    const confirmPasswordFunction = () => {
+      isSamePassword.value = newPassword.value === confirmPassword.value;
+    };
+
     const changePassword = () => {
       let payload = {
         user_id: keySession.user_id,
@@ -600,6 +625,10 @@ export default defineComponent({
       logout,
       keySession,
       avatarLink,
+      passwordCheck,
+      passCheck,
+      confirmPasswordFunction,
+      isSamePassword,
     };
   },
 });

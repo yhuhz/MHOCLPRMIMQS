@@ -115,7 +115,7 @@ let ResetPassword = (payload) => {
     axios
       .put(pathlink, payload)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         resolve(response.data);
       })
       .catch((error) => {
