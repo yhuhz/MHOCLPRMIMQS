@@ -63,12 +63,17 @@
                           outlined
                           dense
                           class="q-mt-xs"
-                          :rules="[
-                            (val) =>
-                              (val && val.length > 0) || 'Required field',
-                          ]"
+                          :rules="[(val) => (val && val.length > 6) || '']"
+                          @update:model-value="checkUsername"
                         />
                       </div>
+                    </div>
+
+                    <div
+                      class="row text-negative text-caption"
+                      v-if="!isUsernameAvailable"
+                    >
+                      Username already taken
                     </div>
 
                     <div class="row">
@@ -206,6 +211,7 @@
                         type="submit"
                         color="primary"
                         label="Submit"
+                        :disable="!isUsernameAvailable"
                         no-caps
                         style="min-width: 150px"
                       />
@@ -407,6 +413,7 @@ import {
   FindUser,
   UpdateUserAccount,
   ChangePassword,
+  CheckUsername,
 } from "src/composables/UserAccount.js";
 import _ from "lodash";
 import { useQuasar, SessionStorage } from "quasar";
@@ -534,6 +541,21 @@ export default defineComponent({
       }
     );
 
+    /**Check username**/
+    let isUsernameAvailable = ref(true);
+    const checkUsername = () => {
+      CheckUsername({
+        username: editUserDetails.value.username,
+        user_id: editUserDetails.value.user_id,
+      }).then((response) => {
+        if (response.status === "success") {
+          isUsernameAvailable.value = true;
+        } else {
+          isUsernameAvailable.value = false;
+        }
+      });
+    };
+
     const updateUser = () => {
       editUserDetails.value.sex = sexArray.indexOf(editUserDetails.value.sex);
       UpdateUserAccount(editUserDetails.value).then((response) => {
@@ -557,6 +579,7 @@ export default defineComponent({
 
     const onReset = () => {
       FindUser(keySession.user_id);
+      isUsernameAvailable.value = true;
     };
 
     /**Password Test**/
@@ -629,6 +652,8 @@ export default defineComponent({
       passCheck,
       confirmPasswordFunction,
       isSamePassword,
+      isUsernameAvailable,
+      checkUsername,
     };
   },
 });

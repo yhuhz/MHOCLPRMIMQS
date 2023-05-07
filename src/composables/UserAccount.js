@@ -26,6 +26,25 @@ let Login = (payload) => {
   });
 };
 
+let CheckUsername = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          username: payload.username,
+          user_id: payload.user_id,
+        },
+      })
+      .then((response) => {
+        // console.log("username", response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 let FindUser = (payload) => {
   return new Promise((resolve, reject) => {
     axios
@@ -86,4 +105,11 @@ let ChangePassword = (payload) => {
 /**
  * Export LoginList as readonly (real time copy of Login)
  */
-export { Login, LoginCredential, FindUser, UpdateUserAccount, ChangePassword };
+export {
+  Login,
+  LoginCredential,
+  FindUser,
+  UpdateUserAccount,
+  ChangePassword,
+  CheckUsername,
+};
