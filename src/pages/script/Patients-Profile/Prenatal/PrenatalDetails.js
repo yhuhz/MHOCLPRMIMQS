@@ -42,6 +42,7 @@ export default {
     watch(
       () => _.cloneDeep(RecordDetails.value),
       () => {
+        editForm.value = false;
         patientRecordInfo.value = {
           prenatal_id: route.params.record_id,
           midwife_id: {

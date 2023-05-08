@@ -41,6 +41,7 @@ export default {
     watch(
       () => _.cloneDeep(RecordDetails.value),
       () => {
+        editForm.value = false;
         patientRecordInfo.value = {
           immunization_id: route.params.record_id,
           patient_id: route.params.id,
