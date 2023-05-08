@@ -9,14 +9,12 @@ import {
   CallNextPatient,
 } from "src/composables/Queue";
 import MHCDialog from "../../../components/MHCDialog.vue";
-import RemovePatientFromQueue from "../../Components/RemovePatientFromQueue";
 import { ToggleDialogState } from "../../../composables/Triggers";
 import { SetIDS } from "src/composables/IDS";
 import Chart from "chart.js/auto";
 import { useRouter } from "vue-router";
 
 export default {
-  components: { MHCDialog, RemovePatientFromQueue },
   setup() {
     const router = useRouter();
 

@@ -95,24 +95,6 @@
               {{ sex[props.row.sex] }}
             </q-td>
           </template>
-
-          <!-- Table Header Slots -->
-          <!-- <template #header-cell-action="props">
-            <q-th :props="props">
-              <q-btn
-                v-if="keySession && keySession.department === 6"
-                dense
-                label="Download"
-                icon-right="eva-download-outline"
-                no-caps
-                color="primary"
-                unelevated
-                :disable="PatientsList && PatientsList[0] ? false : true"
-                class="button-100 download-btn"
-                @click="exportTable()"
-              />
-            </q-th>
-          </template> -->
         </q-table>
       </div>
     </div>

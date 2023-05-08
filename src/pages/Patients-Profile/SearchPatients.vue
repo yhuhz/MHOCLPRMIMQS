@@ -276,6 +276,7 @@
                 no-caps
                 unelevated
                 class="button-100 action-btn"
+                @click="checkPatientQueue(props.row.patient_id)"
               >
                 <q-menu
                   transition-show="jump-down"
@@ -294,7 +295,7 @@
                         })
                       "
                     >
-                      <q-item-section>View Details</q-item-section>
+                      <q-item-section>View Patient Details</q-item-section>
                       <q-item-section avatar>
                         <q-icon size="xs" name="eva-eye-outline" />
                       </q-item-section>
@@ -316,8 +317,8 @@
                     <q-item
                       v-if="
                         keySession &&
-                        (keySession.department === 5 ||
-                          keySession.department === 6)
+                        keySession.department === 5 &&
+                        !isPatientOnQueue
                       "
                       clickable
                       class="drop-list"
@@ -333,10 +334,8 @@
                     <q-item
                       v-if="
                         keySession &&
-                        ((keySession.department === 6 &&
-                          keySession.permission_level === 1) ||
-                          (keySession.department === 5 &&
-                            keySession.permission_level != 3))
+                        keySession.department === 5 &&
+                        keySession.permission_level != 3
                       "
                       clickable
                       class="drop-list"
@@ -349,14 +348,14 @@
                         })
                       "
                     >
-                      <q-item-section>Edit Details</q-item-section>
+                      <q-item-section>Edit Patient Profile</q-item-section>
                       <q-item-section avatar>
                         <q-icon size="xs" name="eva-edit-outline" />
                       </q-item-section>
                     </q-item>
 
                     <!-- Delete -->
-                    <q-item
+                    <!-- <q-item
                       v-if="
                         keySession &&
                         (keySession.department === 5 ||
@@ -370,7 +369,7 @@
                       <q-item-section avatar>
                         <q-icon size="xs" name="eva-trash-2-outline" />
                       </q-item-section>
-                    </q-item>
+                    </q-item> -->
                   </q-list>
                 </q-menu>
               </q-btn>

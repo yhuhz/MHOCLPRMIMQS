@@ -47,6 +47,24 @@ let GetQueueSpecific = (payload) => {
   });
 };
 
+let CheckPatientQueue = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          patient_id: payload,
+        },
+      })
+      .then((response) => {
+        // console.log("Check Queue", response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 let GetLastQueueNumber = (payload) => {
   return new Promise((resolve, reject) => {
     axios
@@ -157,6 +175,7 @@ let RemovePatientFromQueue = (payload) => {
     axios
       .delete(pathlink + "?queue_id=" + payload.queue_id)
       .then((response) => {
+        console.log(response.data);
         if (response.data.status === "success") {
           let objectIndex = QueueSpecific.value.findIndex(
             (e) => e.queue_id === payload.queue_id
@@ -215,4 +234,5 @@ export {
   LastQueueNumber,
   GetLastQueueNumber,
   DonePatient,
+  CheckPatientQueue,
 };

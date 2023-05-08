@@ -77,7 +77,7 @@
               </div>
             </div>
             <!-- Second Row -->
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-6 q-gutter-x-sm">
                 <label class="text-dark"
                   >Status <span class="text-negative">*</span></label
@@ -96,7 +96,7 @@
                   been <span class="text-negative">archived</span>.
                 </p>
               </div>
-            </div>
+            </div> -->
           </q-card>
 
           <!-- Address -->
@@ -410,16 +410,6 @@
         </div>
 
         <div class="q-py-xl text-center">
-          <p class="text-primary text-weight-bold q-mb-sm bottom-text">
-            Please check if you have any missing details from the patient
-          </p>
-          <p class="q-mb-md text-dark">
-            Should there be any missing or incorrect information after creating
-            the patient profile, please search the patient by his/her
-            <span class="text-primary">ID</span> or
-            <span class="text-warning">name</span>, then edit his/her
-            information.
-          </p>
           <div>
             <q-btn
               label="Submit"

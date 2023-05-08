@@ -31,7 +31,7 @@ import { RecordDetails } from 'src/composables/Patients';
               color="primary"
               class="q-px-lg"
             />
-            <q-btn
+            <!-- <q-btn
               dense
               label="Delete"
               icon="eva-trash-2-outline"
@@ -39,7 +39,7 @@ import { RecordDetails } from 'src/composables/Patients';
               class="q-px-lg q-ml-sm"
               color="negative"
               @click="openDialog"
-            />
+            /> -->
           </div>
 
           <div v-if="editForm">

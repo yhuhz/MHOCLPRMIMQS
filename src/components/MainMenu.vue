@@ -69,9 +69,8 @@
         <q-item
           v-if="
             keySession &&
-            ((keySession.department === 6 &&
-              keySession.permission_level !== 3) ||
-              (keySession.department === 5 && keySession.permission_level != 3))
+            keySession.department === 5 &&
+            keySession.permission_level != 3
           "
           clickable
           class="list-text text-white"

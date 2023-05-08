@@ -8,6 +8,7 @@ import {
   QueueSpecific,
   CallNextPatient,
   DonePatient,
+  RemovePatientFromQueue,
 } from "src/composables/Queue";
 import {
   BackupDatabase,
@@ -16,14 +17,14 @@ import {
   DBList,
 } from "src/composables/Database";
 import MHCDialog from "../../../components/MHCDialog.vue";
-import RemovePatientFromQueue from "../../Components/RemovePatientFromQueue";
+import RemoveFromQueue from "../../Components/RemoveFromQueue";
 import { ToggleDialogState } from "../../../composables/Triggers";
 import { SetIDS } from "src/composables/IDS";
 import Chart from "chart.js/auto";
 import { useRouter } from "vue-router";
 
 export default {
-  components: { MHCDialog, RemovePatientFromQueue },
+  components: { MHCDialog, RemoveFromQueue },
   setup() {
     const router = useRouter();
     const $q = useQuasar();
@@ -97,6 +98,21 @@ export default {
     const removeFromQueue = (queue_id) => {
       SetIDS(queue_id);
       ToggleDialogState();
+    };
+
+    let isRemoveFromCurrentQueue = ref(false);
+    const removeCurrentPatient = () => {
+      Loading.show();
+      RemovePatientFromQueue({ queue_id: currentPatient.value.queue_id }).then(
+        (response) => {
+          isRemoveFromCurrentQueue.value = false;
+          Loading.hide();
+
+          if (response.status === "success") {
+            currentPatient.value = null;
+          }
+        }
+      );
     };
 
     let currentPatient = ref(null);
@@ -245,6 +261,8 @@ export default {
       openRestoreDBModal,
       DBList,
       selectedDB,
+      isRemoveFromCurrentQueue,
+      removeCurrentPatient,
     };
   },
 };

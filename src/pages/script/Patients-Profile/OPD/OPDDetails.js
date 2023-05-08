@@ -45,6 +45,7 @@ export default {
     watch(
       () => _.cloneDeep(RecordDetails.value),
       () => {
+        editForm.value = false;
         patientRecordInfo.value = {
           record_id: route.params.record_id,
           preliminary_checkup_done_by: {

@@ -18,6 +18,7 @@ import {
   QueueList,
   GetLastQueueNumber,
   LastQueueNumber,
+  CheckPatientQueue,
 } from "src/composables/Queue";
 
 export default {
@@ -148,6 +149,8 @@ export default {
         loading.value = false;
       });
     };
+
+    searchPatients();
 
     /**FOR PATIENTS UNDER HOUSEHOLD ID**/
     if (route.params.household_id) {
@@ -378,6 +381,18 @@ export default {
       });
     };
 
+    /**CHECK IF PATIENT IS ON QUEUE**/
+    let isPatientOnQueue = ref(false);
+    const checkPatientQueue = (patient_id) => {
+      CheckPatientQueue(patient_id).then((response) => {
+        if (response.status === "success") {
+          isPatientOnQueue.value = false;
+        } else {
+          isPatientOnQueue.value = true;
+        }
+      });
+    };
+
     /**ADD TO QUEUE**/
     let queueOpenModal = ref(false);
     let patientToQueue = ref(null);
@@ -514,6 +529,8 @@ export default {
       queueNumber,
       departmentChange,
       select_none_brgy,
+      isPatientOnQueue,
+      checkPatientQueue,
     };
   },
 };

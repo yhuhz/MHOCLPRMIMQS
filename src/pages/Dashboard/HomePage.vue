@@ -90,25 +90,56 @@
                           : "")
                     }}
                   </div>
-                  <q-btn
-                    v-if="keySession && keySession.department !== 6"
-                    dense
-                    no-caps
-                    color="primary"
-                    label="Done"
-                    icon="how_to_reg"
-                    class="q-mt-xs"
-                    style="width: 100%"
-                    @click="doneCurrentPatient"
-                  />
+                  <div v-if="keySession && keySession.department !== 6">
+                    <div class="row" v-if="selectedDepartment === 'Front Desk'">
+                      <q-btn
+                        dense
+                        no-caps
+                        color="negative"
+                        label="Remove"
+                        icon="delete"
+                        class="col q-mt-xs q-mr-xs"
+                        style="width: 100%"
+                        @click="
+                          isRemoveFromCurrentQueue = !isRemoveFromCurrentQueue
+                        "
+                      />
+                      <q-btn
+                        dense
+                        no-caps
+                        color="primary"
+                        label="Done"
+                        icon="how_to_reg"
+                        class="col q-mt-xs q-ml-xs"
+                        style="width: 100%"
+                        @click="doneCurrentPatient"
+                      />
+                    </div>
+                    <div class="row" v-else>
+                      <q-btn
+                        dense
+                        no-caps
+                        color="primary"
+                        label="Done"
+                        icon="how_to_reg"
+                        class="col q-mt-xs"
+                        style="width: 100%"
+                        @click="doneCurrentPatient"
+                      />
+                    </div>
+                  </div>
                 </div>
+
                 <div v-else class="text-primary text-center text-bold text-20">
                   No Patient
                 </div>
               </fieldset>
             </div>
 
-            <div class="q-mt-lg text-center">
+            <div
+              class="q-mt-lg text-center"
+              v-if="keySession && keySession.department !== 6"
+            >
               <label class="text-primary text-bold q-px-sm">
                 Call in Next Patient
               </label>
@@ -163,6 +194,33 @@
                 </q-btn>
               </div>
             </div>
+
+            <!-- Show if Admin -->
+            <fieldset
+              class="q-mt-lg text-center inside-container current"
+              v-if="keySession && keySession.department === 6"
+            >
+              <legend
+                class="text-bold text-center q-px-sm"
+                style="color: #55a15e"
+              >
+                PATIENTS IN QUEUE
+              </legend>
+
+              <div
+                class="flex justify-between q-mt-sm text-weight-medium text-amber-9"
+              >
+                <label>Priority Patients:</label>
+                <label>{{ priorityPatients.length }}</label>
+              </div>
+
+              <div
+                class="flex justify-between q-mt-sm text-weight-medium text-primary"
+              >
+                <label>Non-Priority Patients:</label>
+                <label>{{ otherPatients.length }}</label>
+              </div>
+            </fieldset>
 
             <!-- List of Patients -->
             <div
@@ -296,10 +354,8 @@
               class="to-do-box shadow-5"
               v-if="
                 keySession &&
-                ((keySession.department === 5 &&
-                  keySession.permission_level !== 3) ||
-                  (keySession.department === 6 &&
-                    keySession.permission_level === 1))
+                keySession.department === 5 &&
+                keySession.permission_level !== 3
               "
               @click="$router.push({ name: 'add-edit-patient-record' })"
             >
@@ -503,8 +559,38 @@
           </div>
         </div>
       </div>
+      <q-dialog v-model="isRemoveFromCurrentQueue" persistent>
+        <q-card class="q-pa-md" style="width: 300px">
+          <div>
+            <div class="text-center">
+              <q-icon name="playlist_remove" size="100px" color="negative" />
+              <h6 class="text-negative no-margin">Are you sure?</h6>
+              <p class="text-dark m-width-250">
+                Do you want to remove this current patient from queue?
+              </p>
+            </div>
+
+            <div class="flex justify-around q-mt-md">
+              <q-btn
+                v-close-popup
+                label="Cancel"
+                no-caps
+                color="grey-7"
+                class="button-100"
+              />
+              <q-btn
+                color="negative"
+                label="Yes"
+                no-caps
+                class="button-100"
+                @click="removeCurrentPatient"
+              />
+            </div>
+          </div>
+        </q-card>
+      </q-dialog>
     </div>
-    <MHCDialog :content="$options.components.RemovePatientFromQueue" />
+    <MHCDialog :content="$options.components.RemoveFromQueue" />
   </div>
 </template>
 

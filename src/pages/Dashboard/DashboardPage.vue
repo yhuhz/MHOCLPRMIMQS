@@ -166,7 +166,6 @@ import { DashboardData } from 'src/composables/Dashboard';
         <canvas class="q-px-md" id="myChart" ref="canvas"></canvas>
       </div>
     </div>
-    <MHCDialog :content="$options.components.RemovePatientFromQueue" />
   </div>
 </template>
 
