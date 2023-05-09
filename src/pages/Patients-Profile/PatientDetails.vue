@@ -57,7 +57,16 @@
         <div>
           <!-- Address -->
           <p class="text-center text-primary address-details">
-            {{ PatientDetails.address }}
+            {{
+              (PatientDetails.address_line !== ""
+                ? PatientDetails.address_line + ", "
+                : "") +
+              PatientDetails.barangay +
+              ", " +
+              PatientDetails.municipality +
+              ", " +
+              PatientDetails.province
+            }}
           </p>
         </div>
 

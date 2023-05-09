@@ -21,7 +21,7 @@
               align-items: center;
             "
           >
-            <q-icon name="list" size="50px" color="primary" />
+            <!-- <q-icon name="list" size="50px" color="primary" /> -->
             <label class="text-primary text-bold" style="font-size: 25px"
               >Patient Queue</label
             >
@@ -244,7 +244,7 @@
                   @click="showPriority = !showPriority"
                 />
                 <div v-if="showPriority">
-                  <ol>
+                  <ul>
                     <li
                       v-for="(queue, index) in priorityPatients"
                       :key="index"
@@ -264,7 +264,7 @@
                             })
                           "
                         >
-                          {{ queue.patient_id }}
+                          {{ queue.queue_number }} - {{ queue.last_name }}
                         </label>
                         <q-icon
                           v-if="keySession && keySession.department === 5"
@@ -275,7 +275,7 @@
                         />
                       </div>
                     </li>
-                  </ol>
+                  </ul>
                 </div>
               </div>
 
@@ -290,7 +290,7 @@
                   @click="showOthers = !showOthers"
                 />
                 <div v-if="showOthers">
-                  <ol>
+                  <ul>
                     <li
                       v-for="(queue, index) in otherPatients"
                       :key="index"
@@ -310,7 +310,7 @@
                             })
                           "
                         >
-                          {{ queue.patient_id }}
+                          {{ queue.queue_number }} - {{ queue.last_name }}
                         </label>
                         <q-icon
                           v-if="keySession && keySession.department === 5"
@@ -321,7 +321,7 @@
                         />
                       </div>
                     </li>
-                  </ol>
+                  </ul>
                 </div>
               </div>
             </div>

@@ -52,7 +52,10 @@ export default {
             ? ""
             : " " + PatientDetails.value.suffix);
 
-        if (keySession && keySession.department === 1) {
+        if (
+          keySession &&
+          (keySession.department === 1 || keySession.department === 5)
+        ) {
           departmentList.value = ["OPD"];
         } else if (keySession && keySession.department === 2) {
           departmentList.value = ["Dental"];

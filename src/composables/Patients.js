@@ -20,7 +20,7 @@ let GetPatients = (payload) => {
         params: { payload: payload },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
 
         if (typeof payload.pwd != "undefined") {
           PWD.value = response.data.data;
@@ -68,7 +68,7 @@ let FindPatientAddress = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         // PatientDetails.value = response.data.data[0];
         resolve(response.data);
       })
