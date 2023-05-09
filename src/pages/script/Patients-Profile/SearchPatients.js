@@ -49,7 +49,6 @@ export default {
     let genderList = ref(["Male", "Female"]);
     let statusList = ref(["Active", "Deceased", "Deleted"]);
     let barangayList = [
-      "Outside Camalig",
       "Anoling",
       "Baligang",
       "Bantonan",
@@ -102,6 +101,8 @@ export default {
       "Tumpa",
     ];
 
+    let outsideCamaligCheckbox = ref(true);
+
     let age = ref([0, 100]);
 
     let dateAdded = ref([]);
@@ -116,9 +117,11 @@ export default {
 
     const select_all_brgy = () => {
       brgy_array_model.value = barangayList;
+      outsideCamaligCheckbox.value = true;
     };
     const select_none_brgy = () => {
       brgy_array_model.value = [];
+      outsideCamaligCheckbox.value = false;
     };
 
     let loading = ref(false);
@@ -139,6 +142,7 @@ export default {
           status: status_array_model.value,
           date_added: dateAdded.value,
           barangay: brgy_array_model.value,
+          outside_camalig: outsideCamaligCheckbox.value,
         },
       };
 
@@ -217,10 +221,28 @@ export default {
         sortable: true,
       },
       {
-        name: "address",
+        name: "municipality",
         align: "left",
-        label: "Address",
-        field: "address",
+        label: "Municipality",
+        field: "municipality",
+        sortable: true,
+        classes: "hidden",
+        headerClasses: "hidden",
+      },
+      {
+        name: "province",
+        align: "left",
+        label: "Province",
+        field: "province",
+        sortable: true,
+        classes: "hidden",
+        headerClasses: "hidden",
+      },
+      {
+        name: "address_line",
+        align: "left",
+        label: "Hoiuse No. / Apartment No. / Street",
+        field: "address_line",
         sortable: true,
         classes: "hidden",
         headerClasses: "hidden",
@@ -531,6 +553,7 @@ export default {
       select_none_brgy,
       isPatientOnQueue,
       checkPatientQueue,
+      outsideCamaligCheckbox,
     };
   },
 };

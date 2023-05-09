@@ -63,6 +63,25 @@ let FindUsersByID = (payload) => {
       });
   });
 };
+
+let FindUsersDepartment = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          id: payload,
+        },
+      })
+      .then((response) => {
+        // console.log(response.data);
+        // Users.value = response.data.data;
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
 /**
  * This function accepts parameters of an object then
  * add the passed object to Users data.
@@ -162,4 +181,5 @@ export {
   AddUser,
   UpdateUser,
   DeleteUser,
+  FindUsersDepartment,
 };

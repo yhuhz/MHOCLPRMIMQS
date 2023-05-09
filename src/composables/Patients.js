@@ -20,7 +20,7 @@ let GetPatients = (payload) => {
         params: { payload: payload },
       })
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
 
         if (typeof payload.pwd != "undefined") {
           PWD.value = response.data.data;
@@ -51,6 +51,25 @@ let FindPatient = (payload) => {
       .then((response) => {
         // console.log(response.data);
         PatientDetails.value = response.data.data[0];
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let FindPatientAddress = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          payload: payload,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        // PatientDetails.value = response.data.data[0];
         resolve(response.data);
       })
       .catch((error) => {
@@ -176,4 +195,5 @@ export {
   SC,
   Prenatal,
   FindPatients,
+  FindPatientAddress,
 };

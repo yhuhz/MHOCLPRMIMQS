@@ -8,6 +8,7 @@ import {
   FindPatient,
   EditPatient,
   PatientDetails,
+  FindPatientAddress,
 } from "src/composables/Patients";
 import { useRoute } from "vue-router";
 import { useQuasar, SessionStorage, Loading, date } from "quasar";
@@ -114,6 +115,26 @@ export default {
       sex: null,
     });
 
+    let address = ref(null);
+
+    const changeHousehold = () => {
+      if (personalInformation.value.household_id !== null) {
+        FindPatientAddress({
+          household_id: personalInformation.value.household_id,
+        }).then((response) => {
+          address.value =
+            (response.data.address_line !== null
+              ? response.data.address_line + ", "
+              : "") +
+            response.data.municipality +
+            ", " +
+            response.data.province;
+        });
+      } else {
+        address.value = null;
+      }
+    };
+
     // PWD and Senior Citizens
     let isPWD = ref(false);
     let isSeniorCitizen = ref(false);
@@ -164,21 +185,13 @@ export default {
         () => {
           let info = PatientDetails.value;
 
-          //Address
-          if (info.barangay != "Outside Camalig") {
-            municipality.value = "Camalig";
-            brgyDisable.value = false;
-          } else {
-            municipality.value = "Outside Camalig";
-          }
-
+          address.value = info.address;
           //Personal Info
           personalInformation.value = {
             patient_id: info.patient_id,
             household_id: info.household_id,
             status: statusList[info.status],
             barangay: info.barangay,
-            address: info.address,
             last_name: info.last_name,
             first_name: info.first_name,
             middle_name: info.middle_name,
@@ -399,6 +412,8 @@ export default {
       scDisable,
       updateBirthdate,
       municipality,
+      address,
+      changeHousehold,
     };
   },
 };

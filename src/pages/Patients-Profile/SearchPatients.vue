@@ -49,7 +49,7 @@
           >
             <!-- Filters Modal -->
             <q-dialog v-model="showFilterModal">
-              <q-card class="q-pa-md width-700" style="overflow: hidden">
+              <q-card class="q-pa-md" style="overflow: hidden; width: 500px">
                 <div class="flex items-center justify-between q-mb-md">
                   <label class="text-bold text-primary" style="font-size: 20px"
                     >FILTERS</label
@@ -201,6 +201,12 @@
                         @click="select_none_brgy"
                       />
                       <div class="brgy q-mt-sm">
+                        <q-checkbox
+                          v-model="outsideCamaligCheckbox"
+                          label="Outside Camalig"
+                          class="text-dark"
+                          :disable="brgy_checkbox_disable"
+                        />
                         <div v-for="(brgy, index) in barangayList" :key="index">
                           <q-checkbox
                             v-model="brgy_array_model"
@@ -236,9 +242,8 @@
           class="flex justify-end"
           v-if="
             keySession &&
-            ((keySession.department === 6 &&
-              keySession.permission_level !== 3) ||
-              (keySession.department === 5 && keySession.permission_level != 3))
+            keySession.department === 5 &&
+            keySession.permission_level != 3
           "
         >
           <q-btn

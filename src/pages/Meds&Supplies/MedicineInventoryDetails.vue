@@ -269,7 +269,11 @@
 
           <!-- Add New Medicine Release -->
           <q-btn
-            v-if="keySession && keySession.permission_level !== 3"
+            v-if="
+              keySession &&
+              keySession.department === 4 &&
+              keySession.permission_level !== 3
+            "
             @click="isAddNewMedicineRelease = true"
             dense
             outline
@@ -306,6 +310,7 @@
                       val="patient"
                       label="Patient"
                       class="text-dark q-mr-md"
+                      @update:model-value="onChangeUserPatient"
                     />
                     <q-radio
                       v-model="selectedReleaseCategory"
@@ -314,6 +319,7 @@
                       val="others"
                       label="Doctor/Dentist/Midwife/Staff"
                       class="text-dark"
+                      @update:model-value="onChangeUserPatient"
                     />
                   </div>
 
@@ -330,7 +336,7 @@
                       <q-select
                         outlined
                         hide-bottom-space
-                        v-model="patient_doctor_id"
+                        v-model="newMedicineRelease.patient_id"
                         @filter="patientFilterFunction"
                         option-label="patient_name"
                         option-value="patient_id"
@@ -352,13 +358,14 @@
 
                     <div class="col q-mr-md" v-else>
                       <label class="text-dark"
-                        >User ID <span class="text-negative">*</span></label
+                        >Doctor/ Dentist/ Midwife/ Staff ID
+                        <span class="text-negative">*</span></label
                       >
 
                       <q-select
                         outlined
                         hide-bottom-space
-                        v-model="patient_doctor_id"
+                        v-model="newMedicineRelease.doctor_id"
                         @filter="userFilterFunction"
                         option-label="user_name"
                         option-value="user_id"
@@ -375,6 +382,7 @@
                             (val && (val.length > 0 || !isNaN(val))) ||
                             'Required field',
                         ]"
+                        @update:model-value="findDepartment"
                       />
                     </div>
 
@@ -387,8 +395,7 @@
                         hide-bottom-space
                         dense
                         outlined
-                        :input-style="{ color: '#525252' }"
-                        class="q-mt-sm bg-grey-4"
+                        class="q-mt-sm"
                         disable
                         v-model="newMedicineRelease.medicine_id"
                         :rules="[
@@ -406,6 +413,7 @@
                       >
                       <q-select
                         hide-bottom-space
+                        :disable="selectedReleaseCategory !== 'patient'"
                         :options="filtersDepartment"
                         dense
                         outlined
@@ -480,7 +488,11 @@
             <template #body-cell-action="props">
               <q-td :props="props">
                 <q-btn
-                  v-if="keySession && keySession.permission_level !== 3"
+                  v-if="
+                    keySession &&
+                    keySession.department === 4 &&
+                    keySession.permission_level !== 3
+                  "
                   dense
                   color="primary"
                   label="Action"
@@ -566,43 +578,38 @@
           <q-form @submit="editMedicineRelease">
             <div class="q-my-md q-ml-md">
               <q-radio
-                v-model="editReleaseCategory"
+                v-model="selectedReleaseCategory"
                 checked-icon="task_alt"
                 unchecked-icon="panorama_fish_eye"
                 val="patient"
                 label="Patient"
                 class="text-dark q-mr-md"
+                @update:model-value="onChangeUserPatient"
               />
               <q-radio
-                v-model="editReleaseCategory"
+                v-model="selectedReleaseCategory"
                 checked-icon="task_alt"
                 unchecked-icon="panorama_fish_eye"
                 val="others"
                 label="Doctor/Dentist/Midwife/Staff"
                 class="text-dark"
+                @update:model-value="onChangeUserPatient"
               />
             </div>
 
             <div class="row q-mb-md q-px-lg">
               <!-- ID -->
-              <div class="col q-mr-md" v-if="editReleaseCategory === 'patient'">
+              <div
+                class="col q-mr-md"
+                v-if="selectedReleaseCategory === 'patient'"
+              >
                 <label class="text-dark"
                   >Patient ID <span class="text-negative">*</span></label
                 >
-                <!-- <q-input
-                  hide-bottom-space
-                  dense
-                  outlined
-                  placeholder="ex. 040823"
-                  :input-style="{ color: '#525252' }"
-                  class="q-mt-sm"
-                  v-model="edit_patient_doctor_id"
-                /> -->
-
                 <q-select
                   outlined
                   hide-bottom-space
-                  v-model="edit_patient_doctor_id"
+                  v-model="newMedicineRelease.patient_id"
                   @filter="patientFilterFunction"
                   option-label="patient_name"
                   option-value="patient_id"
@@ -630,7 +637,7 @@
                 <q-select
                   outlined
                   hide-bottom-space
-                  v-model="edit_patient_doctor_id"
+                  v-model="newMedicineRelease.doctor_id"
                   @filter="userFilterFunction"
                   option-label="user_name"
                   option-value="user_id"
@@ -647,6 +654,7 @@
                       (val && (val.length > 0 || !isNaN(val))) ||
                       'Required field',
                   ]"
+                  @update:model-value="findDepartment"
                 />
               </div>
 
@@ -662,7 +670,7 @@
                   :input-style="{ color: '#525252' }"
                   class="q-mt-sm bg-grey-4"
                   disable
-                  v-model="editMedReleaseInfo.medicine_id"
+                  v-model="newMedicineRelease.medicine_id"
                 />
               </div>
             </div>
@@ -675,11 +683,15 @@
                 >
                 <q-select
                   hide-bottom-space
+                  :disable="selectedReleaseCategory !== 'patient'"
                   :options="filtersDepartment"
                   dense
                   outlined
                   class="q-mt-sm"
-                  v-model="editMedReleaseInfo.department"
+                  v-model="newMedicineRelease.department"
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Required field',
+                  ]"
                 />
               </div>
 
@@ -695,7 +707,10 @@
                   placeholder="ex. 3"
                   :input-style="{ color: '#525252' }"
                   class="q-mt-sm"
-                  v-model="editMedReleaseInfo.quantity"
+                  v-model="newMedicineRelease.quantity"
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Required field',
+                  ]"
                 />
               </div>
             </div>

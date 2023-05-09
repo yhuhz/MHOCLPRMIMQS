@@ -10,7 +10,11 @@ import {
 } from "src/composables/Medicine";
 
 import { FindPatients } from "src/composables/Patients";
-import { FindUsersByName, FindUsersByID } from "src/composables/Manage_Users";
+import {
+  FindUsersByName,
+  FindUsersByID,
+  FindUsersDepartment,
+} from "src/composables/Manage_Users";
 import { Loading, useQuasar, SessionStorage, date } from "quasar";
 import { useRoute, useRouter } from "vue-router";
 import DeleteMedicineConfirmation from "../../Components/DeleteMedicineConfirmation.vue";
@@ -36,7 +40,6 @@ export default {
     FindMedicineDetails(route.params.medicine_id).then((response) => {
       Loading.hide();
     });
-    MedicineRelease.value = [];
 
     let medicineDetails = ref({});
     watch(
@@ -71,7 +74,7 @@ export default {
       {
         name: "med_release_id",
         align: "left",
-        label: "ID",
+        label: "Release ID",
         field: "med_release_id",
         sortable: true,
       },
@@ -217,6 +220,19 @@ export default {
       release_date: date.formatDate(new Date(), "YYYY-MM-DD"),
     });
 
+    const findDepartment = () => {
+      if (newMedicineRelease.value.doctor_id !== null) {
+        FindUsersDepartment(newMedicineRelease.value.doctor_id).then(
+          (response) => {
+            newMedicineRelease.value.department =
+              filtersDepartment[response.data[0].department - 1];
+          }
+        );
+      } else {
+        newMedicineRelease.value.department = null;
+      }
+    };
+
     const onReset = () => {
       newMedicineRelease.value = {
         medicine_id: route.params.medicine_id,
@@ -232,14 +248,6 @@ export default {
     };
 
     const addReleaseRecord = () => {
-      if (selectedReleaseCategory.value === "patient") {
-        newMedicineRelease.value.patient_id = patient_doctor_id.value;
-        newMedicineRelease.value.doctor_id = null;
-      } else {
-        newMedicineRelease.value.doctor_id = patient_doctor_id.value;
-        newMedicineRelease.value.patient_id = null;
-      }
-
       newMedicineRelease.value.department =
         filtersDepartment.indexOf(newMedicineRelease.value.department) + 1;
 
@@ -268,22 +276,17 @@ export default {
 
     /**EDIT MEDICINE RELEASE RECORD**/
     let isEditMedicineRelease = ref(false);
-    let editMedReleaseInfo = ref({});
-    let editReleaseCategory = ref(null);
-    let edit_patient_doctor_id = ref(null);
 
     const openEditModal = (med_release_info) => {
       isEditMedicineRelease.value = true;
 
-      edit_patient_doctor_id.value =
-        med_release_info.patient_id === null
-          ? med_release_info.doctor_id
-          : med_release_info.patient_id;
+      selectedReleaseCategory.value =
+        med_release_info.patient_id !== null &&
+        med_release_info.patient_id !== ""
+          ? "patient"
+          : "others";
 
-      editReleaseCategory.value =
-        med_release_info.patient_id !== null ? "patient" : "others";
-
-      editMedReleaseInfo.value = {
+      newMedicineRelease.value = {
         med_release_id: med_release_info.med_release_id,
         medicine_id: route.params.medicine_id,
         patient_id: med_release_info.patient_id,
@@ -293,6 +296,12 @@ export default {
         released_by: med_release_info.released_by,
         release_date: med_release_info.release_date,
       };
+    };
+
+    const onChangeUserPatient = () => {
+      newMedicineRelease.value.department = null;
+      newMedicineRelease.value.patient_id = null;
+      newMedicineRelease.value.doctor_id = null;
     };
 
     let patientOptions = ref([]);
@@ -352,6 +361,7 @@ export default {
                 Users.value.forEach((p) => {
                   let selectValues = {
                     user_name: p.id + " - " + p.user_name,
+                    department: p.department,
                     user_id: p.id,
                   };
                   userOptions.value.push(selectValues);
@@ -367,6 +377,7 @@ export default {
                 Users.value.forEach((p) => {
                   let selectValues = {
                     user_name: p.id + " - " + p.user_name,
+                    department: p.department,
                     user_id: p.id,
                   };
                   userOptions.value.push(selectValues);
@@ -381,19 +392,11 @@ export default {
     };
 
     const editMedicineRelease = () => {
-      if (editReleaseCategory.value === "patient") {
-        editMedReleaseInfo.value.patient_id = edit_patient_doctor_id.value;
-        editMedReleaseInfo.value.doctor_id = null;
-      } else {
-        editMedReleaseInfo.value.doctor_id = edit_patient_doctor_id.value;
-        editMedReleaseInfo.value.patient_id = null;
-      }
+      newMedicineRelease.value.department =
+        filtersDepartment.indexOf(newMedicineRelease.value.department) + 1;
 
-      editMedReleaseInfo.value.department =
-        filtersDepartment.indexOf(editMedReleaseInfo.value.department) + 1;
-
-      // console.log(editMedReleaseInfo.value);
-      EditMedicineRelease(editMedReleaseInfo.value).then((response) => {
+      // console.log(newMedicineRelease.value);
+      EditMedicineRelease(newMedicineRelease.value).then((response) => {
         let status = response.status === "success" ? 0 : 1;
 
         $q.notify({
@@ -504,9 +507,7 @@ export default {
       addReleaseRecord,
       onReset,
       isEditMedicineRelease,
-      editMedReleaseInfo,
-      editReleaseCategory,
-      edit_patient_doctor_id,
+      newMedicineRelease,
       openEditModal,
       editMedicineRelease,
       patientFilterFunction,
@@ -514,6 +515,8 @@ export default {
       userFilterFunction,
       userOptions,
       keySession,
+      onChangeUserPatient,
+      findDepartment,
     };
   },
 };

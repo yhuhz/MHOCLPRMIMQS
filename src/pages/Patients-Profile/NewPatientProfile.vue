@@ -12,7 +12,9 @@
       />
       <h5 class="text-weight-bold text-dark q-my-lg">
         {{
-          route.query.id ? "EDIT PATIENT PROFILE" : "CREATE NEW PATIENT PROFILE"
+          route.params.id
+            ? "EDIT PATIENT PROFILE"
+            : "CREATE NEW PATIENT PROFILE"
         }}
       </h5>
     </div>
@@ -63,6 +65,7 @@
                   @filter="householdFilterFunction"
                   :input-style="{ color: '#525252' }"
                   class="q-mt-sm"
+                  @update:model-value="changeHousehold"
                 />
                 <p class="col-details">
                   Make sure that the household already has a record. For new
@@ -109,9 +112,9 @@
               />
               ADDRESS
             </p>
-            <div class="row">
-              <!-- Municipality -->
-              <div class="col">
+            <!-- <div class="row"> -->
+            <!-- Municipality -->
+            <!-- <div class="col">
                 <label class="text-dark"
                   >Municipality <span class="text-negative">*</span></label
                 >
@@ -135,9 +138,9 @@
                     @update:model-value="municipalityFunction"
                   />
                 </div>
-              </div>
-              <!-- Barangay -->
-              <div class="col">
+              </div> -->
+            <!-- Barangay -->
+            <!-- <div class="col">
                 <label class="text-dark"
                   >Barangay <span class="text-negative">*</span></label
                 >
@@ -152,24 +155,20 @@
                 <p class="col-details">
                   If the patient is not from Camalig, choose "Outside Camalig"
                 </p>
-              </div>
-            </div>
+              </div> -->
+            <!-- </div> -->
 
             <div class="row">
               <div class="col">
                 <label class="text-dark">
-                  Complete Address <span class="text-negative q-mr-md">*</span>
-                  <span class="col-details"
-                    >House No., Street Name, Barangay, Municipality/City,
-                    Province</span
-                  >
+                  Address <span class="text-negative q-mr-md">*</span>
                 </label>
                 <q-input
                   outlined
-                  v-model="personalInformation.address"
+                  disable
+                  v-model="address"
                   dense
                   :input-style="{ color: '#525252' }"
-                  placeholder="example: 123 South St., Cotmon, Camalig, Albay"
                   class="q-mt-sm"
                   :rules="[
                     (val) => (val && val.length > 0) || 'Required field',
@@ -328,17 +327,18 @@
                 />
                 PWD & SENIOR CITIZENS
               </p>
+              <div>
+                <label class="text-primary text-bold"
+                  >Please check is applicable</label
+                >
+              </div>
+
               <q-checkbox
                 v-model="isPWD"
                 size="xs"
                 @update:model-value="onChangePWD"
               >
-                <span class="text-dark"
-                  >I am
-                  <span class="text-primary"
-                    >Person with Disability (PWD)</span
-                  ></span
-                >
+                <span class="text-dark">Person with Disability (PWD) </span>
               </q-checkbox>
               <div class="row q-pa-md" v-if="isPWD">
                 <div class="col-4">
@@ -383,9 +383,7 @@
                 @update:model-value="onChangeSC"
                 :disable="scDisable"
               >
-                <span class="text-dark"
-                  >I am a <span class="text-primary">Senior Citizen</span></span
-                >
+                <span class="text-dark">Senior Citizen</span>
               </q-checkbox>
               <div class="row q-pa-md" v-if="isSeniorCitizen">
                 <div class="col-4">

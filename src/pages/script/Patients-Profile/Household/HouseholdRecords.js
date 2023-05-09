@@ -256,22 +256,23 @@ export default {
     };
 
     let isEditHousehold = ref(false);
-    let editHouseholdName = ref(null);
-    let editHouseholdID = ref(null);
 
-    const openDialogEdit = (household_name, household_id) => {
+    const openDialogEdit = (row) => {
       isEditHousehold.value = true;
-      editHouseholdName.value = household_name;
-      editHouseholdID.value = household_id;
+      householdInfo.value = {
+        household_id: row.household_id,
+        household_name: row.household_name,
+        household_head: row.household_head,
+        province: row.province,
+        municipality: row.municipality,
+        barangay: row.barangay,
+        address_line: row.address_line,
+      };
     };
 
     const editHousehold = () => {
       Loading.show();
-      let payload = {
-        household_id: editHouseholdID.value,
-        household_name: editHouseholdName.value,
-      };
-      UpdateHousehold(payload).then((response) => {
+      UpdateHousehold(householdInfo.value).then((response) => {
         Loading.hide();
 
         let status = response.status === "success" ? 0 : 1;
@@ -355,7 +356,6 @@ export default {
       downloadDisable,
       householdInfo,
       addHousehold,
-      editHouseholdName,
       isEditHousehold,
       editHousehold,
       openDialogEdit,

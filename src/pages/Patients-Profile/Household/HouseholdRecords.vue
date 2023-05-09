@@ -336,12 +336,7 @@
                       "
                       clickable
                       class="drop-list"
-                      @click="
-                        openDialogEdit(
-                          props.row.household_name,
-                          props.row.household_id
-                        )
-                      "
+                      @click="openDialogEdit(props.row)"
                     >
                       <q-item-section>Edit Details</q-item-section>
                       <q-item-section avatar>
@@ -351,7 +346,7 @@
                       <template>
                         <!-- Edit Household Modal -->
                         <q-dialog v-model="isEditHousehold" persistent>
-                          <q-card class="q-pa-lg width-350">
+                          <q-card class="q-pa-lg" style="width: 500px">
                             <p
                               class="text-primary text-weight-bold text-center text-18"
                             >
@@ -363,22 +358,164 @@
                               EDIT HOUSEHOLD
                             </p>
                             <q-form @submit="editHousehold()">
-                              <div class="q-mt-lg">
-                                <label class="text-dark">Household Name</label>
+                              <div class="row q-mt-lg">
+                                <div class="col q-mr-sm">
+                                  <label class="text-dark"
+                                    >Household Name
+                                    <span class="text-negative">*</span></label
+                                  >
 
-                                <q-input
-                                  v-model="editHouseholdName"
-                                  dense
-                                  outlined
-                                  :input-style="{ color: '#525252' }"
-                                  placeholder="eg. Perez"
-                                  class="q-mt-sm"
-                                  :rules="[
-                                    (val) =>
-                                      (val && val.length > 0) ||
-                                      'Required field',
-                                  ]"
-                                />
+                                  <q-input
+                                    v-model="householdInfo.household_name"
+                                    dense
+                                    outlined
+                                    :input-style="{ color: '#525252' }"
+                                    placeholder="eg. Perez"
+                                    class="q-mt-sm"
+                                    :rules="[
+                                      (val) =>
+                                        (val && val.length > 0) ||
+                                        'Required field',
+                                    ]"
+                                  />
+                                </div>
+
+                                <div class="col q-ml-sm">
+                                  <label class="text-dark"
+                                    >Head of Household
+                                    <span class="text-negative">*</span></label
+                                  >
+
+                                  <q-input
+                                    v-model="householdInfo.household_head"
+                                    dense
+                                    outlined
+                                    :input-style="{ color: '#525252' }"
+                                    placeholder="eg. Jose Perez"
+                                    class="q-mt-sm"
+                                    :rules="[
+                                      (val) =>
+                                        (val && val.length > 0) ||
+                                        'Required field',
+                                    ]"
+                                  />
+                                </div>
+                              </div>
+
+                              <div class="row q-mt-lg">
+                                <label
+                                  class="text-grey-7 text-caption text-center q-mb-md"
+                                  >If the Province / Municipality / Barangay is
+                                  not on the list, please input the location and
+                                  press enter</label
+                                >
+                                <div class="col q-mr-sm">
+                                  <label class="text-dark"
+                                    >Province
+                                    <span class="text-negative">*</span></label
+                                  >
+
+                                  <q-select
+                                    v-model="householdInfo.province"
+                                    dense
+                                    outlined
+                                    :options="provinceList"
+                                    use-input
+                                    new-value-mode="add-unique"
+                                    class="q-mt-sm"
+                                    :rules="[
+                                      (val) =>
+                                        (val && val.length > 0) ||
+                                        'Required field',
+                                    ]"
+                                    @update:model-value="changeProvince"
+                                  />
+                                </div>
+
+                                <div class="col q-ml-sm">
+                                  <label class="text-dark"
+                                    >City / Municipality
+                                    <span class="text-negative">*</span></label
+                                  >
+
+                                  <q-select
+                                    v-model="householdInfo.municipality"
+                                    dense
+                                    outlined
+                                    :options="
+                                      householdInfo.province === 'Albay'
+                                        ? municipalityList
+                                        : null
+                                    "
+                                    :use-input="
+                                      householdInfo.province === 'Albay'
+                                        ? false
+                                        : true
+                                    "
+                                    new-value-mode="add-unique"
+                                    class="q-mt-sm"
+                                    :rules="[
+                                      (val) =>
+                                        (val && val.length > 0) ||
+                                        'Required field',
+                                    ]"
+                                    @update:model-value="changeMunicipality"
+                                  />
+                                </div>
+                              </div>
+
+                              <div class="row q-mt-md">
+                                <div class="col q-mr-sm">
+                                  <label class="text-dark"
+                                    >Barangay
+                                    <span class="text-negative">*</span></label
+                                  >
+
+                                  <q-select
+                                    v-if="
+                                      householdInfo.municipality === 'Camalig'
+                                    "
+                                    v-model="householdInfo.barangay"
+                                    dense
+                                    outlined
+                                    :options="brgyOptions"
+                                    @filter="brgyFilter"
+                                    use-input
+                                    new-value-mode="add-unique"
+                                    class="q-mt-sm"
+                                    :rules="[
+                                      (val) =>
+                                        (val && val.length > 0) ||
+                                        'Required field',
+                                    ]"
+                                  />
+
+                                  <q-input
+                                    v-else
+                                    v-model="householdInfo.barangay"
+                                    dense
+                                    outlined
+                                    class="q-mt-sm"
+                                    :rules="[
+                                      (val) =>
+                                        (val && val.length > 0) ||
+                                        'Required field',
+                                    ]"
+                                  />
+                                </div>
+
+                                <div class="col q-ml-sm">
+                                  <label class="text-dark"
+                                    >House No., Apartment No., Street</label
+                                  >
+
+                                  <q-input
+                                    v-model="householdInfo.address_line"
+                                    dense
+                                    outlined
+                                    class="q-mt-sm"
+                                  />
+                                </div>
                               </div>
 
                               <div
