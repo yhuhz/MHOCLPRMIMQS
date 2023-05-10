@@ -48,6 +48,7 @@ import { RecordDetails } from 'src/composables/Patients';
             <div class="flex justify-between items-baseline q-px-md">
               <p class="text-primary text-weight-bold">Done by</p>
               <q-select
+                disable
                 outlined
                 v-model="patientRecordInfo.preliminary_checkup_done_by"
                 @filter="userFilterFunction"
@@ -59,6 +60,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 dense
                 input-style="padding: 0"
                 input-class="text-right text-primary"
+                style="width: 150px"
               />
             </div>
             <div class="flex justify-between items-baseline q-px-md">
@@ -71,9 +73,11 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.temperature"
                 :rules="[
-                  (val) => (!isNaN(val) && val.length > 0) || 'Required field',
+                  (val) =>
+                    (val && !isNaN(val)) || 'Field must contain numbers only',
                 ]"
-                label="Celsius"
+                placeholder="Celsius"
+                style="width: 150px"
               />
             </div>
             <div class="flex justify-between items-baseline q-px-md">
@@ -84,11 +88,11 @@ import { RecordDetails } from 'src/composables/Patients';
                   dense
                   input-class="text-right text-primary"
                   v-model="patientRecordInfo.blood_pressure_systole"
-                  style="width: 80px"
+                  style="width: 70px"
                   :rules="[
-                    (val) => (val && val.length > 0) || 'Required field',
+                    (val) =>
+                      (val && !isNaN(val)) || 'Field must contain numbers only',
                   ]"
-                  label="e.g. 120/60"
                 />
                 <label class="text-primary text-bold q-px-sm">/</label>
                 <q-input
@@ -96,11 +100,11 @@ import { RecordDetails } from 'src/composables/Patients';
                   dense
                   input-class="text-right text-primary"
                   v-model="patientRecordInfo.blood_pressure_diastole"
-                  style="width: 80px"
+                  style="width: 70px"
                   :rules="[
-                    (val) => (val && val.length > 0) || 'Required field',
+                    (val) =>
+                      (val && !isNaN(val)) || 'Field must contain numbers only',
                   ]"
-                  label="e.g. 120/60"
                 />
               </div>
             </div>
@@ -112,8 +116,12 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.height"
                 hide-bottom-space
-                :rules="[(val) => (val && val.length > 0) || 'Required field']"
-                label="Centimeters"
+                :rules="[
+                  (val) =>
+                    (val && !isNaN(val)) || 'Field must contain numbers only',
+                ]"
+                placeholder="Centimeters"
+                style="width: 150px"
               />
             </div>
             <div class="flex justify-between items-baseline q-px-md">
@@ -124,8 +132,12 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.weight"
                 hide-bottom-space
-                :rules="[(val) => (val && val.length > 0) || 'Required field']"
-                label="Kilograms"
+                :rules="[
+                  (val) =>
+                    (val && !isNaN(val)) || 'Field must contain numbers only',
+                ]"
+                placeholder="Kilograms"
+                style="width: 150px"
               />
             </div>
             <div class="flex justify-between items-baseline q-px-md">
@@ -136,8 +148,11 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.pulse_rate"
                 hide-bottom-space
-                :rules="[(val) => (val && val.length > 0) || 'Required field']"
-                label="Beats per minute"
+                :rules="[
+                  (val) => !isNaN(val) || 'Field must contain numbers only',
+                ]"
+                placeholder="Beats per minute"
+                style="width: 150px"
               />
             </div>
             <div class="flex justify-between items-baseline q-px-md">
@@ -148,8 +163,11 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.oxygen_sat"
                 hide-bottom-space
-                :rules="[(val) => (val && val.length > 0) || 'Required field']"
-                label="%"
+                :rules="[
+                  (val) => !isNaN(val) || 'Field must contain numbers only',
+                ]"
+                placeholder="%"
+                style="width: 150px"
               />
             </div>
           </div>
@@ -162,9 +180,10 @@ import { RecordDetails } from 'src/composables/Patients';
               Doctors Notes
             </p>
             <div class="q-px-md">
-              <div class="flex justify-between items-baseline q-mb-sm">
+              <!-- <div class="flex justify-between items-baseline q-mb-sm">
                 <p class="text-primary text-weight-bold">Doctor:</p>
                 <q-select
+                  disable
                   style="width: 200px"
                   outlined
                   v-model="patientRecordInfo.doctor_id"
@@ -178,7 +197,7 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                 />
-              </div>
+              </div> -->
 
               <div class="flex justify-between items-baseline q-mb-sm">
                 <p class="text-primary text-weight-bold">Complaint:</p>
@@ -198,13 +217,14 @@ import { RecordDetails } from 'src/composables/Patients';
               <div class="flex justify-between items-baseline q-mb-sm">
                 <p class="text-primary text-weight-bold">Checkup Date:</p>
                 <q-input
+                  disable
                   autogrow
                   outlined
                   dense
                   style="width: 200px"
                   input-class="text-right text-primary"
                   v-model="patientRecordInfo.checkup_date"
-                  label="YYYY-MM-DD"
+                  placeholder="YYYY-MM-DD"
                   :rules="[
                     (val) => (val && val.length > 0) || 'Required field',
                   ]"

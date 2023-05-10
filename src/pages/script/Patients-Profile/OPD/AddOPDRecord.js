@@ -1,9 +1,15 @@
 import { ref, watch } from "vue";
+import _ from "lodash";
 import { useRoute, useRouter } from "vue-router";
 import {} from "src/composables/Records";
 import { FindUsersByName } from "src/composables/Manage_Users";
 import { AddRecord, PatientRecords } from "src/composables/Records";
 import { SessionStorage, date, useQuasar, Loading } from "quasar";
+import {
+  GetQueueSpecific,
+  QueueSpecific,
+  DonePatient,
+} from "src/composables/Queue";
 
 export default {
   setup() {
@@ -107,25 +113,55 @@ export default {
           });
           if (status === 0) {
             router.push({
-              name: "OPD/patient_records",
-              params: {
-                record_id: response.data.record_id,
-                department: route.params.department,
-              },
+              name: "home",
             });
+
+            if (route.params.queue) {
+              DonePatient({
+                current_patient: route.params.queue,
+                department: dept.value,
+                priority: route.params.priority,
+                done: true,
+              });
+            }
           }
         }
       );
     };
 
     const cancel = () => {
-      router.push({
-        name: "patient-details",
-        params: {
-          id: route.params.id,
-        },
-      });
+      route.params.queue
+        ? router.push({
+            name: "patient-details",
+            params: {
+              id: route.params.id,
+              queue: route.params.queue,
+            },
+          })
+        : router.push({
+            name: "patient-details",
+            params: {
+              id: route.params.id,
+            },
+          });
     };
+
+    let dept = ref(null);
+
+    if (route.params.queue) {
+      if (route.params.department === "Front Desk") {
+        dept.value = 5;
+      } else if (route.params.department === "OPD") {
+        dept.value = 1;
+      } else if (route.params.department === "Dental") {
+        dept.value = 2;
+      } else if (route.params.department === "Prenatal") {
+        dept.value = 3;
+      } else if (route.params.department === "Immunization") {
+        dept.value = 7;
+      }
+    }
+
     return {
       keySession,
       addRecord,

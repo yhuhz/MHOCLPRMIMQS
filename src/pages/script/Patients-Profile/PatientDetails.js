@@ -83,6 +83,27 @@ export default {
             ? route.params.department
             : departmentList.value[0];
 
+        if (
+          keySession &&
+          keySession.department === 5 &&
+          selectedDepartment.value === "OPD"
+        ) {
+          isbtnDisabled.value = false;
+        } else if (
+          keySession &&
+          keySession.department === 2 &&
+          selectedDepartment.value === "Dental"
+        ) {
+          isbtnDisabled.value = false;
+        } else if (
+          keySession &&
+          keySession.department === 3 &&
+          (selectedDepartment.value === "Prenatal" ||
+            selectedDepartment.value === "Immunization")
+        ) {
+          isbtnDisabled.value = false;
+        }
+
         GetRecords({
           patient_id: route.params.id,
           record_type: selectedDepartment.value,
@@ -122,6 +143,30 @@ export default {
     ];
 
     let isbtnDisabled = ref(true);
+
+    const changeDept = () => {
+      if (
+        keySession &&
+        keySession.department === 5 &&
+        selectedDepartment.value === "OPD"
+      ) {
+        isbtnDisabled.value = false;
+      } else if (
+        keySession &&
+        keySession.department === 2 &&
+        selectedDepartment.value === "Dental"
+      ) {
+        isbtnDisabled.value = false;
+      } else if (
+        keySession &&
+        keySession.department === 3 &&
+        (selectedDepartment.value === "Prenatal" ||
+          selectedDepartment.value === "Immunization")
+      ) {
+        isbtnDisabled.value = false;
+      }
+    };
+
     let departments = ["OPD", "Dental", "Prenatal", "Immunization"];
 
     if (selectedDepartment.value === "Immunization") {
@@ -144,6 +189,7 @@ export default {
     }
 
     const getRecords = () => {
+      changeDept();
       GetRecords({
         patient_id: route.params.id,
         record_type: selectedDepartment.value,

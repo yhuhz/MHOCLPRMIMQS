@@ -64,6 +64,8 @@
                         name: 'patient-details',
                         params: {
                           id: currentPatient.patient_id,
+                          queue: currentPatient.queue_id,
+                          priority: currentPatient.is_priority,
                         },
                       })
                     "
@@ -255,14 +257,6 @@
                           class="text-amber-9 text-bold"
                           style="cursor: pointer; font-size: 16px"
                           clickable
-                          @click="
-                            $router.push({
-                              name: 'patient-details',
-                              params: {
-                                id: queue.patient_id,
-                              },
-                            })
-                          "
                         >
                           {{ queue.queue_number }} - {{ queue.last_name }}
                         </label>
@@ -301,14 +295,6 @@
                           class="text-primary text-bold"
                           style="cursor: pointer; font-size: 16px"
                           clickable
-                          @click="
-                            $router.push({
-                              name: 'patient-details',
-                              params: {
-                                id: queue.patient_id,
-                              },
-                            })
-                          "
                         >
                           {{ queue.queue_number }} - {{ queue.last_name }}
                         </label>

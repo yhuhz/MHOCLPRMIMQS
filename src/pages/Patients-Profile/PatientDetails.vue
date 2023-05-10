@@ -1,16 +1,27 @@
 <template>
   <div class="pr-opd-details">
-    <div class="flex items-center q-px-md">
-      <q-btn
-        round
-        dense
-        outline
-        icon="eva-arrow-back-outline"
-        color="dark"
-        @click="$router.go(-1)"
-        class="q-mr-md"
-      />
-      <h5 class="text-weight-bold text-dark q-my-lg">PATIENT RECORDS</h5>
+    <div class="flex justify-between items-center q-px-md">
+      <div class="flex items-center">
+        <q-btn
+          round
+          dense
+          outline
+          icon="eva-arrow-back-outline"
+          color="dark"
+          @click="$router.go(-1)"
+          class="q-mr-md"
+        />
+        <h5 class="text-weight-bold text-dark q-my-lg">PATIENT RECORDS</h5>
+      </div>
+
+      <div v-if="$route.params.queue">
+        <q-btn
+          no-caps
+          color="negative"
+          label="Remove Patient from Queue"
+          icon="playlist_remove"
+        />
+      </div>
     </div>
 
     <!-- Card -->
@@ -137,13 +148,18 @@
 
         <q-separator class="q-my-lg" color="dark" />
 
-        <div class="row q-my-lg">
+        <div class="text-grey-7 text-caption text-center">
+          <label>Please select your department</label>
+        </div>
+
+        <div class="row">
           <div
             class="col"
             v-if="
               keySession &&
               keySession.department !== 4 &&
-              keySession.permission_level !== 3
+              keySession.permission_level !== 3 &&
+              !isbtnDisabled
             "
           >
             <q-btn
@@ -164,12 +180,20 @@
                   : true
               "
               @click="
-                $router.push({
-                  name: selectedDepartment + '/patient_records/new',
-                  params: {
-                    department: selectedDepartment,
-                  },
-                })
+                $route.params.queue
+                  ? $router.push({
+                      name: selectedDepartment + '/patient_records/new',
+                      params: {
+                        department: selectedDepartment,
+                        queue: $route.params.queue,
+                      },
+                    })
+                  : $router.push({
+                      name: selectedDepartment + '/patient_records/new',
+                      params: {
+                        department: selectedDepartment,
+                      },
+                    })
               "
             />
           </div>
