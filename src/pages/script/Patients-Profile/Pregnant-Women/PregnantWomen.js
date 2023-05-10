@@ -29,7 +29,6 @@ export default {
     let statusList = ["Active", "Deleted"];
 
     let barangayList = [
-      "Outside Camalig",
       "Anoling",
       "Baligang",
       "Bantonan",
@@ -91,11 +90,15 @@ export default {
 
     let brgy_checkbox_disable = ref(false);
 
+    let outsideCamaligCheckbox = ref(true);
+
     const select_all_brgy = () => {
       brgy_array_model.value = barangayList;
+      outsideCamaligCheckbox.value = true;
     };
     const select_none_brgy = () => {
       brgy_array_model.value = [];
+      outsideCamaligCheckbox.value = false;
     };
 
     const columns = ref([
@@ -215,6 +218,7 @@ export default {
           status: status_array_model.value,
           date_added: dateAdded.value,
           barangay: brgy_array_model.value,
+          outside_camalig: outsideCamaligCheckbox.value,
         },
       };
 
@@ -223,6 +227,8 @@ export default {
         Loading.hide();
       });
     };
+
+    getPrenatal();
 
     /**EXPORT TABLE**/
     const wrapCsvValue = (val, formatFn, row) => {
@@ -374,6 +380,7 @@ export default {
       openQueueModal,
       addToQueue,
       departmentChange,
+      outsideCamaligCheckbox,
     };
   },
 };

@@ -188,6 +188,12 @@
                         @click="select_none_brgy"
                       />
                       <div class="brgy q-mt-sm">
+                        <q-checkbox
+                          v-model="outsideCamaligCheckbox"
+                          label="Outside Camalig"
+                          class="text-dark"
+                          :disable="brgy_checkbox_disable"
+                        />
                         <div v-for="(brgy, index) in barangayList" :key="index">
                           <q-checkbox
                             v-model="brgy_array_model"

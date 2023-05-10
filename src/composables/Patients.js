@@ -20,7 +20,7 @@ let GetPatients = (payload) => {
         params: { payload: payload },
       })
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
 
         if (typeof payload.pwd != "undefined") {
           PWD.value = response.data.data;
