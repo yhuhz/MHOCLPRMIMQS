@@ -9,6 +9,7 @@ import {
   GetQueueSpecific,
   QueueSpecific,
   DonePatient,
+  CallNextPatient,
 } from "src/composables/Queue";
 
 export default {
@@ -97,36 +98,25 @@ export default {
         patientRecordInfo.value.preliminary_checkup_done_by =
           patientRecordInfo.value.preliminary_checkup_done_by.user_id;
       }
-      AddRecord(patientRecordInfo.value, route.params.department).then(
-        (response) => {
-          Loading.hide();
+      AddRecord(patientRecordInfo.value, "OPD").then((response) => {
+        Loading.hide();
 
-          let status = response.status === "success" ? 0 : 1;
+        let status = response.status === "success" ? 0 : 1;
 
-          $q.notify({
-            type: status === 0 ? "positive" : "negative",
-            classes: "text-white",
-            message:
-              status === 0
-                ? "Patient record added successfully"
-                : "Failed to add patient record",
-          });
-          if (status === 0) {
-            router.push({
-              name: "home",
-            });
-
-            if (route.params.queue) {
-              DonePatient({
-                current_patient: route.params.queue,
-                department: dept.value,
-                priority: route.params.priority,
-                done: true,
-              });
-            }
+        $q.notify({
+          type: status === 0 ? "positive" : "negative",
+          classes: "text-white",
+          message:
+            status === 0
+              ? "Patient record added successfully"
+              : "Failed to add patient record",
+        });
+        if (status === 0) {
+          if (route.params.queue) {
+            isDonePatient.value = true;
           }
         }
-      );
+      });
     };
 
     const cancel = () => {
@@ -147,20 +137,97 @@ export default {
     };
 
     let dept = ref(null);
+    let isDonePatient = ref(false);
+    let currentPatient = ref(null);
+    let priorityPatients = ref([]);
+    let otherPatients = ref([]);
 
     if (route.params.queue) {
-      if (route.params.department === "Front Desk") {
-        dept.value = 5;
-      } else if (route.params.department === "OPD") {
-        dept.value = 1;
-      } else if (route.params.department === "Dental") {
-        dept.value = 2;
-      } else if (route.params.department === "Prenatal") {
-        dept.value = 3;
-      } else if (route.params.department === "Immunization") {
-        dept.value = 7;
-      }
+      dept.value = 5;
+
+      GetQueueSpecific(dept.value).then((response) => {});
+
+      watch(
+        () => _.cloneDeep(QueueSpecific.value),
+        () => {
+          priorityPatients.value = [];
+          otherPatients.value = [];
+          QueueSpecific.value.forEach((q) => {
+            if (q.is_current === 1) {
+              currentPatient.value = q;
+            } else if (q.is_current === 0 && q.is_priority === 1) {
+              priorityPatients.value.push(q);
+            } else if (q.is_current === 0 && q.is_priority === 0) {
+              otherPatients.value.push(q);
+            }
+          });
+        }
+      );
     }
+
+    const callInNextPriority = () => {
+      Loading.show();
+      CallNextPatient({
+        current_patient:
+          currentPatient.value !== null ? currentPatient.value.queue_id : null,
+        next_patient: priorityPatients.value[0].queue_id,
+        department: dept.value,
+        priority: 1,
+      }).then((response) => {
+        Loading.hide();
+        priorityPatients.value = [];
+        otherPatients.value = [];
+        GetQueueSpecific(dept.value).then((response) => {
+          router.push({
+            name: "patient-details",
+            params: {
+              id: currentPatient.value.patient_id,
+              queue: currentPatient.value.queue_id,
+            },
+          });
+        });
+      });
+    };
+
+    const callInNextPatient = () => {
+      Loading.show();
+      CallNextPatient({
+        current_patient:
+          currentPatient.value !== null ? currentPatient.value.queue_id : null,
+        next_patient: otherPatients.value[0].queue_id,
+        department: dept.value,
+        priority: 0,
+      }).then((response) => {
+        Loading.hide();
+        priorityPatients.value = [];
+        otherPatients.value = [];
+        GetQueueSpecific(dept.value).then((response) => {
+          router.push({
+            name: "patient-details",
+            params: {
+              id: currentPatient.value.patient_id,
+              queue: currentPatient.value.queue_id,
+            },
+          });
+        });
+      });
+    };
+
+    const doneCurrentPatient = () => {
+      Loading.show();
+      DonePatient({
+        current_patient: currentPatient.value.queue_id,
+        department: dept.value,
+        priority: currentPatient.value.is_priority,
+        done: true,
+      }).then((response) => {
+        Loading.hide();
+        currentPatient.value = null;
+        priorityPatients.value = [];
+        otherPatients.value = [];
+        router.push({ name: "home" });
+      });
+    };
 
     return {
       keySession,
@@ -173,6 +240,13 @@ export default {
       removeLabResult,
       userOptions,
       userFilterFunction,
+      isDonePatient,
+      callInNextPriority,
+      callInNextPatient,
+      doneCurrentPatient,
+      currentPatient,
+      priorityPatients,
+      otherPatients,
     };
   },
 };

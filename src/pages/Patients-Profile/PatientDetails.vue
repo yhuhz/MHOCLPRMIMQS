@@ -15,32 +15,55 @@
       </div>
 
       <div v-if="$route.params.queue">
-        <q-btn
-          no-caps
-          color="negative"
-          label="Remove Patient from Queue"
-          icon="playlist_remove"
-          @click="isRemoveFromCurrentQueue = !isRemoveFromCurrentQueue"
-        />
+        <div
+          class="text-center text-grey-7"
+          v-if="keySession && keySession.department !== 5"
+        >
+          <label>Patient Queue</label>
+        </div>
+
+        <div class="row">
+          <q-btn
+            no-caps
+            color="negative"
+            :label="
+              keySession && keySession.department !== 5
+                ? 'Remove Patient'
+                : 'Remove Patient from Queue'
+            "
+            icon="playlist_remove"
+            class="col"
+            @click="isRemoveFromCurrentQueue = !isRemoveFromCurrentQueue"
+          />
+          <q-btn
+            v-if="keySession && keySession.department !== 5"
+            no-caps
+            color="primary"
+            label="Done"
+            icon="add_task"
+            class="q-ml-md col"
+            style="width: 200px"
+            @click="isDonePatient = !isDonePatient"
+          />
+        </div>
       </div>
     </div>
 
     <!-- Card -->
     <div class="grid card-box q-mx-md q-mb-xl row">
       <div class="col-3 q-pa-md first-col leftSide col" style="width: 300px">
-        <div>
+        <div class="flex" style="justify-content: center; align-items: center">
           <q-btn
             v-if="keySession && keySession.department === 5"
-            class="float-right cursor-pointer q-mt-xs"
+            class="q-mt-xs q-mb-xs"
             icon="eva-edit-outline"
-            size="xs"
-            padding="3px"
-            outline
+            label="Edit Patient Profile"
+            no-caps
             color="primary"
             @click="
               $router.push({
                 name: 'add-edit-patient-record',
-                query: {
+                params: {
                   id: PatientDetails.patient_id,
                 },
               })
@@ -234,31 +257,125 @@
       </div>
     </div>
 
+    <!-- Remove Patient from Queue -->
     <q-dialog v-model="isRemoveFromCurrentQueue" persistent>
-      <q-card class="q-pa-md" style="width: 300px">
+      <q-card class="q-pa-md" style="width: 380px">
         <div>
           <div class="text-center">
             <q-icon name="playlist_remove" size="100px" color="negative" />
-            <h6 class="text-negative no-margin">Are you sure?</h6>
-            <p class="text-dark m-width-250">
-              Do you want to remove this current patient from queue?
+            <h5 class="text-negative text-bold no-margin">Are you sure?</h5>
+            <p class="text-dark q-mt-xs">
+              Do you want to remove this current patient from the queue?
             </p>
+
+            <div v-if="keySession && keySession.department === 5">
+              <q-separator color="primary" class="q-my-md q-mx-lg" />
+              <p class="text-grey-7">
+                <q-icon name="help" color="amber-5" />
+                To send the next patient to the Doctor's office, please complete
+                the form.
+              </p>
+            </div>
           </div>
 
-          <div class="flex justify-around q-mt-md">
+          <div
+            class="flex q-mt-md"
+            style="justify-content: center; align-items: center"
+          >
             <q-btn
               v-close-popup
               label="Cancel"
               no-caps
               color="grey-7"
-              class="button-100"
+              style="width: 100%"
             />
             <q-btn
-              color="negative"
-              label="Yes"
+              v-if="priorityPatients && priorityPatients.length !== 0"
+              color="amber-9"
+              icon="priority_high"
+              label="Remove and call next priority patient"
               no-caps
-              class="button-100"
-              @click="removeCurrentPatient"
+              class="q-mt-sm"
+              style="width: 100%"
+              @click="callInNextPriority"
+            />
+            <q-btn
+              v-if="otherPatients && otherPatients.length !== 0"
+              color="primary"
+              icon="mic"
+              label="Remove and call next non-priority patient"
+              no-caps
+              class="q-mt-sm"
+              style="width: 100%"
+              @click="callInNextPatient"
+            />
+            <q-btn
+              color="grey-2"
+              icon="home"
+              text-color="text-dark"
+              label="Remove and return to home page"
+              no-caps
+              class="q-mt-sm"
+              style="width: 100%"
+              @click="doneCurrentPatient"
+            />
+          </div>
+        </div>
+      </q-card>
+    </q-dialog>
+
+    <!-- Done Patient -->
+    <q-dialog v-model="isDonePatient" persistent>
+      <q-card class="q-pa-md" style="width: 380px">
+        <div>
+          <div class="text-center">
+            <q-icon name="add_task" size="100px" color="primary" />
+            <h5 class="text-primary text-bold no-margin">Are you sure?</h5>
+            <p class="text-dark q-mt-xs">
+              Would you like to call in the next patient?
+            </p>
+          </div>
+
+          <div
+            class="flex q-mt-md"
+            style="justify-content: center; align-items: center"
+          >
+            <q-btn
+              v-close-popup
+              label="Cancel"
+              no-caps
+              color="grey-7"
+              style="width: 100%"
+            />
+            <q-btn
+              v-if="priorityPatients && priorityPatients.length !== 0"
+              color="amber-9"
+              icon="priority_high"
+              label="Call next priority patient"
+              no-caps
+              class="q-mt-sm"
+              style="width: 100%"
+              @click="callInNextPriority"
+            />
+            <q-btn
+              v-if="otherPatients && otherPatients.length !== 0"
+              color="primary"
+              icon="mic"
+              label="Call next non-priority patient"
+              no-caps
+              class="q-mt-sm"
+              style="width: 100%"
+              @click="callInNextPatient"
+            />
+            <q-btn
+              color="grey-2"
+              icon="home"
+              text-color="text-dark"
+              label="Return to home page"
+              no-caps
+              class="q-mt-sm"
+              style="width: 100%"
+              @click="doneCurrentPatient"
             />
           </div>
         </div>

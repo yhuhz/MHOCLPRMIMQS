@@ -260,6 +260,56 @@ import { RecordDetails } from 'src/composables/Patients';
         </div>
       </div>
     </q-form>
+
+    <q-dialog v-model="isDonePatient" persistent>
+      <q-card class="q-pa-md" style="width: 380px">
+        <div>
+          <div class="text-center">
+            <q-icon name="add_task" size="100px" color="primary" />
+            <h5 class="text-primary text-bold no-margin">Success</h5>
+            <p class="text-dark q-mt-xs">
+              Patient OPD record added successfully
+            </p>
+          </div>
+
+          <div
+            class="flex q-mt-md"
+            style="justify-content: center; align-items: center"
+          >
+            <q-btn
+              v-if="priorityPatients && priorityPatients.length !== 0"
+              color="amber-9"
+              icon="priority_high"
+              label="Call next priority patient"
+              no-caps
+              class="q-mt-sm"
+              style="width: 100%"
+              @click="callInNextPriority"
+            />
+            <q-btn
+              v-if="otherPatients && otherPatients.length !== 0"
+              color="primary"
+              icon="mic"
+              label="Call next non-priority patient"
+              no-caps
+              class="q-mt-sm"
+              style="width: 100%"
+              @click="callInNextPatient"
+            />
+            <q-btn
+              color="grey-2"
+              icon="home"
+              text-color="text-dark"
+              label="Return to home page"
+              no-caps
+              class="q-mt-sm"
+              style="width: 100%"
+              @click="doneCurrentPatient"
+            />
+          </div>
+        </div>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 

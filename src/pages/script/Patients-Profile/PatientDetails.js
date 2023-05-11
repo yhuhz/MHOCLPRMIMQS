@@ -11,6 +11,13 @@ import _ from "lodash";
 import { useQuasar, SessionStorage, Loading } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
 import { useRoute, useRouter } from "vue-router";
+import {
+  RemovePatientFromQueue,
+  GetQueueSpecific,
+  QueueSpecific,
+  DonePatient,
+  CallNextPatient,
+} from "src/composables/Queue";
 
 export default {
   components: { MHCDialog, DeletePatientConfirmation },
@@ -41,6 +48,7 @@ export default {
     watch(
       () => _.cloneDeep(PatientDetails.value),
       () => {
+        FindPatient({ patient_id: route.params.id });
         name.value =
           PatientDetails.value.first_name +
           (PatientDetails.value.middle_name === null
@@ -115,7 +123,7 @@ export default {
       GetRecords({
         patient_id: route.params.id,
         record_type: selectedDepartment.value,
-      });
+      }).then((response) => {});
     }
 
     let columns = [
@@ -193,7 +201,7 @@ export default {
       GetRecords({
         patient_id: route.params.id,
         record_type: selectedDepartment.value,
-      });
+      }).then((response) => {});
 
       if (selectedDepartment.value === "Immunization") {
         if (keySession.department === 3 || keySession.department === 5) {
@@ -239,17 +247,143 @@ export default {
     let isRemoveFromCurrentQueue = ref(false);
     const removeCurrentPatient = () => {
       Loading.show();
-      RemovePatientFromQueue({ queue_id: currentPatient.value.queue_id }).then(
+      RemovePatientFromQueue({ queue_id: route.params.queue }).then(
         (response) => {
           isRemoveFromCurrentQueue.value = false;
           Loading.hide();
 
           if (response.status === "success") {
-            currentPatient.value = null;
+            router.push({ name: "home" });
+          } else {
+            $q.notify({
+              type: "negative",
+              classes: "text-white",
+              message: "Failed to remove patient from queue",
+            });
           }
         }
       );
     };
+
+    let dept = ref(null);
+    let currentPatient = ref(null);
+    let priorityPatients = ref([]);
+    let otherPatients = ref([]);
+
+    if (route.params.queue) {
+      dept.value = keySession && keySession.department;
+      if (keySession && keySession.department === 1) {
+        FindRecordDetails(
+          PatientRecords && PatientRecords.value[0].record_id,
+          "OPD"
+        ).then((response) => {
+          Loading.hide();
+
+          if (response.status === "success") {
+            router.push({
+              name: "OPD/patient_records",
+              params: {
+                record_id: PatientRecords && PatientRecords.value[0].record_id,
+                department: selectedDepartment.value,
+                queue: route.params.queue,
+              },
+            });
+          }
+        });
+      }
+
+      GetQueueSpecific(dept.value).then((response) => {});
+
+      watch(
+        () => _.cloneDeep(QueueSpecific.value),
+        () => {
+          priorityPatients.value = [];
+          otherPatients.value = [];
+          QueueSpecific.value.forEach((q) => {
+            if (q.is_current === 1) {
+              currentPatient.value = q;
+            } else if (q.is_current === 0 && q.is_priority === 1) {
+              priorityPatients.value.push(q);
+            } else if (q.is_current === 0 && q.is_priority === 0) {
+              otherPatients.value.push(q);
+            }
+          });
+        }
+      );
+    }
+
+    const callInNextPriority = () => {
+      Loading.show();
+      RemovePatientFromQueue({ queue_id: route.params.queue }).then(
+        (response) => {
+          CallNextPatient({
+            current_patient: null,
+            next_patient: priorityPatients.value[0].queue_id,
+            department: dept.value,
+            priority: 1,
+          }).then((response) => {
+            Loading.hide();
+            priorityPatients.value = [];
+            otherPatients.value = [];
+            GetQueueSpecific(dept.value).then((response) => {
+              router.push({
+                name: "patient-details",
+                params: {
+                  id: currentPatient.value.patient_id,
+                  queue: currentPatient.value.queue_id,
+                },
+              });
+              isRemoveFromCurrentQueue.value = false;
+              isDonePatient.value = false;
+            });
+          });
+        }
+      );
+    };
+
+    const callInNextPatient = () => {
+      Loading.show();
+      RemovePatientFromQueue({ queue_id: route.params.queue }).then(
+        (response) => {
+          CallNextPatient({
+            current_patient: null,
+            next_patient: otherPatients.value[0].queue_id,
+            department: dept.value,
+            priority: 0,
+          }).then((response) => {
+            Loading.hide();
+            priorityPatients.value = [];
+            otherPatients.value = [];
+            GetQueueSpecific(dept.value).then((response) => {
+              router.push({
+                name: "patient-details",
+                params: {
+                  id: currentPatient.value.patient_id,
+                  queue: currentPatient.value.queue_id,
+                },
+              });
+              isRemoveFromCurrentQueue.value = false;
+              isDonePatient.value = false;
+            });
+          });
+        }
+      );
+    };
+
+    const doneCurrentPatient = () => {
+      Loading.show();
+      RemovePatientFromQueue({ queue_id: route.params.queue }).then(
+        (response) => {
+          Loading.hide();
+          currentPatient.value = null;
+          priorityPatients.value = [];
+          otherPatients.value = [];
+          router.push({ name: "home" });
+        }
+      );
+    };
+
+    let isDonePatient = ref(false);
 
     return {
       openDialog,
@@ -267,6 +401,13 @@ export default {
       isbtnDisabled,
       isRemoveFromCurrentQueue,
       removeCurrentPatient,
+      currentPatient,
+      priorityPatients,
+      otherPatients,
+      callInNextPriority,
+      callInNextPatient,
+      doneCurrentPatient,
+      isDonePatient,
     };
   },
 };

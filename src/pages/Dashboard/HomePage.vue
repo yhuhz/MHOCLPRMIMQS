@@ -60,14 +60,15 @@
                         : 'font-size: x-large; cursor: pointer; color: #55a15e'
                     "
                     @click="
-                      $router.push({
-                        name: 'patient-details',
-                        params: {
-                          id: currentPatient.patient_id,
-                          queue: currentPatient.queue_id,
-                          priority: currentPatient.is_priority,
-                        },
-                      })
+                      keySession && dept === keySession.department
+                        ? $router.push({
+                            name: 'patient-details',
+                            params: {
+                              id: currentPatient.patient_id,
+                              queue: currentPatient.queue_id,
+                            },
+                          })
+                        : ''
                     "
                   >
                     {{ currentPatient && currentPatient.patient_id }}
@@ -93,7 +94,7 @@
                     }}
                   </div>
                   <div v-if="keySession && keySession.department !== 6">
-                    <div class="row" v-if="selectedDepartment === 'Front Desk'">
+                    <div class="row">
                       <q-btn
                         dense
                         no-caps
@@ -102,31 +103,14 @@
                         icon="delete"
                         class="col q-mt-xs q-mr-xs"
                         style="width: 100%"
+                        :disable="
+                          keySession && dept === keySession.department
+                            ? false
+                            : true
+                        "
                         @click="
                           isRemoveFromCurrentQueue = !isRemoveFromCurrentQueue
                         "
-                      />
-                      <q-btn
-                        dense
-                        no-caps
-                        color="primary"
-                        label="Done"
-                        icon="how_to_reg"
-                        class="col q-mt-xs q-ml-xs"
-                        style="width: 100%"
-                        @click="doneCurrentPatient"
-                      />
-                    </div>
-                    <div class="row" v-else>
-                      <q-btn
-                        dense
-                        no-caps
-                        color="primary"
-                        label="Done"
-                        icon="how_to_reg"
-                        class="col q-mt-xs"
-                        style="width: 100%"
-                        @click="doneCurrentPatient"
                       />
                     </div>
                   </div>
@@ -150,9 +134,11 @@
                   style="width: 100%"
                   color="amber-9"
                   :disable="
+                    currentPatient === null &&
                     priorityPatients &&
                     priorityPatients[0] &&
                     keySession &&
+                    dept === keySession.department &&
                     (keySession.department === 5 ||
                       keySession.department === 1 ||
                       keySession.department === 2 ||
@@ -175,9 +161,11 @@
                   class="q-mt-sm"
                   color="primary"
                   :disable="
+                    currentPatient === null &&
                     otherPatients &&
                     otherPatients[0] &&
                     keySession &&
+                    dept === keySession.department &&
                     (keySession.department === 5 ||
                       keySession.department === 1 ||
                       keySession.department === 2 ||

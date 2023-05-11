@@ -187,6 +187,7 @@ export default {
       });
     };
 
+    getSC();
     /**EXPORT TABLE**/
     const wrapCsvValue = (val, formatFn, row) => {
       let formatted = formatFn !== void 0 ? formatFn(val, row) : val;

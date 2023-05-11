@@ -263,6 +263,7 @@ export default {
       selectedDB,
       isRemoveFromCurrentQueue,
       removeCurrentPatient,
+      dept,
     };
   },
 };
