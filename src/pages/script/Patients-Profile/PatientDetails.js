@@ -236,6 +236,21 @@ export default {
       ToggleDialogState();
     };
 
+    let isRemoveFromCurrentQueue = ref(false);
+    const removeCurrentPatient = () => {
+      Loading.show();
+      RemovePatientFromQueue({ queue_id: currentPatient.value.queue_id }).then(
+        (response) => {
+          isRemoveFromCurrentQueue.value = false;
+          Loading.hide();
+
+          if (response.status === "success") {
+            currentPatient.value = null;
+          }
+        }
+      );
+    };
+
     return {
       openDialog,
       keySession,
@@ -250,6 +265,8 @@ export default {
       PatientRecords,
       onRowClick,
       isbtnDisabled,
+      isRemoveFromCurrentQueue,
+      removeCurrentPatient,
     };
   },
 };

@@ -20,13 +20,13 @@ import MHCDialog from "../../../components/MHCDialog.vue";
 import RemoveFromQueue from "../../Components/RemoveFromQueue";
 import { ToggleDialogState } from "../../../composables/Triggers";
 import { SetIDS } from "src/composables/IDS";
-import Chart from "chart.js/auto";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 export default {
   components: { MHCDialog, RemoveFromQueue },
   setup() {
     const router = useRouter();
+    const route = useRoute();
     const $q = useQuasar();
 
     //Session Storage

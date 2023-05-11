@@ -20,6 +20,7 @@
           color="negative"
           label="Remove Patient from Queue"
           icon="playlist_remove"
+          @click="isRemoveFromCurrentQueue = !isRemoveFromCurrentQueue"
         />
       </div>
     </div>
@@ -232,6 +233,37 @@
         </q-layout>
       </div>
     </div>
+
+    <q-dialog v-model="isRemoveFromCurrentQueue" persistent>
+      <q-card class="q-pa-md" style="width: 300px">
+        <div>
+          <div class="text-center">
+            <q-icon name="playlist_remove" size="100px" color="negative" />
+            <h6 class="text-negative no-margin">Are you sure?</h6>
+            <p class="text-dark m-width-250">
+              Do you want to remove this current patient from queue?
+            </p>
+          </div>
+
+          <div class="flex justify-around q-mt-md">
+            <q-btn
+              v-close-popup
+              label="Cancel"
+              no-caps
+              color="grey-7"
+              class="button-100"
+            />
+            <q-btn
+              color="negative"
+              label="Yes"
+              no-caps
+              class="button-100"
+              @click="removeCurrentPatient"
+            />
+          </div>
+        </div>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
