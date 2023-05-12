@@ -147,7 +147,6 @@ export default {
     ];
 
     let barangayList = [
-      "Outside Camalig",
       "Anoling",
       "Baligang",
       "Bantonan",

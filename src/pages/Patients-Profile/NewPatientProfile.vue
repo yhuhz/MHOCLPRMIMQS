@@ -242,11 +242,16 @@
         </div>
 
         <!-- PWD and Senior Citizens -->
-        <div class="q-pt-lg q-pb-sm">
-          <p class="text-primary text-weight-bold text-center text-18">
+        <div class="q-pt-lg q-pb-sm text-center">
+          <p class="text-primary text-weight-bold text-18">
             <q-icon name="accessible" size="sm" class="q-mx-sm q-gutter-xs" />
             PWD & SENIOR CITIZENS
           </p>
+
+          <label class="text-grey-7"
+            ><q-icon name="information" color="amber-6" /> Please check if
+            applicable</label
+          >
         </div>
 
         <div class="row">

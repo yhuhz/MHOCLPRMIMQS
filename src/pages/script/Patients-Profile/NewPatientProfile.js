@@ -30,82 +30,13 @@ export default {
     // Patient ID and household
     let statusList = ["Active", "Deceased", "Archived"];
 
-    // Address
-    let barangayList = [
-      "Anoling",
-      "Baligang",
-      "Bantonan",
-      "Brgy. 1 (Pob)",
-      "Brgy.2 (Pob)",
-      "Brgy.3 (Pob)",
-      "Brgy.4 (Pob)",
-      "Brgy.5 (Pob)",
-      "Brgy.6 (Pob)",
-      "Brgy.7 (Pob)",
-      "Bariw",
-      "Binanderahan",
-      "Binitayan",
-      "Bongabong",
-      "Cabagñan",
-      "Cabraran Pequeño",
-      "Caguiba",
-      "Calabidongan",
-      "Comun",
-      "Cotmon",
-      "Del Rosario",
-      "Gapo",
-      "Gotob",
-      "Ilawod",
-      "Iluluan",
-      "Libod",
-      "Ligban",
-      "Mabunga",
-      "Magogon",
-      "Manawan",
-      "Maninila",
-      "Mina",
-      "Miti",
-      "Palanog",
-      "Panoypoy",
-      "Pariaan",
-      "Quinartilan",
-      "Quirangay",
-      "Quitinday",
-      "Salugan",
-      "Solong",
-      "Sua",
-      "Sumlang",
-      "Tagaytay",
-      "Tagoytoy",
-      "Taladong",
-      "Taloto",
-      "Taplacon",
-      "Tinago",
-      "Tumpa",
-    ];
-
     let sexArray = ["Male", "Female"];
-
-    let brgyDisable = ref(true);
-    let municipality = ref();
-
-    const municipalityFunction = () => {
-      if (municipality.value === "Outside Camalig") {
-        personalInformation.value.barangay = "Outside Camalig";
-        brgyDisable.value = true;
-      } else {
-        personalInformation.value.barangay = null;
-        brgyDisable.value = false;
-      }
-    };
 
     // Personl Information
     let personalInformation = ref({
       patient_id: null,
       household_id: null,
       status: "Active",
-      barangay: null,
-      address: null,
       last_name: null,
       first_name: null,
       middle_name: null,
@@ -123,9 +54,12 @@ export default {
           household_id: personalInformation.value.household_id,
         }).then((response) => {
           address.value =
-            (response.data.address_line !== null
+            (response.data.address_line !== null &&
+            response.data.address_line !== ""
               ? response.data.address_line + ", "
               : "") +
+            response.data.barangay +
+            "," +
             response.data.municipality +
             ", " +
             response.data.province;
@@ -156,8 +90,6 @@ export default {
     ];
 
     const onReset = () => {
-      // console.log("mun", municipality.value);
-
       // Personl Information
       personalInformation.value = {
         household_id: null,
@@ -165,8 +97,6 @@ export default {
         last_name: null,
         first_name: null,
         middle_name: null,
-        barangay: null,
-        address: null,
         suffix: null,
         birthdate: null,
         phone_number: null,
@@ -181,6 +111,9 @@ export default {
         disability: null,
       };
       senior_citizen_id.value = null;
+
+      //Address
+      address.value = null;
     };
 
     /**FOR EDIT**/
@@ -195,13 +128,20 @@ export default {
         () => {
           let info = PatientDetails.value;
 
-          address.value = info.address;
+          address.value =
+            (info.address_line !== null && info.address_line !== ""
+              ? info.address_line + ", "
+              : "") +
+            info.barangay +
+            ", " +
+            info.municipality +
+            ", " +
+            info.province;
           //Personal Info
           personalInformation.value = {
             patient_id: info.patient_id,
             household_id: info.household_id,
             status: statusList[info.status],
-            barangay: info.barangay,
             last_name: info.last_name,
             first_name: info.first_name,
             middle_name: info.middle_name,
@@ -407,7 +347,6 @@ export default {
     return {
       route,
       statusList,
-      barangayList,
       personalInformation,
       isPWD,
       isSeniorCitizen,
@@ -416,14 +355,11 @@ export default {
       householdFilterFunction,
       householdOptions,
       onReset,
-      brgyDisable,
-      municipalityFunction,
       onSubmit,
       onChangePWD,
       onChangeSC,
       scDisable,
       updateBirthdate,
-      municipality,
       address,
       changeHousehold,
       disabilityArray,
