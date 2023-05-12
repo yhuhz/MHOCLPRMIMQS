@@ -171,13 +171,13 @@ export default {
         current_patient:
           currentPatient.value !== null ? currentPatient.value.queue_id : null,
         next_patient: priorityPatients.value[0].queue_id,
-        department: dept.value,
+        department: 5,
         priority: 1,
       }).then((response) => {
         Loading.hide();
         priorityPatients.value = [];
         otherPatients.value = [];
-        GetQueueSpecific(dept.value).then((response) => {
+        GetQueueSpecific(5).then((response) => {
           router.push({
             name: "patient-details",
             params: {
@@ -195,13 +195,13 @@ export default {
         current_patient:
           currentPatient.value !== null ? currentPatient.value.queue_id : null,
         next_patient: otherPatients.value[0].queue_id,
-        department: dept.value,
+        department: 5,
         priority: 0,
       }).then((response) => {
         Loading.hide();
         priorityPatients.value = [];
         otherPatients.value = [];
-        GetQueueSpecific(dept.value).then((response) => {
+        GetQueueSpecific(5).then((response) => {
           router.push({
             name: "patient-details",
             params: {

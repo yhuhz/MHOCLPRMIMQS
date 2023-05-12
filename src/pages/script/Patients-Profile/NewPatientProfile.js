@@ -145,6 +145,16 @@ export default {
     let senior_citizen_id = ref(null);
     let scDisable = ref(true);
 
+    let disabilityArray = [
+      "Psychosocial Disability",
+      "Chronic Illness Disability",
+      "Learning Disability",
+      "Mental Disability",
+      "Visual Disability",
+      "Orthopedic Disability",
+      "Communication Disability",
+    ];
+
     const onReset = () => {
       // console.log("mun", municipality.value);
 
@@ -218,6 +228,7 @@ export default {
             ) / 365
           );
           scDisable.value = age_now <= 60 ? true : false;
+          isSeniorCitizen.value = age_now <= 60 ? false : true;
         }
       );
     }
@@ -231,6 +242,7 @@ export default {
         ) / 365
       );
       scDisable.value = age_now <= 60 ? true : false;
+      isSeniorCitizen.value = age_now <= 60 ? false : true;
     };
 
     let householdOptions = ref([]);
@@ -414,6 +426,7 @@ export default {
       municipality,
       address,
       changeHousehold,
+      disabilityArray,
     };
   },
 };

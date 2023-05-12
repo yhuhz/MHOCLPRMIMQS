@@ -68,7 +68,10 @@
                             params: {
                               id: currentPatient.patient_id,
                               queue: currentPatient.queue_id,
-                              department: selectedDepartment,
+                              department:
+                                keySession.department === 5
+                                  ? 'OPD'
+                                  : selectedDepartment,
                             },
                           })
                         : ''

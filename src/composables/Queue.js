@@ -118,7 +118,7 @@ let CallNextPatient = (payload) => {
     axios
       .put(pathlink, payload)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         if (response.data.status === "success") {
           let objectIndex = QueueSpecific.value.findIndex(
             (e) => e.queue_id === payload.next_patient
