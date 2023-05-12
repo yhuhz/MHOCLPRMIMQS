@@ -272,7 +272,11 @@ export default {
 
     if (route.params.queue) {
       dept.value = keySession && keySession.department;
-      if (keySession && keySession.department === 1) {
+      if (
+        keySession &&
+        keySession.department === 1 &&
+        PatientDetails.value.length !== 0
+      ) {
         FindRecordDetails(
           PatientRecords && PatientRecords.value[0].record_id,
           "OPD"

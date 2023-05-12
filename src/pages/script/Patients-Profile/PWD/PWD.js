@@ -7,6 +7,7 @@ import {
   AddToQueue,
   GetLastQueueNumber,
   LastQueueNumber,
+  CheckPatientQueue,
 } from "src/composables/Queue";
 
 export default {
@@ -245,6 +246,18 @@ export default {
       }
     };
 
+    /**CHECK IF PATIENT IS ON QUEUE**/
+    let isPatientOnQueue = ref(false);
+    const checkPatientQueue = (patient_id) => {
+      CheckPatientQueue(patient_id).then((response) => {
+        if (response.status === "success") {
+          isPatientOnQueue.value = false;
+        } else {
+          isPatientOnQueue.value = true;
+        }
+      });
+    };
+
     /**ADD TO QUEUE**/
     let queueOpenModal = ref(false);
     let patientToQueue = ref(null);
@@ -353,6 +366,8 @@ export default {
       addToQueue,
       departmentChange,
       outsideCamaligCheckbox,
+      checkPatientQueue,
+      isPatientOnQueue,
     };
   },
 };

@@ -60,12 +60,15 @@
                         : 'font-size: x-large; cursor: pointer; color: #55a15e'
                     "
                     @click="
-                      keySession && dept === keySession.department
+                      keySession &&
+                      (dept === keySession.department ||
+                        (dept === 7 && keySession.department === 3))
                         ? $router.push({
                             name: 'patient-details',
                             params: {
                               id: currentPatient.patient_id,
                               queue: currentPatient.queue_id,
+                              department: selectedDepartment,
                             },
                           })
                         : ''
@@ -104,7 +107,9 @@
                         class="col q-mt-xs q-mr-xs"
                         style="width: 100%"
                         :disable="
-                          keySession && dept === keySession.department
+                          keySession &&
+                          (dept === keySession.department ||
+                            (dept === 7 && keySession.department === 3))
                             ? false
                             : true
                         "

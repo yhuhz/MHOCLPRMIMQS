@@ -3,11 +3,6 @@ import { GetPatients, Prenatal } from "src/composables/Patients";
 import { Loading, useQuasar, SessionStorage } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
 import { useRouter } from "vue-router";
-import {
-  AddToQueue,
-  GetLastQueueNumber,
-  LastQueueNumber,
-} from "src/composables/Queue";
 
 export default {
   setup() {
@@ -279,79 +274,6 @@ export default {
       }
     };
 
-    /**ADD TO QUEUE**/
-    let queueOpenModal = ref(false);
-    let patientToQueue = ref(null);
-    let queueNumber = ref(null);
-    let departmentArrayQueue = ref([]);
-    let departmentQueue = ref("Front Desk");
-
-    const openQueueModal = (patient_info) => {
-      departmentQueue.value = "Front Desk";
-      GetLastQueueNumber({
-        department: null,
-        priority: 1,
-      }).then((response) => {
-        queueNumber.value = LastQueueNumber.value;
-      });
-
-      queueOpenModal.value = true;
-      patientToQueue.value = patient_info.patient_id;
-
-      departmentArrayQueue.value = [
-        "OPD",
-        "Dental",
-        "Prenatal",
-        "Immunization",
-      ];
-    };
-
-    const departmentChange = () => {
-      GetLastQueueNumber({
-        department: null,
-        priority: 1,
-      }).then((response) => {
-        queueNumber.value = LastQueueNumber.value;
-      });
-    };
-
-    const addToQueue = () => {
-      if (departmentQueue.value === "Front Desk") {
-        departmentQueue.value = 5;
-      } else if (departmentQueue.value === "Dental") {
-        departmentQueue.value = 2;
-      } else if (departmentQueue.value === "Prenatal") {
-        departmentQueue.value = 3;
-      } else if (departmentQueue.value === "Immunization") {
-        departmentQueue.value = 7;
-      }
-
-      Loading.show();
-      AddToQueue({
-        patient_id: patientToQueue.value,
-        department: departmentQueue.value,
-        queue_number: queueNumber.value,
-        is_priority: 1,
-      }).then((response) => {
-        Loading.hide();
-
-        let status = response.status === "success" ? 0 : 1;
-        $q.notify({
-          type: status === 0 ? "positive" : "negative",
-          classes: "text-white",
-          message:
-            status === 0
-              ? "Patient added to queue successfully"
-              : "Failed to add patient to queue",
-        });
-
-        (departmentQueue.value = "OPD"),
-          (patientToQueue.value = null),
-          (queueNumber.value = null),
-          (queueOpenModal.value = false);
-      });
-    };
-
     return {
       searchBy,
       selectedSearchBy,
@@ -372,14 +294,6 @@ export default {
       brgy_checkbox_disable,
       exportTable,
       keySession,
-      queueOpenModal,
-      patientToQueue,
-      queueNumber,
-      departmentArrayQueue,
-      departmentQueue,
-      openQueueModal,
-      addToQueue,
-      departmentChange,
       outsideCamaligCheckbox,
     };
   },

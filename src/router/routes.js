@@ -41,45 +41,45 @@ const routes = [
         component: () => import("pages/Patients-Profile/NewPatientProfile.vue"),
       },
       {
-        path: ":id/:queue?/patient-details",
+        path: ":id/:queue?/:department?/patient-details",
         name: "patient-details",
         component: () => import("pages/Patients-Profile/PatientDetails.vue"),
         children: [
           // OPD
           {
-            path: ":record_id/:department/1/patient_records",
+            path: ":record_id/1/patient_records",
             name: "OPD/patient_records",
             component: () =>
               import("src/pages/Patients-Profile/OPD/OPDDetails.vue"),
           },
           {
-            path: "new_record/:department/1-1/patient_records",
+            path: "new_record/1-1/patient_records",
             name: "OPD/patient_records/new",
             component: () =>
               import("src/pages/Patients-Profile/OPD/AddOPDRecord.vue"),
           },
           //Dental
           {
-            path: ":record_id/:department/2/patient_records",
+            path: ":record_id/2/patient_records",
             name: "Dental/patient_records",
             component: () =>
               import("src/pages/Patients-Profile/Dental/DentalDetails.vue"),
           },
           {
-            path: "new_record/:department/2-1/patient_records",
+            path: "new_record/2-1/patient_records",
             name: "Dental/patient_records/new",
             component: () =>
               import("src/pages/Patients-Profile/Dental/AddDentalRecord.vue"),
           },
           //Prenatal
           {
-            path: ":record_id/:department/3/patient_records",
+            path: ":record_id/3/patient_records",
             name: "Prenatal/patient_records",
             component: () =>
               import("src/pages/Patients-Profile/Prenatal/PrenatalDetails.vue"),
           },
           {
-            path: "new-record/:department/3-1/patient_records",
+            path: "new-record/3-1/patient_records",
             name: "Prenatal/patient_records/new",
             component: () =>
               import(
@@ -88,7 +88,7 @@ const routes = [
           },
           //Immunization
           {
-            path: ":record_id/:department/4/patient_records",
+            path: ":record_id/4/patient_records",
             name: "Immunization/patient_records",
             component: () =>
               import(
@@ -96,7 +96,7 @@ const routes = [
               ),
           },
           {
-            path: "new-record/:department/4-1/patient_records",
+            path: "new-record/4-1/patient_records",
             name: "Immunization/patient_records/new",
             component: () =>
               import(

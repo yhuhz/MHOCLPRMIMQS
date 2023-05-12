@@ -288,8 +288,8 @@
                     <q-item
                       v-if="
                         keySession &&
-                        (keySession.department === 5 ||
-                          keySession.department === 6)
+                        keySession.department === 5 &&
+                        !isPatientOnQueue
                       "
                       clickable
                       class="drop-list"
