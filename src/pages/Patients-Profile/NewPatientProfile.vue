@@ -314,7 +314,7 @@
                 v-model="isSeniorCitizen"
                 size="xs"
                 @update:model-value="onChangeSC"
-                :disable="scDisable"
+                disable
               >
                 <span class="text-dark">Senior Citizen</span>
               </q-checkbox>
@@ -365,6 +365,7 @@
         </div>
       </q-form>
     </div>
+    <MHCDialog :content="$options.components.AddPatientSuccess" />
   </div>
 </template>
 

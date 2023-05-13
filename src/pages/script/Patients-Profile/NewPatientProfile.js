@@ -73,10 +73,10 @@ export default {
     let isPWD = ref(false);
     let isSeniorCitizen = ref(false);
     let pwd = ref({
-      pwd_id: null,
+      pwd_id: isPWD.value === true ? "N/A" : null,
       disability: null,
     });
-    let senior_citizen_id = ref(null);
+    let senior_citizen_id = ref(isSeniorCitizen.value === true ? "N/A" : null);
     let scDisable = ref(true);
 
     let disabilityArray = [
@@ -183,6 +183,7 @@ export default {
       );
       scDisable.value = age_now <= 60 ? true : false;
       isSeniorCitizen.value = age_now <= 60 ? false : true;
+      senior_citizen_id.value = age_now <= 60 ? null : "N/A";
     };
 
     let householdOptions = ref([]);
@@ -242,12 +243,19 @@ export default {
           pwd_id: null,
           disability: null,
         };
+      } else {
+        pwd.value = {
+          pwd_id: "N/A",
+          disability: null,
+        };
       }
     };
 
     const onChangeSC = () => {
       if (isSeniorCitizen.value === false) {
         senior_citizen_id.value = null;
+      } else {
+        senior_citizen_id.value = "N/A";
       }
     };
 
@@ -289,7 +297,7 @@ export default {
 
           status === 0 && onReset();
 
-          SetIDS(response.data.patient_id);
+          SetIDS(response.data);
           ToggleDialogState();
         });
       }
