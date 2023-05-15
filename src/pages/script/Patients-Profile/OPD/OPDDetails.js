@@ -14,6 +14,7 @@ import {
 import { FindUsersByName } from "src/composables/Manage_Users";
 import { Loading, SessionStorage, useQuasar, date } from "quasar";
 import { editForm } from "../PatientDetails";
+import { FindMedicines } from "src/composables/Medicine";
 
 export default {
   components: { MHCDialog, DeletePatientRecordConfirmation },
@@ -35,6 +36,7 @@ export default {
     let patientRecordInfo = ref({});
     let disease = ref([]);
     let lab_results = ref([]);
+    let prescription = ref([]);
 
     FindRecordDetails(route.params.record_id, route.params.department).then(
       (response) => {
@@ -65,13 +67,14 @@ export default {
             user_id: RecordDetails.value.doctor_id
               ? RecordDetails.value.doctor_id
               : keySession && keySession.user_id,
-            user_name: RecordDetails.value.doctor_name
+            user_name: RecordDetails.value.doctor_id
               ? RecordDetails.value.doctor_name
               : keySession &&
                 keySession.first_name +
                   " " +
                   keySession.last_name +
-                  " "(keySession.suffix ? keySession.suffix : ""),
+                  " " +
+                  (keySession.suffix ? keySession.suffix : ""),
           },
           complaint: RecordDetails.value.complaint,
           checkup_date: RecordDetails.value.checkup_date,
@@ -96,6 +99,7 @@ export default {
       () => {
         disease.value = RecordArrays.value.disease;
         lab_results.value = RecordArrays.value.lab_results;
+        prescription.value = RecordArrays.value.prescription;
       }
     );
 
@@ -156,11 +160,23 @@ export default {
       lab_results.value.splice(index, 1);
     };
 
+    const addPrescription = () => {
+      prescription.value.push({
+        medicine_name: "",
+        quantity: "",
+      });
+    };
+
+    const removePrescription = (index) => {
+      prescription.value.splice(index, 1);
+    };
+
     const editFunction = () => {
       editForm.value = false;
 
       patientRecordInfo.value.disease = disease.value;
       patientRecordInfo.value.lab_results = lab_results.value;
+      patientRecordInfo.value.prescription = prescription.value;
 
       if (
         typeof patientRecordInfo.value.preliminary_checkup_done_by === "object"
@@ -199,6 +215,33 @@ export default {
       ToggleDialogState();
     };
 
+    /**PRESCRIPTIONS**/
+    let isPrescription = ref(false);
+
+    let medicineList = ref([]);
+    const medicineFilterFunction = (val, update, abort) => {
+      if (val.length > 5) {
+        update(() => {
+          const needle = String(val.toLowerCase());
+          FindMedicines(needle).then((response) => {
+            medicineList.value = [];
+            if (response.status === "success") {
+              let Medicines = ref([]);
+              Medicines.value = response.data;
+              Medicines.value.forEach((m) => {
+                let selectValues = {
+                  medicine_name: m.generic_name + " - " + m.brand_name,
+                };
+                medicineList.value.push(selectValues);
+              });
+            }
+          });
+        });
+      } else {
+        abort();
+      }
+    };
+
     return {
       RecordDetails,
       patientRecordInfo,
@@ -216,6 +259,12 @@ export default {
       disease,
       keySession,
       checkup_date,
+      isPrescription,
+      prescription,
+      addPrescription,
+      removePrescription,
+      medicineList,
+      medicineFilterFunction,
     };
   },
 };

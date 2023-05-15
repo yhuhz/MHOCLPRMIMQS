@@ -54,6 +54,25 @@ let FindMedicineDetails = (payload) => {
   });
 };
 
+let FindMedicines = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          medicine_name: payload,
+        },
+      })
+      .then((response) => {
+        // console.log(response.data);
+        MedicineDetails.value = response.data.data;
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 let FindMedicineRelease = (payload) => {
   return new Promise((resolve, reject) => {
     axios
@@ -273,4 +292,5 @@ export {
   EditMedicineRelease,
   FindMedicineReleasePerPatient,
   MedReleasePerPatient,
+  FindMedicines,
 };

@@ -260,6 +260,7 @@
                 no-caps
                 unelevated
                 class="button-100 action-btn"
+                @click="checkPatientQueue(props.row.patient_id)"
               >
                 <q-menu
                   transition-show="jump-down"

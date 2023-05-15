@@ -274,6 +274,7 @@ import { RecordDetails } from 'src/composables/Patients';
                     (val && val.length > 0) ||
                     'Field must contain numbers only',
                 ]"
+                style="width: 180px"
               >
                 <template v-slot:append v-if="editForm">
                   <q-icon name="event" class="cursor-pointer" color="primary">
@@ -331,6 +332,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 color="primary"
                 :label="!editForm ? 'View Prescription' : 'Edit Prescription'"
                 class="q-mt-sm q-px-md"
+                @click="isPrescription = !isPrescription"
               />
             </div>
           </div>
@@ -440,6 +442,132 @@ import { RecordDetails } from 'src/composables/Patients';
         </div>
       </div>
     </q-form>
+
+    <!-- Prescription -->
+    <q-dialog v-model="isPrescription" persistent>
+      <q-card class="q-pa-lg" style="overflow: hidden; width: 500px">
+        <!-- <div class="text-center">
+          <q-icon name="assignment" color="primary" size="100px" />
+        </div> -->
+
+        <div class="flex justify-between items-center q-mt-md">
+          <h5 class="text-bold text-dark q-my-none">
+            <q-icon name="assignment" color="primary" /> Prescription
+          </h5>
+          <q-btn
+            v-if="
+              editForm &&
+              (prescription.length === 0 ||
+                (prescription[prescription.length - 1].medicine_name !== '' &&
+                  prescription[prescription.length - 1].quantity !== ''))
+            "
+            outline
+            color="primary"
+            icon="add_circle"
+            label="Add"
+            no-caps
+            style="border-radius: 5px"
+            @click="addPrescription"
+          />
+        </div>
+
+        <q-separator color="primary" class="q-my-md" />
+
+        <div class="q-mb-md">
+          <div v-if="editForm" class="text-center">
+            <p class="text-grey-7 text-caption">
+              If the medicine is not on the list, please input the medicine name
+              and press enter
+            </p>
+          </div>
+          <div class="row">
+            <label class="col text-dark text-bold q-mr-md">Medicine Name</label>
+            <label class="col-2 text-dark text-bold q-mr-md">Quantity</label>
+            <label
+              v-if="editForm"
+              class="col-2 text-dark"
+              style="visibility: hidden"
+              >Quantity</label
+            >
+          </div>
+          <div v-for="(prescriptions, index) in prescription" :key="index">
+            <div class="row q-mb-md">
+              <!-- <q-input
+                :readonly="!editForm"
+                autogrow
+                dense
+                outlined
+                input-class="text-primary"
+                class="col q-mr-md"
+                v-model="prescriptions.medicine_name"
+                hide-bottom-space
+              /> -->
+
+              <q-select
+                v-model="prescriptions.medicine_name"
+                dense
+                outlined
+                :readonly="!editForm"
+                :options="medicineList"
+                @filter="medicineFilterFunction"
+                option-label="medicine_name"
+                option-value="medicine_name"
+                use-input
+                emit-value
+                map-options
+                new-value-mode="add-unique"
+                class="col q-mr-md"
+              />
+              <q-input
+                :readonly="!editForm"
+                autogrow
+                dense
+                outlined
+                class="col-2 q-mr-md"
+                input-class="text-dark"
+                v-model="prescriptions.quantity"
+                hide-bottom-space
+              />
+              <!-- <q-btn
+                icon="delete"
+                dense
+                outline
+                color="negative"
+                class="col-2"
+                size="md"
+                @click="removePrescription"
+              /> -->
+              <q-icon
+                v-if="editForm"
+                name="delete"
+                color="negative"
+                class="col-2"
+                style="cursor: pointer"
+                size="md"
+                @click="removePrescription"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <q-btn
+            v-if="
+              !editForm ||
+              prescription.length === 0 ||
+              (prescription[prescription.length - 1].medicine_name !== '' &&
+                prescription[prescription.length - 1].quantity !== '')
+            "
+            class="col"
+            icon="check"
+            label="Done"
+            color="primary"
+            no-caps
+            @click="isPrescription = !isPrescription"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
 
     <MHCDialog :content="$options.components.DeletePatientRecordConfirmation" />
   </div>
