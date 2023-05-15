@@ -230,14 +230,24 @@ export default {
           Loading.hide();
         }
       );
-
-      router.push({
-        name: selectedDepartment.value + "/patient_records",
-        params: {
-          record_id: row.record_id,
-          department: selectedDepartment.value,
-        },
-      });
+      if (route.params.queue) {
+        router.push({
+          name: selectedDepartment.value + "/patient_records",
+          params: {
+            record_id: row.record_id,
+            department: selectedDepartment.value,
+            queue: route.params.queue,
+          },
+        });
+      } else {
+        router.push({
+          name: selectedDepartment.value + "/patient_records",
+          params: {
+            record_id: row.record_id,
+            department: selectedDepartment.value,
+          },
+        });
+      }
     };
 
     const openDialog = () => {

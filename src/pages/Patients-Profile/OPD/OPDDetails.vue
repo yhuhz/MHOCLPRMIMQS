@@ -85,7 +85,7 @@ import { RecordDetails } from 'src/composables/Patients';
               emit-value
               map-options
               dense
-              :readonly="!editForm"
+              readonly
               input-style="padding: 0"
               input-class="text-right text-primary"
             />
@@ -101,6 +101,10 @@ import { RecordDetails } from 'src/composables/Patients';
               input-class="text-right text-primary"
               v-model="patientRecordInfo.temperature"
               label="°C"
+              :rules="[
+                (val) =>
+                  (val && !isNaN(val)) || 'Field must contain numbers only',
+              ]"
             />
           </div>
           <div class="flex justify-between items-baseline q-px-md">
@@ -114,6 +118,10 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.blood_pressure_systole"
                 style="width: 80px"
+                :rules="[
+                  (val) =>
+                    (val && !isNaN(val)) || 'Field must contain numbers only',
+                ]"
               />
               <label class="text-primary text-bold q-px-sm">/</label>
               <q-input
@@ -124,6 +132,10 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.blood_pressure_diastole"
                 style="width: 80px"
+                :rules="[
+                  (val) =>
+                    (val && !isNaN(val)) || 'Field must contain numbers only',
+                ]"
               />
             </div>
           </div>
@@ -137,6 +149,10 @@ import { RecordDetails } from 'src/composables/Patients';
               input-class="text-right text-primary"
               v-model="patientRecordInfo.height"
               label="cm"
+              :rules="[
+                (val) =>
+                  (val && !isNaN(val)) || 'Field must contain numbers only',
+              ]"
             />
           </div>
           <div class="flex justify-between items-baseline q-px-md">
@@ -149,6 +165,10 @@ import { RecordDetails } from 'src/composables/Patients';
               input-class="text-right text-primary"
               v-model="patientRecordInfo.weight"
               label="kg"
+              :rules="[
+                (val) =>
+                  (val && !isNaN(val)) || 'Field must contain numbers only',
+              ]"
             />
           </div>
           <div class="flex justify-between items-baseline q-px-md">
@@ -161,6 +181,9 @@ import { RecordDetails } from 'src/composables/Patients';
               input-class="text-right text-primary"
               v-model="patientRecordInfo.pulse_rate"
               label="BPM"
+              :rules="[
+                (val) => !isNaN(val) || 'Field must contain numbers only',
+              ]"
             />
           </div>
           <div class="flex justify-between items-baseline q-px-md">
@@ -173,6 +196,9 @@ import { RecordDetails } from 'src/composables/Patients';
               input-class="text-right text-primary"
               v-model="patientRecordInfo.oxygen_sat"
               label="%"
+              :rules="[
+                (val) => !isNaN(val) || 'Field must contain numbers only',
+              ]"
             />
           </div>
         </div>
@@ -196,7 +222,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 emit-value
                 map-options
                 dense
-                :readonly="!editForm"
+                readonly
                 input-style="padding: 0"
                 input-class="text-right text-primary"
               />
@@ -212,6 +238,11 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.complaint"
                 hide-bottom-space
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) ||
+                    'Field must contain numbers only',
+                ]"
               />
             </div>
 
@@ -219,54 +250,33 @@ import { RecordDetails } from 'src/composables/Patients';
               <p class="text-primary text-weight-bold">Checkup Date:</p>
               <q-input
                 hide-bottom-space
-                :readonly="!editForm"
+                readonly
                 autogrow
                 outlined
                 dense
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.checkup_date"
-                label="YYYY-MM-DD"
-              >
-                <template v-slot:append v-if="editForm">
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        mask="YYYY-MM-DD"
-                        v-model="patientRecordInfo.checkup_date"
-                      >
-                        <div class="row justify-end items-center">
-                          <q-btn
-                            v-close-popup
-                            color="primary"
-                            label="Close"
-                            dense
-                            flat
-                          />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
+              />
             </div>
 
             <div class="flex justify-between items-baseline">
               <p class="text-primary text-weight-bold">Next Checkup:</p>
               <q-input
                 hide-bottom-space
-                :readonly="!editForm"
+                readonly
                 autogrow
                 outlined
                 dense
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.next_checkup"
-                label="YYYY-MM-DD"
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) ||
+                    'Field must contain numbers only',
+                ]"
               >
                 <template v-slot:append v-if="editForm">
-                  <q-icon name="event" class="cursor-pointer">
+                  <q-icon name="event" class="cursor-pointer" color="primary">
                     <q-popup-proxy
                       transition-show="scale"
                       transition-hide="scale"
@@ -274,6 +284,12 @@ import { RecordDetails } from 'src/composables/Patients';
                       <q-date
                         mask="YYYY-MM-DD"
                         v-model="patientRecordInfo.next_checkup"
+                        :options="(date) => date >= checkup_date"
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Field must contain numbers only',
+                        ]"
                       >
                         <div class="row justify-end items-center">
                           <q-btn
@@ -303,8 +319,18 @@ import { RecordDetails } from 'src/composables/Patients';
                 dense
                 input-class="text-primary"
                 class="q-mt-md"
-                input-style="max-height: 100px"
+                input-style="min-height: 100px; max-height: 100px"
                 v-model="patientRecordInfo.checkup_results"
+                placeholder="Write your notes here"
+              />
+              <q-btn
+                icon="medication"
+                dense
+                outline
+                no-caps
+                color="primary"
+                :label="!editForm ? 'View Prescription' : 'Edit Prescription'"
+                class="q-mt-sm q-px-md"
               />
             </div>
           </div>
@@ -329,6 +355,12 @@ import { RecordDetails } from 'src/composables/Patients';
               />
             </p>
           </div>
+          <div>
+            <p class="text-center text-grey-7">
+              Please input your findings here
+            </p>
+          </div>
+
           <div
             class="q-ma-md"
             v-for="(findings, index) in disease"
@@ -357,21 +389,29 @@ import { RecordDetails } from 'src/composables/Patients';
 
         <!-- Laboratory Results -->
         <div class="laboratory-results q-mt-md q-ml-sm">
-          <p class="bg-primary text-center text-white lr-heading">
-            Laboratory Results
-            <q-btn
-              dense
-              flat
-              borderless
-              icon="add_circle"
-              v-if="
-                editForm &&
-                (lab_results.length === 0 ||
-                  lab_results[lab_results.length - 1].lab_result !== '')
-              "
-              @click="addLabResult"
-            />
-          </p>
+          <div>
+            <p class="bg-primary text-center text-white lr-heading">
+              Laboratory Results
+              <q-btn
+                dense
+                flat
+                borderless
+                icon="add_circle"
+                v-if="
+                  editForm &&
+                  (lab_results.length === 0 ||
+                    lab_results[lab_results.length - 1].lab_result !== '')
+                "
+                @click="addLabResult"
+              />
+            </p>
+          </div>
+
+          <div>
+            <p class="text-center text-grey-7">
+              Please input the lab results here
+            </p>
+          </div>
 
           <div
             class="q-px-md q-mb-md"

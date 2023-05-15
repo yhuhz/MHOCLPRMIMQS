@@ -58,6 +58,7 @@ import { RecordDetails } from 'src/composables/Patients';
               input-style="padding: 0"
               style="width: 300px"
               input-class="text-right text-primary"
+              disable
             />
           </div>
           <div class="flex justify-between items-baseline">
@@ -120,31 +121,8 @@ import { RecordDetails } from 'src/composables/Patients';
               v-model="patientRecordInfo.checkup_date"
               style="width: 300px"
               label="YYYY-MM-DD"
-            >
-              <template v-slot:append>
-                <q-icon name="event" class="cursor-pointer text-primary">
-                  <q-popup-proxy
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
-                    <q-date
-                      mask="YYYY-MM-DD"
-                      v-model="patientRecordInfo.checkup_date"
-                    >
-                      <div class="row justify-end items-center">
-                        <q-btn
-                          v-close-popup
-                          color="primary"
-                          label="Close"
-                          dense
-                          flat
-                        />
-                      </div>
-                    </q-date>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
+              disable
+            />
           </div>
         </div>
       </div>

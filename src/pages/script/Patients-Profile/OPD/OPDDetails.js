@@ -42,6 +42,8 @@ export default {
       }
     );
 
+    let checkup_date = ref(null);
+
     watch(
       () => _.cloneDeep(RecordDetails.value),
       () => {
@@ -60,15 +62,32 @@ export default {
           pulse_rate: RecordDetails.value.pulse_rate,
           oxygen_sat: RecordDetails.value.oxygen_sat,
           doctor_id: {
-            user_id: RecordDetails.value.doctor_id,
-            user_name: RecordDetails.value.doctor_name,
+            user_id: RecordDetails.value.doctor_id
+              ? RecordDetails.value.doctor_id
+              : keySession && keySession.user_id,
+            user_name: RecordDetails.value.doctor_name
+              ? RecordDetails.value.doctor_name
+              : keySession &&
+                keySession.first_name +
+                  " " +
+                  keySession.last_name +
+                  " "(keySession.suffix ? keySession.suffix : ""),
           },
           complaint: RecordDetails.value.complaint,
           checkup_date: RecordDetails.value.checkup_date,
-          next_checkup: RecordDetails.value.next_checkup,
+          next_checkup:
+            RecordDetails.value.next_checkup === "" ||
+            RecordDetails.value.next_checkup === "0000-00-00"
+              ? RecordDetails.value.checkup_date
+              : RecordDetails.value.next_checkup,
           checkup_results: RecordDetails.value.checkup_results,
           status: 0,
         };
+
+        checkup_date.value = patientRecordInfo.value.checkup_date.replaceAll(
+          "-",
+          "/"
+        );
       }
     );
 
@@ -196,6 +215,7 @@ export default {
       lab_results,
       disease,
       keySession,
+      checkup_date,
     };
   },
 };

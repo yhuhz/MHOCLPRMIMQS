@@ -62,7 +62,7 @@ export default {
       router.push({ name: "login" });
     }
 
-    let editForm = ref(false);
+    let editForm = ref(route.params.queue ? true : false);
 
     const upperTeeth = ref([
       upper1,
@@ -143,7 +143,7 @@ export default {
     watch(
       () => _.cloneDeep(RecordDetails.value),
       () => {
-        editForm.value = false;
+        editForm.value = route.params.queue ? true : false;
         patientRecordInfo.value = {
           record_id: route.params.record_id,
           temperature: RecordDetails.value.temperature,

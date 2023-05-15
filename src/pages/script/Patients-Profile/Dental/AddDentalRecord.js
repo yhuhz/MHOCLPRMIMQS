@@ -84,13 +84,24 @@ export default {
                 : "Failed to add patient record",
           });
           if (status === 0) {
-            router.push({
-              name: "Dental/patient_records",
-              params: {
-                record_id: response.data.record_id,
-                department: route.params.department,
-              },
-            });
+            if (route.params.queue) {
+              router.push({
+                name: "Dental/patient_records",
+                params: {
+                  record_id: response.data.record_id,
+                  department: route.params.department,
+                  queue: route.params.queue,
+                },
+              });
+            } else {
+              router.push({
+                name: "Dental/patient_records",
+                params: {
+                  record_id: response.data.record_id,
+                  department: route.params.department,
+                },
+              });
+            }
           }
         }
       );

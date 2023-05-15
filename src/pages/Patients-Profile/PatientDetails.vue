@@ -182,6 +182,7 @@
             v-if="
               keySession &&
               keySession.department !== 4 &&
+              keySession.department !== 1 &&
               keySession.permission_level !== 3 &&
               !isbtnDisabled
             "

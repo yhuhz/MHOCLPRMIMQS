@@ -446,6 +446,17 @@ export default {
       }
     };
 
+    let dept = [
+      "",
+      "OPD",
+      "Dental",
+      "Prenatal",
+      "",
+      "Front Desk",
+      "",
+      "Immunization",
+    ];
+
     const departmentChange = () => {
       if (departmentQueue.value === "Front Desk") {
         departmentQueue.value = 5;
@@ -456,17 +467,6 @@ export default {
       } else if (departmentQueue.value === "Immunization") {
         departmentQueue.value = 7;
       }
-
-      let dept = [
-        "",
-        "OPD",
-        "Dental",
-        "Prenatal",
-        "",
-        "Front Desk",
-        "",
-        "Immunization",
-      ];
 
       GetLastQueueNumber({
         department: departmentQueue.value,
@@ -554,6 +554,7 @@ export default {
       isPatientOnQueue,
       checkPatientQueue,
       outsideCamaligCheckbox,
+      dept,
     };
   },
 };
