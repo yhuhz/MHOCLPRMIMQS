@@ -65,180 +65,254 @@ import { RecordDetails } from 'src/composables/Patients';
       </div>
 
       <div class="grid q-mt-lg">
-        <!-- Preliminary Checkup -->
-        <div class="preliminary-checkup">
-          <div>
-            <p class="bg-primary text-white text-center pc-heading">
-              Dentist's Notes
-            </p>
-          </div>
-          <div class="q-px-md">
-            <div class="flex justify-between items-baseline">
-              <p class="text-primary text-weight-bold">Dentist</p>
-              <q-select
-                hide-bottom-space
-                outlined
-                v-model="patientRecordInfo.doctor_id"
-                @filter="userFilterFunction"
-                option-label="user_name"
-                option-value="user_id"
-                :options="userOptions"
-                emit-value
-                map-options
-                dense
-                :readonly="!editForm"
-                input-style="padding: 0"
-                input-class="text-right text-primary"
-                style="width: 300px"
-              />
+        <div class="row">
+          <!-- Preliminary Checkup -->
+          <div class="preliminary-checkup col q-mr-sm">
+            <div>
+              <p class="bg-primary text-white text-center pc-heading">
+                Dentist's Notes
+              </p>
             </div>
-            <div class="flex justify-between items-baseline">
-              <p class="text-primary text-weight-bold">Temperature</p>
-              <q-input
-                hide-bottom-space
-                :readonly="!editForm"
-                outlined
-                dense
-                input-style="padding: 0"
-                input-class="text-right text-primary"
-                v-model="patientRecordInfo.temperature"
-                style="width: 300px"
-                label="°C"
-              />
-            </div>
-            <div class="flex justify-between items-baseline">
-              <p class="text-primary text-weight-bold">Blood Pressure</p>
-              <div class="flex items-center justify-end">
-                <q-input
+            <div class="q-px-md">
+              <div class="flex justify-between items-baseline">
+                <p class="text-primary text-weight-bold">Dentist</p>
+                <q-select
                   hide-bottom-space
-                  :readonly="!editForm"
                   outlined
+                  v-model="patientRecordInfo.doctor_id"
+                  @filter="userFilterFunction"
+                  option-label="user_name"
+                  option-value="user_id"
+                  :options="userOptions"
+                  emit-value
+                  map-options
                   dense
+                  readonly
+                  input-style="padding: 0"
                   input-class="text-right text-primary"
-                  v-model="patientRecordInfo.blood_pressure_systole"
-                  style="width: 140px"
+                  style="width: 200px"
                 />
-                <label class="text-primary text-bold q-px-sm">/</label>
+              </div>
+              <div class="flex justify-between items-baseline">
+                <p class="text-primary text-weight-bold">Temperature</p>
                 <q-input
                   hide-bottom-space
                   :readonly="!editForm"
                   outlined
                   dense
+                  input-style="padding: 0"
                   input-class="text-right text-primary"
-                  v-model="patientRecordInfo.blood_pressure_diastole"
-                  style="width: 140px"
+                  v-model="patientRecordInfo.temperature"
+                  style="width: 200px"
+                  label="°C"
+                  :rules="[
+                    (val) => !isNaN(val) || 'Field must contain numbers only',
+                  ]"
+                />
+              </div>
+              <div class="flex justify-between items-baseline">
+                <p class="text-primary text-weight-bold">Blood Pressure</p>
+                <div class="flex items-center justify-end">
+                  <q-input
+                    hide-bottom-space
+                    :readonly="!editForm"
+                    outlined
+                    dense
+                    input-class="text-right text-primary"
+                    v-model="patientRecordInfo.blood_pressure_systole"
+                    style="width: 80px"
+                    :rules="[
+                      (val) => !isNaN(val) || 'Field must contain numbers only',
+                    ]"
+                  />
+                  <label class="text-primary text-bold q-px-sm">/</label>
+                  <q-input
+                    hide-bottom-space
+                    :readonly="!editForm"
+                    outlined
+                    dense
+                    input-class="text-right text-primary"
+                    v-model="patientRecordInfo.blood_pressure_diastole"
+                    style="width: 80px"
+                    :rules="[
+                      (val) => !isNaN(val) || 'Field must contain numbers only',
+                    ]"
+                  />
+                </div>
+              </div>
+
+              <div class="flex justify-between items-baseline">
+                <p class="text-primary text-weight-bold">Complaint:</p>
+                <q-input
+                  :readonly="!editForm"
+                  autogrow
+                  outlined
+                  dense
+                  input-class="text-right text-primary"
+                  v-model="patientRecordInfo.complaint"
+                  style="width: 200px"
+                  hide-bottom-space
+                  :rules="[(val) => (val && val.length > 0) || '']"
+                />
+              </div>
+
+              <div class="flex justify-between items-baseline">
+                <p class="text-primary text-weight-bold">Checkup Date:</p>
+                <q-input
+                  hide-bottom-space
+                  readonly
+                  autogrow
+                  outlined
+                  dense
+                  input-class="text-right text-primary"
+                  v-model="patientRecordInfo.checkup_date"
+                  style="width: 200px"
+                />
+              </div>
+
+              <div class="flex justify-between items-baseline">
+                <p class="text-primary text-weight-bold">Next Checkup:</p>
+                <q-input
+                  hide-bottom-space
+                  readonly
+                  autogrow
+                  outlined
+                  dense
+                  input-class="text-right text-primary"
+                  style="width: 200px"
+                  v-model="patientRecordInfo.next_checkup"
+                  :rules="[(val) => (val && val.length > 0) || '']"
+                >
+                  <template v-slot:append v-if="editForm">
+                    <q-icon name="event" color="primary" class="cursor-pointer">
+                      <q-popup-proxy
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          mask="YYYY-MM-DD"
+                          v-model="patientRecordInfo.next_checkup"
+                          :options="(date) => date >= checkup_date"
+                          :rules="[(val) => (val && val.length > 0) || '']"
+                        >
+                          <div class="row justify-end items-center">
+                            <q-btn
+                              v-close-popup
+                              color="primary"
+                              label="Close"
+                              dense
+                              flat
+                            />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+
+              <!-- notes -->
+              <div
+                class="text-primary q-mb-md"
+                style="border-top: 1px solid; overflow: auto"
+              >
+                <q-input
+                  :readonly="!editForm"
+                  autogrow
+                  outlined
+                  dense
+                  input-class="text-primary"
+                  class="q-mt-md"
+                  input-style="max-height: 100px"
+                  placeholder="Enter your notes here"
+                  v-model="patientRecordInfo.checkup_results"
+                  :rules="[(val) => (val && val.length > 0) || '']"
                 />
               </div>
             </div>
+          </div>
 
-            <div class="flex justify-between items-baseline">
-              <p class="text-primary text-weight-bold">Complaint:</p>
-              <q-input
-                :readonly="!editForm"
-                autogrow
-                outlined
-                dense
-                input-class="text-right text-primary"
-                v-model="patientRecordInfo.complaint"
-                style="width: 300px"
-                hide-bottom-space
-              />
+          <!-- Prescription -->
+          <div class="preliminary-checkup col q-ml-sm">
+            <div>
+              <p class="bg-primary text-white text-center pc-heading">
+                Prescription
+                <q-icon
+                  v-if="
+                    editForm &&
+                    (prescription.length === 0 ||
+                      (prescription[prescription.length - 1].medicine_name !==
+                        '' &&
+                        prescription[prescription.length - 1].quantity !== ''))
+                  "
+                  name="add_circle"
+                  style="cursor: pointer"
+                  @click="addPrescription"
+                />
+              </p>
             </div>
+            <div class="q-px-md">
+              <div v-if="editForm" class="text-center">
+                <p class="text-grey-7 text-caption">
+                  If the medicine is not on the list, please input the medicine
+                  name and press enter
+                </p>
+              </div>
 
-            <div class="flex justify-between items-baseline">
-              <p class="text-primary text-weight-bold">Checkup Date:</p>
-              <q-input
-                hide-bottom-space
-                :readonly="!editForm"
-                autogrow
-                outlined
-                dense
-                input-class="text-right text-primary"
-                v-model="patientRecordInfo.checkup_date"
-                style="width: 300px"
-                label="YYYY-MM-DD"
-              >
-                <template v-slot:append v-if="editForm">
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        mask="YYYY-MM-DD"
-                        v-model="patientRecordInfo.checkup_date"
-                      >
-                        <div class="row justify-end items-center">
-                          <q-btn
-                            v-close-popup
-                            color="primary"
-                            label="Close"
-                            dense
-                            flat
-                          />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
+              <div class="row">
+                <label class="col text-dark text-bold q-mr-md"
+                  >Medicine Name</label
+                >
+                <label class="col-2 text-dark text-bold q-mr-md"
+                  >Quantity</label
+                >
+                <label
+                  v-if="editForm"
+                  class="col-2 text-dark"
+                  style="visibility: hidden"
+                  >Quantity</label
+                >
+              </div>
 
-            <div class="flex justify-between items-baseline">
-              <p class="text-primary text-weight-bold">Next Checkup:</p>
-              <q-input
-                hide-bottom-space
-                :readonly="!editForm"
-                autogrow
-                outlined
-                dense
-                input-class="text-right text-primary"
-                style="width: 300px"
-                v-model="patientRecordInfo.next_checkup"
-                label="YYYY-MM-DD"
-              >
-                <template v-slot:append v-if="editForm">
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        mask="YYYY-MM-DD"
-                        v-model="patientRecordInfo.next_checkup"
-                      >
-                        <div class="row justify-end items-center">
-                          <q-btn
-                            v-close-popup
-                            color="primary"
-                            label="Close"
-                            dense
-                            flat
-                          />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-
-            <!-- notes -->
-            <div
-              class="text-primary q-mb-md"
-              style="border-top: 1px solid; overflow: auto"
-            >
-              <q-input
-                :readonly="!editForm"
-                autogrow
-                outlined
-                dense
-                input-class="text-primary"
-                class="q-mt-md"
-                input-style="max-height: 100px"
-                placeholder="Enter your notes here"
-                v-model="patientRecordInfo.checkup_results"
-              />
+              <div v-for="(prescriptions, index) in prescription" :key="index">
+                <div class="row q-mb-md">
+                  <q-select
+                    v-model="prescriptions.medicine_name"
+                    dense
+                    outlined
+                    :readonly="!editForm"
+                    :options="medicineList"
+                    @filter="medicineFilterFunction"
+                    option-label="medicine_name"
+                    option-value="medicine_name"
+                    use-input
+                    emit-value
+                    map-options
+                    new-value-mode="add-unique"
+                    class="col q-mr-md"
+                  />
+                  <q-input
+                    :readonly="!editForm"
+                    autogrow
+                    dense
+                    outlined
+                    class="col-2 q-mr-md"
+                    input-class="text-dark"
+                    v-model="prescriptions.quantity"
+                    hide-bottom-space
+                    :rules="[(val) => !isNaN(val) || 'Numbers only']"
+                  />
+                  <q-icon
+                    v-if="editForm"
+                    name="delete"
+                    color="negative"
+                    class="col-2"
+                    style="cursor: pointer"
+                    size="md"
+                    @click="removePrescription(index)"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

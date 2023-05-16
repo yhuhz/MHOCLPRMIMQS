@@ -208,6 +208,7 @@ import { RecordDetails } from 'src/composables/Patients';
           <p class="bg-primary text-white text-center dn-heading">
             Doctors Notes
           </p>
+
           <div class="q-px-md">
             <div class="flex justify-between items-baseline">
               <p class="text-primary text-weight-bold">Doctor:</p>
@@ -231,7 +232,9 @@ import { RecordDetails } from 'src/composables/Patients';
             <div class="flex justify-between items-baseline">
               <p class="text-primary text-weight-bold">Complaint:</p>
               <q-input
-                :readonly="!editForm"
+                :readonly="
+                  !editForm || (keySession && keySession.department !== 1)
+                "
                 autogrow
                 outlined
                 dense
@@ -269,14 +272,13 @@ import { RecordDetails } from 'src/composables/Patients';
                 dense
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.next_checkup"
-                :rules="[
-                  (val) =>
-                    (val && val.length > 0) ||
-                    'Field must contain numbers only',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || '']"
                 style="width: 180px"
               >
-                <template v-slot:append v-if="editForm">
+                <template
+                  v-slot:append
+                  v-if="editForm && keySession && keySession.department === 1"
+                >
                   <q-icon name="event" class="cursor-pointer" color="primary">
                     <q-popup-proxy
                       transition-show="scale"
@@ -286,11 +288,7 @@ import { RecordDetails } from 'src/composables/Patients';
                         mask="YYYY-MM-DD"
                         v-model="patientRecordInfo.next_checkup"
                         :options="(date) => date >= checkup_date"
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) ||
-                            'Field must contain numbers only',
-                        ]"
+                        :rules="[(val) => (val && val.length > 0) || '']"
                       >
                         <div class="row justify-end items-center">
                           <q-btn
@@ -314,7 +312,9 @@ import { RecordDetails } from 'src/composables/Patients';
               style="border-top: 1px solid; overflow: auto"
             >
               <q-input
-                :readonly="!editForm"
+                :readonly="
+                  !editForm || (keySession && keySession.department !== 1)
+                "
                 autogrow
                 outlined
                 dense
@@ -330,7 +330,11 @@ import { RecordDetails } from 'src/composables/Patients';
                 outline
                 no-caps
                 color="primary"
-                :label="!editForm ? 'View Prescription' : 'Edit Prescription'"
+                :label="
+                  editForm && keySession && keySession !== 1
+                    ? 'Edit Prescription'
+                    : 'View Prescription'
+                "
                 class="q-mt-sm q-px-md"
                 @click="isPrescription = !isPrescription"
               />
@@ -350,6 +354,8 @@ import { RecordDetails } from 'src/composables/Patients';
                 icon="add_circle"
                 v-if="
                   editForm &&
+                  keySession &&
+                  keySession.department === 1 &&
                   (disease.length === 0 ||
                     disease[disease.length - 1].opd_disease !== '')
                 "
@@ -369,7 +375,9 @@ import { RecordDetails } from 'src/composables/Patients';
             :key="index"
           >
             <q-input
-              :readonly="!editForm"
+              :readonly="
+                !editForm || (keySession && keySession.department !== 1)
+              "
               autogrow
               dense
               outlined
@@ -382,7 +390,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 flat
                 icon="delete"
                 borderless
-                v-if="editForm"
+                v-if="editForm && keySession && keySession.department === 1"
                 @click="removeFinding(index)"
               />
             </q-input>
@@ -401,6 +409,8 @@ import { RecordDetails } from 'src/composables/Patients';
                 icon="add_circle"
                 v-if="
                   editForm &&
+                  keySession &&
+                  keySession.department === 1 &&
                   (lab_results.length === 0 ||
                     lab_results[lab_results.length - 1].lab_result !== '')
                 "
@@ -421,7 +431,9 @@ import { RecordDetails } from 'src/composables/Patients';
             :key="index"
           >
             <q-input
-              :readonly="!editForm"
+              :readonly="
+                !editForm || (keySession && keySession.department !== 1)
+              "
               autogrow
               dense
               outlined
@@ -434,7 +446,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 flat
                 icon="delete"
                 borderless
-                v-if="editForm"
+                v-if="editForm && keySession && keySession.department === 1"
                 @click="removeLabResult(index)"
               />
             </q-input>
@@ -457,6 +469,8 @@ import { RecordDetails } from 'src/composables/Patients';
           <q-btn
             v-if="
               editForm &&
+              keySession &&
+              keySession.department === 1 &&
               (prescription.length === 0 ||
                 (prescription[prescription.length - 1].medicine_name !== '' &&
                   prescription[prescription.length - 1].quantity !== ''))
@@ -474,7 +488,10 @@ import { RecordDetails } from 'src/composables/Patients';
         <q-separator color="primary" class="q-my-md" />
 
         <div class="q-mb-md">
-          <div v-if="editForm" class="text-center">
+          <div
+            v-if="editForm && keySession && keySession.department === 1"
+            class="text-center"
+          >
             <p class="text-grey-7 text-caption">
               If the medicine is not on the list, please input the medicine name
               and press enter
@@ -484,7 +501,7 @@ import { RecordDetails } from 'src/composables/Patients';
             <label class="col text-dark text-bold q-mr-md">Medicine Name</label>
             <label class="col-2 text-dark text-bold q-mr-md">Quantity</label>
             <label
-              v-if="editForm"
+              v-if="editForm && keySession && keySession.department === 1"
               class="col-2 text-dark"
               style="visibility: hidden"
               >Quantity</label
@@ -507,7 +524,9 @@ import { RecordDetails } from 'src/composables/Patients';
                 v-model="prescriptions.medicine_name"
                 dense
                 outlined
-                :readonly="!editForm"
+                :readonly="
+                  !editForm || (keySession && keySession.department !== 1)
+                "
                 :options="medicineList"
                 @filter="medicineFilterFunction"
                 option-label="medicine_name"
@@ -519,7 +538,9 @@ import { RecordDetails } from 'src/composables/Patients';
                 class="col q-mr-md"
               />
               <q-input
-                :readonly="!editForm"
+                :readonly="
+                  !editForm || (keySession && keySession.department !== 1)
+                "
                 autogrow
                 dense
                 outlined
@@ -527,6 +548,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-class="text-dark"
                 v-model="prescriptions.quantity"
                 hide-bottom-space
+                :rules="[(val) => !isNaN(val) || 'Numbers only']"
               />
               <!-- <q-btn
                 icon="delete"
@@ -538,13 +560,13 @@ import { RecordDetails } from 'src/composables/Patients';
                 @click="removePrescription"
               /> -->
               <q-icon
-                v-if="editForm"
+                v-if="editForm && keySession && keySession.department === 1"
                 name="delete"
                 color="negative"
                 class="col-2"
                 style="cursor: pointer"
                 size="md"
-                @click="removePrescription"
+                @click="removePrescription(index)"
               />
             </div>
           </div>
@@ -563,7 +585,7 @@ import { RecordDetails } from 'src/composables/Patients';
             label="Done"
             color="primary"
             no-caps
-            @click="isPrescription = !isPrescription"
+            @click="closePrescription"
           />
         </div>
       </q-card>

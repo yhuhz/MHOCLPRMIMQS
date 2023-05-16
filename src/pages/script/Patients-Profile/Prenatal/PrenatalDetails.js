@@ -32,6 +32,8 @@ export default {
     let patientRecordInfo = ref({});
     let prenatal_checkup = ref([]);
     let toggleNewCheckup = ref(false);
+    let selectedCheckup = ref(null);
+    let checkupDateArray = ref([]);
 
     FindRecordDetails(route.params.record_id, route.params.department).then(
       (response) => {
@@ -63,6 +65,14 @@ export default {
       () => _.cloneDeep(RecordArrays.value),
       () => {
         prenatal_checkup.value = RecordArrays.value;
+        selectedCheckup.value =
+          prenatal_checkup.value.length !== 0
+            ? prenatal_checkup.value[0].checkup_date
+            : null;
+
+        prenatal_checkup.value.forEach((p) => {
+          checkupDateArray.value.push(p.checkup_date);
+        });
       }
     );
 
@@ -182,6 +192,8 @@ export default {
       removeCheckup,
       undoRemoveCheckup,
       keySession,
+      selectedCheckup,
+      checkupDateArray,
     };
   },
 };

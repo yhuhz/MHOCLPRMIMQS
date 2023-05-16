@@ -48,6 +48,7 @@ import {
 } from "src/composables/Records";
 import { FindUsersByName } from "src/composables/Manage_Users";
 import { Loading, SessionStorage, useQuasar, date } from "quasar";
+import { FindMedicines } from "src/composables/Medicine";
 
 export default {
   components: { MHCDialog, DeletePatientRecordConfirmation },
@@ -62,7 +63,7 @@ export default {
       router.push({ name: "login" });
     }
 
-    let editForm = ref(route.params.queue ? true : false);
+    let editForm = ref(false);
 
     const upperTeeth = ref([
       upper1,
@@ -133,6 +134,7 @@ export default {
 
     let patientRecordInfo = ref({});
     let dental_chart = ref([]);
+    let prescription = ref([]);
 
     FindRecordDetails(route.params.record_id, route.params.department).then(
       (response) => {
@@ -140,10 +142,12 @@ export default {
       }
     );
 
+    let checkup_date = ref(null);
+
     watch(
       () => _.cloneDeep(RecordDetails.value),
       () => {
-        editForm.value = route.params.queue ? true : false;
+        editForm.value = false;
         patientRecordInfo.value = {
           record_id: route.params.record_id,
           temperature: RecordDetails.value.temperature,
@@ -159,16 +163,32 @@ export default {
           checkup_results: RecordDetails.value.checkup_results,
           status: 0,
         };
+
+        checkup_date.value = patientRecordInfo.value.checkup_date.replaceAll(
+          "-",
+          "/"
+        );
       }
     );
 
     watch(
       () => _.cloneDeep(RecordArrays.value),
       () => {
-        dental_chart.value = RecordArrays.value;
-        // console.log("dc", dental_chart.value);
+        dental_chart.value = RecordArrays.value.dental_chart;
+        prescription.value = RecordArrays.value.prescription;
       }
     );
+
+    const addPrescription = () => {
+      prescription.value.push({
+        medicine_name: "",
+        quantity: "",
+      });
+    };
+
+    const removePrescription = (index) => {
+      prescription.value.splice(index, 1);
+    };
 
     let userOptions = ref([]);
 
@@ -214,10 +234,20 @@ export default {
           patientRecordInfo.value.doctor_id.user_id;
       }
 
+      if (
+        prescription.value.length !== 0 &&
+        (prescription.value[prescription.value.length - 1].medicine_name ===
+          "" ||
+          prescription.value[prescription.value.length - 1].quantity === "")
+      ) {
+        removePrescription(prescription.value.length - 1);
+      }
+
       // console.log("dc", dental_chart.value);
       let payload = {
         dental_record: patientRecordInfo.value,
         dental_chart: dental_chart.value,
+        prescription: prescription.value,
       };
 
       Loading.show();
@@ -243,6 +273,32 @@ export default {
       ToggleDialogState();
     };
 
+    /**PRESCRIPTIONS**/
+
+    let medicineList = ref([]);
+    const medicineFilterFunction = (val, update, abort) => {
+      if (val.length > 3) {
+        update(() => {
+          const needle = String(val.toLowerCase());
+          FindMedicines(needle).then((response) => {
+            medicineList.value = [];
+            if (response.status === "success") {
+              let Medicines = ref([]);
+              Medicines.value = response.data;
+              Medicines.value.forEach((m) => {
+                let selectValues = {
+                  medicine_name: m.generic_name + " - " + m.brand_name,
+                };
+                medicineList.value.push(selectValues);
+              });
+            }
+          });
+        });
+      } else {
+        abort();
+      }
+    };
+
     return {
       RecordDetails,
       patientRecordInfo,
@@ -262,6 +318,12 @@ export default {
       bgColor,
       getOverlayColor,
       keySession,
+      prescription,
+      addPrescription,
+      removePrescription,
+      medicineList,
+      medicineFilterFunction,
+      checkup_date,
     };
   },
 };

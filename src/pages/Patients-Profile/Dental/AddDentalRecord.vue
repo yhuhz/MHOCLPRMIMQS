@@ -35,7 +35,7 @@ import { RecordDetails } from 'src/composables/Patients';
         </div>
       </div>
 
-      <div class="preliminary-checkup q-mt-lg">
+      <div class="preliminary-checkup q-mt-lg" style="width: 400px">
         <div>
           <p class="bg-primary text-white text-center pc-heading">
             Dentist's Notes
@@ -56,9 +56,9 @@ import { RecordDetails } from 'src/composables/Patients';
               map-options
               dense
               input-style="padding: 0"
-              style="width: 300px"
               input-class="text-right text-primary"
               disable
+              style="width: 200px"
             />
           </div>
           <div class="flex justify-between items-baseline">
@@ -69,9 +69,13 @@ import { RecordDetails } from 'src/composables/Patients';
               dense
               input-style="padding: 0"
               input-class="text-right text-primary"
-              style="width: 300px"
               v-model="patientRecordInfo.temperature"
               label="°C"
+              style="width: 200px"
+              :rules="[
+                (val) =>
+                  (val && !isNaN(val)) || 'Field must contain numbers only',
+              ]"
             />
           </div>
           <div class="flex justify-between items-baseline">
@@ -83,7 +87,11 @@ import { RecordDetails } from 'src/composables/Patients';
                 dense
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.blood_pressure_systole"
-                style="width: 140px"
+                style="width: 80px"
+                :rules="[
+                  (val) =>
+                    (val && !isNaN(val)) || 'Field must contain numbers only',
+                ]"
               />
               <label class="text-primary text-bold q-px-sm">/</label>
               <q-input
@@ -92,7 +100,11 @@ import { RecordDetails } from 'src/composables/Patients';
                 dense
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.blood_pressure_diastole"
-                style="width: 140px"
+                style="width: 80px"
+                :rules="[
+                  (val) =>
+                    (val && !isNaN(val)) || 'Field must contain numbers only',
+                ]"
               />
             </div>
           </div>
@@ -105,8 +117,9 @@ import { RecordDetails } from 'src/composables/Patients';
               dense
               input-class="text-right text-primary"
               v-model="patientRecordInfo.complaint"
-              style="width: 300px"
               hide-bottom-space
+              style="width: 200px"
+              :rules="[(val) => (val && val.length > 0) || 'Required field']"
             />
           </div>
 
@@ -119,8 +132,8 @@ import { RecordDetails } from 'src/composables/Patients';
               dense
               input-class="text-right text-primary"
               v-model="patientRecordInfo.checkup_date"
-              style="width: 300px"
               label="YYYY-MM-DD"
+              style="width: 200px"
               disable
             />
           </div>

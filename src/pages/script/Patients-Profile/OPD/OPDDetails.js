@@ -171,7 +171,34 @@ export default {
       prescription.value.splice(index, 1);
     };
 
+    const closePrescription = () => {
+      isPrescription.value = false;
+
+      if (
+        prescription.value.length !== 0 &&
+        (prescription.value[prescription.value.length - 1].medicine_name ===
+          "" ||
+          prescription.value[prescription.value.length - 1].quantity === "")
+      ) {
+        removePrescription(prescription.value.length - 1);
+      }
+    };
+
     const editFunction = () => {
+      if (
+        disease.value.length !== 0 &&
+        disease.value[disease.value.length - 1].opd_disease === ""
+      ) {
+        removeFinding(disease.value.length - 1);
+      }
+
+      if (
+        lab_results.value.length !== 0 &&
+        lab_results.value[lab_results.value.length - 1].lab_result === ""
+      ) {
+        removeLabResult(lab_results.value.length - 1);
+      }
+
       editForm.value = false;
 
       patientRecordInfo.value.disease = disease.value;
@@ -220,7 +247,7 @@ export default {
 
     let medicineList = ref([]);
     const medicineFilterFunction = (val, update, abort) => {
-      if (val.length > 5) {
+      if (val.length > 3) {
         update(() => {
           const needle = String(val.toLowerCase());
           FindMedicines(needle).then((response) => {
@@ -265,6 +292,7 @@ export default {
       removePrescription,
       medicineList,
       medicineFilterFunction,
+      closePrescription,
     };
   },
 };

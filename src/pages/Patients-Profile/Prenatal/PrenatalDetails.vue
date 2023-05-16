@@ -198,15 +198,14 @@ import { RecordDetails } from 'src/composables/Patients';
             dense
             input-class="text-primary"
             class="q-mt-md"
-            input-style="max-height: 100px"
+            input-style="min-height: 80px; max-height: 80px"
             v-model="patientRecordInfo.midwifes_notes"
           />
         </div>
       </div>
       <!-- </div> -->
 
-      <!-- <div class="col q-mx-md third-col"> -->
-      <div
+      <!-- <div
         class="fit"
         v-for="(checkup, index) in prenatal_checkup"
         :key="index"
@@ -435,6 +434,158 @@ import { RecordDetails } from 'src/composables/Patients';
             </div>
           </div>
         </div>
+      </div> -->
+
+      <div class="fit">
+        <div class="card-box">
+          <div
+            :class="
+              !editForm
+                ? 'bg-primary q-mb-md'
+                : 'bg-primary flex items-center justify-between q-px-md q-mb-md'
+            "
+          >
+            <q-select
+              v-model="selectedCheckup"
+              borderless
+              dense
+              dark
+              color="white"
+              :options="checkupDateArray"
+              input-class="text-white text-bold"
+              class="col q-mr-md q-px-xl"
+              style
+            />
+          </div>
+
+          <div style="position: relative">
+            <div>
+              <div class="flex items-baseline justify-between q-px-md">
+                <p class="text-weight-bold text-primary">Temperature</p>
+                <q-input
+                  :readonly="!editForm"
+                  outlined
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  label="°C"
+                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                />
+              </div>
+              <div class="flex items-baseline justify-between q-px-md">
+                <p class="text-weight-bold text-primary">Blood Pressure</p>
+                <div class="flex items-center justify-end">
+                  <q-input
+                    :readonly="!editForm"
+                    outlined
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                    :style="
+                      $q.screen.width < 1366 ? 'width: 50px' : 'width: 80px'
+                    "
+                  />
+                  <label class="text-primary text-bold q-px-sm">/</label>
+                  <q-input
+                    :readonly="!editForm"
+                    outlined
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                    :style="
+                      $q.screen.width < 1366 ? 'width: 50px' : 'width: 80px'
+                    "
+                  />
+                </div>
+              </div>
+              <div class="flex items-baseline justify-between q-px-md">
+                <p class="text-weight-bold text-primary">Height</p>
+                <q-input
+                  :readonly="!editForm"
+                  outlined
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  label="cm"
+                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                />
+              </div>
+              <div class="flex items-baseline justify-between q-px-md">
+                <p class="text-weight-bold text-primary">Weight</p>
+                <q-input
+                  :readonly="!editForm"
+                  outlined
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  label="kg"
+                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                />
+              </div>
+              <div class="flex items-baseline justify-between q-px-md">
+                <p class="text-weight-bold text-primary">Pulse Rate</p>
+                <q-input
+                  :readonly="!editForm"
+                  outlined
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  label="bpm"
+                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                />
+              </div>
+              <div class="flex items-baseline justify-between q-px-md">
+                <p class="text-weight-bold text-primary">Oxygen Saturation</p>
+                <q-input
+                  :readonly="!editForm"
+                  outlined
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  label="%"
+                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                />
+              </div>
+              <div class="flex items-baseline justify-between q-px-md">
+                <p class="text-weight-bold text-primary">Next Checkup</p>
+                <q-input
+                  :readonly="!editForm"
+                  outlined
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  label="YYYY-MM-DD"
+                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                >
+                  <template v-slot:append v-if="editForm">
+                    <q-icon name="event" class="cursor-pointer" color="primary">
+                      <q-popup-proxy
+                        transition-show="scale"
+                        transition-hide="scale"
+                        :style="$q.screen.width < 1366 && 'width: 150px'"
+                      >
+                        <q-date mask="YYYY-MM-DD"> </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+            </div>
+            <q-separator class="separator-2 q-mx-md" color="primary" />
+
+            <div class="q-px-md q-mb-sm">
+              <q-input
+                :readonly="!editForm"
+                autogrow
+                outlined
+                dense
+                input-class="text-primary"
+                class="q-mt-md"
+                input-style="max-height: 100px"
+              />
+            </div>
+          </div>
+        </div>
       </div>
       <!-- </div> -->
 
@@ -477,6 +628,7 @@ import { RecordDetails } from 'src/composables/Patients';
 
 <style lang="scss" scoped>
 // @import "../../styles/patients-profile/prenatal/pr_prenatal.scss";
+
 .q-field__bottom {
   display: none;
 }

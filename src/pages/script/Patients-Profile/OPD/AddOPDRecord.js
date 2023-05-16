@@ -122,11 +122,7 @@ export default {
     const cancel = () => {
       route.params.queue
         ? router.push({
-            name: "patient-details",
-            params: {
-              id: route.params.id,
-              queue: route.params.queue,
-            },
+            name: "home",
           })
         : router.push({
             name: "patient-details",
