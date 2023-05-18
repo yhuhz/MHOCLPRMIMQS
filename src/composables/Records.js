@@ -4,8 +4,7 @@ let RecordDetails = ref([]);
 let PatientRecords = ref([]);
 let RecordArrays = ref([]);
 let HealthRecords = ref([]);
-let PrenatalCheckupDetails = ref([]);
-let PrenatalCheckupPrescription = ref([]);
+
 // let pathlink =
 //   "http://localhost/MHOCLPRMIMQS PHP/RecordDetails and Household/patient_api.php";
 /**
@@ -69,7 +68,7 @@ let FindRecordDetails = (payload, department) => {
         },
       })
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         if (
           department === "OPD" ||
           department === "Prenatal" ||
@@ -81,28 +80,6 @@ let FindRecordDetails = (payload, department) => {
           RecordDetails.value = response.data.data;
           RecordArrays.value = [];
         }
-        resolve(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-};
-
-let FindPrenatalCheckupDetails = (payload) => {
-  let pathlink =
-    "http://localhost/MHOCLPRMIMQS PHP/Patient Records/prenatal_api.php";
-  return new Promise((resolve, reject) => {
-    axios
-      .get(pathlink, {
-        params: {
-          payload: { prenatal_checkup_id: payload },
-        },
-      })
-      .then((response) => {
-        // console.log(response.data);
-        PrenatalCheckupDetails.value = response.data.record;
-        PrenatalCheckupPrescription.value = response.data.array;
         resolve(response.data);
       })
       .catch((error) => {
@@ -132,6 +109,32 @@ let AddRecord = (payload, department) => {
           } catch (e) {
             PatientRecords.value = [];
             PatientRecords.value.push(response.data.data);
+          }
+        } else {
+          console.log(response.data);
+        }
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let AddPrenatalCheckup = (payload) => {
+  let pathlink =
+    "http://localhost/MHOCLPRMIMQS PHP/Patient Records/prenatal_api.php";
+  return new Promise((resolve, reject) => {
+    axios
+      .post(pathlink, payload)
+      .then((response) => {
+        if (response.data.status === "success") {
+          // console.log(response.data);
+          try {
+            RecordArrays.value.push(response.data.data);
+          } catch (e) {
+            RecordArrays.value = [];
+            RecordArrays.value.push(response.data.data);
           }
         } else {
           console.log(response.data);
@@ -225,4 +228,5 @@ export {
   RecordArrays,
   HealthRecords,
   GetRecordsForTable,
+  AddPrenatalCheckup,
 };

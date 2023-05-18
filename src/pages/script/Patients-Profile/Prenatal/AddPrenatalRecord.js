@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { AddRecord } from "src/composables/Records";
+import { AddRecord, RecordArrays } from "src/composables/Records";
 import { FindUsersByName } from "src/composables/Manage_Users";
 import { Loading, SessionStorage, useQuasar, date } from "quasar";
 
@@ -91,15 +91,16 @@ export default {
                 ? "Patient record added successfully"
                 : "Failed to add patient record",
           });
-          // if (status === 0) {
-          //   router.push({
-          //     name: "Prenatal/patient_records",
-          //     params: {
-          //       record_id: response.data.record_id,
-          //       department: route.params.department,
-          //     },
-          //   });
-          // }
+          if (status === 0) {
+            RecordArrays.value = [];
+            router.push({
+              name: "Prenatal/patient_records",
+              params: {
+                record_id: response.data.record_id,
+                department: route.params.department,
+              },
+            });
+          }
         }
       );
     };

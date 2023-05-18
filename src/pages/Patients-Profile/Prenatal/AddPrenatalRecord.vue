@@ -154,7 +154,7 @@ import { RecordDetails } from 'src/composables/Patients';
           </q-input>
         </div>
 
-        <q-separator color="primary" class="separator-1 q-mx-md" />
+        <!-- <q-separator color="primary" class="separator-1 q-mx-md" />
 
         <div class="q-px-md q-mb-sm">
           <q-input
@@ -166,7 +166,7 @@ import { RecordDetails } from 'src/composables/Patients';
             input-style="max-height: 100px"
             v-model="patientRecordInfo.midwifes_notes"
           />
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

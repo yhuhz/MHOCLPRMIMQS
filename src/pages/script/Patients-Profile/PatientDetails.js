@@ -45,6 +45,11 @@ export default {
     let selectedDepartment = ref(
       route.params.department != null ? route.params.department : null
     );
+
+    selectedDepartment.value =
+      route.params.department != null
+        ? route.params.department
+        : departmentList.value[0];
     watch(
       () => _.cloneDeep(PatientDetails.value),
       () => {
@@ -85,11 +90,6 @@ export default {
             ];
           }
         }
-
-        selectedDepartment.value =
-          route.params.department != null
-            ? route.params.department
-            : departmentList.value[0];
 
         if (
           keySession &&
@@ -197,7 +197,7 @@ export default {
     }
 
     const getRecords = () => {
-      changeDept();
+      // changeDept();
       GetRecords({
         patient_id: route.params.id,
         record_type: selectedDepartment.value,
