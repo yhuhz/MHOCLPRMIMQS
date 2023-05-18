@@ -9,58 +9,6 @@ import { RecordDetails } from 'src/composables/Patients';
           >PNL{{ $route.params.record_id }}</label
         >
       </div>
-
-      <!-- Action Button -->
-      <div
-        v-if="
-          keySession &&
-          keySession.department === 3 &&
-          keySession.permission_level !== 3
-        "
-      >
-        <div v-if="!editForm">
-          <q-btn
-            @click="editForm = !editForm"
-            dense
-            label="Edit"
-            icon="eva-edit-outline"
-            no-caps
-            color="primary"
-            class="q-px-lg"
-          />
-          <!-- <q-btn
-            dense
-            label="Delete"
-            icon="eva-trash-2-outline"
-            no-caps
-            class="q-px-lg q-ml-sm"
-            color="negative"
-            @click="openDialog"
-          /> -->
-        </div>
-
-        <div v-if="editForm">
-          <q-btn
-            dense
-            label="Save"
-            type="submit"
-            icon="save"
-            no-caps
-            color="primary"
-            class="q-px-lg"
-          />
-          <q-btn
-            @click="cancelFunction"
-            dense
-            label="Cancel"
-            icon="close"
-            no-caps
-            class="q-px-lg q-ml-sm"
-            outline
-            color="primary"
-          />
-        </div>
-      </div>
     </div>
 
     <div class="grid q-mt-lg">
@@ -75,6 +23,67 @@ import { RecordDetails } from 'src/composables/Patients';
             Midwife's Notes
           </p>
         </div>
+
+        <!-- Action Button -->
+        <div
+          v-if="
+            keySession &&
+            keySession.department === 3 &&
+            keySession.permission_level !== 3
+          "
+          class="flex q-mb-lg"
+          style="justify-content: center"
+        >
+          <div
+            v-if="!editForm && !isEditCheckup"
+            class="row"
+            style="width: 200px"
+          >
+            <q-btn
+              @click="editForm = !editForm"
+              dense
+              label="Edit Midwife's Notes"
+              icon="eva-edit-outline"
+              no-caps
+              outline
+              color="primary"
+              class="col"
+            />
+            <!-- <q-btn
+            dense
+            label="Delete"
+            icon="eva-trash-2-outline"
+            no-caps
+            class="q-px-lg q-ml-sm"
+            color="negative"
+            @click="openDialog"
+          /> -->
+          </div>
+
+          <div v-if="editForm" class="row q-px-md">
+            <q-btn
+              dense
+              label="Save"
+              type="submit"
+              icon="save"
+              no-caps
+              color="primary"
+              class="col q-mr-sm"
+              style="width: 200px"
+            />
+            <q-btn
+              @click="cancelFunction"
+              dense
+              label="Cancel"
+              icon="close"
+              no-caps
+              class="col q-ml-sm"
+              outline
+              color="primary"
+              style="width: 200px"
+            />
+          </div>
+        </div>
         <div class="flex items-baseline justify-between q-px-md q-mb-sm">
           <p class="text-primary text-weight-bold">Midwife:</p>
           <q-select
@@ -87,10 +96,10 @@ import { RecordDetails } from 'src/composables/Patients';
             emit-value
             map-options
             dense
-            :readonly="!editForm"
+            readonly
             input-style="padding: 0"
             input-class="text-right text-primary"
-            :style="$q.screen.width < 1366 && 'width: 150px'"
+            style="width: 200px"
           />
         </div>
         <div class="flex items-baseline justify-between q-px-md q-mb-sm">
@@ -102,7 +111,7 @@ import { RecordDetails } from 'src/composables/Patients';
             input-style="padding: 0"
             input-class="text-right text-primary"
             v-model="patientRecordInfo.previous_full_term"
-            :style="$q.screen.width < 1366 && 'width: 150px'"
+            style="width: 200px"
           />
         </div>
         <div class="flex items-baseline justify-between q-px-md q-mb-sm">
@@ -114,45 +123,20 @@ import { RecordDetails } from 'src/composables/Patients';
             input-style="padding: 0"
             input-class="text-right text-primary"
             v-model="patientRecordInfo.previous_premature"
-            :style="$q.screen.width < 1366 && 'width: 150px'"
+            style="width: 200px"
           />
         </div>
         <div class="flex items-baseline justify-between q-px-md q-mb-sm">
           <p class="text-primary text-weight-bold">1st Checkup Date:</p>
           <q-input
-            :readonly="!editForm"
+            readonly
             outlined
             dense
             input-style="padding: 0"
             input-class="text-right text-primary"
             v-model="patientRecordInfo.date_added"
-            :style="$q.screen.width < 1366 && 'width: 150px'"
-          >
-            <template v-slot:append v-if="editForm">
-              <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy
-                  transition-show="scale"
-                  transition-hide="scale"
-                  :style="$q.screen.width < 1366 && 'width: 150px'"
-                >
-                  <q-date
-                    mask="YYYY-MM-DD"
-                    v-model="patientRecordInfo.date_added"
-                  >
-                    <div class="row justify-end items-center">
-                      <q-btn
-                        v-close-popup
-                        color="primary"
-                        label="Close"
-                        dense
-                        flat
-                      />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+            style="width: 200px"
+          />
         </div>
         <div class="flex items-baseline justify-between q-px-md q-mb-sm">
           <p class="text-primary text-weight-bold">Last Menstruation:</p>
@@ -162,7 +146,7 @@ import { RecordDetails } from 'src/composables/Patients';
             dense
             input-style="padding: 0"
             input-class="text-right text-primary"
-            :style="$q.screen.width < 1366 && 'width: 150px'"
+            style="width: 200px"
             v-model="patientRecordInfo.last_menstruation"
           >
             <template v-slot:append v-if="editForm">
@@ -439,23 +423,91 @@ import { RecordDetails } from 'src/composables/Patients';
       <div class="fit">
         <div class="card-box">
           <div
-            :class="
-              !editForm
-                ? 'bg-primary q-mb-md'
-                : 'bg-primary flex items-center justify-between q-px-md q-mb-md'
-            "
+            class="flex justify-between items-center bg-primary q-mb-md"
+            style="justify-content: center"
           >
+            <label class="mn-heading text-white">Checkup Date:</label>
             <q-select
               v-model="selectedCheckup"
               borderless
               dense
               dark
               color="white"
-              :options="checkupDateArray"
+              :options="RecordArrays"
+              option-label="checkup_date"
+              option-value="checkup_date"
+              emit-value
+              map-options
               input-class="text-white text-bold"
-              class="col q-mr-md q-px-xl"
-              style
+              class="col mn-heading q-ml-lg"
+              style="max-width: 150px"
+              @update:model-value="changeCheckupDate"
             />
+          </div>
+
+          <!-- Action Button -->
+          <div
+            v-if="
+              keySession &&
+              keySession.department === 3 &&
+              keySession.permission_level !== 3
+            "
+            class="q-mb-lg"
+            style="justify-content: center"
+          >
+            <div v-if="!isEditCheckup && !editForm" class="row q-px-md">
+              <q-btn
+                @click="isEditCheckup = !isEditCheckup"
+                dense
+                label="Edit Checkup Details"
+                icon="eva-edit-outline"
+                no-caps
+                outline
+                color="primary"
+                class="col q-mr-sm"
+              />
+
+              <q-btn
+                dense
+                label="Add Prenatal Checkup"
+                icon="add_circle"
+                no-caps
+                outline
+                color="primary"
+                class="col q-ml-sm"
+              />
+              <!-- <q-btn
+            dense
+            label="Delete"
+            icon="eva-trash-2-outline"
+            no-caps
+            class="q-px-lg q-ml-sm"
+            color="negative"
+            @click="openDialog"
+          /> -->
+            </div>
+
+            <div v-if="isEditCheckup" class="row q-px-md">
+              <q-btn
+                dense
+                label="Save"
+                type="submit"
+                icon="save"
+                no-caps
+                color="primary"
+                class="col q-mr-sm"
+              />
+              <q-btn
+                @click="cancelFunction"
+                dense
+                label="Cancel"
+                icon="close"
+                no-caps
+                class="col q-ml-sm"
+                outline
+                color="primary"
+              />
+            </div>
           </div>
 
           <div style="position: relative">
@@ -463,7 +515,8 @@ import { RecordDetails } from 'src/composables/Patients';
               <div class="flex items-baseline justify-between q-px-md">
                 <p class="text-weight-bold text-primary">Temperature</p>
                 <q-input
-                  :readonly="!editForm"
+                  :readonly="!isEditCheckup"
+                  v-model="prenatal_checkup.temperature"
                   outlined
                   dense
                   input-style="padding: 0"
@@ -476,7 +529,8 @@ import { RecordDetails } from 'src/composables/Patients';
                 <p class="text-weight-bold text-primary">Blood Pressure</p>
                 <div class="flex items-center justify-end">
                   <q-input
-                    :readonly="!editForm"
+                    :readonly="!isEditCheckup"
+                    v-model="prenatal_checkup.blood_pressure_systole"
                     outlined
                     dense
                     input-style="padding: 0"
@@ -487,7 +541,8 @@ import { RecordDetails } from 'src/composables/Patients';
                   />
                   <label class="text-primary text-bold q-px-sm">/</label>
                   <q-input
-                    :readonly="!editForm"
+                    :readonly="!isEditCheckup"
+                    v-model="prenatal_checkup.blood_pressure_diastole"
                     outlined
                     dense
                     input-style="padding: 0"
@@ -501,7 +556,8 @@ import { RecordDetails } from 'src/composables/Patients';
               <div class="flex items-baseline justify-between q-px-md">
                 <p class="text-weight-bold text-primary">Height</p>
                 <q-input
-                  :readonly="!editForm"
+                  :readonly="!isEditCheckup"
+                  v-model="prenatal_checkup.height"
                   outlined
                   dense
                   input-style="padding: 0"
@@ -513,7 +569,8 @@ import { RecordDetails } from 'src/composables/Patients';
               <div class="flex items-baseline justify-between q-px-md">
                 <p class="text-weight-bold text-primary">Weight</p>
                 <q-input
-                  :readonly="!editForm"
+                  :readonly="!isEditCheckup"
+                  v-model="prenatal_checkup.weight"
                   outlined
                   dense
                   input-style="padding: 0"
@@ -525,7 +582,8 @@ import { RecordDetails } from 'src/composables/Patients';
               <div class="flex items-baseline justify-between q-px-md">
                 <p class="text-weight-bold text-primary">Pulse Rate</p>
                 <q-input
-                  :readonly="!editForm"
+                  :readonly="!isEditCheckup"
+                  v-model="prenatal_checkup.pulse_rate"
                   outlined
                   dense
                   input-style="padding: 0"
@@ -537,7 +595,8 @@ import { RecordDetails } from 'src/composables/Patients';
               <div class="flex items-baseline justify-between q-px-md">
                 <p class="text-weight-bold text-primary">Oxygen Saturation</p>
                 <q-input
-                  :readonly="!editForm"
+                  :readonly="!isEditCheckup"
+                  v-model="prenatal_checkup.oxygen_sat"
                   outlined
                   dense
                   input-style="padding: 0"
@@ -549,7 +608,8 @@ import { RecordDetails } from 'src/composables/Patients';
               <div class="flex items-baseline justify-between q-px-md">
                 <p class="text-weight-bold text-primary">Next Checkup</p>
                 <q-input
-                  :readonly="!editForm"
+                  :readonly="!isEditCheckup"
+                  v-model="prenatal_checkup.next_checkup"
                   outlined
                   dense
                   input-style="padding: 0"
@@ -557,14 +617,18 @@ import { RecordDetails } from 'src/composables/Patients';
                   label="YYYY-MM-DD"
                   :style="$q.screen.width < 1366 && 'width: 150px'"
                 >
-                  <template v-slot:append v-if="editForm">
+                  <template v-slot:append v-if="isEditCheckup">
                     <q-icon name="event" class="cursor-pointer" color="primary">
                       <q-popup-proxy
                         transition-show="scale"
                         transition-hide="scale"
                         :style="$q.screen.width < 1366 && 'width: 150px'"
                       >
-                        <q-date mask="YYYY-MM-DD"> </q-date>
+                        <q-date
+                          v-model="prenatal_checkup.next_checkup"
+                          mask="YYYY-MM-DD"
+                        >
+                        </q-date>
                       </q-popup-proxy>
                     </q-icon>
                   </template>
@@ -575,11 +639,13 @@ import { RecordDetails } from 'src/composables/Patients';
 
             <div class="q-px-md q-mb-sm">
               <q-input
-                :readonly="!editForm"
+                :readonly="!isEditCheckup"
+                v-model="prenatal_checkup.comments"
                 autogrow
                 outlined
                 dense
                 input-class="text-primary"
+                placeholder="Enter notes here"
                 class="q-mt-md"
                 input-style="max-height: 100px"
               />
@@ -587,37 +653,6 @@ import { RecordDetails } from 'src/composables/Patients';
           </div>
         </div>
       </div>
-      <!-- </div> -->
-
-      <!-- New Checkup -->
-      <!-- <div class="col q-mr-md fourth-col"> -->
-      <div
-        class="new-checkup fit card-box q-mb-md bg-grey-4"
-        v-if="
-          editForm &&
-          (prenatal_checkup.length === 0 ||
-            prenatal_checkup[prenatal_checkup.length - 1].comments != null)
-        "
-      >
-        <p
-          class="bg-primary text-white text-weight-bol text-center mn-heading q-py-sm"
-        >
-          New Checkup
-        </p>
-        <div class="new-checkup-field fit">
-          <div class="text-center">
-            <q-btn
-              @click="addCheckup"
-              icon="add"
-              color="primary"
-              padding="25px"
-              class="new-checkup-btn"
-            />
-            <p class="text-primary text-weight-bold q-mt-sm">Add new checkup</p>
-          </div>
-        </div>
-      </div>
-      <!-- </div> -->
     </div>
 
     <MHCDialog :content="$options.components.DeletePatientRecordConfirmation" />

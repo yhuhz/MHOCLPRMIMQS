@@ -4,6 +4,8 @@ let RecordDetails = ref([]);
 let PatientRecords = ref([]);
 let RecordArrays = ref([]);
 let HealthRecords = ref([]);
+let PrenatalCheckupDetails = ref([]);
+let PrenatalCheckupPrescription = ref([]);
 // let pathlink =
 //   "http://localhost/MHOCLPRMIMQS PHP/RecordDetails and Household/patient_api.php";
 /**
@@ -79,6 +81,28 @@ let FindRecordDetails = (payload, department) => {
           RecordDetails.value = response.data.data;
           RecordArrays.value = [];
         }
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let FindPrenatalCheckupDetails = (payload) => {
+  let pathlink =
+    "http://localhost/MHOCLPRMIMQS PHP/Patient Records/prenatal_api.php";
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          payload: { prenatal_checkup_id: payload },
+        },
+      })
+      .then((response) => {
+        // console.log(response.data);
+        PrenatalCheckupDetails.value = response.data.record;
+        PrenatalCheckupPrescription.value = response.data.array;
         resolve(response.data);
       })
       .catch((error) => {

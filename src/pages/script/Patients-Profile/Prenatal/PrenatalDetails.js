@@ -64,17 +64,25 @@ export default {
     watch(
       () => _.cloneDeep(RecordArrays.value),
       () => {
-        prenatal_checkup.value = RecordArrays.value;
         selectedCheckup.value =
-          prenatal_checkup.value.length !== 0
-            ? prenatal_checkup.value[0].checkup_date
+          RecordArrays.value.length !== 0
+            ? RecordArrays.value[0].checkup_date
             : null;
-
-        prenatal_checkup.value.forEach((p) => {
-          checkupDateArray.value.push(p.checkup_date);
+        RecordArrays.value.forEach((r) => {
+          if (r.checkup_date === selectedCheckup.value) {
+            prenatal_checkup.value = r;
+          }
         });
       }
     );
+
+    const changeCheckupDate = () => {
+      RecordArrays.value.forEach((r) => {
+        if (r.checkup_date === selectedCheckup.value) {
+          prenatal_checkup.value = r;
+        }
+      });
+    };
 
     let userOptions = ref([]);
 
@@ -105,6 +113,7 @@ export default {
     let cancelFunction = () => {
       Loading.show();
       editForm.value = false;
+      isEditCheckup.value = false;
       FindRecordDetails(route.params.record_id, route.params.department).then(
         (response) => {
           Loading.hide();
@@ -113,33 +122,7 @@ export default {
     };
 
     let editForm = ref(false);
-
-    const addCheckup = () => {
-      let currentDate = new Date().toISOString().slice(0, 10);
-
-      prenatal_checkup.value.push({
-        prenatal_id: route.params.record_id,
-        height: null,
-        weight: null,
-        temperature: null,
-        blood_pressure_systole: null,
-        blood_pressure_diastole: null,
-        next_checkup: null,
-        pulse_rate: null,
-        oxygen_sat: null,
-        checkup_date: currentDate,
-        next_checkup: null,
-        comments: null,
-      });
-    };
-
-    const removeCheckup = (index) => {
-      prenatal_checkup.value[index].status = 1;
-    };
-
-    const undoRemoveCheckup = (index) => {
-      prenatal_checkup.value[index].status = 0;
-    };
+    let isEditCheckup = ref(false);
 
     const editFunction = () => {
       editForm.value = false;
@@ -187,13 +170,12 @@ export default {
       userFilterFunction,
       openDialog,
       prenatal_checkup,
-      toggleNewCheckup,
-      addCheckup,
-      removeCheckup,
-      undoRemoveCheckup,
       keySession,
       selectedCheckup,
       checkupDateArray,
+      RecordArrays,
+      changeCheckupDate,
+      isEditCheckup,
     };
   },
 };

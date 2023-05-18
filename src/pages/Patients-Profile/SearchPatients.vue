@@ -298,10 +298,6 @@
                           name: 'patient-details',
                           params: {
                             id: props.row.patient_id,
-                            department:
-                              keySession && keySession.department === 5
-                                ? 'OPD'
-                                : dept[keySession.department],
                           },
                         })
                       "
