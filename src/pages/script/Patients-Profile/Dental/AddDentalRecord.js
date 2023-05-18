@@ -37,6 +37,10 @@ export default {
       status: 0,
     });
 
+    let checkup_date = date
+      .formatDate(new Date(), "YYYY-MM-DD")
+      .replaceAll("-", "/");
+
     let userOptions = ref([]);
 
     const userFilterFunction = (val, update, abort) => {
@@ -89,7 +93,7 @@ export default {
                 name: "Dental/patient_records",
                 params: {
                   record_id: response.data.record_id,
-                  department: route.params.department,
+                  department_queue: route.params.department,
                   queue: route.params.queue,
                 },
               });
@@ -108,12 +112,18 @@ export default {
     };
 
     const cancel = () => {
-      router.push({
-        name: "patient-details",
-        params: {
-          id: route.params.id,
-        },
-      });
+      if (route.params.queue) {
+        router.push({
+          name: "home",
+        });
+      } else {
+        router.push({
+          name: "patient-details",
+          params: {
+            id: route.params.id,
+          },
+        });
+      }
     };
     return {
       keySession,
@@ -122,6 +132,7 @@ export default {
       patientRecordInfo,
       userOptions,
       userFilterFunction,
+      checkup_date,
     };
   },
 };

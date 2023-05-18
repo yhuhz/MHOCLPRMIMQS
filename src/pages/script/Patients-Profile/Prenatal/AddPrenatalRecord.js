@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { AddRecord, RecordArrays } from "src/composables/Records";
 import { FindUsersByName } from "src/composables/Manage_Users";
@@ -35,6 +35,31 @@ export default {
       status: 0,
     });
 
+    const currentDate = ref("");
+    const daysToSubtract = 14;
+    const dateBySubtractingDays = ref("");
+
+    const getCurrentDate = () => {
+      const today = new Date(patientRecordInfo.value.date_added);
+      currentDate.value = today.toISOString().split("T")[0];
+    };
+
+    const getDateBySubtractingDays = () => {
+      const today = new Date();
+      const dateToSubtract = new Date(
+        today.setDate(today.getDate() - daysToSubtract)
+      );
+      dateBySubtractingDays.value = dateToSubtract
+        .toISOString()
+        .split("T")[0]
+        .replaceAll("-", "/");
+    };
+
+    onMounted(() => {
+      getCurrentDate();
+      getDateBySubtractingDays();
+    });
+
     let userOptions = ref([]);
 
     const userFilterFunction = (val, update, abort) => {
@@ -62,12 +87,18 @@ export default {
     };
 
     let cancelFunction = () => {
-      router.push({
-        name: "patient-details",
-        params: {
-          id: route.params.id,
-        },
-      });
+      if (route.params.queue) {
+        router.push({
+          name: "home",
+        });
+      } else {
+        router.push({
+          name: "patient-details",
+          params: {
+            id: route.params.id,
+          },
+        });
+      }
     };
 
     const addFunction = () => {
@@ -93,13 +124,24 @@ export default {
           });
           if (status === 0) {
             RecordArrays.value = [];
-            router.push({
-              name: "Prenatal/patient_records",
-              params: {
-                record_id: response.data.record_id,
-                department: route.params.department,
-              },
-            });
+
+            if (route.params.queue) {
+              router.push({
+                name: "Prenatal/patient_records",
+                params: {
+                  record_id: response.data.record_id,
+                  department_queue: route.params.department,
+                },
+              });
+            } else {
+              router.push({
+                name: "Prenatal/patient_records",
+                params: {
+                  record_id: response.data.record_id,
+                  department: route.params.department,
+                },
+              });
+            }
           }
         }
       );
@@ -111,6 +153,7 @@ export default {
       cancelFunction,
       userOptions,
       userFilterFunction,
+      dateBySubtractingDays,
     };
   },
 };

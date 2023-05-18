@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import _ from "lodash";
 import MHCDialog from "../../../../components/MHCDialog.vue";
 import DeletePatientRecordConfirmation from "../../../Components/DeletePatientRecordConfirmation";
@@ -41,6 +41,9 @@ export default {
         Loading.hide();
       }
     );
+    let editForm = ref(false);
+    let isEditCheckup = ref(false);
+    let checkup_date = ref(null);
 
     watch(
       () => _.cloneDeep(RecordDetails.value),
@@ -58,6 +61,7 @@ export default {
                 prenatal_checkup.value = r;
               }
             });
+
         patientRecordInfo.value = {
           prenatal_id: route.params.record_id,
           midwife_id: {
@@ -71,6 +75,11 @@ export default {
           midwifes_notes: RecordDetails.value.midwifes_notes,
           status: 0,
         };
+
+        checkup_date.value = patientRecordInfo.value.date_added.replaceAll(
+          "-",
+          "/"
+        );
       }
     );
 
@@ -146,9 +155,6 @@ export default {
         }
       );
     };
-
-    let editForm = ref(false);
-    let isEditCheckup = ref(false);
 
     const editPrenatalRecordFunction = () => {
       editForm.value = false;
@@ -291,6 +297,7 @@ export default {
       addCheckupRecord,
       addPrenatalCheckupFunction,
       submitFunction,
+      checkup_date,
     };
   },
 };

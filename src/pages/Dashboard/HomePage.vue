@@ -68,7 +68,7 @@
                             params: {
                               id: currentPatient.patient_id,
                               queue: currentPatient.queue_id,
-                              department:
+                              queue_department:
                                 keySession.department === 5
                                   ? 'OPD'
                                   : selectedDepartment,
@@ -146,7 +146,8 @@
                     priorityPatients &&
                     priorityPatients[0] &&
                     keySession &&
-                    dept === keySession.department &&
+                    (dept === keySession.department ||
+                      (dept === 7 && keySession.department === 3)) &&
                     (keySession.department === 5 ||
                       keySession.department === 1 ||
                       keySession.department === 2 ||
@@ -173,7 +174,8 @@
                     otherPatients &&
                     otherPatients[0] &&
                     keySession &&
-                    dept === keySession.department &&
+                    (dept === keySession.department ||
+                      (dept === 7 && keySession.department === 3)) &&
                     (keySession.department === 5 ||
                       keySession.department === 1 ||
                       keySession.department === 2 ||

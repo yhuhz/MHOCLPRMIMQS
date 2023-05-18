@@ -167,6 +167,7 @@ import { RecordDetails } from 'src/composables/Patients';
                     <q-date
                       mask="YYYY-MM-DD"
                       v-model="patientRecordInfo.last_menstruation"
+                      :options="(date) => date <= checkup_date"
                       :rules="[
                         (val) => (val && val.length > 0) || 'Required field',
                       ]"

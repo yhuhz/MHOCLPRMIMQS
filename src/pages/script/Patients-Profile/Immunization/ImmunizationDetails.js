@@ -31,6 +31,8 @@ export default {
 
     let patientRecordInfo = ref({});
     let editForm = ref(false);
+    let checkup_date = ref(null);
+    let purposeArray = ["Pediatric Vaccination", "Family Planning"];
 
     FindRecordDetails(route.params.record_id, route.params.department).then(
       (response) => {
@@ -51,10 +53,14 @@ export default {
           },
           immunization_date: RecordDetails.value.immunization_date,
           next_immunization_date: RecordDetails.value.next_immunization_date,
+          purpose: RecordDetails.value.purpose,
           vaccine_used: RecordDetails.value.vaccine_used,
           comments: RecordDetails.value.comments,
           status: RecordDetails.value.status,
         };
+
+        checkup_date.value =
+          patientRecordInfo.value.immunization_date.replaceAll("-", "/");
       }
     );
 
@@ -137,6 +143,8 @@ export default {
       userFilterFunction,
       openDialog,
       keySession,
+      checkup_date,
+      purposeArray,
     };
   },
 };

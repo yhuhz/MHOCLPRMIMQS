@@ -17,6 +17,9 @@ export default {
       router.push({ name: "login" });
     }
 
+    let purposeArray = ["Pediatric Vaccination", "Family Planning"];
+    let checkup_date = ref(null);
+
     let patientRecordInfo = ref({
       patient_id: route.params.id,
       immunizer_id: {
@@ -30,11 +33,17 @@ export default {
             (keySession.suffix != null ? keySession.suffix : ""),
       },
       immunization_date: date.formatDate(new Date(), "YYYY-MM-DD"),
+      purpose: null,
       next_immunization_date: null,
       vaccine_used: null,
       comments: null,
       status: 0,
     });
+
+    checkup_date.value = patientRecordInfo.value.immunization_date.replaceAll(
+      "-",
+      "/"
+    );
 
     let userOptions = ref([]);
 
@@ -111,6 +120,8 @@ export default {
       cancelFunction,
       userOptions,
       userFilterFunction,
+      purposeArray,
+      checkup_date,
     };
   },
 };

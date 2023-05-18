@@ -49,6 +49,7 @@ import { RecordDetails } from 'src/composables/Patients';
         <div class="flex items-baseline justify-between q-px-md q-mb-sm">
           <p class="text-primary text-weight-bold">Midwife:</p>
           <q-select
+            disable
             outlined
             v-model="patientRecordInfo.midwife_id"
             @filter="userFilterFunction"
@@ -72,6 +73,9 @@ import { RecordDetails } from 'src/composables/Patients';
             input-class="text-right text-primary"
             v-model="patientRecordInfo.previous_full_term"
             :style="$q.screen.width < 1366 && 'width: 150px'"
+            :rules="[
+              (val) => val === 0 || (val && !isNaN(val)) || 'Numbers only',
+            ]"
           />
         </div>
         <div class="flex items-baseline justify-between q-px-md q-mb-sm">
@@ -83,43 +87,22 @@ import { RecordDetails } from 'src/composables/Patients';
             input-class="text-right text-primary"
             v-model="patientRecordInfo.previous_premature"
             :style="$q.screen.width < 1366 && 'width: 150px'"
+            :rules="[
+              (val) => val === 0 || (val && !isNaN(val)) || 'Numbers only',
+            ]"
           />
         </div>
         <div class="flex items-baseline justify-between q-px-md q-mb-sm">
           <p class="text-primary text-weight-bold">1st Checkup Date:</p>
           <q-input
+            disable
             outlined
             dense
             input-style="padding: 0"
             input-class="text-right text-primary"
             v-model="patientRecordInfo.date_added"
             :style="$q.screen.width < 1366 && 'width: 150px'"
-          >
-            <template v-slot:append>
-              <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy
-                  transition-show="scale"
-                  transition-hide="scale"
-                  :style="$q.screen.width < 1366 && 'width: 150px'"
-                >
-                  <q-date
-                    mask="YYYY-MM-DD"
-                    v-model="patientRecordInfo.date_added"
-                  >
-                    <div class="row justify-end items-center">
-                      <q-btn
-                        v-close-popup
-                        color="primary"
-                        label="Close"
-                        dense
-                        flat
-                      />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+          />
         </div>
         <div class="flex items-baseline justify-between q-px-md q-mb-sm">
           <p class="text-primary text-weight-bold">Last Menstruation:</p>
@@ -130,6 +113,7 @@ import { RecordDetails } from 'src/composables/Patients';
             input-class="text-right text-primary"
             :style="$q.screen.width < 1366 && 'width: 150px'"
             v-model="patientRecordInfo.last_menstruation"
+            :rules="[(val) => (val && val.length > 0) || 'Required field']"
           >
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
@@ -137,6 +121,10 @@ import { RecordDetails } from 'src/composables/Patients';
                   <q-date
                     mask="YYYY-MM-DD"
                     v-model="patientRecordInfo.last_menstruation"
+                    :options="(date) => date <= dateBySubtractingDays"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Required field',
+                    ]"
                   >
                     <div class="row justify-end items-center">
                       <q-btn
