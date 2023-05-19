@@ -531,6 +531,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 @filter="medicineFilterFunction"
                 option-label="medicine_name"
                 option-value="medicine_name"
+                use-chips
                 use-input
                 emit-value
                 map-options

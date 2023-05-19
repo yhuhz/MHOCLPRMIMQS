@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import DeletePatientConfirmation from "../../Components/DeletePatientConfirmation";
 import { ToggleDialogState } from "../../../composables/Triggers";
@@ -41,15 +41,8 @@ export default {
     let status = ["Active", "Deceased", "Deleted"];
     let sex = ["Male", "Female"];
     let departmentList = ref([]);
+    let selectedDepartment = ref(null);
 
-    let selectedDepartment = ref(
-      route.params.department != null ? route.params.department : null
-    );
-
-    selectedDepartment.value =
-      route.params.department != null
-        ? route.params.department
-        : departmentList.value[0];
     watch(
       () => _.cloneDeep(PatientDetails.value),
       () => {
@@ -64,32 +57,6 @@ export default {
           (PatientDetails.value.suffix === null
             ? ""
             : " " + PatientDetails.value.suffix);
-
-        if (
-          keySession &&
-          (keySession.department === 1 || keySession.department === 5)
-        ) {
-          departmentList.value = ["OPD"];
-        } else if (keySession && keySession.department === 2) {
-          departmentList.value = ["Dental"];
-        } else if (keySession && keySession.department === 3) {
-          if (PatientDetails.value.sex === 1) {
-            departmentList.value = ["Prenatal", "Immunization"];
-          } else {
-            departmentList.value = ["Immunization"];
-          }
-        } else {
-          if (PatientDetails.value.sex != 1) {
-            departmentList.value = ["OPD", "Dental", "Immunization"];
-          } else {
-            departmentList.value = [
-              "OPD",
-              "Dental",
-              "Prenatal",
-              "Immunization",
-            ];
-          }
-        }
 
         if (
           keySession &&
@@ -118,6 +85,57 @@ export default {
         });
       }
     );
+
+    if (
+      keySession &&
+      (keySession.department === 1 || keySession.department === 5)
+    ) {
+      departmentList.value = ["OPD"];
+      selectedDepartment.value = route.params.department
+        ? route.params.department
+        : route.params.department_queue
+        ? route.params.department_queue
+        : "OPD";
+    } else if (keySession && keySession.department === 2) {
+      departmentList.value = ["Dental"];
+      selectedDepartment.value = route.params.department
+        ? route.params.department
+        : route.params.department_queue
+        ? route.params.department_queue
+        : "OPD";
+    } else if (keySession && keySession.department === 3) {
+      if (PatientDetails.value.sex === 1) {
+        departmentList.value = ["Prenatal", "Immunization"];
+        selectedDepartment.value = route.params.department
+          ? route.params.department
+          : route.params.department_queue
+          ? route.params.department_queue
+          : "Prenatal";
+      } else {
+        departmentList.value = ["Immunization"];
+        selectedDepartment.value = route.params.department
+          ? route.params.department
+          : route.params.department_queue
+          ? route.params.department_queue
+          : "Immunization";
+      }
+    } else {
+      if (PatientDetails.value.sex != 1) {
+        departmentList.value = ["OPD", "Dental", "Immunization"];
+        selectedDepartment.value = route.params.department
+          ? route.params.department
+          : route.params.department_queue
+          ? route.params.department_queue
+          : "OPD";
+      } else {
+        departmentList.value = ["OPD", "Dental", "Prenatal", "Immunization"];
+        selectedDepartment.value = route.params.department
+          ? route.params.department
+          : route.params.department_queue
+          ? route.params.department_queue
+          : "OPD";
+      }
+    }
 
     if (selectedDepartment.value != null) {
       GetRecords({
@@ -282,29 +300,35 @@ export default {
 
     if (route.params.queue) {
       dept.value = keySession && keySession.department;
-      if (
-        keySession &&
-        keySession.department === 1 &&
-        PatientDetails.value.length !== 0
-      ) {
-        FindRecordDetails(
-          PatientRecords && PatientRecords.value[0].record_id,
-          "OPD"
-        ).then((response) => {
-          Loading.hide();
 
-          if (response.status === "success") {
-            router.push({
-              name: "OPD/patient_records",
-              params: {
-                record_id: PatientRecords && PatientRecords.value[0].record_id,
-                department: selectedDepartment.value,
-                queue: route.params.queue,
-              },
-            });
-          }
-        });
-      }
+      GetRecords({
+        patient_id: route.params.id,
+        record_type: selectedDepartment.value,
+      }).then((response) => {
+        if (
+          keySession &&
+          keySession.department === 1 &&
+          response.data.length !== 0
+        ) {
+          let record = response.data[0];
+          console.log("res", record);
+          FindRecordDetails(record.record_id, "OPD").then((response) => {
+            console.log(response);
+            Loading.hide();
+
+            if (response.status === "success") {
+              router.push({
+                name: "OPD/patient_records",
+                params: {
+                  record_id: record.record_id,
+                  department: selectedDepartment.value,
+                  queue: route.params.queue,
+                },
+              });
+            }
+          });
+        }
+      });
 
       GetQueueSpecific(dept.value).then((response) => {});
 

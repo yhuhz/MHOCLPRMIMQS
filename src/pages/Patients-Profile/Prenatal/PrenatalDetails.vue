@@ -11,11 +11,12 @@ import { RecordDetails } from 'src/composables/Patients';
       </div>
     </div>
 
-    <div class="grid q-mt-lg">
+    <div class="row q-mt-lg">
       <!-- <div class="col q-ml-md second-col"> -->
-      <q-form @submit="editPrenatalRecordFunction">
-        <!-- Midwifes Notes -->
-        <div class="card-box midwifes-notes q-mb-md">
+
+      <!-- Midwifes Notes -->
+      <div class="col card-box midwifes-notes q-mr-sm">
+        <q-form @submit="editPrenatalRecordFunction">
           <div class="q-mb-md">
             <p
               class="bg-green-7 text-white text-center mn-heading"
@@ -34,13 +35,9 @@ import { RecordDetails } from 'src/composables/Patients';
               keySession.permission_level !== 3
             "
             class="flex q-mb-lg"
-            style="justify-content: center"
+            style="justify-content: center; height: 30px"
           >
-            <div
-              v-if="!editForm && !isEditCheckup"
-              class="row"
-              style="width: 200px"
-            >
+            <div v-if="!editForm && !isEditCheckup" class="row">
               <q-btn
                 @click="editForm = !editForm"
                 dense
@@ -71,7 +68,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 no-caps
                 color="primary"
                 class="col q-mr-sm"
-                style="width: 200px"
+                style="width: 150px"
               />
               <q-btn
                 @click="cancelFunction"
@@ -82,7 +79,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 class="col q-ml-sm"
                 outline
                 color="primary"
-                style="width: 200px"
+                style="width: 150px"
               />
             </div>
           </div>
@@ -101,7 +98,7 @@ import { RecordDetails } from 'src/composables/Patients';
               readonly
               input-style="padding: 0"
               input-class="text-right text-primary"
-              style="width: 200px"
+              style="width: 150px"
             />
           </div>
           <div class="flex items-baseline justify-between q-px-md q-mb-sm">
@@ -113,7 +110,7 @@ import { RecordDetails } from 'src/composables/Patients';
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.previous_full_term"
-              style="width: 200px"
+              style="width: 150px"
               :rules="[
                 (val) => val === 0 || (val && !isNaN(val)) || 'Numbers only',
               ]"
@@ -128,7 +125,7 @@ import { RecordDetails } from 'src/composables/Patients';
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.previous_premature"
-              style="width: 200px"
+              style="width: 150px"
               :rules="[
                 (val) => val === 0 || (val && !isNaN(val)) || 'Numbers only',
               ]"
@@ -143,10 +140,10 @@ import { RecordDetails } from 'src/composables/Patients';
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.date_added"
-              style="width: 200px"
+              style="width: 150px"
             />
           </div>
-          <div class="flex items-baseline justify-between q-px-md q-mb-sm">
+          <div class="flex items-baseline justify-between q-px-md q-mb-md">
             <p class="text-primary text-weight-bold">Last Menstruation:</p>
             <q-input
               :readonly="!editForm"
@@ -154,7 +151,7 @@ import { RecordDetails } from 'src/composables/Patients';
               dense
               input-style="padding: 0"
               input-class="text-right text-primary"
-              style="width: 200px"
+              style="width: 150px"
               v-model="patientRecordInfo.last_menstruation"
               :rules="[(val) => (val && val.length > 0) || 'Required field']"
             >
@@ -203,13 +200,15 @@ import { RecordDetails } from 'src/composables/Patients';
               :rules="[(val) => (val && val.length > 0) || 'Required field']"
             />
           </div>
-        </div>
-      </q-form>
+        </q-form>
+      </div>
+
       <!-- </div> -->
 
       <!-- Prenatal Checkup -->
-      <div class="fit">
-        <div class="card-box">
+
+      <div class="col card-box q-ml-sm">
+        <q-form @submit="submitFunction">
           <div
             class="flex justify-between items-center bg-primary q-mb-md"
             style="justify-content: center"
@@ -242,14 +241,14 @@ import { RecordDetails } from 'src/composables/Patients';
               keySession.permission_level !== 3
             "
             class="q-mb-lg"
-            style="justify-content: center"
+            style="justify-content: center; height: 30px"
           >
             <div v-if="!isEditCheckup && !editForm" class="row q-px-md">
               <q-btn
                 v-if="selectedCheckup !== null"
                 @click="isEditCheckup = !isEditCheckup"
                 dense
-                label="Edit Checkup Details"
+                label="Edit Checkup"
                 icon="eva-edit-outline"
                 no-caps
                 outline
@@ -259,7 +258,7 @@ import { RecordDetails } from 'src/composables/Patients';
 
               <q-btn
                 dense
-                label="Add Prenatal Checkup"
+                label="Add Checkup"
                 icon="add_circle"
                 no-caps
                 outline
@@ -287,7 +286,6 @@ import { RecordDetails } from 'src/composables/Patients';
                 no-caps
                 color="primary"
                 class="col q-mr-sm"
-                @click="submitFunction"
               />
               <q-btn
                 @click="cancelFunction"
@@ -314,7 +312,9 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="°C"
-                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                  :style="
+                    $q.screen.width < 1366 ? 'width: 50px' : 'width: 80px'
+                  "
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
@@ -394,7 +394,9 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="%"
-                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                  :style="
+                    $q.screen.width < 1366 ? 'width: 50px' : 'width: 80px'
+                  "
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
@@ -406,15 +408,15 @@ import { RecordDetails } from 'src/composables/Patients';
                   dense
                   input-style="padding: 0"
                   input-class="text-right text-primary"
-                  label="YYYY-MM-DD"
-                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                  :style="
+                    $q.screen.width < 1366 ? 'width: 50px' : 'width: 80px'
+                  "
                 >
                   <template v-slot:append v-if="isEditCheckup">
                     <q-icon name="event" class="cursor-pointer" color="primary">
                       <q-popup-proxy
                         transition-show="scale"
                         transition-hide="scale"
-                        :style="$q.screen.width < 1366 && 'width: 150px'"
                       >
                         <q-date
                           v-model="prenatal_checkup.next_checkup"
@@ -443,7 +445,7 @@ import { RecordDetails } from 'src/composables/Patients';
               />
             </div>
           </div>
-        </div>
+        </q-form>
       </div>
     </div>
 
@@ -471,7 +473,6 @@ import { RecordDetails } from 'src/composables/Patients';
 .card-box {
   border: 2px solid #5f8d4e;
   border-radius: 5px;
-  height: 100%;
 
   .mn-heading {
     font-size: 18px;
