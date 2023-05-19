@@ -1,16 +1,50 @@
 <template>
   <div class="medicine-inventory">
-    <div class="flex items-center q-px-md q-pt-none">
-      <q-btn
-        round
-        outline
-        dense
-        icon="eva-arrow-back-outline"
-        color="dark"
-        class="q-mr-md"
-        @click="$router.go(-1)"
-      />
-      <h5 class="text-dark text-weight-bold">MEDICINE INVENTORY</h5>
+    <div class="flex justify-between items-center q-px-md q-pt-none">
+      <div class="flex justify-start items-center">
+        <q-btn
+          round
+          outline
+          dense
+          icon="eva-arrow-back-outline"
+          color="dark"
+          class="q-mr-md"
+          @click="$router.go(-1)"
+        />
+        <h5 class="text-dark text-weight-bold">MEDICINE INVENTORY</h5>
+      </div>
+
+      <!-- Add New Medicine Stock -->
+      <div class="flex justify-between">
+        <q-btn
+          v-if="
+            keySession &&
+            keySession.department === 4 &&
+            keySession.permission_level !== 3
+          "
+          @click="isAddNewMedicineStock = true"
+          outline
+          label="Add Medicine"
+          icon-right="bi-capsule-pill"
+          no-caps
+          color="primary"
+          class="q-mr-xs"
+        />
+        <q-btn
+          v-if="
+            keySession &&
+            keySession.department === 4 &&
+            keySession.permission_level !== 3
+          "
+          @click="isAddNewMedicineStock = true"
+          outline
+          label="Release Medicines"
+          icon-right="volunteer_activism"
+          no-caps
+          color="primary"
+          class="q-ml-xs"
+        />
+      </div>
     </div>
 
     <div class="q-px-md">
@@ -284,23 +318,6 @@
             icon-right="eva-search-outline"
             class="button-120"
             @click="getRecords"
-          />
-        </div>
-
-        <!-- Add New Medicine Stock -->
-        <div>
-          <q-btn
-            v-if="
-              keySession &&
-              keySession.department === 4 &&
-              keySession.permission_level !== 3
-            "
-            @click="isAddNewMedicineStock = true"
-            outline
-            label="Add New Medicine Stock"
-            icon-right="bi-capsule-pill"
-            no-caps
-            color="primary"
           />
         </div>
 

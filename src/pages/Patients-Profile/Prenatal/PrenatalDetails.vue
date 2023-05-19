@@ -34,10 +34,10 @@ import { RecordDetails } from 'src/composables/Patients';
               keySession.department === 3 &&
               keySession.permission_level !== 3
             "
-            class="flex q-mb-lg"
+            class="q-mb-lg"
             style="justify-content: center; height: 30px"
           >
-            <div v-if="!editForm && !isEditCheckup" class="row">
+            <div v-if="!editForm && !isEditCheckup" class="row q-px-md">
               <q-btn
                 @click="editForm = !editForm"
                 dense
@@ -312,9 +312,11 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="°C"
-                  :style="
-                    $q.screen.width < 1366 ? 'width: 50px' : 'width: 80px'
-                  "
+                  style="width: 150px"
+                  :rules="[
+                    (val) =>
+                      val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                  ]"
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
@@ -327,9 +329,11 @@ import { RecordDetails } from 'src/composables/Patients';
                     dense
                     input-style="padding: 0"
                     input-class="text-right text-primary"
-                    :style="
-                      $q.screen.width < 1366 ? 'width: 50px' : 'width: 80px'
-                    "
+                    style="width: 70px"
+                    :rules="[
+                      (val) =>
+                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                    ]"
                   />
                   <label class="text-primary text-bold q-px-sm">/</label>
                   <q-input
@@ -339,9 +343,11 @@ import { RecordDetails } from 'src/composables/Patients';
                     dense
                     input-style="padding: 0"
                     input-class="text-right text-primary"
-                    :style="
-                      $q.screen.width < 1366 ? 'width: 50px' : 'width: 80px'
-                    "
+                    style="width: 70px"
+                    :rules="[
+                      (val) =>
+                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                    ]"
                   />
                 </div>
               </div>
@@ -355,7 +361,11 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="cm"
-                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                  style="width: 150px"
+                  :rules="[
+                    (val) =>
+                      val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                  ]"
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
@@ -368,7 +378,11 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="kg"
-                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                  style="width: 150px"
+                  :rules="[
+                    (val) =>
+                      val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                  ]"
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
@@ -381,7 +395,11 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="bpm"
-                  :style="$q.screen.width < 1366 && 'width: 150px'"
+                  style="width: 150px"
+                  :rules="[
+                    (val) =>
+                      val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                  ]"
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
@@ -394,23 +412,27 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="%"
-                  :style="
-                    $q.screen.width < 1366 ? 'width: 50px' : 'width: 80px'
-                  "
+                  style="width: 150px"
+                  :rules="[
+                    (val) =>
+                      val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                  ]"
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
                 <p class="text-weight-bold text-primary">Next Checkup</p>
                 <q-input
-                  :readonly="!isEditCheckup"
+                  readonly
                   v-model="prenatal_checkup.next_checkup"
                   outlined
                   dense
                   input-style="padding: 0"
                   input-class="text-right text-primary"
-                  :style="
-                    $q.screen.width < 1366 ? 'width: 50px' : 'width: 80px'
-                  "
+                  style="width: 150px"
+                  :rules="[
+                    (val) =>
+                      val === 0 || (val && val.length > 0) || 'Required field',
+                  ]"
                 >
                   <template v-slot:append v-if="isEditCheckup">
                     <q-icon name="event" class="cursor-pointer" color="primary">
@@ -420,8 +442,18 @@ import { RecordDetails } from 'src/composables/Patients';
                       >
                         <q-date
                           v-model="prenatal_checkup.next_checkup"
+                          :options="(date) => date >= checkup_date_prenatal"
                           mask="YYYY-MM-DD"
                         >
+                          <div class="row justify-end items-center">
+                            <q-btn
+                              v-close-popup
+                              color="primary"
+                              label="Close"
+                              dense
+                              flat
+                            />
+                          </div>
                         </q-date>
                       </q-popup-proxy>
                     </q-icon>
@@ -442,6 +474,10 @@ import { RecordDetails } from 'src/composables/Patients';
                 placeholder="Enter notes here"
                 class="q-mt-md"
                 input-style="max-height: 100px"
+                :rules="[
+                  (val) =>
+                    val === 0 || (val && val.length > 0) || 'Required field',
+                ]"
               />
             </div>
           </div>

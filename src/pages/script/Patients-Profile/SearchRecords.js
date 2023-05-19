@@ -44,6 +44,17 @@ export default {
 
     let statusArray = ["Active", "Deleted"];
 
+    loading.value = true;
+    let payload = {
+      search_by: selectedSearchBy.value,
+      search_string: searchString.value,
+      department: selectedDepartment.value,
+    };
+
+    GetRecordsForTable(payload).then((response) => {
+      loading.value = false;
+    });
+
     const searchRecords = () => {
       loading.value = true;
       let payload = {

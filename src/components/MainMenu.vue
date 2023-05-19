@@ -39,6 +39,7 @@
       label="Patients Profile"
       class="text-white"
       :default-opened="isPatientProfileOpen"
+      @click="sidebarState ? $router.push({ name: 'search-patients' }) : ''"
     >
       <q-list dense separator class="dropdown-list bg-grey-8">
         <q-item
@@ -193,6 +194,7 @@
           ? true
           : false
       "
+      @click="sidebarState ? $router.push({ name: 'medicine-inventory' }) : ''"
     >
       <q-list dense separator class="dropdown-list bg-grey-8">
         <q-item
@@ -298,6 +300,9 @@ import { useRoute, useRouter } from "vue-router";
 import { SessionStorage } from "quasar";
 
 export default defineComponent({
+  props: {
+    sidebarState: Boolean,
+  },
   name: "MainMenu",
   setup() {
     const route = useRoute();

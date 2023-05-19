@@ -382,7 +382,10 @@
         <q-scroll-area :style="{ height: $q.screen.height - 50 + 'px' }">
           <div class="q-my-lg">
             <div class="flex justify-center items-center q-mb-md">
-              <q-img src="../images/MHOLogo.png" width="70px" />
+              <q-img
+                src="../images/MHOLogo.png"
+                :width="!miniState ? '70px' : '50px'"
+              />
             </div>
             <div class="text-center" v-show="!miniState">
               <p class="text-white text-weight-bold" style="font-size: 1.2rem">
@@ -391,7 +394,7 @@
             </div>
           </div>
 
-          <MainMenu />
+          <MainMenu :sidebarState="miniState" />
         </q-scroll-area>
       </q-list>
     </q-drawer>

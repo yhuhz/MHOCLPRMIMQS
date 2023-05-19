@@ -232,6 +232,8 @@ export default {
       });
     };
 
+    getRecords();
+
     /**ADD MEDICINE RECORD**/
     let newMedicineRecord = ref({
       generic_name: null,

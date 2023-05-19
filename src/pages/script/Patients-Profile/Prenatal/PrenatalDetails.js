@@ -83,6 +83,7 @@ export default {
       }
     );
 
+    let checkup_date_prenatal = ref();
     watch(
       () => _.cloneDeep(RecordArrays.value),
       () => {}
@@ -95,6 +96,8 @@ export default {
     RecordArrays.value.forEach((r) => {
       if (r.checkup_date === selectedCheckup.value) {
         prenatal_checkup.value = r;
+        checkup_date_prenatal.value =
+          prenatal_checkup.value.checkup_date.replaceAll("-", "/");
       }
     });
 
@@ -102,6 +105,8 @@ export default {
       RecordArrays.value.forEach((r) => {
         if (r.checkup_date === selectedCheckup.value) {
           prenatal_checkup.value = r;
+          checkup_date_prenatal.value =
+            prenatal_checkup.value.checkup_date.replaceAll("-", "/");
         }
       });
     };
@@ -242,6 +247,9 @@ export default {
         checkup_date: selectedCheckup.value,
         comments: null,
       };
+
+      checkup_date_prenatal.value =
+        prenatal_checkup.value.checkup_date.replaceAll("-", "/");
     };
 
     const addPrenatalCheckupFunction = () => {
@@ -298,6 +306,7 @@ export default {
       addPrenatalCheckupFunction,
       submitFunction,
       checkup_date,
+      checkup_date_prenatal,
     };
   },
 };
