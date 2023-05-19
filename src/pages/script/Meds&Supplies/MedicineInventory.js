@@ -6,7 +6,15 @@ import {
   MedicinesList,
   AddMedicine,
   EditMedicine,
+  FindMedicinesForRelease,
+  AddMultipleMedicineRelease,
 } from "src/composables/Medicine";
+import {
+  FindUsersByName,
+  FindUsersByID,
+  FindUsersDepartment,
+} from "src/composables/Manage_Users";
+import { FindPatients } from "src/composables/Patients";
 import DeleteMedicineConfirmation from "../../Components/DeleteMedicineConfirmation.vue";
 import { ToggleDialogState } from "../../../composables/Triggers";
 import MHCDialog from "../../../components/MHCDialog.vue";
@@ -408,6 +416,242 @@ export default {
       }
     };
 
+    /** MEDICINE RELEASE **/
+    let isMedicineRelease = ref(false);
+    let patientDoctor = ref("Patient");
+    let patient_id = ref(null);
+    let doctor_id = ref(null);
+    let selectedDepartment = ref(null);
+    let filtersDepartment = ref([]);
+
+    if (patientDoctor.value === "Patient") {
+      filtersDepartment.value = [
+        "Outpatient Department",
+        "Dental",
+        "Prenatal",
+        "Immunization",
+      ];
+    } else {
+      filtersDepartment.value = [
+        "Outpatient Department",
+        "Dental",
+        "Prenatal and Immunization",
+        "Pharmacy",
+        "Front Desk",
+        "Admin Office",
+      ];
+    }
+
+    const changePatientDoctor = () => {
+      patient_id.value = null;
+      doctor_id.value = null;
+      selectedDepartment.value = null;
+
+      if (patientDoctor.value === "Patient") {
+        filtersDepartment.value = [
+          "Outpatient Department",
+          "Dental",
+          "Prenatal",
+          "Immunization",
+        ];
+      } else {
+        filtersDepartment.value = [
+          "Outpatient Department",
+          "Dental",
+          "Prenatal and Immunization",
+          "Pharmacy",
+          "Front Desk",
+          "Admin Office",
+        ];
+      }
+    };
+
+    // let medicineArray = ref([
+    //   {
+    //     medicine_details: { medicine_name: null, medicine_id: null },
+    //     quantity: null,
+    //   },
+    // ]);
+
+    let medicineArray = ref([]);
+
+    const addMedicine = () => {
+      medicineArray.value.push({
+        medicine_details: { medicine_name: null, medicine_id: null },
+        quantity: null,
+      });
+    };
+
+    const removeMedicine = (index) => {
+      medicineArray.value.splice(index, 1);
+    };
+
+    let medicineList = ref([]);
+    const medicineFilterFunction = (val, update, abort) => {
+      if (val.length > 3) {
+        update(() => {
+          const needle = String(val.toLowerCase());
+          FindMedicinesForRelease(needle).then((response) => {
+            medicineList.value = [];
+            if (response.status === "success") {
+              let Medicines = ref([]);
+              Medicines.value = response.data;
+              Medicines.value.forEach((m) => {
+                let selectValues = {
+                  medicine_name:
+                    m.generic_name +
+                    " - " +
+                    m.brand_name +
+                    " (" +
+                    m.exp_date +
+                    ")" +
+                    " (" +
+                    (m.quantity - m.quantity_released) +
+                    ")",
+                  medicine_id: m.medicine_id,
+                };
+                medicineList.value.push(selectValues);
+              });
+            }
+          });
+        });
+      } else {
+        abort();
+      }
+    };
+
+    let patientOptions = ref([]);
+
+    const patientFilterFunction = (val, update, abort) => {
+      if (val && (val.length > 5 || !isNaN(val))) {
+        update(() => {
+          if (isNaN(val)) {
+            const needle = String(val.toLowerCase());
+            FindPatients({ name_string: needle }).then((response) => {
+              patientOptions.value = [];
+              if (response.status === "success") {
+                let Patients = ref([]);
+                Patients.value = response.data;
+                Patients.value.forEach((p) => {
+                  let selectValues = {
+                    patient_name: p.patient_id + " - " + p.name,
+                    patient_id: p.patient_id,
+                  };
+                  patientOptions.value.push(selectValues);
+                });
+              }
+            });
+          } else {
+            FindPatients({ id_string: val }).then((response) => {
+              patientOptions.value = [];
+              if (response.status === "success") {
+                let Patients = ref([]);
+                Patients.value = response.data;
+                Patients.value.forEach((p) => {
+                  let selectValues = {
+                    patient_name: p.patient_id + " - " + p.name,
+                    patient_id: p.patient_id,
+                  };
+                  patientOptions.value.push(selectValues);
+                });
+              }
+            });
+          }
+        });
+      } else {
+        abort();
+      }
+    };
+
+    let userOptions = ref([]);
+    const userFilterFunction = (val, update, abort) => {
+      if (val.length > 5 || !isNaN(val)) {
+        update(() => {
+          if (isNaN(val)) {
+            const needle = String(val.toLowerCase());
+            FindUsersByName(needle).then((response) => {
+              userOptions.value = [];
+              if (response.status === "success") {
+                let Users = ref([]);
+                Users.value = response.data;
+                Users.value.forEach((p) => {
+                  let selectValues = {
+                    user_name: p.id + " - " + p.user_name,
+                    department: p.department,
+                    user_id: p.id,
+                  };
+                  userOptions.value.push(selectValues);
+                });
+              }
+            });
+          } else {
+            FindUsersByID(val).then((response) => {
+              userOptions.value = [];
+              if (response.status === "success") {
+                let Users = ref([]);
+                Users.value = response.data;
+                Users.value.forEach((p) => {
+                  let selectValues = {
+                    user_name: p.id + " - " + p.user_name,
+                    department: p.department,
+                    user_id: p.id,
+                  };
+                  userOptions.value.push(selectValues);
+                });
+              }
+            });
+          }
+        });
+      } else {
+        abort();
+      }
+    };
+
+    const findDepartment = () => {
+      if (doctor_id.value !== null) {
+        FindUsersDepartment(doctor_id.value).then((response) => {
+          selectedDepartment.value =
+            filtersDepartment.value[response.data[0].department - 1];
+        });
+      } else {
+        selectedDepartment.value = null;
+      }
+    };
+
+    const addMedicineReleases = () => {
+      let payload = {
+        patient_id: patient_id.value,
+        doctor_id: doctor_id.value,
+        department:
+          filtersDepartment.value.indexOf(selectedDepartment.value) + 1,
+        released_by: keySession && keySession.user_id,
+        medicine_array: medicineArray.value,
+      };
+
+      Loading.show();
+      AddMultipleMedicineRelease(payload).then((response) => {
+        Loading.hide();
+        isMedicineRelease.value = false;
+        let status = response.status === "success" ? 0 : 1;
+
+        $q.notify({
+          type: status === 0 ? "positive" : "negative",
+          classes: "text-white",
+          message:
+            status === 0
+              ? "Medicine releases added successfully"
+              : "Failed to add medicine releases",
+        });
+
+        patient_id.value = null;
+        doctor_id.value = null;
+        selectedDepartment.value = null;
+        medicineArray.value = [];
+
+        getRecords();
+      });
+    };
+
     return {
       selectedSearchBy,
       searchBy,
@@ -435,6 +679,24 @@ export default {
       keySession,
       dateToday,
       getExpDateClass,
+      isMedicineRelease,
+      medicineArray,
+      medicineList,
+      medicineFilterFunction,
+      addMedicine,
+      removeMedicine,
+      patientDoctor,
+      patient_id,
+      doctor_id,
+      changePatientDoctor,
+      patientFilterFunction,
+      patientOptions,
+      userFilterFunction,
+      userOptions,
+      findDepartment,
+      selectedDepartment,
+      filtersDepartment,
+      addMedicineReleases,
     };
   },
 };

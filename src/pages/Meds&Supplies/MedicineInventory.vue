@@ -13,38 +13,6 @@
         />
         <h5 class="text-dark text-weight-bold">MEDICINE INVENTORY</h5>
       </div>
-
-      <!-- Add New Medicine Stock -->
-      <div class="flex justify-between">
-        <q-btn
-          v-if="
-            keySession &&
-            keySession.department === 4 &&
-            keySession.permission_level !== 3
-          "
-          @click="isAddNewMedicineStock = true"
-          outline
-          label="Add Medicine"
-          icon-right="bi-capsule-pill"
-          no-caps
-          color="primary"
-          class="q-mr-xs"
-        />
-        <q-btn
-          v-if="
-            keySession &&
-            keySession.department === 4 &&
-            keySession.permission_level !== 3
-          "
-          @click="isAddNewMedicineStock = true"
-          outline
-          label="Release Medicines"
-          icon-right="volunteer_activism"
-          no-caps
-          color="primary"
-          class="q-ml-xs"
-        />
-      </div>
     </div>
 
     <div class="q-px-md">
@@ -566,10 +534,256 @@
             </div>
           </q-card>
         </q-dialog>
+
+        <!-- Medicine Release -->
+        <q-dialog v-model="isMedicineRelease" persistent>
+          <q-card style="min-width: 500px; max-width: 750px">
+            <div class="q-pa-lg">
+              <div class="flex justify-end">
+                <q-btn
+                  v-close-popup
+                  dense
+                  color="negative"
+                  size="0.375rem"
+                  icon="eva-close-outline"
+                />
+              </div>
+              <p
+                class="text-primary text-weight-bold text-24 text-center q-mb-xl"
+              >
+                <q-icon name="volunteer_activism" class="q-mr-xs q-gutter-xs" />
+                RELEASE MEDICINES
+              </p>
+
+              <q-form @submit="addMedicineReleases">
+                <div class="flex">
+                  <q-radio
+                    v-model="patientDoctor"
+                    checked-icon="task_alt"
+                    unchecked-icon="panorama_fish_eye"
+                    val="Patient"
+                    label="Patient"
+                    @update:model-value="changePatientDoctor"
+                  />
+                  <q-radio
+                    v-model="patientDoctor"
+                    checked-icon="task_alt"
+                    unchecked-icon="panorama_fish_eye"
+                    val="Personnel"
+                    label="Personnel"
+                    @update:model-value="changePatientDoctor"
+                  />
+                </div>
+
+                <div class="row q-mt-sm">
+                  <div class="col q-mr-md" v-if="patientDoctor === 'Patient'">
+                    <label class="text-dark"
+                      >Patient ID <span class="text-negative">*</span></label
+                    >
+                    <q-select
+                      outlined
+                      hide-bottom-space
+                      v-model="patient_id"
+                      @filter="patientFilterFunction"
+                      option-label="patient_name"
+                      option-value="patient_id"
+                      :options="patientOptions"
+                      use-input
+                      emit-value
+                      map-options
+                      dense
+                      input-style="padding: 0"
+                      input-class="text-right text-primary"
+                      :rules="[
+                        (val) =>
+                          (val && (val.length > 0 || !isNaN(val))) ||
+                          'Required field',
+                      ]"
+                    />
+                  </div>
+
+                  <div class="col q-mr-md" v-else>
+                    <label class="text-dark"
+                      >Personnel ID <span class="text-negative">*</span></label
+                    >
+
+                    <q-select
+                      outlined
+                      hide-bottom-space
+                      v-model="doctor_id"
+                      @filter="userFilterFunction"
+                      option-label="user_name"
+                      option-value="user_id"
+                      :options="userOptions"
+                      use-input
+                      emit-value
+                      map-options
+                      dense
+                      input-style="padding: 0"
+                      input-class="text-right text-primary"
+                      :rules="[
+                        (val) =>
+                          (val && (val.length > 0 || !isNaN(val))) ||
+                          'Required field',
+                      ]"
+                      @update:model-value="findDepartment"
+                    />
+                  </div>
+
+                  <div class="col-5">
+                    <label class="text-dark"
+                      >Department <span class="text-negative">*</span></label
+                    >
+                    <q-select
+                      hide-bottom-space
+                      :disable="patientDoctor !== 'Patient'"
+                      :options="filtersDepartment"
+                      dense
+                      outlined
+                      v-model="selectedDepartment"
+                      :rules="[
+                        (val) => (val && val.length > 0) || 'Required field',
+                      ]"
+                    />
+                  </div>
+                </div>
+
+                <q-separator class="q-my-md" color="primary" />
+
+                <div v-if="(patient_id || doctor_id) && selectedDepartment">
+                  <div class="q-mb-md">
+                    <q-btn
+                      v-if="
+                        medicineArray.length === 0 ||
+                        (medicineArray[medicineArray.length - 1]
+                          .medicine_details.medicine_id !== null &&
+                          medicineArray[medicineArray.length - 1].quantity !==
+                            null &&
+                          medicineArray[medicineArray.length - 1]
+                            .medicine_details.medicine_id !== '' &&
+                          medicineArray[medicineArray.length - 1].quantity !==
+                            '')
+                      "
+                      label="Add"
+                      icon="add_circle"
+                      color="primary"
+                      outline
+                      no-caps
+                      @click="addMedicine"
+                    />
+                  </div>
+
+                  <div class="row">
+                    <label class="col text-dark text-bold q-mr-md"
+                      >Medicine Name</label
+                    >
+                    <label class="col-2 text-dark text-bold q-mr-md"
+                      >Quantity</label
+                    >
+                    <label
+                      v-if="medicineArray.length > 1"
+                      class="col-1 text-dark"
+                      style="visibility: hidden"
+                      >Quantity</label
+                    >
+                  </div>
+
+                  <div v-for="(medicine, index) in medicineArray" :key="index">
+                    <div class="row q-mb-md">
+                      <q-select
+                        v-model="medicine.medicine_details"
+                        dense
+                        outlined
+                        :options="medicineList"
+                        @filter="medicineFilterFunction"
+                        option-label="medicine_name"
+                        option-value="medicine_id"
+                        use-input
+                        emit-value
+                        map-options
+                        new-value-mode="add-unique"
+                        class="col q-mr-md"
+                      />
+
+                      <q-input
+                        dense
+                        outlined
+                        class="col-2 q-mr-md"
+                        input-class="text-dark"
+                        v-model="medicine.quantity"
+                        hide-bottom-space
+                        :rules="[(val) => !isNaN(val) || 'Numbers only']"
+                      />
+
+                      <q-icon
+                        v-if="medicineArray.length > 1"
+                        name="delete"
+                        color="negative"
+                        class="col-1 cursor-pointer"
+                        size="30px"
+                        @click="removeMedicine(index)"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <q-btn
+                      v-if="
+                        medicineArray.length > 0 &&
+                        medicineArray[medicineArray.length - 1].medicine_details
+                          .medicine_id !== null &&
+                        medicineArray[medicineArray.length - 1].quantity !==
+                          null &&
+                        medicineArray[medicineArray.length - 1].medicine_details
+                          .medicine_id !== '' &&
+                        medicineArray[medicineArray.length - 1].quantity !== ''
+                      "
+                      label="Submit"
+                      type="submit"
+                      no-caps
+                      color="primary"
+                    />
+                  </div>
+                </div>
+              </q-form>
+            </div>
+          </q-card>
+        </q-dialog>
       </div>
 
+      <div class="flex justify-start q-mt-lg">
+        <!-- Add New Medicine Stock -->
+        <q-btn
+          v-if="
+            keySession &&
+            keySession.department === 4 &&
+            keySession.permission_level !== 3
+          "
+          @click="isAddNewMedicineStock = true"
+          outline
+          label="Add Medicine"
+          icon-right="bi-capsule-pill"
+          no-caps
+          color="primary"
+          class="q-mr-xs"
+        />
+        <!-- Medicine Release -->
+        <q-btn
+          v-if="
+            keySession &&
+            keySession.department === 4 &&
+            keySession.permission_level !== 3
+          "
+          @click="isMedicineRelease = true"
+          outline
+          label="Release Medicines"
+          icon-right="volunteer_activism"
+          no-caps
+          color="primary"
+          class="q-ml-xs"
+        />
+      </div>
       <!-- Table -->
-      <div class="q-my-xl table">
+      <div class="q-mt-md table">
         <q-table
           :columns="columns"
           :rows="MedicinesList"
@@ -639,7 +853,7 @@
                     <q-item
                       v-if="
                         keySession &&
-                        keySession === 4 &&
+                        keySession.department === 4 &&
                         keySession.permission_level !== 3
                       "
                       clickable
@@ -656,7 +870,7 @@
                     <q-item
                       v-if="
                         keySession &&
-                        keySession === 4 &&
+                        keySession.department === 4 &&
                         keySession.permission_level !== 3
                       "
                       clickable

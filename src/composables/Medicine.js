@@ -64,7 +64,25 @@ let FindMedicines = (payload) => {
       })
       .then((response) => {
         // console.log(response.data);
-        MedicineDetails.value = response.data.data;
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let FindMedicinesForRelease = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: {
+          medicine_name: payload,
+          for_release: true,
+        },
+      })
+      .then((response) => {
+        // console.log(response.data);
         resolve(response.data);
       })
       .catch((error) => {
@@ -153,6 +171,24 @@ let AddMedicineRelease = (payload) => {
             MedicineRelease.value = [];
             MedicineRelease.value.push(response.data.data);
           }
+        } else {
+          console.log(response.data);
+        }
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+let AddMultipleMedicineRelease = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(pathlink, payload)
+      .then((response) => {
+        // console.log(response.data);
+        if (response.data.status === "success") {
         } else {
           console.log(response.data);
         }
@@ -293,4 +329,6 @@ export {
   FindMedicineReleasePerPatient,
   MedReleasePerPatient,
   FindMedicines,
+  FindMedicinesForRelease,
+  AddMultipleMedicineRelease,
 };
