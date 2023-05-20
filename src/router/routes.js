@@ -41,7 +41,7 @@ const routes = [
         component: () => import("pages/Patients-Profile/NewPatientProfile.vue"),
       },
       {
-        path: ":id/:queue?/:queue_department?/patient-details",
+        path: ":id/:queue?/:department_queue?/patient-details",
         name: "patient-details",
         component: () => import("pages/Patients-Profile/PatientDetails.vue"),
         children: [

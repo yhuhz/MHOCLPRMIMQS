@@ -73,7 +73,10 @@ export default {
       dept.value = 7;
     }
 
-    GetQueueSpecific(dept.value);
+    Loading.show();
+    GetQueueSpecific(dept.value).then((response) => {
+      Loading.hide();
+    });
 
     const getDepartments = () => {
       currentPatient.value = null;
@@ -92,7 +95,10 @@ export default {
         dept.value = 7;
       }
 
-      GetQueueSpecific(dept.value);
+      Loading.show();
+      GetQueueSpecific(dept.value).then((response) => {
+        Loading.hide();
+      });
     };
 
     const removeFromQueue = (queue_id) => {

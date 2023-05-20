@@ -195,6 +195,7 @@ import { RecordDetails } from 'src/composables/Patients';
               dense
               input-class="text-primary"
               class="q-mt-md"
+              placeholder="Enter general notes here"
               input-style="min-height: 80px; max-height: 80px"
               v-model="patientRecordInfo.midwifes_notes"
               :rules="[(val) => (val && val.length > 0) || 'Required field']"
@@ -300,7 +301,7 @@ import { RecordDetails } from 'src/composables/Patients';
             </div>
           </div>
 
-          <div style="position: relative">
+          <div v-if="selectedCheckup" style="position: relative">
             <div>
               <div class="flex items-baseline justify-between q-px-md">
                 <p class="text-weight-bold text-primary">Temperature</p>
@@ -463,27 +464,195 @@ import { RecordDetails } from 'src/composables/Patients';
             </div>
             <q-separator class="separator-2 q-mx-md" color="primary" />
 
-            <div class="q-px-md q-mb-sm">
+            <div class="q-px-md q-mb-md">
               <q-input
                 :readonly="!isEditCheckup"
                 v-model="prenatal_checkup.comments"
                 autogrow
+                hide-bottom-space
                 outlined
                 dense
                 input-class="text-primary"
                 placeholder="Enter notes here"
-                class="q-mt-md"
-                input-style="max-height: 100px"
+                class="q-mt-md q-mb-sm"
+                input-style="min-height:100px; max-height: 100px"
                 :rules="[
                   (val) =>
                     val === 0 || (val && val.length > 0) || 'Required field',
                 ]"
+              />
+              <q-btn
+                icon="medication"
+                dense
+                outline
+                no-caps
+                color="primary"
+                :label="
+                  isEditCheckup && keySession && keySession.department === 3
+                    ? 'Edit Prescription'
+                    : 'View Prescription'
+                "
+                class="q-px-md"
+                @click="isPrescription = !isPrescription"
               />
             </div>
           </div>
         </q-form>
       </div>
     </div>
+
+    <!-- Prescription -->
+    <q-dialog v-model="isPrescription" persistent>
+      <q-card
+        class="q-pa-lg"
+        style="overflow: hidden; min-width: 500px; max-width: 750px"
+      >
+        <!-- <div class="text-center">
+          <q-icon name="assignment" color="primary" size="100px" />
+        </div> -->
+
+        <div class="flex justify-between items-center q-mt-md">
+          <h5 class="text-bold text-dark q-my-none">
+            <q-icon name="assignment" color="primary" /> Prescription
+          </h5>
+          <q-btn
+            v-if="
+              isEditCheckup &&
+              keySession &&
+              keySession.department === 3 &&
+              (prenatal_checkup.prescription.length === 0 ||
+                (prenatal_checkup.prescription[
+                  prenatal_checkup.prescription.length - 1
+                ].medicine_name !== '' &&
+                  prenatal_checkup.prescription[
+                    prenatal_checkup.prescription.length - 1
+                  ].quantity !== ''))
+            "
+            outline
+            color="primary"
+            icon="add_circle"
+            label="Add"
+            no-caps
+            style="border-radius: 5px"
+            @click="addPrescription"
+          />
+        </div>
+
+        <q-separator color="primary" class="q-my-md" />
+
+        <div class="q-mb-md">
+          <div
+            v-if="isEditCheckup && keySession && keySession.department === 3"
+            class="text-center"
+          >
+            <p class="text-grey-7 text-caption">
+              If the medicine is not on the list, please input the medicine name
+              and press enter
+            </p>
+          </div>
+          <div class="row">
+            <label class="col text-dark text-bold q-mr-md">Medicine Name</label>
+            <label class="col-2 text-dark text-bold q-mr-md">Quantity</label>
+            <label
+              v-if="isEditCheckup && keySession && keySession.department === 3"
+              class="col-2 text-dark"
+              style="visibility: hidden"
+              >Quantity</label
+            >
+          </div>
+          <div
+            v-for="(prescriptions, index) in prenatal_checkup.prescription"
+            :key="index"
+          >
+            <div class="row q-mb-md">
+              <!-- <q-input
+                :readonly="!editForm"
+                autogrow
+                dense
+                outlined
+                input-class="text-primary"
+                class="col q-mr-md"
+                v-model="prescriptions.medicine_name"
+                hide-bottom-space
+              /> -->
+
+              <q-select
+                v-model="prescriptions.medicine_name"
+                dense
+                outlined
+                :readonly="
+                  !isEditCheckup || (keySession && keySession.department !== 3)
+                "
+                :options="medicineList"
+                @filter="medicineFilterFunction"
+                option-label="medicine_name"
+                option-value="medicine_name"
+                use-chips
+                use-input
+                emit-value
+                map-options
+                new-value-mode="add-unique"
+                class="col q-mr-md"
+              />
+              <q-input
+                :readonly="
+                  !isEditCheckup || (keySession && keySession.department !== 3)
+                "
+                autogrow
+                dense
+                outlined
+                class="col-2 q-mr-md"
+                input-class="text-dark"
+                v-model="prescriptions.quantity"
+                hide-bottom-space
+                :rules="[(val) => !isNaN(val) || 'Numbers only']"
+              />
+              <!-- <q-btn
+                icon="delete"
+                dense
+                outline
+                color="negative"
+                class="col-2"
+                size="md"
+                @click="removePrescription"
+              /> -->
+              <q-icon
+                v-if="
+                  isEditCheckup && keySession && keySession.department === 3
+                "
+                name="delete"
+                color="negative"
+                class="col-2"
+                style="cursor: pointer"
+                size="md"
+                @click="removePrescription(index)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <q-btn
+            v-if="
+              !isEditCheckup ||
+              prenatal_checkup.prescription.length === 0 ||
+              (prenatal_checkup.prescription[
+                prenatal_checkup.prescription.length - 1
+              ].medicine_name !== '' &&
+                prenatal_checkup.prescription[
+                  prenatal_checkup.prescription.length - 1
+                ].quantity !== '')
+            "
+            class="col"
+            icon="check"
+            label="Done"
+            color="primary"
+            no-caps
+            @click="closePrescription"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
 
     <MHCDialog :content="$options.components.DeletePatientRecordConfirmation" />
   </div>

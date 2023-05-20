@@ -31,6 +31,8 @@ export default {
       router.push({ name: "login" });
     }
 
+    let date_today = new Date().toLocaleDateString("en-CA");
+
     Loading.show();
 
     FindPatient({ patient_id: route.params.id }).then((response) => {
@@ -42,6 +44,58 @@ export default {
     let sex = ["Male", "Female"];
     let departmentList = ref([]);
     let selectedDepartment = ref(null);
+
+    if (
+      keySession &&
+      (keySession.department === 1 || keySession.department === 5)
+    ) {
+      console.log("test");
+      departmentList.value = ["OPD"];
+      selectedDepartment.value = route.params.department
+        ? route.params.department
+        : route.params.department_queue
+        ? route.params.department_queue
+        : "OPD";
+    } else if (keySession && keySession.department === 2) {
+      departmentList.value = ["Dental"];
+      selectedDepartment.value = route.params.department
+        ? route.params.department
+        : route.params.department_queue
+        ? route.params.department_queue
+        : "Dental";
+    } else if (keySession && keySession.department === 3) {
+      if (PatientDetails.value.sex === 1) {
+        departmentList.value = ["Prenatal", "Immunization"];
+        selectedDepartment.value = route.params.department
+          ? route.params.department
+          : route.params.department_queue
+          ? route.params.department_queue
+          : "Prenatal";
+      } else {
+        departmentList.value = ["Immunization"];
+        selectedDepartment.value = route.params.department
+          ? route.params.department
+          : route.params.department_queue
+          ? route.params.department_queue
+          : "Immunization";
+      }
+    } else {
+      if (PatientDetails.value.sex != 1) {
+        departmentList.value = ["OPD", "Dental", "Immunization"];
+        selectedDepartment.value = route.params.department
+          ? route.params.department
+          : route.params.department_queue
+          ? route.params.department_queue
+          : "OPD";
+      } else {
+        departmentList.value = ["OPD", "Dental", "Prenatal", "Immunization"];
+        selectedDepartment.value = route.params.department
+          ? route.params.department
+          : route.params.department_queue
+          ? route.params.department_queue
+          : "OPD";
+      }
+    }
 
     watch(
       () => _.cloneDeep(PatientDetails.value),
@@ -86,57 +140,6 @@ export default {
       }
     );
 
-    if (
-      keySession &&
-      (keySession.department === 1 || keySession.department === 5)
-    ) {
-      departmentList.value = ["OPD"];
-      selectedDepartment.value = route.params.department
-        ? route.params.department
-        : route.params.department_queue
-        ? route.params.department_queue
-        : "OPD";
-    } else if (keySession && keySession.department === 2) {
-      departmentList.value = ["Dental"];
-      selectedDepartment.value = route.params.department
-        ? route.params.department
-        : route.params.department_queue
-        ? route.params.department_queue
-        : "OPD";
-    } else if (keySession && keySession.department === 3) {
-      if (PatientDetails.value.sex === 1) {
-        departmentList.value = ["Prenatal", "Immunization"];
-        selectedDepartment.value = route.params.department
-          ? route.params.department
-          : route.params.department_queue
-          ? route.params.department_queue
-          : "Prenatal";
-      } else {
-        departmentList.value = ["Immunization"];
-        selectedDepartment.value = route.params.department
-          ? route.params.department
-          : route.params.department_queue
-          ? route.params.department_queue
-          : "Immunization";
-      }
-    } else {
-      if (PatientDetails.value.sex != 1) {
-        departmentList.value = ["OPD", "Dental", "Immunization"];
-        selectedDepartment.value = route.params.department
-          ? route.params.department
-          : route.params.department_queue
-          ? route.params.department_queue
-          : "OPD";
-      } else {
-        departmentList.value = ["OPD", "Dental", "Prenatal", "Immunization"];
-        selectedDepartment.value = route.params.department
-          ? route.params.department
-          : route.params.department_queue
-          ? route.params.department_queue
-          : "OPD";
-      }
-    }
-
     if (selectedDepartment.value != null) {
       GetRecords({
         patient_id: route.params.id,
@@ -170,29 +173,6 @@ export default {
 
     let isbtnDisabled = ref(true);
 
-    const changeDept = () => {
-      if (
-        keySession &&
-        keySession.department === 5 &&
-        selectedDepartment.value === "OPD"
-      ) {
-        isbtnDisabled.value = false;
-      } else if (
-        keySession &&
-        keySession.department === 2 &&
-        selectedDepartment.value === "Dental"
-      ) {
-        isbtnDisabled.value = false;
-      } else if (
-        keySession &&
-        keySession.department === 3 &&
-        (selectedDepartment.value === "Prenatal" ||
-          selectedDepartment.value === "Immunization")
-      ) {
-        isbtnDisabled.value = false;
-      }
-    };
-
     let departments = ["OPD", "Dental", "Prenatal", "Immunization"];
 
     if (selectedDepartment.value === "Immunization") {
@@ -222,7 +202,7 @@ export default {
       }).then((response) => {});
 
       if (selectedDepartment.value === "Immunization") {
-        if (keySession.department === 3 || keySession.department === 5) {
+        if (keySession.department === 3) {
           isbtnDisabled.value = false;
         } else {
           isbtnDisabled.value = true;
@@ -446,6 +426,7 @@ export default {
       callInNextPatient,
       doneCurrentPatient,
       isDonePatient,
+      date_today,
     };
   },
 };

@@ -68,7 +68,7 @@
                             params: {
                               id: currentPatient.patient_id,
                               queue: currentPatient.queue_id,
-                              queue_department:
+                              department_queue:
                                 keySession.department === 5
                                   ? 'OPD'
                                   : selectedDepartment,

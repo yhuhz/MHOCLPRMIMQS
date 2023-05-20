@@ -68,7 +68,7 @@ let FindRecordDetails = (payload, department) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (
           department === "OPD" ||
           department === "Prenatal" ||
@@ -182,6 +182,25 @@ let UpdateRecord = (payload, department) => {
   });
 };
 
+let UpdatePrenatalCheckupRecord = (payload) => {
+  let pathlink =
+    "http://localhost/MHOCLPRMIMQS PHP/Patient Records/prenatal_api.php";
+
+  return new Promise((resolve, reject) => {
+    axios
+      .put(pathlink, payload)
+      .then((response) => {
+        // console.log("res", response);
+        if (response.data.status === "success") {
+        } else [console.log(response.data)];
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 /**
  * This function accepts parameters of an array like this [1,2,3,4] then
  * delete the data in the RecordDetails based on this parameter.
@@ -229,4 +248,5 @@ export {
   HealthRecords,
   GetRecordsForTable,
   AddPrenatalCheckup,
+  UpdatePrenatalCheckupRecord,
 };

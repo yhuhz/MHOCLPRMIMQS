@@ -331,7 +331,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 no-caps
                 color="primary"
                 :label="
-                  editForm && keySession && keySession !== 1
+                  editForm && keySession && keySession.department === 1
                     ? 'Edit Prescription'
                     : 'View Prescription'
                 "

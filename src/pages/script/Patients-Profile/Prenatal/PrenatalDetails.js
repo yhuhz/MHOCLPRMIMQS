@@ -10,8 +10,10 @@ import {
   RecordDetails,
   UpdateRecord,
   AddPrenatalCheckup,
+  UpdatePrenatalCheckupRecord,
   RecordArrays,
 } from "src/composables/Records";
+import { FindMedicines } from "src/composables/Medicine";
 import { FindUsersByName } from "src/composables/Manage_Users";
 import { Loading, SessionStorage, useQuasar, date } from "quasar";
 
@@ -32,9 +34,9 @@ export default {
 
     let patientRecordInfo = ref({});
     let prenatal_checkup = ref([]);
-    let toggleNewCheckup = ref(false);
     let selectedCheckup = ref(null);
     let checkupDateArray = ref([]);
+    let prescription = ref([]);
 
     FindRecordDetails(route.params.record_id, route.params.department).then(
       (response) => {
@@ -205,7 +207,7 @@ export default {
 
       Loading.show();
 
-      UpdateRecord(payload, route.params.department).then((response) => {
+      UpdatePrenatalCheckupRecord(payload).then((response) => {
         Loading.hide();
 
         let status = response.status === "success" ? 0 : 1;
@@ -246,6 +248,7 @@ export default {
         next_checkup: null,
         checkup_date: selectedCheckup.value,
         comments: null,
+        prescription: [],
       };
 
       checkup_date_prenatal.value =
@@ -256,6 +259,7 @@ export default {
       Loading.show();
       AddPrenatalCheckup(prenatal_checkup.value).then((response) => {
         Loading.hide();
+        isEditCheckup.value = false;
 
         let status = response.status === "success" ? 0 : 1;
 
@@ -285,6 +289,60 @@ export default {
       ToggleDialogState();
     };
 
+    /**PRESCRIPTIONS**/
+    let isPrescription = ref(false);
+
+    let medicineList = ref([]);
+    const medicineFilterFunction = (val, update, abort) => {
+      if (val.length > 3) {
+        update(() => {
+          const needle = String(val.toLowerCase());
+          FindMedicines(needle).then((response) => {
+            medicineList.value = [];
+            if (response.status === "success") {
+              let Medicines = ref([]);
+              Medicines.value = response.data;
+              Medicines.value.forEach((m) => {
+                let selectValues = {
+                  medicine_name: m.generic_name + " - " + m.brand_name,
+                };
+                medicineList.value.push(selectValues);
+              });
+            }
+          });
+        });
+      } else {
+        abort();
+      }
+    };
+
+    const addPrescription = () => {
+      prenatal_checkup.value.prescription.push({
+        medicine_name: "",
+        quantity: "",
+      });
+    };
+
+    const removePrescription = (index) => {
+      prenatal_checkup.value.prescription.splice(index, 1);
+    };
+
+    const closePrescription = () => {
+      isPrescription.value = false;
+
+      if (
+        prenatal_checkup.value.prescription.length !== 0 &&
+        (prenatal_checkup.value.prescription[
+          prenatal_checkup.value.prescription.length - 1
+        ].medicine_name === "" ||
+          prenatal_checkup.value.prescription[
+            prenatal_checkup.value.prescription.length - 1
+          ].quantity === "")
+      ) {
+        removePrescription(prenatal_checkup.value.prescription.length - 1);
+      }
+    };
+
     return {
       RecordDetails,
       patientRecordInfo,
@@ -307,6 +365,13 @@ export default {
       submitFunction,
       checkup_date,
       checkup_date_prenatal,
+      isPrescription,
+      medicineList,
+      medicineFilterFunction,
+      prescription,
+      closePrescription,
+      addPrescription,
+      removePrescription,
     };
   },
 };

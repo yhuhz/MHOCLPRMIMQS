@@ -111,6 +111,8 @@ export default {
       }
     };
 
+    getHouseholds();
+
     FindHouseholdByID({
       status: status_array_model.value,
       search_string: searchValue.value,
