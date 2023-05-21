@@ -180,6 +180,7 @@
           <div
             class="col"
             v-if="
+              PatientRecords &&
               (PatientRecords.length === 0 ||
                 PatientRecords[0].date !== date_today) &&
               keySession &&

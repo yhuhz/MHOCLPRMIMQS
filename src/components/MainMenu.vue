@@ -189,6 +189,7 @@
       :default-opened="
         $route.name === 'medicine-inventory' ||
         $route.name === 'medicine-inventory-details' ||
+        $route.name === 'medicine-release' ||
         $route.name === 'supply-inventory' ||
         $route.name === 'supply-inventory-details'
           ? true
@@ -211,6 +212,21 @@
             <q-icon size="xs" name="fa fa-pills" class="q-ml-md" />
           </q-item-section>
           <q-item-section class="q-ml-md">Medicine Inventory</q-item-section>
+        </q-item>
+
+        <q-item
+          clickable
+          :class="
+            $route.name === 'medicine-release'
+              ? 'bg-primary list-text text-white'
+              : 'list-text text-white'
+          "
+          @click="$router.push({ name: 'medicine-release' })"
+        >
+          <q-item-section avatar>
+            <q-icon size="xs" name="volunteer_activism" class="q-ml-md" />
+          </q-item-section>
+          <q-item-section class="q-ml-md">Medicine Release</q-item-section>
         </q-item>
 
         <q-item

@@ -49,7 +49,6 @@ export default {
       keySession &&
       (keySession.department === 1 || keySession.department === 5)
     ) {
-      console.log("test");
       departmentList.value = ["OPD"];
       selectedDepartment.value = route.params.department
         ? route.params.department
@@ -132,11 +131,6 @@ export default {
         ) {
           isbtnDisabled.value = false;
         }
-
-        GetRecords({
-          patient_id: route.params.id,
-          record_type: selectedDepartment.value,
-        });
       }
     );
 
