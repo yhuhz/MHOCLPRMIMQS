@@ -268,7 +268,7 @@
           </div>
 
           <!-- Add New Medicine Release -->
-          <!-- <q-btn
+          <q-btn
             v-if="
               keySession &&
               keySession.department === 4 &&
@@ -282,7 +282,7 @@
             no-caps
             icon-right="bi-capsule-pill"
             padding="5px 12px"
-          /> -->
+          />
 
           <!-- Medicine Release Modal -->
           <q-dialog v-model="isAddNewMedicineRelease" persistent>

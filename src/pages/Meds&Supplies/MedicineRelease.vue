@@ -20,7 +20,6 @@
       <div class="row q-px-lg">
         <!-- Left panel -->
         <div
-          v-if="selectedView === 'Pending' && pendingArray.length > 0"
           class="col-4 q-pa-md q-mr-sm left-panel"
           :style="{ height: $q.screen.height - 180 + 'px' }"
         >
@@ -46,7 +45,10 @@
 
           <q-separator color="primary" class="q-my-md" />
 
-          <q-scroll-area :style="{ height: $q.screen.height - 300 + 'px' }">
+          <q-scroll-area
+            v-if="selectedView === 'Pending' && pendingArray.length > 0"
+            :style="{ height: $q.screen.height - 300 + 'px' }"
+          >
             <div
               v-for="(prescription, index) in pendingArray"
               :key="index"
@@ -77,7 +79,7 @@
         </div>
 
         <!-- Right Panel -->
-        <div class="right-panel col q-ml-sm q-pa-lg">
+        <div class="right-panel col q-ml-sm q-px-xl q-py-lg">
           <div
             v-if="pendingArray.length > 0"
             style="justify-content: center; align-items: center"
@@ -96,38 +98,129 @@
 
             <q-scroll-area :style="{ height: $q.screen.height - 300 + 'px' }">
               <!-- Prescriptions -->
-              <h6 class="q-mt-md text-center q-my-none text-primary text-bold">
-                Prescription
-              </h6>
-              <div class="row">
-                <h6 class="col q-my-none text-primary text-bold">
-                  Medicine Name
+              <div>
+                <h6
+                  class="q-mt-md text-center q-my-none text-primary text-bold"
+                >
+                  Prescription
                 </h6>
-                <h6 class="col-2 q-my-none text-primary text-bold">Quantity</h6>
+                <div class="row">
+                  <h6 class="col q-my-none text-primary text-bold">
+                    Medicine Name
+                  </h6>
+                  <h6 class="col-2 q-my-none text-primary text-bold">
+                    Quantity
+                  </h6>
+                </div>
+
+                <div class="q-mt-sm">
+                  <div
+                    v-for="prescription in selectedPrescription.prescription"
+                    :key="prescription"
+                    class="row"
+                  >
+                    <q-input
+                      dense
+                      borderless
+                      readonly
+                      v-model="prescription.medicine_name"
+                      class="col"
+                      style="border-bottom: 1px solid #525252"
+                    />
+                    <q-input
+                      dense
+                      borderless
+                      readonly
+                      v-model="prescription.quantity"
+                      class="col-2"
+                      style="border-bottom: 1px solid #525252"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div class="q-mt-sm">
-                <div
-                  v-for="prescription in selectedPrescription.prescription"
-                  :key="prescription"
-                  class="row"
+              <!-- Medicine Release -->
+              <div class="q-mt-md">
+                <h6
+                  class="q-mt-md text-center q-my-none text-primary text-bold"
                 >
-                  <q-input
+                  Medicine Release
+                  <q-btn
+                    v-if="
+                      medicineArray.length === 0 ||
+                      (medicineArray[medicineArray.length - 1].medicine_details
+                        .medicine_id !== null &&
+                        medicineArray[medicineArray.length - 1].quantity !==
+                          null &&
+                        medicineArray[medicineArray.length - 1].medicine_details
+                          .medicine_id !== '' &&
+                        medicineArray[medicineArray.length - 1].quantity !== '')
+                    "
+                    outline
                     dense
-                    borderless
-                    readonly
-                    v-model="prescription.medicine_name"
-                    class="col"
-                    style="border-bottom: 1px solid #525252"
+                    no-caps
+                    label="Add"
+                    icon="add_circle"
+                    color="primary"
+                    class="q-px-md q-ml-md"
+                    @click="addMedicine"
                   />
-                  <q-input
-                    dense
-                    borderless
-                    readonly
-                    v-model="prescription.quantity"
-                    class="col-2"
-                    style="border-bottom: 1px solid #525252"
-                  />
+                </h6>
+                <div class="row">
+                  <label class="col text-dark text-bold q-mr-md"
+                    >Medicine Name</label
+                  >
+                  <label class="col-1 text-dark text-bold q-mr-md"
+                    >Quantity</label
+                  >
+                  <label
+                    v-if="medicineArray.length > 1"
+                    class="col-1 text-dark"
+                    style="visibility: hidden"
+                    >Quantity</label
+                  >
+                </div>
+
+                <div
+                  v-for="(medicine, index) in medicineArray"
+                  :key="index"
+                  class="q-mt-md"
+                >
+                  <div class="row q-mb-sm">
+                    <q-select
+                      v-model="medicine.medicine_details"
+                      dense
+                      outlined
+                      :options="medicineList"
+                      @filter="medicineFilterFunction"
+                      option-label="medicine_name"
+                      option-value="medicine_id"
+                      use-input
+                      emit-value
+                      map-options
+                      new-value-mode="add-unique"
+                      class="col q-mr-md"
+                    />
+
+                    <q-input
+                      dense
+                      outlined
+                      class="col-1 q-mr-md"
+                      input-class="text-dark"
+                      v-model="medicine.quantity"
+                      hide-bottom-space
+                      :rules="[(val) => !isNaN(val) || 'Numbers only']"
+                    />
+
+                    <q-icon
+                      v-if="medicineArray.length > 1"
+                      name="delete"
+                      color="negative"
+                      class="col-1 cursor-pointer"
+                      size="30px"
+                      @click="removeMedicine(index)"
+                    />
+                  </div>
                 </div>
               </div>
             </q-scroll-area>

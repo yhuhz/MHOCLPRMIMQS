@@ -46,6 +46,8 @@ export default {
     let selectedPrescription = ref([]);
     let selectedIndex = ref(null);
 
+    let medicineArray = ref([]);
+
     const selectPendingRecord = (index) => {
       selectedPrescription.value = pendingArray.value[index];
       selectedIndex.value = index;
@@ -103,6 +105,51 @@ export default {
       });
     };
 
+    const addMedicine = () => {
+      medicineArray.value.push({
+        medicine_details: { medicine_name: null, medicine_id: null },
+        quantity: null,
+      });
+    };
+
+    const removeMedicine = (index) => {
+      medicineArray.value.splice(index, 1);
+    };
+
+    let medicineList = ref([]);
+    const medicineFilterFunction = (val, update, abort) => {
+      if (val.length > 3) {
+        update(() => {
+          const needle = String(val.toLowerCase());
+          FindMedicinesForRelease(needle).then((response) => {
+            medicineList.value = [];
+            if (response.status === "success") {
+              let Medicines = ref([]);
+              Medicines.value = response.data;
+              Medicines.value.forEach((m) => {
+                let selectValues = {
+                  medicine_name:
+                    m.generic_name +
+                    " - " +
+                    m.brand_name +
+                    " (" +
+                    m.exp_date +
+                    ")" +
+                    " (" +
+                    (m.quantity - m.quantity_released) +
+                    ")",
+                  medicine_id: m.medicine_id,
+                };
+                medicineList.value.push(selectValues);
+              });
+            }
+          });
+        });
+      } else {
+        abort();
+      }
+    };
+
     return {
       keySession,
       pendingDateArray,
@@ -121,6 +168,11 @@ export default {
       changeCustomDate,
       firstDate,
       getRecordsFromCustomDate,
+      medicineArray,
+      addMedicine,
+      removeMedicine,
+      medicineList,
+      medicineFilterFunction,
     };
   },
 };
