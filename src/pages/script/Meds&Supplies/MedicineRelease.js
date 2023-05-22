@@ -12,8 +12,9 @@ import {
 } from "src/composables/Medicine";
 
 import {
-  GetPrescriptionPending,
+  GetPrescription,
   PrescriptionList,
+  SetPrescriptionAsDone,
 } from "src/composables/Prescription";
 import {
   FindUsersByName,
@@ -25,10 +26,13 @@ import DeleteMedicineConfirmation from "../../Components/DeleteMedicineConfirmat
 import { ToggleDialogState } from "../../../composables/Triggers";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import { SetIDS } from "src/composables/IDS";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   components: { MHCDialog, DeleteMedicineConfirmation },
   setup() {
+    const router = useRouter();
+    const route = useRoute();
     const $q = useQuasar();
 
     let keySession = SessionStorage.getItem("cred");
@@ -54,11 +58,30 @@ export default {
     };
 
     Loading.show();
-    GetPrescriptionPending({ date: selectedPendingDate.value }).then(
+    GetPrescription({ date: selectedPendingDate.value, mode: "pending" }).then(
       (response) => {
         Loading.hide();
       }
     );
+
+    const changeMode = () => {
+      if (selectedView.value === "Pending") {
+        Loading.show();
+        GetPrescription({
+          date: selectedPendingDate.value,
+          mode: "pending",
+        }).then((response) => {
+          Loading.hide();
+        });
+      } else {
+        Loading.show();
+        GetPrescription({ date: selectedPendingDate.value, mode: "done" }).then(
+          (response) => {
+            Loading.hide();
+          }
+        );
+      }
+    };
 
     watch(
       () => _.cloneDeep(PrescriptionList.value),
@@ -80,12 +103,23 @@ export default {
 
     const changeDate = () => {
       if (selectedPendingDate.value !== "Custom Date") {
-        Loading.show();
-        GetPrescriptionPending({ date: selectedPendingDate.value }).then(
-          (response) => {
+        if (selectedView.value === "Pending") {
+          Loading.show();
+          GetPrescription({
+            date: selectedPendingDate.value,
+            mode: "pending",
+          }).then((response) => {
             Loading.hide();
-          }
-        );
+          });
+        } else {
+          Loading.show();
+          GetPrescription({
+            date: selectedPendingDate.value,
+            mode: "done",
+          }).then((response) => {
+            Loading.hide();
+          });
+        }
       } else {
         isCustomDate.value = true;
       }
@@ -98,14 +132,28 @@ export default {
     };
 
     const getRecordsFromCustomDate = () => {
-      Loading.show();
-      GetPrescriptionPending({ date: dateArray.value }).then((response) => {
-        Loading.hide();
-        isCustomDate.value = false;
-      });
+      if (selectedView.value === "Pending") {
+        Loading.show();
+        GetPrescription({
+          date: selectedPendingDate.value,
+          mode: "pending",
+        }).then((response) => {
+          Loading.hide();
+          isCustomDate.value = false;
+        });
+      } else {
+        Loading.show();
+        GetPrescription({ date: selectedPendingDate.value, mode: "done" }).then(
+          (response) => {
+            Loading.hide();
+            isCustomDate.value = false;
+          }
+        );
+      }
     };
 
     const addMedicine = () => {
+      btnCondition.value = false;
       medicineArray.value.push({
         medicine_details: { medicine_name: null, medicine_id: null },
         quantity: null,
@@ -113,6 +161,7 @@ export default {
     };
 
     const removeMedicine = (index) => {
+      btnCondition.value = true;
       medicineArray.value.splice(index, 1);
     };
 
@@ -150,6 +199,61 @@ export default {
       }
     };
 
+    let btnCondition = ref(true);
+    const buttonCondition = (index) => {
+      try {
+        if (
+          medicineArray.value[index].medicine_details.medicine_id !== null &&
+          medicineArray.value[index].medicine_details.medicine_id !== "" &&
+          medicineArray.value[index].quantity !== null &&
+          medicineArray.value[index].quantity !== ""
+        ) {
+          btnCondition.value = true;
+        }
+      } catch (e) {
+        btnCondition.value = false;
+      }
+    };
+
+    const resetMedicine = () => {
+      medicineArray.value = [];
+    };
+
+    const addMedicineReleases = () => {
+      let payload = {
+        patient_id: selectedPrescription.value.patient_id,
+        department: selectedPrescription.value.department,
+        released_by: keySession && keySession.user_id,
+        medicine_array: medicineArray.value,
+      };
+
+      Loading.show();
+      AddMultipleMedicineRelease(payload).then((response) => {
+        if (response.status === "success") {
+          SetPrescriptionAsDone(selectedPrescription.value.prescription).then(
+            (response) => {
+              Loading.hide();
+              let status = response.status === "success" ? 0 : 1;
+              $q.notify({
+                type: status === 0 ? "positive" : "negative",
+                classes: "text-white",
+                message:
+                  status === 0
+                    ? "Medicine releases added successfully"
+                    : "Failed to add medicine releases",
+              });
+
+              if (status === 0) {
+                changeDate();
+              }
+            }
+          );
+        }
+
+        medicineArray.value = [];
+      });
+    };
+
     return {
       keySession,
       pendingDateArray,
@@ -173,6 +277,11 @@ export default {
       removeMedicine,
       medicineList,
       medicineFilterFunction,
+      resetMedicine,
+      buttonCondition,
+      btnCondition,
+      addMedicineReleases,
+      changeMode,
     };
   },
 };

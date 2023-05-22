@@ -30,6 +30,7 @@
               v-model="selectedView"
               :options="viewOptions"
               style="width: 100px"
+              @update:model-value="changeMode"
             />
 
             <q-select
@@ -46,7 +47,7 @@
           <q-separator color="primary" class="q-my-md" />
 
           <q-scroll-area
-            v-if="selectedView === 'Pending' && pendingArray.length > 0"
+            v-if="pendingArray.length > 0"
             :style="{ height: $q.screen.height - 300 + 'px' }"
           >
             <div
@@ -96,7 +97,10 @@
               </h3>
             </div>
 
-            <q-scroll-area :style="{ height: $q.screen.height - 300 + 'px' }">
+            <q-scroll-area
+              v-if="selectedPrescription.prescription"
+              :style="{ height: $q.screen.height - 300 + 'px' }"
+            >
               <!-- Prescriptions -->
               <div>
                 <h6
@@ -146,16 +150,7 @@
                 >
                   Medicine Release
                   <q-btn
-                    v-if="
-                      medicineArray.length === 0 ||
-                      (medicineArray[medicineArray.length - 1].medicine_details
-                        .medicine_id !== null &&
-                        medicineArray[medicineArray.length - 1].quantity !==
-                          null &&
-                        medicineArray[medicineArray.length - 1].medicine_details
-                          .medicine_id !== '' &&
-                        medicineArray[medicineArray.length - 1].quantity !== '')
-                    "
+                    v-if="medicineArray.length === 0 || btnCondition"
                     outline
                     dense
                     no-caps
@@ -181,47 +176,78 @@
                   >
                 </div>
 
-                <div
-                  v-for="(medicine, index) in medicineArray"
-                  :key="index"
-                  class="q-mt-md"
-                >
-                  <div class="row q-mb-sm">
-                    <q-select
-                      v-model="medicine.medicine_details"
-                      dense
-                      outlined
-                      :options="medicineList"
-                      @filter="medicineFilterFunction"
-                      option-label="medicine_name"
-                      option-value="medicine_id"
-                      use-input
-                      emit-value
-                      map-options
-                      new-value-mode="add-unique"
-                      class="col q-mr-md"
-                    />
+                <q-form @submit="addMedicineReleases" @reset="resetMedicine">
+                  <div
+                    v-for="(medicine, index) in selectedPrescription.medicines
+                      ? selectedPrescription.medicines
+                      : medicineArray"
+                    :key="index"
+                    class="q-mt-md"
+                  >
+                    <div class="row q-mb-sm">
+                      <q-select
+                        v-model="medicine.medicine_details"
+                        dense
+                        outlined
+                        use-chips
+                        :options="medicineList"
+                        @filter="medicineFilterFunction"
+                        option-label="medicine_name"
+                        option-value="medicine_id"
+                        use-input
+                        emit-value
+                        map-options
+                        new-value-mode="add-unique"
+                        class="col q-mr-md"
+                        hide-bottom-space
+                        @update:model-value="buttonCondition(index)"
+                        :rules="[(val) => val || '']"
+                      />
 
-                    <q-input
-                      dense
-                      outlined
-                      class="col-1 q-mr-md"
-                      input-class="text-dark"
-                      v-model="medicine.quantity"
-                      hide-bottom-space
-                      :rules="[(val) => !isNaN(val) || 'Numbers only']"
-                    />
+                      <q-input
+                        dense
+                        outlined
+                        class="col-1 q-mr-md"
+                        input-class="text-dark"
+                        v-model="medicine.quantity"
+                        hide-bottom-space
+                        @update:model-value="buttonCondition(index)"
+                        :rules="[(val) => (val && !isNaN(val)) || '']"
+                      />
 
-                    <q-icon
-                      v-if="medicineArray.length > 1"
-                      name="delete"
-                      color="negative"
-                      class="col-1 cursor-pointer"
-                      size="30px"
-                      @click="removeMedicine(index)"
+                      <q-icon
+                        v-if="medicineArray.length > 1"
+                        name="delete"
+                        color="negative"
+                        class="col-1 cursor-pointer"
+                        size="30px"
+                        @click="removeMedicine(index)"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="flex q-mt-md" style="justify-content: center">
+                    <q-btn
+                      v-if="medicineArray.length > 0 && btnCondition"
+                      no-caps
+                      color="primary"
+                      type="submit"
+                      label="Submit"
+                      class="q-mr-xs"
+                      style="width: 100px"
+                    />
+                    <q-btn
+                      v-if="medicineArray.length > 0"
+                      no-caps
+                      outline
+                      type="reset"
+                      color="primary"
+                      label="Reset"
+                      class="q-ml-xs"
+                      style="width: 100px"
                     />
                   </div>
-                </div>
+                </q-form>
               </div>
             </q-scroll-area>
           </div>
