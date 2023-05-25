@@ -55,6 +55,9 @@ export default {
     const selectPendingRecord = (index) => {
       selectedPrescription.value = pendingArray.value[index];
       selectedIndex.value = index;
+      medicineArray.value = selectedPrescription.value.medicines
+        ? selectedPrescription.value.medicines
+        : [];
     };
 
     Loading.show();

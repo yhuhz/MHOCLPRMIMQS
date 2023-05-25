@@ -92,20 +92,29 @@
                     ? "OPD" + selectedPrescription.opd_id
                     : selectedPrescription.dental_id
                     ? "DNTL" + selectedPrescription.dental_id
-                    : "PNL Checkup " + selectedPrescription.prenatal_checkup_id
+                    : selectedPrescription.prenatal_checkup_id
+                    ? "PNL Checkup " + selectedPrescription.prenatal_checkup_id
+                    : selectedPrescription.first_name +
+                      " " +
+                      (selectedPrescription.middle_name
+                        ? selectedPrescription.middle_name + " "
+                        : " ") +
+                      selectedPrescription.last_name +
+                      " " +
+                      (selectedPrescription.suffix
+                        ? selectedPrescription.suffix
+                        : "")
                 }}
               </h3>
             </div>
 
             <q-scroll-area
-              v-if="selectedPrescription.prescription"
               :style="{ height: $q.screen.height - 300 + 'px' }"
+              class="q-mt-md"
             >
               <!-- Prescriptions -->
-              <div>
-                <h6
-                  class="q-mt-md text-center q-my-none text-primary text-bold"
-                >
+              <div v-if="selectedPrescription.prescription.length > 0">
+                <h6 class="text-center q-my-none text-primary text-bold">
                   Prescription
                 </h6>
                 <div class="row">
@@ -178,9 +187,7 @@
 
                 <q-form @submit="addMedicineReleases" @reset="resetMedicine">
                   <div
-                    v-for="(medicine, index) in selectedPrescription.medicines
-                      ? selectedPrescription.medicines
-                      : medicineArray"
+                    v-for="(medicine, index) in medicineArray"
                     :key="index"
                     class="q-mt-md"
                   >
@@ -202,6 +209,9 @@
                         hide-bottom-space
                         @update:model-value="buttonCondition(index)"
                         :rules="[(val) => val || '']"
+                        :hint="
+                          medicine.release_date ? medicine.release_date : ''
+                        "
                       />
 
                       <q-input
