@@ -473,6 +473,22 @@ export default {
     //   },
     // ]);
 
+    let btnCondition = ref(true);
+    const buttonCondition = (index) => {
+      try {
+        if (
+          medicineArray.value[index].medicine_details.medicine_id !== null &&
+          medicineArray.value[index].medicine_details.medicine_id !== "" &&
+          medicineArray.value[index].quantity !== null &&
+          medicineArray.value[index].quantity !== ""
+        ) {
+          btnCondition.value = true;
+        }
+      } catch (e) {
+        btnCondition.value = false;
+      }
+    };
+
     let medicineArray = ref([]);
 
     const addMedicine = () => {
@@ -697,6 +713,8 @@ export default {
       selectedDepartment,
       filtersDepartment,
       addMedicineReleases,
+      btnCondition,
+      buttonCondition,
     };
   },
 };

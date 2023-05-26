@@ -13,7 +13,7 @@ import {
 
 import {
   GetPrescription,
-  PrescriptionList,
+  Prescription,
   SetPrescriptionAsDone,
 } from "src/composables/Prescription";
 import {
@@ -50,20 +50,21 @@ export default {
     let selectedPrescription = ref([]);
     let selectedIndex = ref(null);
 
-    let medicineArray = ref([]);
-
     const selectPendingRecord = (index) => {
       selectedPrescription.value = pendingArray.value[index];
       selectedIndex.value = index;
-      medicineArray.value = selectedPrescription.value.medicines
-        ? selectedPrescription.value.medicines
-        : [];
     };
 
     Loading.show();
     GetPrescription({ date: selectedPendingDate.value, mode: "pending" }).then(
       (response) => {
         Loading.hide();
+
+        if (response.data.length > 0) {
+          pendingArray.value = response.data;
+          selectedPrescription.value = pendingArray.value[0];
+          selectedIndex.value = 0;
+        }
       }
     );
 
@@ -75,25 +76,35 @@ export default {
           mode: "pending",
         }).then((response) => {
           Loading.hide();
+          if (response.data.length > 0) {
+            pendingArray.value = response.data;
+            selectedPrescription.value = pendingArray.value[0];
+            selectedIndex.value = 0;
+          }
         });
       } else {
         Loading.show();
         GetPrescription({ date: selectedPendingDate.value, mode: "done" }).then(
           (response) => {
             Loading.hide();
+            if (response.data.length > 0) {
+              pendingArray.value = response.data;
+              selectedPrescription.value = pendingArray.value[0];
+              selectedIndex.value = 0;
+            }
           }
         );
       }
     };
 
-    watch(
-      () => _.cloneDeep(PrescriptionList.value),
-      () => {
-        pendingArray.value = PrescriptionList.value;
-        selectedPrescription.value = pendingArray.value[0];
-        selectedIndex.value = 0;
-      }
-    );
+    // watch(
+    //   () => _.cloneDeep(Prescription.value),
+    //   () => {
+    //     pendingArray.value = Prescription.value;
+    //     selectedPrescription.value = pendingArray.value[0];
+    //     selectedIndex.value = 0;
+    //   }
+    // );
 
     let isCustomDate = ref(false);
     let dateArray = ref([]);
@@ -113,6 +124,11 @@ export default {
             mode: "pending",
           }).then((response) => {
             Loading.hide();
+            if (response.data.length > 0) {
+              pendingArray.value = response.data;
+              selectedPrescription.value = pendingArray.value[0];
+              selectedIndex.value = 0;
+            }
           });
         } else {
           Loading.show();
@@ -121,6 +137,11 @@ export default {
             mode: "done",
           }).then((response) => {
             Loading.hide();
+            if (response.data.length > 0) {
+              pendingArray.value = response.data;
+              selectedPrescription.value = pendingArray.value[0];
+              selectedIndex.value = 0;
+            }
           });
         }
       } else {
@@ -143,6 +164,11 @@ export default {
         }).then((response) => {
           Loading.hide();
           isCustomDate.value = false;
+          if (response.data.length > 0) {
+            pendingArray.value = response.data;
+            selectedPrescription.value = pendingArray.value[0];
+            selectedIndex.value = 0;
+          }
         });
       } else {
         Loading.show();
@@ -150,6 +176,11 @@ export default {
           (response) => {
             Loading.hide();
             isCustomDate.value = false;
+            if (response.data.length > 0) {
+              pendingArray.value = response.data;
+              selectedPrescription.value = pendingArray.value[0];
+              selectedIndex.value = 0;
+            }
           }
         );
       }
@@ -157,7 +188,7 @@ export default {
 
     const addMedicine = () => {
       btnCondition.value = false;
-      medicineArray.value.push({
+      selectedPrescription.value.medicines.push({
         medicine_details: { medicine_name: null, medicine_id: null },
         quantity: null,
       });
@@ -165,7 +196,7 @@ export default {
 
     const removeMedicine = (index) => {
       btnCondition.value = true;
-      medicineArray.value.splice(index, 1);
+      selectedPrescription.value.medicines.splice(index, 1);
     };
 
     let medicineList = ref([]);
@@ -206,10 +237,12 @@ export default {
     const buttonCondition = (index) => {
       try {
         if (
-          medicineArray.value[index].medicine_details.medicine_id !== null &&
-          medicineArray.value[index].medicine_details.medicine_id !== "" &&
-          medicineArray.value[index].quantity !== null &&
-          medicineArray.value[index].quantity !== ""
+          selectedPrescription.value.medicines[index].medicine_details
+            .medicine_id !== null &&
+          selectedPrescription.value.medicines[index].medicine_details
+            .medicine_id !== "" &&
+          selectedPrescription.value.medicines[index].quantity !== null &&
+          selectedPrescription.value.medicines[index].quantity !== ""
         ) {
           btnCondition.value = true;
         }
@@ -219,7 +252,7 @@ export default {
     };
 
     const resetMedicine = () => {
-      medicineArray.value = [];
+      selectedPrescription.value.medicines = [];
     };
 
     const addMedicineReleases = () => {
@@ -227,7 +260,7 @@ export default {
         patient_id: selectedPrescription.value.patient_id,
         department: selectedPrescription.value.department,
         released_by: keySession && keySession.user_id,
-        medicine_array: medicineArray.value,
+        medicine_array: selectedPrescription.value.medicines,
       };
 
       Loading.show();
@@ -253,7 +286,7 @@ export default {
           );
         }
 
-        medicineArray.value = [];
+        selectedPrescription.value.medicines = [];
       });
     };
 
@@ -275,7 +308,6 @@ export default {
       changeCustomDate,
       firstDate,
       getRecordsFromCustomDate,
-      medicineArray,
       addMedicine,
       removeMedicine,
       medicineList,

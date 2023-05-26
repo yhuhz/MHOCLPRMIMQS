@@ -159,7 +159,10 @@
                 >
                   Medicine Release
                   <q-btn
-                    v-if="medicineArray.length === 0 || btnCondition"
+                    v-if="
+                      selectedPrescription.medicines.length === 0 ||
+                      btnCondition
+                    "
                     outline
                     dense
                     no-caps
@@ -178,7 +181,7 @@
                     >Quantity</label
                   >
                   <label
-                    v-if="medicineArray.length > 1"
+                    v-if="selectedPrescription.medicines.length > 1"
                     class="col-1 text-dark"
                     style="visibility: hidden"
                     >Quantity</label
@@ -187,7 +190,7 @@
 
                 <q-form @submit="addMedicineReleases" @reset="resetMedicine">
                   <div
-                    v-for="(medicine, index) in medicineArray"
+                    v-for="(medicine, index) in selectedPrescription.medicines"
                     :key="index"
                     class="q-mt-md"
                   >
@@ -226,7 +229,7 @@
                       />
 
                       <q-icon
-                        v-if="medicineArray.length > 1"
+                        v-if="selectedPrescription.medicines.length > 1"
                         name="delete"
                         color="negative"
                         class="col-1 cursor-pointer"
@@ -238,7 +241,10 @@
 
                   <div class="flex q-mt-md" style="justify-content: center">
                     <q-btn
-                      v-if="medicineArray.length > 0 && btnCondition"
+                      v-if="
+                        selectedPrescription.medicines.length > 0 &&
+                        btnCondition
+                      "
                       no-caps
                       color="primary"
                       type="submit"
@@ -247,7 +253,7 @@
                       style="width: 100px"
                     />
                     <q-btn
-                      v-if="medicineArray.length > 0"
+                      v-if="selectedPrescription.medicines.length > 0"
                       no-caps
                       outline
                       type="reset"
