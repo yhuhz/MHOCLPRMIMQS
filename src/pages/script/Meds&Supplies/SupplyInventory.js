@@ -6,7 +6,14 @@ import {
   SuppliesList,
   AddSupply,
   EditSupply,
+  FindSupplyForRelease,
+  AddSupplyRelease,
 } from "src/composables/Supply";
+import {
+  FindUsersDepartment,
+  FindUsersByID,
+  FindUsersByName,
+} from "src/composables/Manage_Users";
 import DeleteSupplyConfirmation from "../../Components/DeleteSupplyConfirmation.vue";
 import { ToggleDialogState } from "../../../composables/Triggers";
 import MHCDialog from "../../../components/MHCDialog.vue";
@@ -22,8 +29,6 @@ export default {
     if (keySession === null) {
       router.push({ name: "login" });
     }
-
-    Supplies.value = [];
 
     /*** Table ***/
     const columns = ref([
@@ -193,6 +198,8 @@ export default {
       });
     };
 
+    getRecords();
+
     /**ADD SUPPLY RECORD**/
     let newSupplyRecord = ref({
       supply_name: null,
@@ -342,6 +349,151 @@ export default {
       }
     };
 
+    /** SUPPLY RELEASE **/
+    let isSupplyRelease = ref(false);
+    let supplyReleaseDetails = ref({
+      user_id: null,
+      department: null,
+      supplies_array: [
+        {
+          supply_id: null,
+          quantity: null,
+        },
+      ],
+      released_by: keySession && keySession.user_id,
+    });
+
+    let userOptions = ref([]);
+    const userFilterFunction = (val, update, abort) => {
+      if (val.length > 5 || !isNaN(val)) {
+        update(() => {
+          if (isNaN(val)) {
+            const needle = String(val.toLowerCase());
+            FindUsersByName(needle).then((response) => {
+              userOptions.value = [];
+              if (response.status === "success") {
+                let Users = ref([]);
+                Users.value = response.data;
+                Users.value.forEach((p) => {
+                  let selectValues = {
+                    user_name: p.id + " - " + p.user_name,
+                    department: p.department,
+                    user_id: p.id,
+                  };
+                  userOptions.value.push(selectValues);
+                });
+              }
+            });
+          } else {
+            FindUsersByID(val).then((response) => {
+              userOptions.value = [];
+              if (response.status === "success") {
+                let Users = ref([]);
+                Users.value = response.data;
+                Users.value.forEach((p) => {
+                  let selectValues = {
+                    user_name: p.id + " - " + p.user_name,
+                    department: p.department,
+                    user_id: p.id,
+                  };
+                  userOptions.value.push(selectValues);
+                });
+              }
+            });
+          }
+        });
+      } else {
+        abort();
+      }
+    };
+
+    let filtersDepartment = [
+      "Outpatient Department",
+      "Dental",
+      "Prenatal and Immunization",
+      "Pharmacy",
+      "Front Desk",
+      "Admin Office",
+    ];
+
+    const findDepartment = () => {
+      if (supplyReleaseDetails.value.user_id !== null) {
+        FindUsersDepartment(supplyReleaseDetails.value.user_id).then(
+          (response) => {
+            supplyReleaseDetails.value.department =
+              filtersDepartment[response.data[0].department - 1];
+          }
+        );
+      } else {
+        supplyReleaseDetails.value.department = null;
+      }
+    };
+
+    let supplyList = ref([]);
+    const supplyFilterFunction = (val, update, abort) => {
+      if (val.length > 3) {
+        update(() => {
+          const needle = String(val.toLowerCase());
+          FindSupplyForRelease(needle).then((response) => {
+            supplyList.value = [];
+            if (response.status === "success") {
+              let Supply = ref([]);
+              Supply.value = response.data;
+              Supply.value.forEach((s) => {
+                let selectValues = {
+                  supply_name:
+                    s.supply_type +
+                    " - " +
+                    s.supply_name +
+                    " (" +
+                    (s.quantity - s.quantity_released) +
+                    ")",
+                  supply_id: s.supply_id,
+                };
+                supplyList.value.push(selectValues);
+              });
+            }
+          });
+        });
+      } else {
+        abort();
+      }
+    };
+
+    const addSupply = () => {
+      supplyReleaseDetails.value.supplies_array.push({
+        supply_id: null,
+        quantity: null,
+      });
+    };
+
+    const removeSupply = (index) => {
+      supplyReleaseDetails.value.supplies_array.splice(index, 1);
+    };
+
+    const addSupplyRelease = () => {
+      supplyReleaseDetails.value.department =
+        filtersDepartment.indexOf(supplyReleaseDetails.value.department) + 1;
+      // console.log("payload", supplyReleaseDetails.value);
+
+      Loading.show();
+      AddSupplyRelease(supplyReleaseDetails.value).then((response) => {
+        Loading.hide();
+
+        let status = response.status === "success" ? 0 : 1;
+        $q.notify({
+          type: status === 0 ? "positive" : "negative",
+          classes: "text-white",
+          message:
+            status === 0
+              ? "Supply releases added successfully"
+              : "Failed to add supply releases",
+        });
+
+        isSupplyRelease.value = false;
+      });
+    };
+
     return {
       selectedSearchBy,
       searchBy,
@@ -368,6 +520,18 @@ export default {
       exportTable,
       keySession,
       getExpDateClass,
+      isSupplyRelease,
+      supplyReleaseDetails,
+      filtersDepartment,
+      findDepartment,
+      userFilterFunction,
+      addSupply,
+      removeSupply,
+      supplyList,
+      supplyFilterFunction,
+      userOptions,
+      userFilterFunction,
+      addSupplyRelease,
     };
   },
 };

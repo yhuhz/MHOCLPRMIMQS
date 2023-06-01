@@ -71,18 +71,25 @@ export default {
       if (selectedView.value === "Pending") {
         Loading.show();
         GetPrescription({
-          date: selectedPendingDate.value,
+          date:
+            selectedPendingDate.value !== "Custom Date"
+              ? selectedPendingDate.value
+              : dateArray.value,
           mode: "pending",
         }).then((response) => {
           Loading.hide();
         });
       } else {
         Loading.show();
-        GetPrescription({ date: selectedPendingDate.value, mode: "done" }).then(
-          (response) => {
-            Loading.hide();
-          }
-        );
+        GetPrescription({
+          date:
+            selectedPendingDate.value !== "Custom Date"
+              ? selectedPendingDate.value
+              : dateArray.value,
+          mode: "done",
+        }).then((response) => {
+          Loading.hide();
+        });
       }
     };
 
@@ -138,7 +145,7 @@ export default {
       if (selectedView.value === "Pending") {
         Loading.show();
         GetPrescription({
-          date: selectedPendingDate.value,
+          date: dateArray.value,
           mode: "pending",
         }).then((response) => {
           Loading.hide();
@@ -146,7 +153,7 @@ export default {
         });
       } else {
         Loading.show();
-        GetPrescription({ date: selectedPendingDate.value, mode: "done" }).then(
+        GetPrescription({ date: dateArray.value, mode: "done" }).then(
           (response) => {
             Loading.hide();
             isCustomDate.value = false;

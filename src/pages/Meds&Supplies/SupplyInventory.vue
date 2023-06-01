@@ -286,221 +286,385 @@
             @click="getRecords"
           />
         </div>
-
-        <!-- Add New Supply Stock -->
-        <div>
-          <q-btn
-            v-if="keySession && keySession.permission_level !== 3"
-            @click="isAddNewSupplyStock = true"
-            outline
-            label="Add New Supply Stock"
-            icon-right="inventory"
-            no-caps
-            color="primary"
-          />
-        </div>
-
-        <!-- Modals for Add New Supply Stock -->
-        <q-dialog v-model="isAddNewSupplyStock" persistent>
-          <q-card style="min-width: 750px">
-            <div class="q-pa-lg">
-              <div class="flex justify-end">
-                <q-btn
-                  v-close-popup
-                  dense
-                  color="negative"
-                  size="0.375rem"
-                  icon="eva-close-outline"
-                />
-              </div>
-              <p
-                class="text-primary text-weight-bold text-24 text-center q-mb-xl"
-              >
-                <q-icon name="inventory" class="q-mr-xs q-gutter-xs" />
-                ADD SUPPLY RECORD
-              </p>
-              <q-form @submit="addSupplyRecord" @reset="onReset">
-                <!-- First Row -->
-                <div class="row q-mb-md">
-                  <div class="col">
-                    <label class="text-dark"
-                      >Supply Name <span class="text-negative">*</span></label
-                    >
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. Baygon Gloves"
-                      class="q-mr-md q-mt-xs"
-                      v-model="newSupplyRecord.supply_name"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
-                    />
-                  </div>
-                  <div class="col">
-                    <label class="text-dark"
-                      >Supply Type <span class="text-negative">*</span></label
-                    >
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. Glove"
-                      class="q-mt-xs q-mr-md"
-                      v-model="newSupplyRecord.supply_type"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
-                    />
-                  </div>
-                </div>
-
-                <!-- Second Row -->
-                <div class="row q-mt-lg q-mb-md">
-                  <div class="col">
-                    <label class="text-dark"
-                      >Manufacturing Date
-                      <span class="text-negative">*</span></label
-                    >
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="YYYY-MM-DD"
-                      class="q-mt-xs q-mr-md"
-                      v-model="newSupplyRecord.mfg_date"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
-                    >
-                      <template v-slot:append>
-                        <q-icon
-                          name="eva-calendar-outline"
-                          class="cursor-pointer"
-                        >
-                          <q-popup-proxy
-                            cover
-                            transition-show="scale"
-                            transition-hide="scale"
-                          >
-                            <q-date
-                              mask="YYYY-MM-DD"
-                              label="YYYY-MM-DD"
-                              v-model="newSupplyRecord.mfg_date"
-                            />
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-                    </q-input>
-                  </div>
-                  <div class="col">
-                    <label class="text-dark">Expiry Date</label>
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="YYYY-MM-DD"
-                      class="q-mt-xs"
-                      v-model="newSupplyRecord.exp_date"
-                    >
-                      <template v-slot:append>
-                        <q-icon
-                          name="eva-calendar-outline"
-                          class="cursor-pointer"
-                        >
-                          <q-popup-proxy
-                            cover
-                            transition-show="scale"
-                            transition-hide="scale"
-                          >
-                            <q-date
-                              mask="YYYY-MM-DD"
-                              label="YYYY-MM-DD"
-                              v-model="newSupplyRecord.exp_date"
-                            />
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-                    </q-input>
-                  </div>
-                </div>
-
-                <!-- Third Row -->
-                <div class="row q-mt-lg q-mb-md">
-                  <div class="col">
-                    <label class="text-dark"
-                      >Quantity Received
-                      <span class="text-negative">*</span></label
-                    >
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. 350"
-                      class="q-mr-md q-mt-xs"
-                      v-model="newSupplyRecord.quantity"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
-                    />
-                  </div>
-
-                  <div class="col">
-                    <label class="text-dark"
-                      >Quantity Type <span class="text-negative">*</span></label
-                    >
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. piece"
-                      class="q-mr-md q-mt-xs"
-                      v-model="newSupplyRecord.quantity_type"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
-                    />
-                  </div>
-
-                  <div class="col">
-                    <label class="text-dark"
-                      >Source <span class="text-negative">*</span></label
-                    >
-                    <q-input
-                      dense
-                      outlined
-                      placeholder="ex. DOH"
-                      class="q-mt-xs"
-                      v-model="newSupplyRecord.procured_by"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
-                    />
-                  </div>
-                </div>
-
-                <!-- Button for Modals -->
-                <div class="flex justify-center items-center q-mt-xl q-mb-lg">
-                  <!-- Submit -->
-                  <q-btn
-                    color="primary"
-                    label="Submit"
-                    type="submit"
-                    no-caps
-                    class="button-120 q-mr-xl"
-                  />
-                  <q-btn
-                    outline
-                    color="primary"
-                    label="Reset"
-                    type="reset"
-                    no-caps
-                    class="button-120"
-                  />
-                </div>
-              </q-form>
-            </div>
-          </q-card>
-        </q-dialog>
       </div>
 
+      <!-- Add New Supply Stock -->
+      <div class="q-mt-lg">
+        <q-btn
+          v-if="keySession && keySession.permission_level !== 3"
+          @click="isAddNewSupplyStock = true"
+          outline
+          label="Add New Supply Stock"
+          icon-right="inventory"
+          no-caps
+          color="primary"
+          class="q-mr-xs"
+        />
+        <q-btn
+          v-if="keySession && keySession.permission_level !== 3"
+          outline
+          label="Release Supplies"
+          icon-right="fa fa-boxes-packing"
+          no-caps
+          color="primary"
+          class="q-ml-xs"
+          @click="isSupplyRelease = !isSupplyRelease"
+        />
+      </div>
+
+      <!-- Modals for Add New Supply Stock -->
+      <q-dialog v-model="isAddNewSupplyStock" persistent>
+        <q-card style="min-width: 750px">
+          <div class="q-pa-lg">
+            <div class="flex justify-end">
+              <q-btn
+                v-close-popup
+                dense
+                color="negative"
+                size="0.375rem"
+                icon="eva-close-outline"
+              />
+            </div>
+            <p
+              class="text-primary text-weight-bold text-24 text-center q-mb-xl"
+            >
+              <q-icon name="inventory" class="q-mr-xs q-gutter-xs" />
+              ADD SUPPLY RECORD
+            </p>
+            <q-form @submit="addSupplyRecord" @reset="onReset">
+              <!-- First Row -->
+              <div class="row q-mb-md">
+                <div class="col">
+                  <label class="text-dark"
+                    >Supply Name <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. Baygon Gloves"
+                    class="q-mr-md q-mt-xs"
+                    v-model="newSupplyRecord.supply_name"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Required field',
+                    ]"
+                  />
+                </div>
+                <div class="col">
+                  <label class="text-dark"
+                    >Supply Type <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. Glove"
+                    class="q-mt-xs q-mr-md"
+                    v-model="newSupplyRecord.supply_type"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Required field',
+                    ]"
+                  />
+                </div>
+              </div>
+
+              <!-- Second Row -->
+              <div class="row q-mt-lg q-mb-md">
+                <div class="col">
+                  <label class="text-dark"
+                    >Manufacturing Date
+                    <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="YYYY-MM-DD"
+                    class="q-mt-xs q-mr-md"
+                    v-model="newSupplyRecord.mfg_date"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Required field',
+                    ]"
+                  >
+                    <template v-slot:append>
+                      <q-icon
+                        name="eva-calendar-outline"
+                        class="cursor-pointer"
+                      >
+                        <q-popup-proxy
+                          cover
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date
+                            mask="YYYY-MM-DD"
+                            label="YYYY-MM-DD"
+                            v-model="newSupplyRecord.mfg_date"
+                          />
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
+                <div class="col">
+                  <label class="text-dark">Expiry Date</label>
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="YYYY-MM-DD"
+                    class="q-mt-xs"
+                    v-model="newSupplyRecord.exp_date"
+                  >
+                    <template v-slot:append>
+                      <q-icon
+                        name="eva-calendar-outline"
+                        class="cursor-pointer"
+                      >
+                        <q-popup-proxy
+                          cover
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date
+                            mask="YYYY-MM-DD"
+                            label="YYYY-MM-DD"
+                            v-model="newSupplyRecord.exp_date"
+                          />
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
+              </div>
+
+              <!-- Third Row -->
+              <div class="row q-mt-lg q-mb-md">
+                <div class="col">
+                  <label class="text-dark"
+                    >Quantity Received
+                    <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. 350"
+                    class="q-mr-md q-mt-xs"
+                    v-model="newSupplyRecord.quantity"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Required field',
+                    ]"
+                  />
+                </div>
+
+                <div class="col">
+                  <label class="text-dark"
+                    >Quantity Type <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. piece"
+                    class="q-mr-md q-mt-xs"
+                    v-model="newSupplyRecord.quantity_type"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Required field',
+                    ]"
+                  />
+                </div>
+
+                <div class="col">
+                  <label class="text-dark"
+                    >Source <span class="text-negative">*</span></label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    placeholder="ex. DOH"
+                    class="q-mt-xs"
+                    v-model="newSupplyRecord.procured_by"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Required field',
+                    ]"
+                  />
+                </div>
+              </div>
+
+              <!-- Button for Modals -->
+              <div class="flex justify-center items-center q-mt-xl q-mb-lg">
+                <!-- Submit -->
+                <q-btn
+                  color="primary"
+                  label="Submit"
+                  type="submit"
+                  no-caps
+                  class="button-120 q-mr-xl"
+                />
+                <q-btn
+                  outline
+                  color="primary"
+                  label="Reset"
+                  type="reset"
+                  no-caps
+                  class="button-120"
+                />
+              </div>
+            </q-form>
+          </div>
+        </q-card>
+      </q-dialog>
+
+      <!-- Supplies Release -->
+      <q-dialog v-model="isSupplyRelease" persistent>
+        <q-card style="min-width: 500px; max-width: 750px">
+          <div class="q-pa-lg">
+            <div class="flex justify-end">
+              <q-btn
+                v-close-popup
+                dense
+                color="negative"
+                size="0.375rem"
+                icon="eva-close-outline"
+              />
+            </div>
+            <p
+              class="text-primary text-weight-bold text-24 text-center q-mb-xl"
+            >
+              <q-icon name="fa fa-boxes-packing" class="q-mr-xs q-gutter-xs" />
+              RELEASE SUPPLIES
+            </p>
+
+            <q-form @submit="addSupplyRelease">
+              <div class="row q-mt-sm">
+                <div class="col q-mr-md">
+                  <label class="text-dark"
+                    >Personnel ID <span class="text-negative">*</span></label
+                  >
+
+                  <q-select
+                    outlined
+                    hide-bottom-space
+                    v-model="supplyReleaseDetails.user_id"
+                    @filter="userFilterFunction"
+                    option-label="user_name"
+                    option-value="user_id"
+                    :options="userOptions"
+                    use-input
+                    emit-value
+                    map-options
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                    :rules="[
+                      (val) =>
+                        (val && (val.length > 0 || !isNaN(val))) ||
+                        'Required field',
+                    ]"
+                    @update:model-value="findDepartment"
+                  />
+                </div>
+
+                <div class="col-5">
+                  <label class="text-dark"
+                    >Department <span class="text-negative">*</span></label
+                  >
+                  <q-select
+                    hide-bottom-space
+                    disable
+                    :options="filtersDepartment"
+                    dense
+                    outlined
+                    v-model="supplyReleaseDetails.department"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Required field',
+                    ]"
+                  />
+                </div>
+              </div>
+
+              <q-separator class="q-my-md" color="primary" />
+
+              <div
+                v-if="
+                  supplyReleaseDetails.user_id &&
+                  supplyReleaseDetails.department
+                "
+              >
+                <div class="q-mb-md">
+                  <q-btn
+                    label="Add"
+                    icon="add_circle"
+                    color="primary"
+                    outline
+                    no-caps
+                    @click="addSupply"
+                  />
+                </div>
+
+                <div class="row">
+                  <label class="col text-dark text-bold q-mr-md"
+                    >Supply Name</label
+                  >
+                  <label class="col-2 text-dark text-bold q-mr-md"
+                    >Quantity</label
+                  >
+                  <label
+                    v-if="supplyReleaseDetails.supplies_array.length > 1"
+                    class="col-1 text-dark"
+                    style="visibility: hidden"
+                    >Quantity</label
+                  >
+                </div>
+
+                <div
+                  v-for="(supply, index) in supplyReleaseDetails.supplies_array"
+                  :key="index"
+                >
+                  <div class="row q-mb-sm">
+                    <q-select
+                      v-model="supply.supply_id"
+                      dense
+                      outlined
+                      :options="supplyList"
+                      @filter="supplyFilterFunction"
+                      option-label="supply_name"
+                      option-value="supply_id"
+                      use-input
+                      emit-value
+                      map-options
+                      new-value-mode="add-unique"
+                      hide-bottom-space
+                      class="col q-mr-md"
+                      :rules="[(val) => val || '']"
+                    />
+
+                    <q-input
+                      dense
+                      outlined
+                      class="col-2 q-mr-md"
+                      input-class="text-dark"
+                      v-model="supply.quantity"
+                      hide-bottom-space
+                      :rules="[(val) => (val && !isNaN(val)) || '']"
+                    />
+
+                    <q-icon
+                      v-if="supplyReleaseDetails.supplies_array.length > 1"
+                      name="delete"
+                      color="negative"
+                      class="col-1 cursor-pointer"
+                      size="30px"
+                      @click="removeSupply(index)"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <q-btn label="Submit" type="submit" no-caps color="primary" />
+                </div>
+              </div>
+            </q-form>
+          </div>
+        </q-card>
+      </q-dialog>
+
       <!-- Table -->
-      <div class="q-my-xl table">
+      <div class="q-my-md table">
         <q-table
           :columns="columns"
           :rows="SuppliesList"
