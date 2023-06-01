@@ -87,7 +87,6 @@ export default {
         });
       } else {
         Loading.show();
-<<<<<<< HEAD
         GetPrescription({
           date:
             selectedPendingDate.value !== "Custom Date"
@@ -97,18 +96,6 @@ export default {
         }).then((response) => {
           Loading.hide();
         });
-=======
-        GetPrescription({ date: selectedPendingDate.value, mode: "done" }).then(
-          (response) => {
-            Loading.hide();
-            if (response.data.length > 0) {
-              pendingArray.value = response.data;
-              selectedPrescription.value = pendingArray.value[0];
-              selectedIndex.value = 0;
-            }
-          }
-        );
->>>>>>> 3bd8614eb166bc966bae8175ebaaa5c33db7b067
       }
     };
 
