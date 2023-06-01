@@ -653,17 +653,7 @@
                 <div v-if="(patient_id || doctor_id) && selectedDepartment">
                   <div class="q-mb-md">
                     <q-btn
-                      v-if="
-                        medicineArray.length === 0 ||
-                        (medicineArray[medicineArray.length - 1]
-                          .medicine_details.medicine_id !== null &&
-                          medicineArray[medicineArray.length - 1].quantity !==
-                            null &&
-                          medicineArray[medicineArray.length - 1]
-                            .medicine_details.medicine_id !== '' &&
-                          medicineArray[medicineArray.length - 1].quantity !==
-                            '')
-                      "
+                      v-if="medicineArray.length === 0 || btnCondition"
                       label="Add"
                       icon="add_circle"
                       color="primary"
@@ -703,6 +693,7 @@
                         map-options
                         new-value-mode="add-unique"
                         class="col q-mr-md"
+                        @update:model-value="buttonCondition(index)"
                       />
 
                       <q-input
@@ -713,6 +704,7 @@
                         v-model="medicine.quantity"
                         hide-bottom-space
                         :rules="[(val) => !isNaN(val) || 'Numbers only']"
+                        @update:model-value="buttonCondition(index)"
                       />
 
                       <q-icon
@@ -727,16 +719,7 @@
                   </div>
                   <div>
                     <q-btn
-                      v-if="
-                        medicineArray.length > 0 &&
-                        medicineArray[medicineArray.length - 1].medicine_details
-                          .medicine_id !== null &&
-                        medicineArray[medicineArray.length - 1].quantity !==
-                          null &&
-                        medicineArray[medicineArray.length - 1].medicine_details
-                          .medicine_id !== '' &&
-                        medicineArray[medicineArray.length - 1].quantity !== ''
-                      "
+                      v-if="medicineArray.length > 0 && btnCondition"
                       label="Submit"
                       type="submit"
                       no-caps
