@@ -11,28 +11,18 @@
           class="q-mr-md"
           @click="$router.go(-1)"
         />
-        <h5 class="text-dark text-weight-bold">MEDICINE RELEASE</h5>
+        <h5 class="text-dark text-weight-bold">SUPPLY RELEASE</h5>
       </div>
     </div>
 
     <div>
-      <!-- Pending -->
       <div class="row q-px-lg">
         <!-- Left panel -->
         <div
           class="col-4 q-pa-md q-mr-sm left-panel"
           :style="{ height: $q.screen.height - 180 + 'px' }"
         >
-          <div class="flex items-baseline justify-between q-mb-sm">
-            <q-select
-              dense
-              outlined
-              v-model="selectedView"
-              :options="viewOptions"
-              style="width: 100px"
-              @update:model-value="changeMode"
-            />
-
+          <div>
             <q-select
               dense
               outlined
@@ -43,23 +33,6 @@
               @update:model-value="changeDate"
             />
           </div>
-
-          <!-- <div>
-            <q-input label="Search Name" outlined dense class="q-mb-sm">
-              <template v-slot:prepend>
-                <q-icon name="search" color="primary" />
-              </template>
-            </q-input>
-          </div> -->
-
-          <!-- <div>
-            <q-select
-              v-model="selectedPerson"
-              :options="personOption"
-              outlined
-              dense
-            />
-          </div> -->
 
           <q-separator color="primary" class="q-my-md" />
 
@@ -81,25 +54,23 @@
                 "
                 @click="selectPendingRecord(index)"
               >
-                <div>
-                  {{
-                    prescription.first_name +
-                    " " +
-                    (prescription.middle_name
-                      ? prescription.middle_name + " "
-                      : " ") +
-                    prescription.last_name +
-                    " " +
-                    (prescription.suffix ? prescription.suffix : "")
-                  }}
-                </div>
+                {{
+                  prescription.first_name +
+                  " " +
+                  (prescription.middle_name
+                    ? prescription.middle_name + " "
+                    : " ") +
+                  prescription.last_name +
+                  " " +
+                  (prescription.suffix ? prescription.suffix : "")
+                }}
               </div>
             </div>
           </q-scroll-area>
         </div>
 
         <!-- Right Panel -->
-        <div class="right-panel col q-ml-sm q-px-md q-pt-lg">
+        <div class="right-panel col q-ml-sm q-px-xl q-py-lg">
           <div
             v-if="pendingArray.length > 0"
             style="justify-content: center; align-items: center"
@@ -125,20 +96,10 @@
                         : "")
                 }}
               </h3>
-              <h5
-                class="q-my-none text-bold text-grey-7"
-                v-if="selectedView === 'Pending'"
-              >
-                {{
-                  selectedPrescription.medicines.length > 0
-                    ? selectedPrescription.medicines[0].release_date
-                    : selectedPrescription.checkup_date
-                }}
-              </h5>
             </div>
 
             <q-scroll-area
-              :style="{ height: $q.screen.height - 310 + 'px' }"
+              :style="{ height: $q.screen.height - 300 + 'px' }"
               class="q-mt-md"
             >
               <!-- Prescriptions -->
@@ -202,15 +163,12 @@
                     @click="addMedicine"
                   />
                 </h6>
-                <div class="row q-mt-md">
+                <div class="row">
                   <label class="col text-dark text-bold q-mr-md"
                     >Medicine Name</label
                   >
                   <label class="col-1 text-dark text-bold q-mr-md"
                     >Quantity</label
-                  >
-                  <label class="col-4 text-dark text-bold q-mr-md"
-                    >Department</label
                   >
                   <label
                     v-if="selectedPrescription.medicines.length > 1"
@@ -220,7 +178,7 @@
                   >
                 </div>
 
-                <q-form @submit="submit" @reset="resetMedicine">
+                <q-form @submit="addMedicineReleases" @reset="resetMedicine">
                   <div
                     v-for="(medicine, index) in selectedPrescription.medicines"
                     :key="index"
@@ -231,6 +189,7 @@
                         v-model="medicine.medicine_details"
                         dense
                         outlined
+                        use-chips
                         :options="medicineList"
                         @filter="medicineFilterFunction"
                         option-label="medicine_name"
@@ -238,11 +197,12 @@
                         use-input
                         emit-value
                         map-options
+                        new-value-mode="add-unique"
                         class="col q-mr-md"
                         hide-bottom-space
                         @update:model-value="buttonCondition(index)"
                         :rules="[(val) => val || '']"
-                        :label="
+                        :hint="
                           medicine.release_date ? medicine.release_date : ''
                         "
                       />
@@ -256,21 +216,6 @@
                         hide-bottom-space
                         @update:model-value="buttonCondition(index)"
                         :rules="[(val) => (val && !isNaN(val)) || '']"
-                      />
-
-                      <q-select
-                        v-model="medicine.department"
-                        :readonly="
-                          selectedPrescription.department ? true : false
-                        "
-                        dense
-                        outlined
-                        :options="departments"
-                        option-label="department_label"
-                        option-value="department_id"
-                        class="col-4 q-mr-md"
-                        hide-bottom-space
-                        @update:model-value="buttonCondition(index)"
                       />
 
                       <q-icon
@@ -298,10 +243,7 @@
                       style="width: 100px"
                     />
                     <q-btn
-                      v-if="
-                        selectedPrescription.medicines.length > 0 &&
-                        selectedView !== 'Done'
-                      "
+                      v-if="selectedPrescription.medicines.length > 0"
                       no-caps
                       outline
                       type="reset"
@@ -358,17 +300,7 @@
                       mask="YYYY-MM-DD"
                       :options="(date) => date <= dateToday"
                       @update:model-value="changeCustomDate"
-                    >
-                      <div class="row justify-end items-center">
-                        <q-btn
-                          v-close-popup
-                          color="primary"
-                          label="Close"
-                          dense
-                          flat
-                        />
-                      </div>
-                    </q-date>
+                    />
                   </q-popup-proxy>
                 </q-icon>
               </template>
@@ -403,17 +335,7 @@
                       :options="
                         (date) => date >= firstDate && date <= dateToday
                       "
-                    >
-                      <div class="row justify-end items-center">
-                        <q-btn
-                          v-close-popup
-                          color="primary"
-                          label="Close"
-                          dense
-                          flat
-                        />
-                      </div>
-                    </q-date>
+                    />
                   </q-popup-proxy>
                 </q-icon>
               </template>
@@ -437,7 +359,7 @@
   </div>
 </template>
 
-<script src="../script/Meds&Supplies/MedicineRelease"></script>
+<script src="../script/Meds&Supplies/SupplyRelease"></script>
 
 <style scoped lang="scss">
 @import "../styles/meds&supplies/medicine_inventory.scss";

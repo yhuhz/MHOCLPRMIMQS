@@ -244,6 +244,21 @@
           </q-item-section>
           <q-item-section class="q-ml-md">Supplies Inventory</q-item-section>
         </q-item>
+
+        <q-item
+          clickable
+          :class="
+            $route.name === 'supply-release'
+              ? 'bg-primary list-text text-white'
+              : 'list-text text-white'
+          "
+          @click="$router.push({ name: 'supply-release' })"
+        >
+          <q-item-section avatar>
+            <q-icon size="xs" name="fa fa-boxes-packing" class="q-ml-md" />
+          </q-item-section>
+          <q-item-section class="q-ml-md">Supply Release</q-item-section>
+        </q-item>
       </q-list>
     </q-expansion-item>
 

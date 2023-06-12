@@ -364,8 +364,12 @@ import { RecordDetails } from 'src/composables/Patients';
             </p>
           </div>
           <div>
-            <p class="text-center text-grey-7">
+            <p class="text-center text-grey-7 q-my-none">
               Please input your findings here
+            </p>
+            <p class="text-center text-caption text-grey-6 q-my-none">
+              If the finding is not on the list, please type the finding and
+              press 'Enter'
             </p>
           </div>
 
@@ -374,7 +378,7 @@ import { RecordDetails } from 'src/composables/Patients';
             v-for="(findings, index) in disease"
             :key="index"
           >
-            <q-input
+            <!-- <q-input
               :readonly="
                 !editForm || (keySession && keySession.department !== 1)
               "
@@ -393,7 +397,31 @@ import { RecordDetails } from 'src/composables/Patients';
                 v-if="editForm && keySession && keySession.department === 1"
                 @click="removeFinding(index)"
               />
-            </q-input>
+            </q-input> -->
+
+            <q-select
+              :readonly="
+                !editForm || (keySession && keySession.department !== 1)
+              "
+              :options="findingOptionsFiltered"
+              @filter="findingsFilter"
+              use-input
+              new-value-mode="add-unique"
+              dense
+              outlined
+              input-class="text-primary"
+              v-model="findings.opd_disease"
+              hide-bottom-space
+            >
+              <q-btn
+                dense
+                flat
+                icon="delete"
+                borderless
+                v-if="editForm && keySession && keySession.department === 1"
+                @click="removeFinding(index)"
+              />
+            </q-select>
           </div>
         </div>
 

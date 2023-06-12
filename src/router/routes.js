@@ -169,6 +169,11 @@ const routes = [
         component: () =>
           import("src/pages/Meds&Supplies/SupplyInventoryDetails.vue"),
       },
+      {
+        path: "supply-release",
+        name: "supply-release",
+        component: () => import("src/pages/Meds&Supplies/SupplyRelease.vue"),
+      },
       // Manage Users
       {
         path: "manage-users",

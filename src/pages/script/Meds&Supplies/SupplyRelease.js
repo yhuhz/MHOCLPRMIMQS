@@ -27,7 +27,6 @@ import { ToggleDialogState } from "../../../composables/Triggers";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import { SetIDS } from "src/composables/IDS";
 import { useRoute, useRouter } from "vue-router";
-import { SelectedDate } from "src/composables/Reports";
 
 export default {
   components: { MHCDialog, DeleteMedicineConfirmation },
@@ -45,23 +44,11 @@ export default {
     let selectedView = ref("Pending");
 
     let pendingDateArray = ["Today", "This Week", "This Month", "Custom Date"];
-    let departments = [
-      "Outpatient Department",
-      "Dental",
-      "Prenatal",
-      "Immunization",
-      "Front Pharmacy",
-      "Front Desk",
-      "Admin Office",
-    ];
     let selectedPendingDate = ref("Today");
     let pendingArray = ref([]);
 
     let selectedPrescription = ref([]);
     let selectedIndex = ref(null);
-
-    let selectedPerson = ref("All");
-    let personOption = ["All", "Patients", "Personnel"];
 
     const selectPendingRecord = (index) => {
       selectedPrescription.value = pendingArray.value[index];
@@ -96,8 +83,6 @@ export default {
             pendingArray.value = response.data;
             selectedPrescription.value = pendingArray.value[0];
             selectedIndex.value = 0;
-          } else {
-            pendingArray.value = response.data;
           }
         });
       } else {
@@ -110,11 +95,6 @@ export default {
           mode: "done",
         }).then((response) => {
           Loading.hide();
-          if (response.data.length > 0) {
-            pendingArray.value = response.data;
-            selectedPrescription.value = pendingArray.value[0];
-            selectedIndex.value = 0;
-          }
         });
       }
     };
@@ -213,14 +193,6 @@ export default {
       selectedPrescription.value.medicines.push({
         medicine_details: { medicine_name: null, medicine_id: null },
         quantity: null,
-        department: {
-          department_id: selectedPrescription.value.department
-            ? selectedPrescription.value.department
-            : null,
-          department_label: selectedPrescription.value.department
-            ? departments[selectedPrescription.value.department - 1]
-            : null,
-        },
       });
     };
 
@@ -291,7 +263,6 @@ export default {
         department: selectedPrescription.value.department,
         released_by: keySession && keySession.user_id,
         medicine_array: selectedPrescription.value.medicines,
-        release_date: selectedPrescription.value.checkup_date,
       };
 
       Loading.show();
@@ -311,37 +282,7 @@ export default {
               });
 
               if (status === 0) {
-                // changeDate();
-                if (selectedPendingDate.value !== "Custom Date") {
-                  Loading.show();
-                  GetPrescription({
-                    date: selectedPendingDate.value,
-                    mode: "pending",
-                  }).then((response) => {
-                    Loading.hide();
-                    if (response.data.length > 0) {
-                      pendingArray.value = response.data;
-                      selectedPrescription.value = pendingArray.value[0];
-                      selectedIndex.value = 0;
-                    }
-                  });
-                } else {
-                  // console.log(dateArray.value);
-                  // return;
-                  Loading.show();
-                  GetPrescription({
-                    date: dateArray.value,
-                    mode: "pending",
-                  }).then((response) => {
-                    Loading.hide();
-                    isCustomDate.value = false;
-                    if (response.data.length > 0) {
-                      pendingArray.value = response.data;
-                      selectedPrescription.value = pendingArray.value[0];
-                      selectedIndex.value = 0;
-                    }
-                  });
-                }
+                changeDate();
               }
             }
           );
@@ -349,24 +290,6 @@ export default {
 
         selectedPrescription.value.medicines = [];
       });
-    };
-
-    const editMedicineRelease = () => {
-      let payload = {
-        patient_id: selectedPrescription.value.patient_id,
-        doctor_id: selectedPrescription.value.doctor_id,
-        released_by: keySession && keySession.user_id,
-        medicine_array: selectedPrescription.value.medicines,
-      };
-      console.log(payload);
-    };
-
-    const submit = () => {
-      if (selectedView.value === "Pending") {
-        addMedicineReleases();
-      } else {
-        editMedicineRelease();
-      }
     };
 
     return {
@@ -394,11 +317,8 @@ export default {
       resetMedicine,
       buttonCondition,
       btnCondition,
-      submit,
+      addMedicineReleases,
       changeMode,
-      selectedPerson,
-      personOption,
-      departments,
     };
   },
 };

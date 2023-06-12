@@ -139,6 +139,44 @@ export default {
       );
     };
 
+    let findingOptions = [
+      "Cough",
+      "Common Cold",
+      "UTI",
+      "Physical Injury",
+      "Chickenpox",
+      "Measles",
+      "Asthma",
+      "Conjuncvitis",
+      "Influenza",
+      "Food Poisoning",
+      "Hyperthermia",
+      "Mumps",
+      "Rabies",
+      "Skin Condition",
+      "Dengue",
+      "Allergies",
+      "Migraine",
+      "Hypertension",
+      "Diarrhea",
+      "Pneumonia",
+    ];
+    findingOptions.sort();
+
+    let findingOptionsFiltered = ref([]);
+    const findingsFilter = (val, update, abort) => {
+      update(() => {
+        if (val.length === "") {
+          findingOptionsFiltered.value = findingOptions;
+        } else {
+          const needle = val.toLowerCase();
+          findingOptionsFiltered.value = findingOptions.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        }
+      });
+    };
+
     const addFinding = () => {
       disease.value.push({
         opd_disease: "",
@@ -293,6 +331,8 @@ export default {
       medicineList,
       medicineFilterFunction,
       closePrescription,
+      findingsFilter,
+      findingOptionsFiltered,
     };
   },
 };

@@ -428,6 +428,26 @@
                   (keySession.department === 6 &&
                     keySession.permission_level === 1))
               "
+              @click="$router.push({ name: 'medicine-release' })"
+            >
+              <q-icon
+                name="volunteer_activism"
+                size="100px"
+                class="to-do-label"
+              />
+              <label class="text-center to-do-label"
+                >View Medicine Release</label
+              >
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              v-if="
+                keySession &&
+                (keySession.department === 4 ||
+                  (keySession.department === 6 &&
+                    keySession.permission_level === 1))
+              "
               @click="$router.push({ name: 'supply-inventory' })"
             >
               <q-icon name="vaccines" size="100px" class="to-do-label" />
