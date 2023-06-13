@@ -9,6 +9,7 @@ import {
   EditMedicine,
   FindMedicinesForRelease,
   AddMultipleMedicineRelease,
+  EditMedicineReleaseMass,
 } from "src/composables/Medicine";
 
 import {
@@ -357,8 +358,30 @@ export default {
         doctor_id: selectedPrescription.value.doctor_id,
         released_by: keySession && keySession.user_id,
         medicine_array: selectedPrescription.value.medicines,
+        date:
+          selectedPendingDate.value !== "Custom Date"
+            ? selectedPendingDate.value
+            : dateArray.value,
       };
-      console.log(payload);
+      // console.log(payload);
+
+      Loading.show();
+      EditMedicineReleaseMass(payload).then((response) => {
+        // console.log(response.data);
+
+        Loading.hide();
+        selectedPrescription.value.medicines = response.data;
+
+        let status = response.status === "success" ? 0 : 1;
+        $q.notify({
+          type: status === 0 ? "positive" : "negative",
+          classes: "text-white",
+          message:
+            status === 0
+              ? "Medicine releases edited successfully"
+              : "Failed to edit medicine releases",
+        });
+      });
     };
 
     const submit = () => {

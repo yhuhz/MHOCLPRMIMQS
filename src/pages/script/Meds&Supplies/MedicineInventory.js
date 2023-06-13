@@ -428,8 +428,7 @@ export default {
       filtersDepartment.value = [
         "Outpatient Department",
         "Dental",
-        "Prenatal",
-        "Immunization",
+        "Prenatal and Immunization",
       ];
     } else {
       filtersDepartment.value = [
