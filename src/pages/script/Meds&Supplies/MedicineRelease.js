@@ -51,7 +51,7 @@ export default {
       "Dental",
       "Prenatal",
       "Immunization",
-      "Front Pharmacy",
+      "Pharmacy",
       "Front Desk",
       "Admin Office",
     ];
@@ -130,8 +130,8 @@ export default {
     // );
 
     let isCustomDate = ref(false);
-    let dateArray = ref([]);
-    let dateToday = date.formatDate(new Date(), "YYYY/MM/DD");
+    let dateToday = date.formatDate(new Date(), "YYYY-MM-DD");
+    let dateArray = ref(["2023-01-01", dateToday]);
     let firstDate = ref(null);
 
     const changeCustomDate = () => {

@@ -34,6 +34,23 @@ let GetSupplies = (payload) => {
   });
 };
 
+let GetSuppliesRelease = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(pathlink, {
+        params: { date: payload },
+      })
+      .then((response) => {
+        console.log(response.data);
+
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 let FindSupplyDetails = (payload) => {
   return new Promise((resolve, reject) => {
     axios
@@ -272,4 +289,5 @@ export {
   AddSupplyRelease,
   EditSupplyRelease,
   FindSupplyForRelease,
+  GetSuppliesRelease,
 };
