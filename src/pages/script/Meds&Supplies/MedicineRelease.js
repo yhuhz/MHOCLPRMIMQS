@@ -49,8 +49,7 @@ export default {
     let departments = [
       "Outpatient Department",
       "Dental",
-      "Prenatal",
-      "Immunization",
+      "Prenatal and Immunization",
       "Pharmacy",
       "Front Desk",
       "Admin Office",

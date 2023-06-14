@@ -92,7 +92,7 @@
             </div>
 
             <q-scroll-area
-              :style="{ height: $q.screen.height - 300 + 'px' }"
+              :style="{ height: $q.screen.height - 330 + 'px' }"
               class="q-mt-md"
             >
               <div class="q-mt-md">
@@ -126,7 +126,7 @@
                   >
                 </div>
 
-                <q-form>
+                <q-form @submit="addSupplies">
                   <div
                     v-for="(supply, index) in selectedRelease.supplies"
                     :key="index"
@@ -137,17 +137,17 @@
                         v-model="supply.supply_details"
                         dense
                         outlined
+                        use-input
+                        map-options
                         :options="supplyList"
                         @filter="supplyFilterFunction"
                         option-label="supply_name"
                         option-value="supply_id"
-                        use-input
-                        emit-value
-                        map-options
                         class="col q-mr-md"
                         hide-bottom-space
+                        @update:model-value="btnCondition = !btnCondition"
                         :rules="[(val) => val || '']"
-                        :hint="supply.release_date ? supply.release_date : ''"
+                        :label="supply.release_date ? supply.release_date : ''"
                       />
 
                       <q-input
@@ -166,7 +166,7 @@
                         color="negative"
                         class="col-1 cursor-pointer"
                         size="30px"
-                        @click="removeMedicine(index)"
+                        @click="removeSupply(index)"
                       />
                     </div>
                   </div>

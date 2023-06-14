@@ -46,10 +46,12 @@ export default {
       selectedRelease.value = pendingArray.value[index];
     };
 
+    Loading.show();
     GetSuppliesRelease(["2023-01-01", "2023-06-30"]).then((response) => {
+      Loading.hide();
       pendingArray.value = response.data;
       selectedIndex.value = 0;
-      selectedRelease.value = response.data[0];
+      selectedRelease.value = pendingArray.value[0];
     });
 
     let isCustomDate = ref(false);
@@ -103,7 +105,7 @@ export default {
                     " (" +
                     (m.quantity - m.quantity_released) +
                     ")",
-                  supply_id: m.medicine_id,
+                  supply_id: m.supply_id,
                 };
                 supplyList.value.push(selectValues);
               });
@@ -119,8 +121,24 @@ export default {
       selectedRelease.value.supplies.push({
         supply_details: { supply_name: null, supply_id: null },
         quantity: null,
+        release_date: dateToday,
+        released_by: keySession && keySession.user_id,
+        status: 0,
       });
     };
+
+    const removeSupply = (index) => {
+      selectedRelease.value.supplies.splice(index, 1);
+    };
+
+    const addSupplies = () => {
+      console.log(selectedRelease.value);
+    };
+
+    let btnCondition = ref(true);
+    // const buttonCondition = () => {
+    //   if (selectedRelease.value.supplies[selectedRelease.value.supplies.length - 1].supply_details.supply_id)
+    // }
 
     return {
       keySession,
@@ -140,6 +158,9 @@ export default {
       supplyList,
       supplyFilterFunction,
       addSupply,
+      removeSupply,
+      addSupplies,
+      btnCondition,
     };
   },
 };
