@@ -126,7 +126,7 @@
                   >
                 </div>
 
-                <q-form @submit="addSupplies">
+                <q-form @submit="editSupplyRelease">
                   <div
                     v-for="(supply, index) in selectedRelease.supplies"
                     :key="index"
@@ -145,7 +145,7 @@
                         option-value="supply_id"
                         class="col q-mr-md"
                         hide-bottom-space
-                        @update:model-value="btnCondition = !btnCondition"
+                        @update:model-value="buttonCondition"
                         :rules="[(val) => val || '']"
                         :label="supply.release_date ? supply.release_date : ''"
                       />
@@ -157,6 +157,7 @@
                         input-class="text-dark"
                         v-model="supply.quantity"
                         hide-bottom-space
+                        @update:model-value="buttonCondition"
                         :rules="[(val) => (val && !isNaN(val)) || '']"
                       />
 
@@ -173,7 +174,7 @@
 
                   <div class="flex q-mt-md" style="justify-content: center">
                     <q-btn
-                      v-if="selectedRelease.supplies.length > 0"
+                      v-if="btnCondition"
                       no-caps
                       color="primary"
                       type="submit"

@@ -4,6 +4,7 @@ import { useQuasar, Loading, date, SessionStorage } from "quasar";
 import {
   GetSuppliesRelease,
   FindSupplyForRelease,
+  EditSupplyReleaseMass,
 } from "src/composables/Supply";
 
 import {
@@ -32,8 +33,7 @@ export default {
     let departments = [
       "Outpatient Department",
       "Dental",
-      "Prenatal",
-      "Immunization",
+      "Prenatal and Immunization",
       "Pharmacy",
       "Front Desk",
       "Admin Office",
@@ -44,10 +44,15 @@ export default {
     const selectPendingRecord = (index) => {
       selectedIndex.value = index;
       selectedRelease.value = pendingArray.value[index];
+      btnCondition.value = true;
     };
 
     Loading.show();
-    GetSuppliesRelease(["2023-01-01", "2023-06-30"]).then((response) => {
+    GetSuppliesRelease(
+      selectedPendingDate.value !== "Custom Date"
+        ? selectedPendingDate.value
+        : dateArray.value
+    ).then((response) => {
       Loading.hide();
       pendingArray.value = response.data;
       selectedIndex.value = 0;
@@ -65,9 +70,10 @@ export default {
 
     const changeDate = () => {
       if (selectedPendingDate.value !== "Custom Date") {
-        GetSuppliesRelease(["2023-01-01", "2023-06-30"]).then((response) => {
+        GetSuppliesRelease(selectedPendingDate.value).then((response) => {
           pendingArray.value = response.data;
           selectedIndex.value = 0;
+          selectedRelease.value = pendingArray.value[0];
         });
       } else {
         isCustomDate.value = true;
@@ -81,9 +87,11 @@ export default {
     };
 
     const getRecordsFromCustomDate = () => {
-      GetSuppliesRelease(["2023-01-01", "2023-06-30"]).then((response) => {
+      isCustomDate.value = false;
+      GetSuppliesRelease(dateArray.value).then((response) => {
         pendingArray.value = response.data;
         selectedIndex.value = 0;
+        selectedRelease.value = pendingArray.value[0];
       });
     };
 
@@ -118,6 +126,7 @@ export default {
     };
 
     const addSupply = () => {
+      btnCondition.value = false;
       selectedRelease.value.supplies.push({
         supply_details: { supply_name: null, supply_id: null },
         quantity: null,
@@ -131,14 +140,43 @@ export default {
       selectedRelease.value.supplies.splice(index, 1);
     };
 
-    const addSupplies = () => {
-      console.log(selectedRelease.value);
+    const editSupplyRelease = () => {
+      selectedRelease.value.date =
+        selectedPendingDate.value !== "Custom Date"
+          ? selectedPendingDate.value
+          : dateArray.value;
+      // console.log(selectedRelease.value);
+
+      Loading.show();
+      EditSupplyReleaseMass(selectedRelease.value).then((response) => {
+        Loading.hide();
+        selectedRelease.value = response.data;
+
+        let status = response.status === "success" ? 0 : 1;
+        $q.notify({
+          type: status === 0 ? "positive" : "negative",
+          classes: "text-white",
+          message:
+            status === 0
+              ? "Supply releases edited successfully"
+              : "Failed to edit supply releases",
+        });
+      });
     };
 
     let btnCondition = ref(true);
-    // const buttonCondition = () => {
-    //   if (selectedRelease.value.supplies[selectedRelease.value.supplies.length - 1].supply_details.supply_id)
-    // }
+    const buttonCondition = () => {
+      if (
+        selectedRelease.value.supplies[
+          selectedRelease.value.supplies.length - 1
+        ].supply_details.supply_name !== null &&
+        selectedRelease.value.supplies[
+          selectedRelease.value.supplies.length - 1
+        ].quantity !== null
+      ) {
+        btnCondition.value = true;
+      }
+    };
 
     return {
       keySession,
@@ -159,8 +197,9 @@ export default {
       supplyFilterFunction,
       addSupply,
       removeSupply,
-      addSupplies,
+      editSupplyRelease,
       btnCondition,
+      buttonCondition,
     };
   },
 };

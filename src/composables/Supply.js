@@ -79,7 +79,7 @@ let FindSupplyRelease = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         SupplyRelease.value = response.data.data;
         resolve(response.data);
       })
@@ -99,7 +99,7 @@ let FindSupplyForRelease = (payload) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         SupplyRelease.value = response.data.data;
         resolve(response.data);
       })
@@ -222,6 +222,20 @@ let EditSupplyRelease = (payload) => {
   });
 };
 
+let EditSupplyReleaseMass = (payload) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(pathlink, payload)
+      .then((response) => {
+        console.log(response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 /**
  * This function accepts parameters of an array like this [1,2,3,4] then
  * delete the data in the Supplies based on this parameter.
@@ -290,4 +304,5 @@ export {
   EditSupplyRelease,
   FindSupplyForRelease,
   GetSuppliesRelease,
+  EditSupplyReleaseMass,
 };
