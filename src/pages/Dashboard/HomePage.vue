@@ -460,6 +460,24 @@
               class="to-do-box shadow-5"
               v-if="
                 keySession &&
+                (keySession.department === 4 ||
+                  (keySession.department === 6 &&
+                    keySession.permission_level === 1))
+              "
+              @click="$router.push({ name: 'supply-release' })"
+            >
+              <q-icon
+                name="fa fa-boxes-packing"
+                size="100px"
+                class="to-do-label"
+              />
+              <label class="text-center to-do-label">View Supply Release</label>
+            </div>
+
+            <div
+              class="to-do-box shadow-5"
+              v-if="
+                keySession &&
                 keySession.department === 6 &&
                 keySession.permission_level === 1
               "

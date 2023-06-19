@@ -15,6 +15,7 @@ let Login = (payload) => {
     axios
       .post(pathlink, payload)
       .then((response) => {
+        // console.log(response.data);
         if (response.data.status === "success") {
           LoginRecord.value = response.data.data;
         }

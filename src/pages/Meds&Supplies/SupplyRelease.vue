@@ -101,6 +101,7 @@
                 >
                   Supply Release
                   <q-btn
+                    v-if="keySession && keySession.department === 4"
                     outline
                     dense
                     no-caps
@@ -119,7 +120,12 @@
                     >Quantity</label
                   >
                   <label
-                    v-if="selectedRelease.supplies.length > 1"
+                    v-if="
+                      keySession &&
+                      keySession.department === 4 &&
+                      keySession.permission_level !== 3 &&
+                      selectedRelease.supplies.length > 1
+                    "
                     class="col-1 text-dark"
                     style="visibility: hidden"
                     >Quantity</label
@@ -134,6 +140,11 @@
                   >
                     <div class="row q-mb-sm">
                       <q-select
+                        :readonly="
+                          keySession &&
+                          (keySession.department !== 4 ||
+                            keySession.permission_level === 3)
+                        "
                         v-model="supply.supply_details"
                         dense
                         outlined
@@ -151,6 +162,11 @@
                       />
 
                       <q-input
+                        :readonly="
+                          keySession &&
+                          (keySession.department !== 4 ||
+                            keySession.permission_level === 3)
+                        "
                         dense
                         outlined
                         class="col-1 q-mr-md"
@@ -162,7 +178,12 @@
                       />
 
                       <q-icon
-                        v-if="selectedRelease.supplies.length > 1"
+                        v-if="
+                          keySession &&
+                          keySession.department === 4 &&
+                          keySession.permission_level !== 3 &&
+                          selectedRelease.supplies.length > 1
+                        "
                         name="delete"
                         color="negative"
                         class="col-1 cursor-pointer"
@@ -174,7 +195,12 @@
 
                   <div class="flex q-mt-md" style="justify-content: center">
                     <q-btn
-                      v-if="btnCondition"
+                      v-if="
+                        keySession &&
+                        keySession.department === 4 &&
+                        keySession.permission_level !== 3 &&
+                        btnCondition
+                      "
                       no-caps
                       color="primary"
                       type="submit"

@@ -41,7 +41,7 @@ let GetSuppliesRelease = (payload) => {
         params: { date: payload },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
 
         resolve(response.data);
       })

@@ -189,8 +189,11 @@
                   Medicine Release
                   <q-btn
                     v-if="
-                      selectedPrescription.medicines.length === 0 ||
-                      btnCondition
+                      keySession &&
+                      keySession.department === 4 &&
+                      keySession.permission_level !== 3 &&
+                      (selectedPrescription.medicines.length === 0 ||
+                        btnCondition)
                     "
                     outline
                     dense
@@ -213,7 +216,12 @@
                     >Department</label
                   >
                   <label
-                    v-if="selectedPrescription.medicines.length > 1"
+                    v-if="
+                      keySession &&
+                      keySession.department === 4 &&
+                      keySession.permission_level !== 3 &&
+                      selectedPrescription.medicines.length > 1
+                    "
                     class="col-1 text-dark"
                     style="visibility: hidden"
                     >Quantity</label
@@ -229,6 +237,11 @@
                     <div class="row q-mb-sm">
                       <q-select
                         v-model="medicine.medicine_details"
+                        :readonly="
+                          keySession &&
+                          (keySession.department !== 4 ||
+                            keySession.permission_level === 3)
+                        "
                         dense
                         outlined
                         :options="medicineList"
@@ -250,6 +263,11 @@
                       <q-input
                         dense
                         outlined
+                        :readonly="
+                          keySession &&
+                          (keySession.department !== 4 ||
+                            keySession.permission_level === 3)
+                        "
                         class="col-1 q-mr-md"
                         input-class="text-dark"
                         v-model="medicine.quantity"
@@ -261,7 +279,12 @@
                       <q-select
                         v-model="medicine.department"
                         :readonly="
-                          selectedPrescription.department ? true : false
+                          keySession &&
+                          (keySession.department !== 4 ||
+                          keySession.permission_level === 3 ||
+                          selectedPrescription.department
+                            ? true
+                            : false)
                         "
                         dense
                         outlined
@@ -274,7 +297,12 @@
                       />
 
                       <q-icon
-                        v-if="selectedPrescription.medicines.length > 1"
+                        v-if="
+                          keySession &&
+                          keySession.department === 4 &&
+                          keySession.permission_level !== 3 &&
+                          selectedPrescription.medicines.length > 1
+                        "
                         name="delete"
                         color="negative"
                         class="col-1 cursor-pointer"
@@ -287,6 +315,9 @@
                   <div class="flex q-mt-md" style="justify-content: center">
                     <q-btn
                       v-if="
+                        keySession &&
+                        keySession.department === 4 &&
+                        keySession.permission_level !== 3 &&
                         selectedPrescription.medicines.length > 0 &&
                         btnCondition
                       "
@@ -299,6 +330,9 @@
                     />
                     <q-btn
                       v-if="
+                        keySession &&
+                        keySession.department === 4 &&
+                        keySession.permission_level !== 3 &&
                         selectedPrescription.medicines.length > 0 &&
                         selectedView !== 'Done'
                       "
