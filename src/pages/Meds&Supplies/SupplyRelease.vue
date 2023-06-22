@@ -13,6 +13,20 @@
         />
         <h5 class="text-dark text-weight-bold">SUPPLY RELEASE</h5>
       </div>
+      <q-btn
+        v-if="
+          keySession &&
+          keySession.department === 4 &&
+          keySession.permission_level !== 3
+        "
+        outline
+        label="Release Supplies"
+        icon-right="fa fa-boxes-packing"
+        no-caps
+        color="primary"
+        class="q-ml-xs"
+        @click="isSupplyRelease = !isSupplyRelease"
+      />
     </div>
 
     <div>
@@ -74,7 +88,7 @@
             style="justify-content: center; align-items: center"
           >
             <div class="text-center">
-              <h3 class="q-my-none text-primary text-bold">
+              <h4 class="q-my-none text-primary text-bold">
                 {{
                   selectedRelease.first_name +
                   " " +
@@ -85,7 +99,7 @@
                   " " +
                   (selectedRelease.suffix ? selectedRelease.suffix : "")
                 }}
-              </h3>
+              </h4>
               <label class="q-mt-md text-bold text-grey-7 text-h5">
                 {{ departments[selectedRelease.department - 1] }}
               </label>
@@ -307,6 +321,156 @@
             class="q-mt-md"
             @click="getRecordsFromCustomDate"
           />
+        </div>
+      </q-card>
+    </q-dialog>
+
+    <!-- Supplies Release -->
+    <q-dialog v-model="isSupplyRelease" persistent>
+      <q-card style="min-width: 500px; max-width: 750px">
+        <div class="q-pa-lg">
+          <div class="flex justify-end">
+            <q-btn
+              v-close-popup
+              dense
+              color="negative"
+              size="0.375rem"
+              icon="eva-close-outline"
+            />
+          </div>
+          <p class="text-primary text-weight-bold text-24 text-center q-mb-xl">
+            <q-icon name="fa fa-boxes-packing" class="q-mr-xs q-gutter-xs" />
+            RELEASE SUPPLIES
+          </p>
+
+          <q-form @submit="addSupplyRelease">
+            <div class="row q-mt-sm">
+              <div class="col q-mr-md">
+                <label class="text-dark"
+                  >Personnel ID <span class="text-negative">*</span></label
+                >
+
+                <q-select
+                  outlined
+                  hide-bottom-space
+                  v-model="supplyReleaseDetails.user_id"
+                  @filter="userFilterFunction"
+                  option-label="user_name"
+                  option-value="user_id"
+                  :options="userOptions"
+                  use-input
+                  emit-value
+                  map-options
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  :rules="[
+                    (val) =>
+                      (val && (val.length > 0 || !isNaN(val))) ||
+                      'Required field',
+                  ]"
+                  @update:model-value="findDepartment"
+                />
+              </div>
+
+              <div class="col-5">
+                <label class="text-dark"
+                  >Department <span class="text-negative">*</span></label
+                >
+                <q-select
+                  hide-bottom-space
+                  disable
+                  :options="filtersDepartment"
+                  dense
+                  outlined
+                  v-model="supplyReleaseDetails.department"
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Required field',
+                  ]"
+                />
+              </div>
+            </div>
+
+            <q-separator class="q-my-md" color="primary" />
+
+            <div
+              v-if="
+                supplyReleaseDetails.user_id && supplyReleaseDetails.department
+              "
+            >
+              <div class="q-mb-md">
+                <q-btn
+                  label="Add"
+                  icon="add_circle"
+                  color="primary"
+                  outline
+                  no-caps
+                  @click="addSupplyMass"
+                />
+              </div>
+
+              <div class="row">
+                <label class="col text-dark text-bold q-mr-md"
+                  >Supply Name</label
+                >
+                <label class="col-2 text-dark text-bold q-mr-md"
+                  >Quantity</label
+                >
+                <label
+                  v-if="supplyReleaseDetails.supplies_array.length > 1"
+                  class="col-1 text-dark"
+                  style="visibility: hidden"
+                  >Quantity</label
+                >
+              </div>
+
+              <div
+                v-for="(supply, index) in supplyReleaseDetails.supplies_array"
+                :key="index"
+              >
+                <div class="row q-mb-sm">
+                  <q-select
+                    v-model="supply.supply_id"
+                    dense
+                    outlined
+                    :options="supplyList"
+                    @filter="supplyFilterFunction"
+                    option-label="supply_name"
+                    option-value="supply_id"
+                    use-input
+                    emit-value
+                    map-options
+                    new-value-mode="add-unique"
+                    hide-bottom-space
+                    class="col q-mr-md"
+                    :rules="[(val) => val || '']"
+                  />
+
+                  <q-input
+                    dense
+                    outlined
+                    class="col-2 q-mr-md"
+                    input-class="text-dark"
+                    v-model="supply.quantity"
+                    hide-bottom-space
+                    :rules="[(val) => (val && !isNaN(val)) || '']"
+                  />
+
+                  <q-icon
+                    v-if="supplyReleaseDetails.supplies_array.length > 1"
+                    name="delete"
+                    color="negative"
+                    class="col-1 cursor-pointer"
+                    size="30px"
+                    @click="removeSupplyMass(index)"
+                  />
+                </div>
+              </div>
+              <div>
+                <q-btn label="Submit" type="submit" no-caps color="primary" />
+              </div>
+            </div>
+          </q-form>
         </div>
       </q-card>
     </q-dialog>
