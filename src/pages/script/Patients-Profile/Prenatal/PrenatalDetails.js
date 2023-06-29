@@ -46,6 +46,7 @@ export default {
     let editForm = ref(false);
     let isEditCheckup = ref(false);
     let checkup_date = ref(null);
+    let bmi = ref(null);
 
     watch(
       () => _.cloneDeep(RecordDetails.value),
@@ -75,8 +76,18 @@ export default {
           previous_full_term: RecordDetails.value.previous_full_term,
           previous_premature: RecordDetails.value.previous_premature,
           midwifes_notes: RecordDetails.value.midwifes_notes,
+          expected_date_delivery: RecordDetails.value.expected_date_delivery,
           status: 0,
         };
+
+        bmi.value =
+          prenatal_checkup.value.weight !== null ||
+          prenatal_checkup.value.height !== null
+            ? (
+                prenatal_checkup.value.weight /
+                Math.pow(prenatal_checkup.value.height / 100, 2)
+              ).toFixed(2)
+            : "";
 
         checkup_date.value = patientRecordInfo.value.date_added.replaceAll(
           "-",
@@ -102,6 +113,17 @@ export default {
           prenatal_checkup.value.checkup_date.replaceAll("-", "/");
       }
     });
+
+    const updateBMI = () => {
+      bmi.value =
+        prenatal_checkup.value.weight !== null ||
+        prenatal_checkup.value.height !== null
+          ? (
+              prenatal_checkup.value.weight /
+              Math.pow(prenatal_checkup.value.height / 100, 2)
+            ).toFixed(2)
+          : "";
+    };
 
     const changeCheckupDate = () => {
       RecordArrays.value.forEach((r) => {
@@ -175,6 +197,9 @@ export default {
         prenatal: patientRecordInfo.value,
       };
 
+      // console.log(payload);
+      // return;
+
       Loading.show();
 
       UpdateRecord(payload, route.params.department).then((response) => {
@@ -204,6 +229,9 @@ export default {
       let payload = {
         checkup: prenatal_checkup.value,
       };
+
+      // console.log(payload);
+      // return;
 
       Loading.show();
 
@@ -372,6 +400,8 @@ export default {
       closePrescription,
       addPrescription,
       removePrescription,
+      bmi,
+      updateBMI,
     };
   },
 };

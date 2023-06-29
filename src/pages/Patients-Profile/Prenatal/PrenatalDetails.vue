@@ -11,11 +11,11 @@ import { RecordDetails } from 'src/composables/Patients';
       </div>
     </div>
 
-    <div class="row q-mt-lg">
+    <div class="q-mt-lg">
       <!-- <div class="col q-ml-md second-col"> -->
 
       <!-- Midwifes Notes -->
-      <div class="col card-box midwifes-notes q-mr-sm">
+      <div class="card-box midwifes-notes">
         <q-form @submit="editPrenatalRecordFunction">
           <div class="q-mb-md">
             <p
@@ -68,7 +68,6 @@ import { RecordDetails } from 'src/composables/Patients';
                 no-caps
                 color="primary"
                 class="col q-mr-sm"
-                style="width: 150px"
               />
               <q-btn
                 @click="cancelFunction"
@@ -79,7 +78,6 @@ import { RecordDetails } from 'src/composables/Patients';
                 class="col q-ml-sm"
                 outline
                 color="primary"
-                style="width: 150px"
               />
             </div>
           </div>
@@ -98,19 +96,18 @@ import { RecordDetails } from 'src/composables/Patients';
               readonly
               input-style="padding: 0"
               input-class="text-right text-primary"
-              style="width: 150px"
             />
           </div>
           <div class="flex items-baseline justify-between q-px-md q-mb-sm">
             <p class="text-primary text-weight-bold">Prev. Full Term:</p>
             <q-input
               :readonly="!editForm"
+              hide-bottom-space
               outlined
               dense
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.previous_full_term"
-              style="width: 150px"
               :rules="[
                 (val) => val === 0 || (val && !isNaN(val)) || 'Numbers only',
               ]"
@@ -120,12 +117,12 @@ import { RecordDetails } from 'src/composables/Patients';
             <p class="text-primary text-weight-bold">Prev. Premature:</p>
             <q-input
               :readonly="!editForm"
+              hide-bottom-space
               outlined
               dense
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.previous_premature"
-              style="width: 150px"
               :rules="[
                 (val) => val === 0 || (val && !isNaN(val)) || 'Numbers only',
               ]"
@@ -140,18 +137,16 @@ import { RecordDetails } from 'src/composables/Patients';
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.date_added"
-              style="width: 150px"
             />
           </div>
-          <div class="flex items-baseline justify-between q-px-md q-mb-md">
+          <div class="flex items-baseline justify-between q-px-md">
             <p class="text-primary text-weight-bold">Last Menstruation:</p>
             <q-input
-              :readonly="!editForm"
+              readonly
               outlined
               dense
               input-style="padding: 0"
               input-class="text-right text-primary"
-              style="width: 150px"
               v-model="patientRecordInfo.last_menstruation"
               :rules="[(val) => (val && val.length > 0) || 'Required field']"
             >
@@ -165,6 +160,49 @@ import { RecordDetails } from 'src/composables/Patients';
                       mask="YYYY-MM-DD"
                       v-model="patientRecordInfo.last_menstruation"
                       :options="(date) => date <= checkup_date"
+                      :rules="[
+                        (val) => (val && val.length > 0) || 'Required field',
+                      ]"
+                    >
+                      <div class="row justify-end items-center">
+                        <q-btn
+                          v-close-popup
+                          color="primary"
+                          label="Close"
+                          dense
+                          flat
+                        />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
+
+          <div class="flex items-baseline justify-between q-px-md q-mb-md">
+            <p class="text-primary text-weight-bold">
+              Expected Date of Delivery:
+            </p>
+            <q-input
+              readonly
+              outlined
+              dense
+              input-style="padding: 0"
+              input-class="text-right text-primary"
+              v-model="patientRecordInfo.expected_date_delivery"
+              :rules="[(val) => (val && val.length > 0) || 'Required field']"
+            >
+              <template v-slot:append v-if="editForm">
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-date
+                      mask="YYYY-MM-DD"
+                      v-model="patientRecordInfo.expected_date_delivery"
+                      :options="(date) => date >= checkup_date"
                       :rules="[
                         (val) => (val && val.length > 0) || 'Required field',
                       ]"
@@ -208,7 +246,7 @@ import { RecordDetails } from 'src/composables/Patients';
 
       <!-- Prenatal Checkup -->
 
-      <div class="col card-box q-ml-sm">
+      <div class="card-box q-mt-md">
         <q-form @submit="submitFunction">
           <div
             class="flex justify-between items-center bg-primary q-mb-md"
@@ -313,7 +351,6 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="°C"
-                  style="width: 150px"
                   :rules="[
                     (val) =>
                       val === 0 || (val && !isNaN(val)) || 'Numbers only',
@@ -362,11 +399,11 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="cm"
-                  style="width: 150px"
                   :rules="[
                     (val) =>
                       val === 0 || (val && !isNaN(val)) || 'Numbers only',
                   ]"
+                  @update:model-value="updateBMI"
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
@@ -379,11 +416,22 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="kg"
-                  style="width: 150px"
                   :rules="[
                     (val) =>
                       val === 0 || (val && !isNaN(val)) || 'Numbers only',
                   ]"
+                  @update:model-value="updateBMI"
+                />
+              </div>
+              <div class="flex items-baseline justify-between q-px-md q-mb-sm">
+                <p class="text-weight-bold text-primary">BMI</p>
+                <q-input
+                  :readonly="!isEditCheckup"
+                  v-model="bmi"
+                  outlined
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
@@ -396,7 +444,6 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="bpm"
-                  style="width: 150px"
                   :rules="[
                     (val) =>
                       val === 0 || (val && !isNaN(val)) || 'Numbers only',
@@ -413,13 +460,82 @@ import { RecordDetails } from 'src/composables/Patients';
                   input-style="padding: 0"
                   input-class="text-right text-primary"
                   label="%"
-                  style="width: 150px"
                   :rules="[
                     (val) =>
                       val === 0 || (val && !isNaN(val)) || 'Numbers only',
                   ]"
                 />
               </div>
+
+              <div class="flex items-baseline justify-between q-px-md">
+                <p class="text-weight-bold text-primary">Age of Gestation</p>
+                <q-input
+                  :readonly="!isEditCheckup"
+                  v-model="prenatal_checkup.aog"
+                  outlined
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  label="Weeks"
+                  :rules="[
+                    (val) =>
+                      val === 0 || (val && val.length > 0) || 'Required field',
+                  ]"
+                />
+              </div>
+
+              <div class="flex items-baseline justify-between q-px-md">
+                <p class="text-weight-bold text-primary">Fundal Height</p>
+                <q-input
+                  :readonly="!isEditCheckup"
+                  v-model="prenatal_checkup.fundal_height"
+                  outlined
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                  label="cm"
+                  :rules="[(val) => val === 0 || !isNaN(val) || 'Numbers only']"
+                />
+              </div>
+
+              <div class="flex items-baseline justify-between q-px-md q-mb-sm">
+                <p class="text-weight-bold text-primary">
+                  Tetanus Toxoid Vaccination Date Given
+                </p>
+                <q-input
+                  readonly
+                  v-model="prenatal_checkup.tetanus_vaccination"
+                  outlined
+                  dense
+                  input-style="padding: 0"
+                  input-class="text-right text-primary"
+                >
+                  <template v-slot:append v-if="isEditCheckup">
+                    <q-icon name="event" class="cursor-pointer" color="primary">
+                      <q-popup-proxy
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          v-model="prenatal_checkup.tetanus_vaccination"
+                          mask="YYYY-MM-DD"
+                        >
+                          <div class="row justify-end items-center">
+                            <q-btn
+                              v-close-popup
+                              color="primary"
+                              label="Close"
+                              dense
+                              flat
+                            />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+
               <div class="flex items-baseline justify-between q-px-md">
                 <p class="text-weight-bold text-primary">Next Checkup</p>
                 <q-input
@@ -429,7 +545,6 @@ import { RecordDetails } from 'src/composables/Patients';
                   dense
                   input-style="padding: 0"
                   input-class="text-right text-primary"
-                  style="width: 150px"
                   :rules="[
                     (val) =>
                       val === 0 || (val && val.length > 0) || 'Required field',
