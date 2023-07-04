@@ -147,7 +147,17 @@
                         transition-show="scale"
                         transition-hide="scale"
                       >
-                        <q-date v-model="customDate[0]" />
+                        <q-date v-model="customDate[0]">
+                          <div class="row justify-end items-center">
+                            <q-btn
+                              v-close-popup
+                              color="primary"
+                              label="Close"
+                              dense
+                              flat
+                            />
+                          </div>
+                        </q-date>
                       </q-popup-proxy>
                     </q-icon>
                   </template>
@@ -168,7 +178,17 @@
                         transition-show="scale"
                         transition-hide="scale"
                       >
-                        <q-date v-model="customDate[1]" />
+                        <q-date v-model="customDate[1]">
+                          <div class="row justify-end items-center">
+                            <q-btn
+                              v-close-popup
+                              color="primary"
+                              label="Close"
+                              dense
+                              flat
+                            />
+                          </div>
+                        </q-date>
                       </q-popup-proxy>
                     </q-icon>
                   </template>

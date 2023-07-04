@@ -426,7 +426,7 @@ import { RecordDetails } from 'src/composables/Patients';
               <div class="flex items-baseline justify-between q-px-md q-mb-sm">
                 <p class="text-weight-bold text-primary">BMI</p>
                 <q-input
-                  :readonly="!isEditCheckup"
+                  readonly
                   v-model="bmi"
                   outlined
                   dense

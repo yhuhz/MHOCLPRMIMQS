@@ -148,6 +148,8 @@ export default {
       });
     };
 
+    getUsers();
+
     /**ADD USER**/
     let sexArray = ["Male", "Female"];
     let permissionArray = ref(["Administrator", "Edit and View", "View Only"]);

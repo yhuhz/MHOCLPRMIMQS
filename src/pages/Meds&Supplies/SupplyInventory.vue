@@ -291,7 +291,11 @@
       <!-- Add New Supply Stock -->
       <div class="q-mt-lg">
         <q-btn
-          v-if="keySession && keySession.permission_level !== 3"
+          v-if="
+            keySession &&
+            keySession.department === 4 &&
+            keySession.permission_level !== 3
+          "
           @click="isAddNewSupplyStock = true"
           outline
           label="Add New Supply Stock"
@@ -301,7 +305,11 @@
           class="q-mr-xs"
         />
         <q-btn
-          v-if="keySession && keySession.permission_level !== 3"
+          v-if="
+            keySession &&
+            keySession.department === 4 &&
+            keySession.permission_level !== 3
+          "
           outline
           label="Release Supplies"
           icon-right="fa fa-boxes-packing"

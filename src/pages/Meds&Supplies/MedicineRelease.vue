@@ -59,6 +59,16 @@
             />
           </div>
 
+          <div>
+            <q-select
+              v-if="selectedView === 'Done'"
+              dense
+              outlined
+              v-model="selectedPerson"
+              :options="personOption"
+            />
+          </div>
+
           <!-- <div>
             <q-input label="Search Name" outlined dense class="q-mb-sm">
               <template v-slot:prepend>
@@ -80,15 +90,22 @@
 
           <q-scroll-area
             v-if="pendingArray.length > 0"
-            :style="{ height: $q.screen.height - 300 + 'px' }"
+            :style="{ height: $q.screen.height - 330 + 'px' }"
           >
             <div
               v-for="(prescription, index) in pendingArray"
               :key="index"
-              class="row q-mb-sm"
+              class="row"
             >
               <div
-                class="q-px-md q-py-sm row cursor-pointer record-card"
+                v-if="
+                  selectedPerson === 'All' ||
+                  (selectedPerson === 'Patients' &&
+                    prescription.patient_id !== undefined) ||
+                  (selectedPerson === 'Personnel' &&
+                    prescription.doctor_id !== undefined)
+                "
+                class="q-px-md q-py-sm q-mb-sm row cursor-pointer record-card"
                 :style="
                   selectedIndex !== null && selectedIndex === index
                     ? 'background-color: #5f8d4e; color: white'
@@ -197,7 +214,15 @@
               </div>
 
               <!-- Medicine Release -->
-              <div class="q-mt-md">
+              <div
+                class="q-mt-md"
+                v-if="
+                  selectedView === 'Done' ||
+                  (selectedView === 'Pending' &&
+                    keySession &&
+                    keySession.department === 4)
+                "
+              >
                 <h6
                   class="q-mt-md text-center q-my-none text-primary text-bold"
                 >
