@@ -80,6 +80,13 @@ export default {
           status: 0,
         };
 
+        let dateGiven = new Date(RecordDetails.value.last_menstruation);
+        dateGiven.setMonth(dateGiven.getMonth() - 3);
+        dateGiven.setFullYear(dateGiven.getFullYear() + 1);
+        dateGiven.setDate(dateGiven.getDate() + 7);
+        RecordDetails.value.expected_date_delivery =
+          dateGiven.toLocaleDateString("en-CA");
+
         bmi.value =
           prenatal_checkup.value.weight !== null ||
           prenatal_checkup.value.height !== null
@@ -370,6 +377,17 @@ export default {
         removePrescription(prenatal_checkup.value.prescription.length - 1);
       }
     };
+
+    // const eodComputation = () => {
+    //   let dateGiven = new Date(RecordDetails.value.last_menstruation);
+    //   dateGiven.setMonth(dateGiven.getMonth() - 3);
+    //   dateGiven.setFullYear(dateGiven.getFullYear() + 1);
+    //   dateGiven.setDate(dateGiven.getDate() + 7);
+    //   RecordDetails.value.expected_date_delivery = "2023-02-02";
+    //   console.log(dateGiven);
+    // };
+
+    // eodComputation();
 
     return {
       RecordDetails,

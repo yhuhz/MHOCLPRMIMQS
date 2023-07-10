@@ -191,36 +191,7 @@ import { RecordDetails } from 'src/composables/Patients';
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.expected_date_delivery"
-              :rules="[(val) => (val && val.length > 0) || 'Required field']"
-            >
-              <template v-slot:append v-if="editForm">
-                <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
-                    <q-date
-                      mask="YYYY-MM-DD"
-                      v-model="patientRecordInfo.expected_date_delivery"
-                      :options="(date) => date >= checkup_date"
-                      :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
-                      ]"
-                    >
-                      <div class="row justify-end items-center">
-                        <q-btn
-                          v-close-popup
-                          color="primary"
-                          label="Close"
-                          dense
-                          flat
-                        />
-                      </div>
-                    </q-date>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
+            />
           </div>
 
           <q-separator color="primary" class="separator-1 q-mx-md" />
@@ -341,8 +312,16 @@ import { RecordDetails } from 'src/composables/Patients';
 
           <div v-if="selectedCheckup" style="position: relative">
             <div>
+              <div class="text-center">
+                <label class="text-weight-bold"
+                  ><span class="text-negative">*</span> Required Fields</label
+                >
+              </div>
+
               <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">Temperature</p>
+                <p class="text-weight-bold text-primary">
+                  Temperature <span class="text-negative">*</span>
+                </p>
                 <q-input
                   :readonly="!isEditCheckup"
                   v-model="prenatal_checkup.temperature"
@@ -358,7 +337,9 @@ import { RecordDetails } from 'src/composables/Patients';
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">Blood Pressure</p>
+                <p class="text-weight-bold text-primary">
+                  Blood Pressure <span class="text-negative">*</span>
+                </p>
                 <div class="flex items-center justify-end">
                   <q-input
                     :readonly="!isEditCheckup"
@@ -390,7 +371,9 @@ import { RecordDetails } from 'src/composables/Patients';
                 </div>
               </div>
               <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">Height</p>
+                <p class="text-weight-bold text-primary">
+                  Height <span class="text-negative">*</span>
+                </p>
                 <q-input
                   :readonly="!isEditCheckup"
                   v-model="prenatal_checkup.height"
@@ -407,7 +390,9 @@ import { RecordDetails } from 'src/composables/Patients';
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">Weight</p>
+                <p class="text-weight-bold text-primary">
+                  Weight <span class="text-negative">*</span>
+                </p>
                 <q-input
                   :readonly="!isEditCheckup"
                   v-model="prenatal_checkup.weight"
@@ -435,7 +420,9 @@ import { RecordDetails } from 'src/composables/Patients';
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">Pulse Rate</p>
+                <p class="text-weight-bold text-primary">
+                  Pulse Rate <span class="text-negative">*</span>
+                </p>
                 <q-input
                   :readonly="!isEditCheckup"
                   v-model="prenatal_checkup.pulse_rate"
@@ -451,7 +438,9 @@ import { RecordDetails } from 'src/composables/Patients';
                 />
               </div>
               <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">Oxygen Saturation</p>
+                <p class="text-weight-bold text-primary">
+                  Oxygen Saturation <span class="text-negative">*</span>
+                </p>
                 <q-input
                   :readonly="!isEditCheckup"
                   v-model="prenatal_checkup.oxygen_sat"
@@ -468,7 +457,9 @@ import { RecordDetails } from 'src/composables/Patients';
               </div>
 
               <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">Age of Gestation</p>
+                <p class="text-weight-bold text-primary">
+                  Age of Gestation <span class="text-negative">*</span>
+                </p>
                 <q-input
                   :readonly="!isEditCheckup"
                   v-model="prenatal_checkup.aog"
@@ -485,7 +476,9 @@ import { RecordDetails } from 'src/composables/Patients';
               </div>
 
               <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">Fundal Height</p>
+                <p class="text-weight-bold text-primary">
+                  Fundal Height <span class="text-negative">*</span>
+                </p>
                 <q-input
                   :readonly="!isEditCheckup"
                   v-model="prenatal_checkup.fundal_height"
@@ -537,7 +530,9 @@ import { RecordDetails } from 'src/composables/Patients';
               </div>
 
               <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">Next Checkup</p>
+                <p class="text-weight-bold text-primary">
+                  Next Checkup <span class="text-negative">*</span>
+                </p>
                 <q-input
                   readonly
                   v-model="prenatal_checkup.next_checkup"
