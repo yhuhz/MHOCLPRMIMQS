@@ -21,7 +21,9 @@ export default {
     let loading = ref(false);
     let searchString = ref(null);
     let selectedSearchBy = ref("Name");
+    let date_added = ref([]);
     let searchBy = ref(["Name", "Patient ID", "Record ID"]);
+    let showFilterModal = ref(true);
 
     let departmentOptions = ref();
 
@@ -61,8 +63,9 @@ export default {
         search_by: selectedSearchBy.value,
         search_string: searchString.value,
         department: selectedDepartment.value,
+        date_added: date_added.value,
       };
-
+      console.log(payload);
       GetRecordsForTable(payload).then((response) => {
         loading.value = false;
       });
@@ -143,6 +146,8 @@ export default {
       searchRecords,
       searchString,
       rowClick,
+      showFilterModal,
+      date_added,
     };
   },
 };

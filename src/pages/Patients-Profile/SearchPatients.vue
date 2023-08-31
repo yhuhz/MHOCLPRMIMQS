@@ -128,9 +128,10 @@
                       <!-- From -->
                       <q-input
                         v-model="dateAdded[0]"
+                        readonly
                         dense
                         outlined
-                        hint="From"
+                        label="From"
                         class="width-150"
                       >
                         <template v-slot:append>
@@ -143,7 +144,14 @@
                               transition-show="scale"
                               transition-hide="scale"
                             >
-                              <q-date v-model="dateAdded[0]" />
+                              <q-date v-model="dateAdded[0]"
+                                ><template> </template>
+                                <q-btn
+                                  label="done"
+                                  dense
+                                  color="primary"
+                                  v-close-popup
+                              /></q-date>
                             </q-popup-proxy>
                           </q-icon>
                         </template>
@@ -154,9 +162,10 @@
                       <!-- To -->
                       <q-input
                         v-model="dateAdded[1]"
+                        readonly
                         dense
                         outlined
-                        hint="To"
+                        label="To"
                         class="width-150"
                       >
                         <template v-slot:append>
@@ -169,7 +178,16 @@
                               transition-show="scale"
                               transition-hide="scale"
                             >
-                              <q-date v-model="dateAdded[1]" />
+                              <q-date
+                                v-model="dateAdded[1]"
+                                :options="(date) => date >= dateAdded[0]"
+                                ><template> </template>
+                                <q-btn
+                                  label="done"
+                                  dense
+                                  color="primary"
+                                  v-close-popup
+                              /></q-date>
                             </q-popup-proxy>
                           </q-icon>
                         </template>

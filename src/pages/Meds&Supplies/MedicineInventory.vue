@@ -59,20 +59,31 @@
                     <div class="flex items-center">
                       <q-input
                         dense
+                        mask="######"
                         outlined
                         hint="From"
                         class="q-mr-sm"
                         style="width: 5rem"
                         v-model="inStock[0]"
+                        :rules="[
+                          (val) => val === 0 || (val && !isNaN(val)) || '',
+                        ]"
                       />
 
                       <q-input
                         dense
+                        mask="######"
                         outlined
                         hint="To"
                         class="q-ml-sm"
                         style="width: 5rem"
                         v-model="inStock[1]"
+                        :rules="[
+                          (val) =>
+                            val === 0 ||
+                            (val && !isNaN(val) && val >= inStock[0]) ||
+                            '',
+                        ]"
                       />
                     </div>
                   </div>
@@ -97,6 +108,7 @@
                   <div class="flex justify-between items-center q-mt-sm">
                     <!-- From -->
                     <q-input
+                      readonly
                       dense
                       outlined
                       hint="From"
@@ -113,7 +125,23 @@
                             transition-show="scale"
                             transition-hide="scale"
                           >
-                            <q-date v-model="mfgDate[0]" />
+                            <q-date
+                              v-model="mfgDate[0]"
+                              :options="
+                                (date) =>
+                                  date <=
+                                  new Date()
+                                    .toISOString()
+                                    .split('T')[0]
+                                    .replaceAll('-', '/')
+                              "
+                              ><template> </template>
+                              <q-btn
+                                label="done"
+                                dense
+                                color="primary"
+                                v-close-popup
+                            /></q-date>
                           </q-popup-proxy>
                         </q-icon>
                       </template>
@@ -123,6 +151,7 @@
 
                     <!-- TO -->
                     <q-input
+                      readonly
                       dense
                       outlined
                       hint="To"
@@ -139,7 +168,24 @@
                             transition-show="scale"
                             transition-hide="scale"
                           >
-                            <q-date v-model="mfgDate[1]" />
+                            <q-date
+                              v-model="mfgDate[1]"
+                              :options="
+                                (date) =>
+                                  date >= mfgDate[0] &&
+                                  date <=
+                                    new Date()
+                                      .toISOString()
+                                      .split('T')[0]
+                                      .replaceAll('-', '/')
+                              "
+                              ><template> </template>
+                              <q-btn
+                                label="done"
+                                dense
+                                color="primary"
+                                v-close-popup
+                            /></q-date>
                           </q-popup-proxy>
                         </q-icon>
                       </template>
@@ -155,6 +201,7 @@
                   <div class="flex justify-between items-center q-mt-sm">
                     <!-- From -->
                     <q-input
+                      readonly
                       dense
                       outlined
                       hint="From"
@@ -171,7 +218,14 @@
                             transition-show="scale"
                             transition-hide="scale"
                           >
-                            <q-date v-model="expDate[0]" />
+                            <q-date v-model="expDate[0]"
+                              ><template> </template>
+                              <q-btn
+                                label="done"
+                                dense
+                                color="primary"
+                                v-close-popup
+                            /></q-date>
                           </q-popup-proxy>
                         </q-icon>
                       </template>
@@ -181,6 +235,7 @@
 
                     <!-- TO -->
                     <q-input
+                      readonly
                       dense
                       outlined
                       hint="To"
@@ -197,7 +252,16 @@
                             transition-show="scale"
                             transition-hide="scale"
                           >
-                            <q-date v-model="expDate[1]" />
+                            <q-date
+                              v-model="expDate[1]"
+                              :options="(date) => date >= expDate[0]"
+                              ><template> </template>
+                              <q-btn
+                                label="done"
+                                dense
+                                color="primary"
+                                v-close-popup
+                            /></q-date>
                           </q-popup-proxy>
                         </q-icon>
                       </template>
@@ -213,6 +277,7 @@
                   <div class="flex justify-between items-center q-mt-sm">
                     <!-- From -->
                     <q-input
+                      readonly
                       dense
                       outlined
                       hint="From"
@@ -229,7 +294,23 @@
                             transition-show="scale"
                             transition-hide="scale"
                           >
-                            <q-date v-model="dateAdded[0]" />
+                            <q-date
+                              v-model="dateAdded[0]"
+                              :options="
+                                (date) =>
+                                  date <=
+                                  new Date()
+                                    .toISOString()
+                                    .split('T')[0]
+                                    .replaceAll('-', '/')
+                              "
+                              ><template> </template>
+                              <q-btn
+                                label="done"
+                                dense
+                                color="primary"
+                                v-close-popup
+                            /></q-date>
                           </q-popup-proxy>
                         </q-icon>
                       </template>
@@ -239,6 +320,7 @@
 
                     <!-- TO -->
                     <q-input
+                      readonly
                       dense
                       outlined
                       hint="To"
@@ -255,7 +337,24 @@
                             transition-show="scale"
                             transition-hide="scale"
                           >
-                            <q-date v-model="dateAdded[1]" />
+                            <q-date
+                              v-model="dateAdded[1]"
+                              :options="
+                                (date) =>
+                                  date >= dateAdded[0] &&
+                                  date <=
+                                    new Date()
+                                      .toISOString()
+                                      .split('T')[0]
+                                      .replaceAll('-', '/')
+                              "
+                              ><template> </template>
+                              <q-btn
+                                label="done"
+                                dense
+                                color="primary"
+                                v-close-popup
+                            /></q-date>
                           </q-popup-proxy>
                         </q-icon>
                       </template>
@@ -264,7 +363,15 @@
                 </div>
 
                 <!-- Done Button -->
-                <div class="flex justify-center items-center q-mt-lg q-mb-md">
+                <div class="flex justify-between items-center q-mt-lg q-mb-md">
+                  <q-btn
+                    outline
+                    color="primary"
+                    label="Reset"
+                    no-caps
+                    class="button-80"
+                    @click="resetFilter"
+                  />
                   <q-btn
                     dense
                     color="primary"
@@ -363,6 +470,7 @@
                     >
                     <q-input
                       dense
+                      readonly
                       outlined
                       placeholder="YYYY-MM-DD"
                       class="q-mt-xs q-mr-md"
@@ -383,8 +491,15 @@
                           >
                             <q-date
                               mask="YYYY-MM-DD"
-                              label="YYYY-MM-DD"
                               v-model="newMedicineRecord.mfg_date"
+                              :options="
+                                (date) =>
+                                  date <=
+                                  new Date()
+                                    .toISOString()
+                                    .split('T')[0]
+                                    .replaceAll('-', '/')
+                              "
                             />
                           </q-popup-proxy>
                         </q-icon>
@@ -397,6 +512,7 @@
                     >
                     <q-input
                       dense
+                      readonly
                       outlined
                       placeholder="YYYY-MM-DD"
                       class="q-mt-xs"
@@ -436,12 +552,14 @@
                     >
                     <q-input
                       dense
+                      mask="######"
                       outlined
                       placeholder="ex. 350"
                       class="q-mr-md q-mt-xs"
                       v-model="newMedicineRecord.quantity"
                       :rules="[
-                        (val) => (val && val.length > 0) || 'Required field',
+                        (val) =>
+                          val === 0 || (val && !isNaN(val)) || 'Required field',
                       ]"
                     />
                   </div>
@@ -702,6 +820,7 @@
                         class="col-2 q-mr-md"
                         input-class="text-dark"
                         v-model="medicine.quantity"
+                        mask="######"
                         hide-bottom-space
                         :rules="[(val) => !isNaN(val) || 'Numbers only']"
                         @update:model-value="buttonCondition(index)"

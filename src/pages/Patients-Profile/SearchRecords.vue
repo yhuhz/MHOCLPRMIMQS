@@ -37,17 +37,118 @@
             class="mhc-select-200 search-select"
           />
 
-          <q-select
-            v-model="selectedDepartment"
-            :options="departmentOptions"
-            outlined
-            dense
-            label="Department"
-            class="q-ml-lg"
-            input-class="text-primary"
-            style="width: 200px"
-            @update:model-value="searchRecords"
+          <q-btn
+            class="q-mx-lg button-120"
+            @click="showFilterModal = true"
+            outline
+            label="Filters"
+            icon-right="eva-funnel-outline"
+            no-caps
+            color="primary"
           />
+
+          <q-dialog v-model="showFilterModal">
+            <q-card class="q-pa-md" style="overflow: hidden; width: 400px">
+              <div class="flex items-center justify-between q-mb-md">
+                <label class="text-bold text-primary" style="font-size: 20px"
+                  >FILTERS</label
+                >
+                <q-btn
+                  label="Done"
+                  class="bg-primary text-white q-px-md"
+                  flat
+                  dense
+                  @click="showFilterModal = !showFilterModal"
+                />
+              </div>
+
+              <div>
+                <label class="text-primary text-bold">Department</label>
+                <q-select
+                  v-model="selectedDepartment"
+                  :options="departmentOptions"
+                  outlined
+                  dense
+                  input-class="text-primary"
+                  @update:model-value="searchRecords"
+                />
+              </div>
+
+              <!-- Date Added -->
+              <div class="q-mt-md">
+                <label class="text-primary text-bold">Date Added</label>
+                <div class="flex items-center justify-between">
+                  <!-- From -->
+                  <q-input
+                    v-model="date_added[0]"
+                    readonly
+                    dense
+                    outlined
+                    label="From"
+                    class="width-150"
+                  >
+                    <template v-slot:append>
+                      <q-icon
+                        name="eva-calendar-outline"
+                        class="cursor-pointer"
+                      >
+                        <q-popup-proxy
+                          cover
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date v-model="date_added[0]"
+                            ><template> </template>
+                            <q-btn
+                              label="done"
+                              dense
+                              color="primary"
+                              v-close-popup
+                          /></q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+
+                  <div class="line"></div>
+
+                  <!-- To -->
+                  <q-input
+                    v-model="date_added[1]"
+                    readonly
+                    dense
+                    outlined
+                    label="To"
+                    class="width-150"
+                  >
+                    <template v-slot:append>
+                      <q-icon
+                        name="eva-calendar-outline"
+                        class="cursor-pointer"
+                      >
+                        <q-popup-proxy
+                          cover
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date
+                            v-model="date_added[1]"
+                            :options="(date) => date >= date_added[0]"
+                            ><template> </template>
+                            <q-btn
+                              label="done"
+                              dense
+                              color="primary"
+                              v-close-popup
+                          /></q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
+              </div>
+            </q-card>
+          </q-dialog>
 
           <!-- Search -->
           <q-btn
@@ -55,7 +156,7 @@
             label="Search"
             no-caps
             icon-right="eva-search-outline"
-            class="button-120 q-ml-lg"
+            class="button-120"
             @click="searchRecords"
           />
         </div>

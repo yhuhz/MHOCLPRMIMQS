@@ -217,6 +217,14 @@ export default {
     //Expiry Date
     let dateAdded = ref([]);
 
+    const resetFilter = () => {
+      status_array_model.value = [0];
+      mfgDate.value = [];
+      expDate.value = [];
+      dateAdded.value = [];
+      inStock.value = [0, 1000];
+    };
+
     /**SEARCH FUNCTION**/
     const getRecords = () => {
       let payload = {
@@ -714,6 +722,7 @@ export default {
       addMedicineReleases,
       btnCondition,
       buttonCondition,
+      resetFilter,
     };
   },
 };

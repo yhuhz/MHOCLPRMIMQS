@@ -88,13 +88,13 @@ export default {
           dateGiven.toLocaleDateString("en-CA");
 
         bmi.value =
-          prenatal_checkup.value.weight !== null ||
-          prenatal_checkup.value.height !== null
-            ? (
+          typeof prenatal_checkup.value.weight === "undefined" ||
+          typeof prenatal_checkup.value.height === "undefined"
+            ? ""
+            : (
                 prenatal_checkup.value.weight /
                 Math.pow(prenatal_checkup.value.height / 100, 2)
-              ).toFixed(2)
-            : "";
+              ).toFixed(2);
 
         checkup_date.value = patientRecordInfo.value.date_added.replaceAll(
           "-",
@@ -123,8 +123,21 @@ export default {
 
     const updateBMI = () => {
       bmi.value =
-        prenatal_checkup.value.weight !== null ||
-        prenatal_checkup.value.height !== null
+        // typeof prenatal_checkup.value.weight !== "undefined" &&
+        // typeof prenatal_checkup.value.height !== "undefined" &&
+        // prenatal_checkup.value.weight !== "" &&
+        // prenatal_checkup.value.height !== "" &&
+        // prenatal_checkup.value.weight !== null
+        //   ? (
+        //       prenatal_checkup.value.weight /
+        //       Math.pow(prenatal_checkup.value.height / 100, 2)
+        //     ).toFixed(2)
+        //   : "";
+
+        (
+          prenatal_checkup.value.weight /
+          Math.pow(prenatal_checkup.value.height / 100, 2)
+        ).toFixed(2) > 0
           ? (
               prenatal_checkup.value.weight /
               Math.pow(prenatal_checkup.value.height / 100, 2)

@@ -11,7 +11,7 @@ import { RecordDetails } from 'src/composables/Patients';
       </div>
     </div>
 
-    <div class="q-mt-lg">
+    <div class="grid q-mt-lg">
       <!-- <div class="col q-ml-md second-col"> -->
 
       <!-- Midwifes Notes -->
@@ -181,7 +181,10 @@ import { RecordDetails } from 'src/composables/Patients';
           </div>
 
           <div class="flex items-baseline justify-between q-px-md q-mb-md">
-            <p class="text-primary text-weight-bold">
+            <p
+              class="text-primary text-weight-bold"
+              :style="$q.screen.width < 1367 ? 'width: 100px' : ''"
+            >
               Expected Date of Delivery:
             </p>
             <q-input
@@ -217,7 +220,7 @@ import { RecordDetails } from 'src/composables/Patients';
 
       <!-- Prenatal Checkup -->
 
-      <div class="card-box q-mt-md">
+      <div class="card-box">
         <q-form @submit="submitFunction">
           <div
             class="flex justify-between items-center bg-primary q-mb-md"
@@ -492,7 +495,10 @@ import { RecordDetails } from 'src/composables/Patients';
               </div>
 
               <div class="flex items-baseline justify-between q-px-md q-mb-sm">
-                <p class="text-weight-bold text-primary">
+                <p
+                  class="text-weight-bold text-primary"
+                  :style="$q.screen.width < 1367 ? 'width: 100px' : ''"
+                >
                   Tetanus Toxoid Vaccination Date Given
                 </p>
                 <q-input
