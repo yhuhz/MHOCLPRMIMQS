@@ -447,6 +447,7 @@
                   />
 
                   <q-input
+                    mask="######"
                     dense
                     outlined
                     class="col-2 q-mr-md"

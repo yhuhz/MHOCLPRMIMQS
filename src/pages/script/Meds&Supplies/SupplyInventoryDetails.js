@@ -186,6 +186,19 @@ export default {
       });
     };
 
+    loading.value = true;
+    let payload = {
+      supply_id: route.params.supply_id,
+      department: selectedFiltersDepartment.value,
+      released_to: selectedReleaseTo.value,
+      status: selectedFilterStatus.value,
+      quantity_released: quantityReleased.value,
+      date_release: dateReleased.value,
+    };
+    FindSupplyRelease(payload).then((response) => {
+      loading.value = false;
+    });
+
     let userOptions = ref([]);
     const userFilterFunction = (val, update, abort) => {
       if (val.length > 5 || !isNaN(val)) {

@@ -146,6 +146,13 @@ export default {
 
     let showFilterModal = ref(false);
     let isAddNewSupplyStock = ref(false);
+    const resetFilter = () => {
+      status_array_model.value = [0];
+      mfgDate.value = [];
+      expDate.value = [];
+      dateAdded.value = [];
+      inStock.value = [0, 1000];
+    };
 
     /**SEARCH FILTER**/
     let selectedSearchBy = ref("Supply ID");
@@ -532,6 +539,7 @@ export default {
       userOptions,
       userFilterFunction,
       addSupplyRelease,
+      resetFilter,
     };
   },
 };

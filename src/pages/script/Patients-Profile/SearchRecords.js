@@ -23,7 +23,7 @@ export default {
     let selectedSearchBy = ref("Name");
     let date_added = ref([]);
     let searchBy = ref(["Name", "Patient ID", "Record ID"]);
-    let showFilterModal = ref(true);
+    let showFilterModal = ref(false);
 
     let departmentOptions = ref();
 

@@ -238,7 +238,7 @@
           </div>
 
           <!-- Add New Supply Release -->
-          <q-btn
+          <!-- <q-btn
             v-if="keySession && keySession.permission_level !== 3"
             @click="isAddNewSupplyRelease = true"
             dense
@@ -248,7 +248,7 @@
             no-caps
             icon-right="bi-capsule-pill"
             padding="5px 12px"
-          />
+          /> -->
 
           <!-- Supply Release Modal -->
           <q-dialog v-model="isAddNewSupplyRelease" persistent>
