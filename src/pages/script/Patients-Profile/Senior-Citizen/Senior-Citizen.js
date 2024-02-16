@@ -1,5 +1,9 @@
 import { ref } from "vue";
 import { GetPatients, SC } from "src/composables/Patients";
+import MHCDialog from "../../../../components/MHCDialog.vue";
+import DeletePatientConfirmation from "../../../Components/DeletePatientConfirmation";
+import { ToggleDialogState } from "../../../../composables/Triggers";
+import { SetIDS } from "src/composables/IDS";
 import { Loading, useQuasar, SessionStorage } from "quasar";
 import exportFile from "quasar/src/utils/export-file.js";
 import { useRouter } from "vue-router";
@@ -11,6 +15,7 @@ import {
 } from "src/composables/Queue";
 
 export default {
+  components: { MHCDialog, DeletePatientConfirmation },
   setup() {
     const $q = useQuasar();
     const router = useRouter();
@@ -103,6 +108,11 @@ export default {
     const select_none_brgy = () => {
       brgy_array_model.value = [];
       outsideCamaligCheckbox.value = false;
+    };
+
+    const deletePatientRecord = (patient_id) => {
+      SetIDS(patient_id);
+      ToggleDialogState();
     };
 
     const columns = ref([
@@ -353,6 +363,7 @@ export default {
       outsideCamaligCheckbox,
       checkPatientQueue,
       isPatientOnQueue,
+      deletePatientRecord,
     };
   },
 };

@@ -1,9 +1,9 @@
 <template>
   <div class="width-300">
-    <q-icon name="eva-trash-2-outline" size="100px" color="negative" />
+    <q-icon name="event_busy" size="100px" color="negative" />
     <h6 class="text-negative no-margin">Are you sure?</h6>
     <p class="text-dark m-width-250">
-      Do you really want to delete this record?
+      Do you want to declare the patient as deceased?
     </p>
     <div class="flex justify-around q-mt-md">
       <q-btn
@@ -48,8 +48,8 @@ export default {
           classes: "text-white",
           message:
             status === 0
-              ? "Patient record deleted successfully"
-              : "Failed to delete patient record",
+              ? "Patient declared deceased"
+              : "Failed to declare patient as deceased",
         });
 
         ToggleDialogState();

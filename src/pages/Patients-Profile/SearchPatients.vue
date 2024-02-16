@@ -380,7 +380,7 @@
                     </q-item>
 
                     <!-- Delete -->
-                    <!-- <q-item
+                    <q-item
                       v-if="
                         keySession &&
                         (keySession.department === 5 ||
@@ -390,11 +390,11 @@
                       class="drop-list-delete"
                       @click="deletePatientRecord(props.row.patient_id)"
                     >
-                      <q-item-section>Delete Record</q-item-section>
+                      <q-item-section>Declare Deceased</q-item-section>
                       <q-item-section avatar>
-                        <q-icon size="xs" name="eva-trash-2-outline" />
+                        <q-icon size="xs" name="event_busy" />
                       </q-item-section>
-                    </q-item> -->
+                    </q-item>
                   </q-list>
                 </q-menu>
               </q-btn>

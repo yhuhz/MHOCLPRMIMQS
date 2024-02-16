@@ -47,7 +47,7 @@ export default {
     let showFilterModal = ref(false);
 
     let genderList = ref(["Male", "Female"]);
-    let statusList = ref(["Active", "Deceased", "Deleted"]);
+    let statusList = ref(["Active", "Deceased"]);
     let barangayList = [
       "Anoling",
       "Baligang",

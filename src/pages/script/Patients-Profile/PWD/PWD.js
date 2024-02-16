@@ -1,6 +1,10 @@
 import { ref } from "vue";
 import { GetPatients, PWD } from "src/composables/Patients";
 import { Loading, useQuasar, SessionStorage } from "quasar";
+import MHCDialog from "../../../../components/MHCDialog.vue";
+import DeletePatientConfirmation from "../../../Components/DeletePatientConfirmation";
+import { ToggleDialogState } from "../../../../composables/Triggers";
+import { SetIDS } from "src/composables/IDS";
 import exportFile from "quasar/src/utils/export-file.js";
 import { useRouter } from "vue-router";
 import {
@@ -11,6 +15,7 @@ import {
 } from "src/composables/Queue";
 
 export default {
+  components: { MHCDialog, DeletePatientConfirmation },
   setup() {
     const $q = useQuasar();
     const router = useRouter();
@@ -28,7 +33,7 @@ export default {
     let sexArray = ["Male", "Female"];
 
     let showFilterModal = ref(false);
-    let statusList = ref(["Active", "Deceased", "Deleted"]);
+    let statusList = ref(["Active", "Deceased"]);
 
     let barangayList = [
       "Anoling",
@@ -95,6 +100,10 @@ export default {
     let genderList = ["Male", "Female"];
 
     let outsideCamaligCheckbox = ref(true);
+    const deletePatientRecord = (patient_id) => {
+      SetIDS(patient_id);
+      ToggleDialogState();
+    };
 
     const select_all_brgy = () => {
       brgy_array_model.value = barangayList;
@@ -368,6 +377,7 @@ export default {
       outsideCamaligCheckbox,
       checkPatientQueue,
       isPatientOnQueue,
+      deletePatientRecord,
     };
   },
 };

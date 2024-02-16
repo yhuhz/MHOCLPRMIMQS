@@ -301,6 +301,23 @@
                         <q-icon size="xs" name="post_add" />
                       </q-item-section>
                     </q-item>
+
+                    <!-- Delete -->
+                    <q-item
+                      v-if="
+                        keySession &&
+                        (keySession.department === 5 ||
+                          keySession.department === 6)
+                      "
+                      clickable
+                      class="drop-list-delete"
+                      @click="deletePatientRecord(props.row.patient_id)"
+                    >
+                      <q-item-section>Declare Deceased</q-item-section>
+                      <q-item-section avatar>
+                        <q-icon size="xs" name="event_busy" />
+                      </q-item-section>
+                    </q-item>
                   </q-list>
                 </q-menu>
               </q-btn>
@@ -387,6 +404,7 @@
         </q-dialog>
       </div>
     </div>
+    <MHCDialog :content="$options.components.DeletePatientConfirmation" />
   </div>
 </template>
 
