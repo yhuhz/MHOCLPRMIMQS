@@ -33,7 +33,7 @@ export default {
     let sexArray = ["Male", "Female"];
 
     let showFilterModal = ref(false);
-    let statusList = ref(["Active", "Deceased", "Deleted"]);
+    let statusList = ref(["Active", "Deceased"]);
 
     let barangayList = [
       "Anoling",

@@ -91,7 +91,7 @@
                     </div>
 
                     <!-- Status -->
-                    <div class="q-ml-lg">
+                    <!-- <div class="q-ml-lg">
                       <label class="text-primary text-weight-bold"
                         >Status
                       </label>
@@ -103,7 +103,7 @@
                           class="text-dark"
                         />
                       </div>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Date Added -->
