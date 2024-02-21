@@ -14,7 +14,7 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "quasar": "^2.12.7",
+    "quasar": "^2.14.5",
     "vue": "^3.0.0",
     "vue-chartjs": "^5.2.0",
     "vue-i18n": "^9.0.0",
