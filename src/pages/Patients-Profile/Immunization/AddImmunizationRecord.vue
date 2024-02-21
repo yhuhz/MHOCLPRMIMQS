@@ -45,7 +45,7 @@ import { RecordDetails } from 'src/composables/Patients';
 
         <div class="row q-mb-md">
           <div class="col q-px-md">
-            <div class="row flex justify-between items-baseline">
+            <!-- <div class="row flex justify-between items-baseline">
               <p class="text-primary text-weight-bold">Midwife:</p>
               <q-select
                 disable
@@ -63,16 +63,30 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-class="text-right text-primary"
                 style="width: 280px"
               />
-            </div>
+            </div> -->
             <div class="row flex justify-between items-baseline">
               <p class="text-primary text-weight-bold">Vaccine Used:</p>
-              <q-input
+              <!-- <q-input
                 hide-bottom-space
                 outlined
                 dense
                 input-style="padding: 0"
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.vaccine_used"
+                style="width: 280px"
+                :rules="[(val) => (val && val.length > 0) || 'Required field']"
+              /> -->
+
+              <q-select
+                hide-bottom-space
+                outlined
+                dense
+                use-input
+                use-chips
+                new-value-mode="add-unique"
+                input-class="text-right text-primary"
+                v-model="patientRecordInfo.vaccine_used"
+                :options="vaccineArray"
                 style="width: 280px"
                 :rules="[(val) => (val && val.length > 0) || 'Required field']"
               />

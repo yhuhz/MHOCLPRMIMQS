@@ -18,6 +18,7 @@ export default {
     }
 
     let purposeArray = ["Pediatric Vaccination", "Family Planning"];
+    let vaccineArray = ["BCG", "HBV", "DPT", "OPV", "Measles Vaccine"];
     let checkup_date = ref(null);
 
     let patientRecordInfo = ref({
@@ -122,6 +123,7 @@ export default {
       userFilterFunction,
       purposeArray,
       checkup_date,
+      vaccineArray,
     };
   },
 };

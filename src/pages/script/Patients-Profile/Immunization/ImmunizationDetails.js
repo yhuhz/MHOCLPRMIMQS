@@ -33,6 +33,7 @@ export default {
     let editForm = ref(false);
     let checkup_date = ref(null);
     let purposeArray = ["Pediatric Vaccination", "Family Planning"];
+    let vaccineArray = ["BCG", "HBV", "DPT", "OPV", "Measles Vaccine"];
 
     FindRecordDetails(route.params.record_id, route.params.department).then(
       (response) => {
@@ -145,6 +146,7 @@ export default {
       keySession,
       checkup_date,
       purposeArray,
+      vaccineArray,
     };
   },
 };

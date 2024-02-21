@@ -95,7 +95,7 @@ import { RecordDetails } from 'src/composables/Patients';
             </div>
             <div class="row flex justify-between items-baseline">
               <p class="text-primary text-weight-bold">Vaccine Used:</p>
-              <q-input
+              <!-- <q-input
                 hide-bottom-space
                 :readonly="!editForm"
                 outlined
@@ -103,6 +103,21 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-style="padding: 0"
                 input-class="text-right text-primary"
                 v-model="patientRecordInfo.vaccine_used"
+                style="width: 280px"
+                :rules="[(val) => (val && val.length > 0) || 'Required field']"
+              /> -->
+
+              <q-select
+                :readonly="!editForm"
+                hide-bottom-space
+                outlined
+                dense
+                use-input
+                use-chips
+                new-value-mode="add-unique"
+                input-class="text-right text-primary"
+                v-model="patientRecordInfo.vaccine_used"
+                :options="vaccineArray"
                 style="width: 280px"
                 :rules="[(val) => (val && val.length > 0) || 'Required field']"
               />
