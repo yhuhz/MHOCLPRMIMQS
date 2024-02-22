@@ -43,10 +43,10 @@ import { RecordDetails } from 'src/composables/Patients';
             class="bg-green-7 text-white text-center mn-heading"
             style="padding: 7px 0px"
           >
-            Midwife's Notes
+            Pregnancy Record
           </p>
         </div>
-        <div class="flex items-baseline justify-between q-px-md q-mb-sm">
+        <!-- <div class="flex items-baseline justify-between q-px-md q-mb-sm">
           <p class="text-primary text-weight-bold">Midwife:</p>
           <q-select
             disable
@@ -63,7 +63,7 @@ import { RecordDetails } from 'src/composables/Patients';
             input-class="text-right text-primary"
             :style="$q.screen.width < 1366 && 'width: 150px'"
           />
-        </div>
+        </div> -->
         <div class="flex items-baseline justify-between q-px-md q-mb-sm">
           <p class="text-primary text-weight-bold">Prev. Full Term:</p>
           <q-input
@@ -87,6 +87,22 @@ import { RecordDetails } from 'src/composables/Patients';
             input-class="text-right text-primary"
             v-model="patientRecordInfo.previous_premature"
             :style="$q.screen.width < 1366 && 'width: 150px'"
+            :rules="[
+              (val) => val === 0 || (val && !isNaN(val)) || 'Numbers only',
+            ]"
+          />
+        </div>
+
+        <div class="flex items-baseline justify-between q-px-md q-mb-sm">
+          <p class="text-primary text-weight-bold">Prev. Miscarriage:</p>
+          <q-input
+            hide-bottom-space
+            outlined
+            dense
+            input-style="padding: 0"
+            input-class="text-right text-primary"
+            :style="$q.screen.width < 1366 && 'width: 150px'"
+            v-model="patientRecordInfo.previous_miscarriage"
             :rules="[
               (val) => val === 0 || (val && !isNaN(val)) || 'Numbers only',
             ]"

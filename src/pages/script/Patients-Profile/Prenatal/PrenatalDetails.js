@@ -47,6 +47,9 @@ export default {
     let isEditCheckup = ref(false);
     let checkup_date = ref(null);
     let bmi = ref(null);
+    let aog = ref(null);
+    let edd = ref(null);
+    let miscarriageCheck = ref(false);
 
     watch(
       () => _.cloneDeep(RecordDetails.value),
@@ -75,8 +78,8 @@ export default {
           date_added: RecordDetails.value.date_added,
           previous_full_term: RecordDetails.value.previous_full_term,
           previous_premature: RecordDetails.value.previous_premature,
-          midwifes_notes: RecordDetails.value.midwifes_notes,
-          expected_date_delivery: RecordDetails.value.expected_date_delivery,
+          previous_miscarriage: RecordDetails.value.previous_miscarriage,
+          tetanus_vaccine: RecordDetails.value.tetanus_vaccine,
           status: 0,
         };
 
@@ -84,8 +87,20 @@ export default {
         dateGiven.setMonth(dateGiven.getMonth() - 3);
         dateGiven.setFullYear(dateGiven.getFullYear() + 1);
         dateGiven.setDate(dateGiven.getDate() + 7);
-        RecordDetails.value.expected_date_delivery =
-          dateGiven.toLocaleDateString("en-CA");
+        edd.value = dateGiven.toLocaleDateString("en-CA");
+
+        // let LMP = new Date(RecordDetails.value.last_menstruation);
+        // LMP.setMonth(LMP.getMonth() - 3);
+        // LMP.setFullYear(LMP.getFullYear() + 1);
+        // LMP.setDate(LMP.getDate() + 7);
+        // aog.value = LMP.toLocaleDateString("en-CA");
+
+        let LMP = new Date(RecordDetails.value.last_menstruation);
+        let currentDate = new Date(); // get the current date
+        let diffInTime = currentDate.getTime() - LMP.getTime(); // calculate the difference in time
+        let diffInDays = diffInTime / (1000 * 3600 * 24); // convert the difference in time to days
+        let AOG = Math.floor(diffInDays / 7); // convert the difference in days to weeks
+        aog.value = AOG; // set the AOG value
 
         bmi.value =
           typeof prenatal_checkup.value.weight === "undefined" ||
@@ -433,6 +448,9 @@ export default {
       removePrescription,
       bmi,
       updateBMI,
+      aog,
+      edd,
+      miscarriageCheck,
     };
   },
 };

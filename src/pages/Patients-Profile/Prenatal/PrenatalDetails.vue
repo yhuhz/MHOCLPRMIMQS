@@ -22,7 +22,7 @@ import { RecordDetails } from 'src/composables/Patients';
               class="bg-green-7 text-white text-center mn-heading"
               style="padding: 7px 0px"
             >
-              Midwife's Notes
+              Pregnancy Record
             </p>
           </div>
 
@@ -37,7 +37,10 @@ import { RecordDetails } from 'src/composables/Patients';
             class="q-mb-lg"
             style="justify-content: center; height: 30px"
           >
-            <div v-if="!editForm && !isEditCheckup" class="row q-px-md">
+            <div
+              v-if="!editForm && !isEditCheckup && !miscarriageCheck"
+              class="row q-px-md"
+            >
               <q-btn
                 @click="editForm = !editForm"
                 dense
@@ -81,6 +84,19 @@ import { RecordDetails } from 'src/composables/Patients';
               />
             </div>
           </div>
+
+          <div v-if="!editForm && !isEditCheckup">
+            <q-checkbox
+              :disable="
+                !keySession &&
+                keySession.department !== 3 &&
+                keySession.permission_level === 3
+              "
+              v-model="miscarriageCheck"
+              label="This pregnancy is a miscarriage"
+              class="q-ml-sm text-weight-bold"
+            />
+          </div>
           <div class="flex items-baseline justify-between q-px-md q-mb-sm">
             <p class="text-primary text-weight-bold">Midwife:</p>
             <q-select
@@ -123,6 +139,21 @@ import { RecordDetails } from 'src/composables/Patients';
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.previous_premature"
+              :rules="[
+                (val) => val === 0 || (val && !isNaN(val)) || 'Numbers only',
+              ]"
+            />
+          </div>
+          <div class="flex items-baseline justify-between q-px-md q-mb-sm">
+            <p class="text-primary text-weight-bold">Prev. Miscarriage:</p>
+            <q-input
+              :readonly="!editForm"
+              hide-bottom-space
+              outlined
+              dense
+              input-style="padding: 0"
+              input-class="text-right text-primary"
+              v-model="patientRecordInfo.previous_miscarriage"
               :rules="[
                 (val) => val === 0 || (val && !isNaN(val)) || 'Numbers only',
               ]"
@@ -193,13 +224,56 @@ import { RecordDetails } from 'src/composables/Patients';
               dense
               input-style="padding: 0"
               input-class="text-right text-primary"
-              v-model="patientRecordInfo.expected_date_delivery"
+              v-model="edd"
             />
           </div>
 
-          <q-separator color="primary" class="separator-1 q-mx-md" />
+          <div class="flex items-baseline justify-between q-px-md">
+            <p class="text-primary text-weight-bold">
+              Tetanus Toxoid Vaccination Date:
+            </p>
+            <q-input
+              readonly
+              outlined
+              dense
+              input-style="padding: 0"
+              input-class="text-right text-primary"
+              v-model="patientRecordInfo.tetanus_vaccine"
+              :rules="[(val) => (val && val.length > 0) || 'Required field']"
+            >
+              <template v-slot:append v-if="editForm">
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-date
+                      mask="YYYY-MM-DD"
+                      v-model="patientRecordInfo.tetanus_vaccine"
+                      :options="(date) => date <= checkup_date"
+                      :rules="[
+                        (val) => (val && val.length > 0) || 'Required field',
+                      ]"
+                    >
+                      <div class="row justify-end items-center">
+                        <q-btn
+                          v-close-popup
+                          color="primary"
+                          label="Close"
+                          dense
+                          flat
+                        />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
 
-          <div class="q-px-md q-mb-sm">
+          <!-- <q-separator color="primary" class="separator-1 q-mx-md" /> -->
+
+          <!-- <div class="q-px-md q-mb-sm">
             <q-input
               :readonly="!editForm"
               autogrow
@@ -212,7 +286,7 @@ import { RecordDetails } from 'src/composables/Patients';
               v-model="patientRecordInfo.midwifes_notes"
               :rules="[(val) => (val && val.length > 0) || 'Required field']"
             />
-          </div>
+          </div> -->
         </q-form>
       </div>
 
@@ -220,7 +294,7 @@ import { RecordDetails } from 'src/composables/Patients';
 
       <!-- Prenatal Checkup -->
 
-      <div class="card-box">
+      <div class="card-box prenatal-checkup">
         <q-form @submit="submitFunction">
           <div
             class="flex justify-between items-center bg-primary q-mb-md"
@@ -256,7 +330,10 @@ import { RecordDetails } from 'src/composables/Patients';
             class="q-mb-lg"
             style="justify-content: center; height: 30px"
           >
-            <div v-if="!isEditCheckup && !editForm" class="row q-px-md">
+            <div
+              v-if="!isEditCheckup && !editForm && !miscarriageCheck"
+              class="row q-px-md"
+            >
               <q-btn
                 v-if="selectedCheckup !== null"
                 @click="isEditCheckup = !isEditCheckup"
@@ -314,304 +391,318 @@ import { RecordDetails } from 'src/composables/Patients';
           </div>
 
           <div v-if="selectedCheckup" style="position: relative">
-            <div>
-              <div class="text-center">
-                <label class="text-weight-bold"
-                  ><span class="text-negative">*</span> Required Fields</label
-                >
-              </div>
+            <q-scroll-area style="height: 500px">
+              <div>
+                <div class="text-center">
+                  <label class="text-weight-bold"
+                    ><span class="text-negative">*</span> Required Fields</label
+                  >
+                </div>
 
-              <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">
-                  Temperature <span class="text-negative">*</span>
-                </p>
-                <q-input
-                  :readonly="!isEditCheckup"
-                  v-model="prenatal_checkup.temperature"
-                  outlined
-                  dense
-                  input-style="padding: 0"
-                  input-class="text-right text-primary"
-                  label="°C"
-                  :rules="[
-                    (val) =>
-                      val === 0 || (val && !isNaN(val)) || 'Numbers only',
-                  ]"
-                />
-              </div>
-              <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">
-                  Blood Pressure <span class="text-negative">*</span>
-                </p>
-                <div class="flex items-center justify-end">
+                <div class="flex items-baseline justify-between q-px-md">
+                  <p class="text-weight-bold text-primary">
+                    Temperature <span class="text-negative">*</span>
+                  </p>
                   <q-input
                     :readonly="!isEditCheckup"
-                    v-model="prenatal_checkup.blood_pressure_systole"
+                    v-model="prenatal_checkup.temperature"
                     outlined
                     dense
                     input-style="padding: 0"
                     input-class="text-right text-primary"
-                    style="width: 70px"
-                    :rules="[
-                      (val) =>
-                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
-                    ]"
-                  />
-                  <label class="text-primary text-bold q-px-sm">/</label>
-                  <q-input
-                    :readonly="!isEditCheckup"
-                    v-model="prenatal_checkup.blood_pressure_diastole"
-                    outlined
-                    dense
-                    input-style="padding: 0"
-                    input-class="text-right text-primary"
-                    style="width: 70px"
+                    label="°C"
                     :rules="[
                       (val) =>
                         val === 0 || (val && !isNaN(val)) || 'Numbers only',
                     ]"
                   />
                 </div>
-              </div>
-              <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">
-                  Height <span class="text-negative">*</span>
-                </p>
-                <q-input
-                  :readonly="!isEditCheckup"
-                  v-model="prenatal_checkup.height"
-                  outlined
-                  dense
-                  input-style="padding: 0"
-                  input-class="text-right text-primary"
-                  label="cm"
-                  :rules="[
-                    (val) =>
-                      val === 0 || (val && !isNaN(val)) || 'Numbers only',
-                  ]"
-                  @update:model-value="updateBMI"
-                />
-              </div>
-              <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">
-                  Weight <span class="text-negative">*</span>
-                </p>
-                <q-input
-                  :readonly="!isEditCheckup"
-                  v-model="prenatal_checkup.weight"
-                  outlined
-                  dense
-                  input-style="padding: 0"
-                  input-class="text-right text-primary"
-                  label="kg"
-                  :rules="[
-                    (val) =>
-                      val === 0 || (val && !isNaN(val)) || 'Numbers only',
-                  ]"
-                  @update:model-value="updateBMI"
-                />
-              </div>
-              <div class="flex items-baseline justify-between q-px-md q-mb-sm">
-                <p class="text-weight-bold text-primary">BMI</p>
-                <q-input
-                  readonly
-                  v-model="bmi"
-                  outlined
-                  dense
-                  input-style="padding: 0"
-                  input-class="text-right text-primary"
-                />
-              </div>
-              <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">
-                  Pulse Rate <span class="text-negative">*</span>
-                </p>
-                <q-input
-                  :readonly="!isEditCheckup"
-                  v-model="prenatal_checkup.pulse_rate"
-                  outlined
-                  dense
-                  input-style="padding: 0"
-                  input-class="text-right text-primary"
-                  label="bpm"
-                  :rules="[
-                    (val) =>
-                      val === 0 || (val && !isNaN(val)) || 'Numbers only',
-                  ]"
-                />
-              </div>
-              <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">
-                  Oxygen Saturation <span class="text-negative">*</span>
-                </p>
-                <q-input
-                  :readonly="!isEditCheckup"
-                  v-model="prenatal_checkup.oxygen_sat"
-                  outlined
-                  dense
-                  input-style="padding: 0"
-                  input-class="text-right text-primary"
-                  label="%"
-                  :rules="[
-                    (val) =>
-                      val === 0 || (val && !isNaN(val)) || 'Numbers only',
-                  ]"
-                />
-              </div>
+                <div class="flex items-baseline justify-between q-px-md">
+                  <p class="text-weight-bold text-primary">
+                    Blood Pressure <span class="text-negative">*</span>
+                  </p>
+                  <div class="flex items-center justify-end">
+                    <q-input
+                      :readonly="!isEditCheckup"
+                      v-model="prenatal_checkup.blood_pressure_systole"
+                      outlined
+                      dense
+                      input-style="padding: 0"
+                      input-class="text-right text-primary"
+                      style="width: 70px"
+                      :rules="[
+                        (val) =>
+                          val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                      ]"
+                    />
+                    <label class="text-primary text-bold q-px-sm">/</label>
+                    <q-input
+                      :readonly="!isEditCheckup"
+                      v-model="prenatal_checkup.blood_pressure_diastole"
+                      outlined
+                      dense
+                      input-style="padding: 0"
+                      input-class="text-right text-primary"
+                      style="width: 70px"
+                      :rules="[
+                        (val) =>
+                          val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                      ]"
+                    />
+                  </div>
+                </div>
+                <div class="flex items-baseline justify-between q-px-md">
+                  <p class="text-weight-bold text-primary">
+                    Height <span class="text-negative">*</span>
+                  </p>
+                  <q-input
+                    :readonly="!isEditCheckup"
+                    v-model="prenatal_checkup.height"
+                    outlined
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                    label="cm"
+                    :rules="[
+                      (val) =>
+                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                    ]"
+                    @update:model-value="updateBMI"
+                  />
+                </div>
+                <div class="flex items-baseline justify-between q-px-md">
+                  <p class="text-weight-bold text-primary">
+                    Weight <span class="text-negative">*</span>
+                  </p>
+                  <q-input
+                    :readonly="!isEditCheckup"
+                    v-model="prenatal_checkup.weight"
+                    outlined
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                    label="kg"
+                    :rules="[
+                      (val) =>
+                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                    ]"
+                    @update:model-value="updateBMI"
+                  />
+                </div>
+                <div
+                  class="flex items-baseline justify-between q-px-md q-mb-sm"
+                >
+                  <p class="text-weight-bold text-primary">BMI</p>
+                  <q-input
+                    readonly
+                    v-model="bmi"
+                    outlined
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                  />
+                </div>
+                <div class="flex items-baseline justify-between q-px-md">
+                  <p class="text-weight-bold text-primary">
+                    Pulse Rate <span class="text-negative">*</span>
+                  </p>
+                  <q-input
+                    :readonly="!isEditCheckup"
+                    v-model="prenatal_checkup.pulse_rate"
+                    outlined
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                    label="bpm"
+                    :rules="[
+                      (val) =>
+                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                    ]"
+                  />
+                </div>
+                <div class="flex items-baseline justify-between q-px-md">
+                  <p class="text-weight-bold text-primary">
+                    Oxygen Saturation <span class="text-negative">*</span>
+                  </p>
+                  <q-input
+                    :readonly="!isEditCheckup"
+                    v-model="prenatal_checkup.oxygen_sat"
+                    outlined
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                    label="%"
+                    :rules="[
+                      (val) =>
+                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                    ]"
+                  />
+                </div>
 
-              <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">
-                  Age of Gestation <span class="text-negative">*</span>
-                </p>
+                <div class="flex items-baseline justify-between q-px-md">
+                  <p class="text-weight-bold text-primary">
+                    Age of Gestation <span class="text-negative">*</span>
+                  </p>
+                  <q-input
+                    readonly
+                    v-model="aog"
+                    outlined
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                    label="Weeks"
+                  />
+                </div>
+
+                <div class="flex items-baseline justify-between q-px-md">
+                  <p class="text-weight-bold text-primary">
+                    Fundal Height <span class="text-negative">*</span>
+                  </p>
+                  <q-input
+                    :readonly="!isEditCheckup"
+                    v-model="prenatal_checkup.fundal_height"
+                    outlined
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                    label="cm"
+                    :rules="[
+                      (val) => val === 0 || !isNaN(val) || 'Numbers only',
+                    ]"
+                  />
+                </div>
+
+                <!-- <div
+                  class="flex items-baseline justify-between q-px-md q-mb-sm"
+                >
+                  <p
+                    class="text-weight-bold text-primary"
+                    :style="$q.screen.width < 1367 ? 'width: 100px' : ''"
+                  >
+                    Tetanus Toxoid Vaccination Date Given
+                  </p>
+                  <q-input
+                    readonly
+                    v-model="prenatal_checkup.tetanus_vaccination"
+                    outlined
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                  >
+                    <template v-slot:append v-if="isEditCheckup">
+                      <q-icon
+                        name="event"
+                        class="cursor-pointer"
+                        color="primary"
+                      >
+                        <q-popup-proxy
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date
+                            v-model="prenatal_checkup.tetanus_vaccination"
+                            mask="YYYY-MM-DD"
+                          >
+                            <div class="row justify-end items-center">
+                              <q-btn
+                                v-close-popup
+                                color="primary"
+                                label="Close"
+                                dense
+                                flat
+                              />
+                            </div>
+                          </q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div> -->
+
+                <div class="flex items-baseline justify-between q-px-md">
+                  <p class="text-weight-bold text-primary">
+                    Next Checkup <span class="text-negative">*</span>
+                  </p>
+                  <q-input
+                    readonly
+                    v-model="prenatal_checkup.next_checkup"
+                    outlined
+                    dense
+                    input-style="padding: 0"
+                    input-class="text-right text-primary"
+                    :rules="[
+                      (val) =>
+                        val === 0 ||
+                        (val && val.length > 0) ||
+                        'Required field',
+                    ]"
+                  >
+                    <template v-slot:append v-if="isEditCheckup">
+                      <q-icon
+                        name="event"
+                        class="cursor-pointer"
+                        color="primary"
+                      >
+                        <q-popup-proxy
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date
+                            v-model="prenatal_checkup.next_checkup"
+                            :options="(date) => date >= checkup_date_prenatal"
+                            mask="YYYY-MM-DD"
+                          >
+                            <div class="row justify-end items-center">
+                              <q-btn
+                                v-close-popup
+                                color="primary"
+                                label="Close"
+                                dense
+                                flat
+                              />
+                            </div>
+                          </q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
+              </div>
+              <q-separator class="separator-2 q-mx-md" color="primary" />
+
+              <div class="q-px-md q-mb-md">
                 <q-input
                   :readonly="!isEditCheckup"
-                  v-model="prenatal_checkup.aog"
+                  v-model="prenatal_checkup.comments"
+                  autogrow
+                  hide-bottom-space
                   outlined
                   dense
-                  input-style="padding: 0"
-                  input-class="text-right text-primary"
-                  label="Weeks"
+                  input-class="text-primary"
+                  placeholder="Enter notes here"
+                  class="q-mt-md q-mb-sm"
+                  input-style="min-height:100px; max-height: 100px"
                   :rules="[
                     (val) =>
                       val === 0 || (val && val.length > 0) || 'Required field',
                   ]"
                 />
-              </div>
-
-              <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">
-                  Fundal Height <span class="text-negative">*</span>
-                </p>
-                <q-input
-                  :readonly="!isEditCheckup"
-                  v-model="prenatal_checkup.fundal_height"
-                  outlined
+                <q-btn
+                  icon="medication"
                   dense
-                  input-style="padding: 0"
-                  input-class="text-right text-primary"
-                  label="cm"
-                  :rules="[(val) => val === 0 || !isNaN(val) || 'Numbers only']"
+                  outline
+                  no-caps
+                  color="primary"
+                  :label="
+                    isEditCheckup && keySession && keySession.department === 3
+                      ? 'Edit Prescription'
+                      : 'View Prescription'
+                  "
+                  class="q-px-md"
+                  @click="isPrescription = !isPrescription"
                 />
               </div>
-
-              <div class="flex items-baseline justify-between q-px-md q-mb-sm">
-                <p
-                  class="text-weight-bold text-primary"
-                  :style="$q.screen.width < 1367 ? 'width: 100px' : ''"
-                >
-                  Tetanus Toxoid Vaccination Date Given
-                </p>
-                <q-input
-                  readonly
-                  v-model="prenatal_checkup.tetanus_vaccination"
-                  outlined
-                  dense
-                  input-style="padding: 0"
-                  input-class="text-right text-primary"
-                >
-                  <template v-slot:append v-if="isEditCheckup">
-                    <q-icon name="event" class="cursor-pointer" color="primary">
-                      <q-popup-proxy
-                        transition-show="scale"
-                        transition-hide="scale"
-                      >
-                        <q-date
-                          v-model="prenatal_checkup.tetanus_vaccination"
-                          mask="YYYY-MM-DD"
-                        >
-                          <div class="row justify-end items-center">
-                            <q-btn
-                              v-close-popup
-                              color="primary"
-                              label="Close"
-                              dense
-                              flat
-                            />
-                          </div>
-                        </q-date>
-                      </q-popup-proxy>
-                    </q-icon>
-                  </template>
-                </q-input>
-              </div>
-
-              <div class="flex items-baseline justify-between q-px-md">
-                <p class="text-weight-bold text-primary">
-                  Next Checkup <span class="text-negative">*</span>
-                </p>
-                <q-input
-                  readonly
-                  v-model="prenatal_checkup.next_checkup"
-                  outlined
-                  dense
-                  input-style="padding: 0"
-                  input-class="text-right text-primary"
-                  :rules="[
-                    (val) =>
-                      val === 0 || (val && val.length > 0) || 'Required field',
-                  ]"
-                >
-                  <template v-slot:append v-if="isEditCheckup">
-                    <q-icon name="event" class="cursor-pointer" color="primary">
-                      <q-popup-proxy
-                        transition-show="scale"
-                        transition-hide="scale"
-                      >
-                        <q-date
-                          v-model="prenatal_checkup.next_checkup"
-                          :options="(date) => date >= checkup_date_prenatal"
-                          mask="YYYY-MM-DD"
-                        >
-                          <div class="row justify-end items-center">
-                            <q-btn
-                              v-close-popup
-                              color="primary"
-                              label="Close"
-                              dense
-                              flat
-                            />
-                          </div>
-                        </q-date>
-                      </q-popup-proxy>
-                    </q-icon>
-                  </template>
-                </q-input>
-              </div>
-            </div>
-            <q-separator class="separator-2 q-mx-md" color="primary" />
-
-            <div class="q-px-md q-mb-md">
-              <q-input
-                :readonly="!isEditCheckup"
-                v-model="prenatal_checkup.comments"
-                autogrow
-                hide-bottom-space
-                outlined
-                dense
-                input-class="text-primary"
-                placeholder="Enter notes here"
-                class="q-mt-md q-mb-sm"
-                input-style="min-height:100px; max-height: 100px"
-                :rules="[
-                  (val) =>
-                    val === 0 || (val && val.length > 0) || 'Required field',
-                ]"
-              />
-              <q-btn
-                icon="medication"
-                dense
-                outline
-                no-caps
-                color="primary"
-                :label="
-                  isEditCheckup && keySession && keySession.department === 3
-                    ? 'Edit Prescription'
-                    : 'View Prescription'
-                "
-                class="q-px-md"
-                @click="isPrescription = !isPrescription"
-              />
-            </div>
+            </q-scroll-area>
           </div>
         </q-form>
       </div>
@@ -794,6 +885,7 @@ import { RecordDetails } from 'src/composables/Patients';
 .card-box {
   border: 2px solid #5f8d4e;
   border-radius: 5px;
+  height: 600px;
 
   .mn-heading {
     font-size: 18px;
@@ -802,5 +894,10 @@ import { RecordDetails } from 'src/composables/Patients';
 
 .midwifes-notes {
   border-color: #43a047;
+}
+
+.prenatal-checkup {
+  max-height: 600px;
+  overflow-y: hidden;
 }
 </style>
