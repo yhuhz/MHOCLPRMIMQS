@@ -163,6 +163,9 @@
               outlined
               :input-style="{ color: '#525252' }"
               class="q-mt-sm q-ml-md"
+              maxlength="11"
+              type="text"
+              pattern="[0-9]*"
             />
           </div>
         </div>
@@ -226,9 +229,7 @@
             </q-input>
           </div>
           <div class="col q-ml-md">
-            <label class="text-dark">
-              Address <span class="text-negative q-mr-md">*</span>
-            </label>
+            <label class="text-dark"> Address </label>
             <q-input
               outlined
               disable
@@ -263,7 +264,11 @@
                 size="xs"
                 @update:model-value="onChangePWD"
               >
-                <span class="text-dark">Person with Disability (PWD) </span>
+                <span class="text-dark">Person with Disability (PWD)</span>
+                <br />
+                <span class="text-dark text-caption text-negative"
+                  >Please make sure that the person has a PWD ID</span
+                >
               </q-checkbox>
             </div>
             <div class="row" v-if="isPWD">
@@ -278,11 +283,8 @@
                   :input-style="{ color: '#525252' }"
                   class="q-my-sm"
                   :rules="[
-                    (val) =>
-                      (val && val.length > 0) ||
-                      'Please put N/A if the patient has no PWD ID yet',
+                    (val) => (val && val.length > 0) || 'PWD ID Required',
                   ]"
-                  hint="Please put N/A if the patient has no PWD ID yet"
                 />
               </div>
 
@@ -334,9 +336,9 @@
                   :rules="[
                     (val) =>
                       (val && val.length > 0) ||
-                      'Please put N/A if the patient has no PWD ID yet',
+                      'Please put No ID if the patient has no PWD ID yet',
                   ]"
-                  hint="Please put N/A if the patient has no Senior Citizen ID yet"
+                  hint="Please put No ID if the patient has no Senior Citizen ID yet"
                 />
               </div>
             </div>

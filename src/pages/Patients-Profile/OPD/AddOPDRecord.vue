@@ -45,7 +45,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 Preliminary Checkup
               </p>
             </div>
-            <div class="flex justify-between items-baseline q-px-md">
+            <!-- <div class="flex justify-between items-baseline q-px-md">
               <p class="text-primary text-weight-bold">Done by</p>
               <q-select
                 disable
@@ -62,7 +62,7 @@ import { RecordDetails } from 'src/composables/Patients';
                 input-class="text-right text-primary"
                 style="width: 150px"
               />
-            </div>
+            </div> -->
             <div class="flex justify-between items-baseline q-px-md">
               <p class="text-primary text-weight-bold">Temperature</p>
               <q-input

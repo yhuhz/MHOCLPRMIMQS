@@ -72,11 +72,18 @@ export default {
     // PWD and Senior Citizens
     let isPWD = ref(false);
     let isSeniorCitizen = ref(false);
+    // let pwd = ref({
+    //   pwd_id: isPWD.value === true ? "No ID" : null,
+    //   disability: null,
+    // });
+
     let pwd = ref({
-      pwd_id: isPWD.value === true ? "N/A" : null,
+      pwd_id: null,
       disability: null,
     });
-    let senior_citizen_id = ref(isSeniorCitizen.value === true ? "N/A" : null);
+    let senior_citizen_id = ref(
+      isSeniorCitizen.value === true ? "No ID" : null
+    );
     let scDisable = ref(true);
 
     let disabilityArray = [
@@ -183,7 +190,7 @@ export default {
       );
       scDisable.value = age_now <= 60 ? true : false;
       isSeniorCitizen.value = age_now <= 60 ? false : true;
-      senior_citizen_id.value = age_now <= 60 ? null : "N/A";
+      senior_citizen_id.value = age_now <= 60 ? null : "No ID";
     };
 
     let householdOptions = ref([]);
@@ -245,7 +252,7 @@ export default {
         };
       } else {
         pwd.value = {
-          pwd_id: "N/A",
+          pwd_id: null,
           disability: null,
         };
       }
@@ -255,7 +262,7 @@ export default {
       if (isSeniorCitizen.value === false) {
         senior_citizen_id.value = null;
       } else {
-        senior_citizen_id.value = "N/A";
+        senior_citizen_id.value = "No ID";
       }
     };
 
