@@ -57,7 +57,7 @@ let CheckPatientQueue = (payload) => {
         },
       })
       .then((response) => {
-        console.log("Check Queue", response.data);
+        // console.log("Check Queue", response.data);
         resolve(response.data);
       })
       .catch((error) => {

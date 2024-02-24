@@ -397,6 +397,65 @@ export default {
 
     let isDonePatient = ref(false);
 
+    if (
+      route.params.queue &&
+      keySession &&
+      keySession.department !== 2 &&
+      keySession.department !== 3 &&
+      keySession.permission_level !== 3
+    ) {
+      router.push({
+        name: route.params.department_queue + "/patient_records/new",
+        params: {
+          department: route.params.department_queue,
+          queue: route.params.queue,
+        },
+      });
+    } else if (
+      route.params.queue &&
+      keySession &&
+      keySession.department === 3 &&
+      keySession.permission_level !== 3
+    ) {
+      GetRecords({
+        patient_id: route.params.id,
+        record_type: selectedDepartment.value,
+      }).then((response) => {
+        if (
+          response.data.length > 0 &&
+          selectedDepartment.value === "Prenatal"
+        ) {
+          let record = response.data[0];
+          console.log("res", record);
+          FindRecordDetails(record.record_id, selectedDepartment.value).then(
+            (response) => {
+              console.log(response);
+              Loading.hide();
+
+              if (response.status === "success") {
+                router.push({
+                  name: selectedDepartment.value + "/patient_records",
+                  params: {
+                    record_id: record.record_id,
+                    department: selectedDepartment.value,
+                    queue: route.params.queue,
+                  },
+                });
+              }
+            }
+          );
+        } else {
+          router.push({
+            name: route.params.department_queue + "/patient_records/new",
+            params: {
+              department: route.params.department_queue,
+              queue: route.params.queue,
+            },
+          });
+        }
+      });
+    }
+
     return {
       openDialog,
       keySession,

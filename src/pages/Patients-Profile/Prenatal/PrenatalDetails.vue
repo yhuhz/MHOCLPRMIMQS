@@ -32,15 +32,13 @@ import { RecordDetails } from 'src/composables/Patients';
             v-if="
               keySession &&
               keySession.department === 3 &&
-              keySession.permission_level !== 3
+              keySession.permission_level !== 3 &&
+              !miscarriageCheck
             "
             class="q-mb-lg"
             style="justify-content: center; height: 30px"
           >
-            <div
-              v-if="!editForm && !isEditCheckup && !miscarriageCheck"
-              class="row q-px-md"
-            >
+            <div v-if="!editForm && !isEditCheckup" class="row q-px-md">
               <q-btn
                 @click="editForm = !editForm"
                 dense
@@ -211,7 +209,7 @@ import { RecordDetails } from 'src/composables/Patients';
             </q-input>
           </div>
 
-          <div class="flex items-baseline justify-between q-px-md q-mb-md">
+          <div class="flex items-baseline justify-between q-px-md q-mb-sm">
             <p
               class="text-primary text-weight-bold"
               :style="$q.screen.width < 1367 ? 'width: 100px' : ''"
@@ -229,7 +227,10 @@ import { RecordDetails } from 'src/composables/Patients';
           </div>
 
           <div class="flex items-baseline justify-between q-px-md">
-            <p class="text-primary text-weight-bold">
+            <p
+              class="text-primary text-weight-bold"
+              :style="$q.screen.width > 1366 ? '' : 'width: 100px'"
+            >
               Tetanus Toxoid Vaccination Date:
             </p>
             <q-input
@@ -325,15 +326,13 @@ import { RecordDetails } from 'src/composables/Patients';
             v-if="
               keySession &&
               keySession.department === 3 &&
-              keySession.permission_level !== 3
+              keySession.permission_level !== 3 &&
+              !miscarriageCheck
             "
             class="q-mb-lg"
             style="justify-content: center; height: 30px"
           >
-            <div
-              v-if="!isEditCheckup && !editForm && !miscarriageCheck"
-              class="row q-px-md"
-            >
+            <div v-if="!isEditCheckup && !editForm" class="row q-px-md">
               <q-btn
                 v-if="selectedCheckup !== null"
                 @click="isEditCheckup = !isEditCheckup"
@@ -391,7 +390,7 @@ import { RecordDetails } from 'src/composables/Patients';
           </div>
 
           <div v-if="selectedCheckup" style="position: relative">
-            <q-scroll-area style="height: 500px">
+            <q-scroll-area style="height: 550px">
               <div>
                 <div class="text-center">
                   <label class="text-weight-bold"
@@ -885,7 +884,7 @@ import { RecordDetails } from 'src/composables/Patients';
 .card-box {
   border: 2px solid #5f8d4e;
   border-radius: 5px;
-  height: 600px;
+  height: 650px;
 
   .mn-heading {
     font-size: 18px;
@@ -897,7 +896,7 @@ import { RecordDetails } from 'src/composables/Patients';
 }
 
 .prenatal-checkup {
-  max-height: 600px;
+  max-height: 650px;
   overflow-y: hidden;
 }
 </style>

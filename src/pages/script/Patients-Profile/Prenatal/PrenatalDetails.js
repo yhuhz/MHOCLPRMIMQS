@@ -296,6 +296,7 @@ export default {
     };
 
     const addCheckupRecord = () => {
+      console.log("test");
       isEditCheckup.value = true;
 
       selectedCheckup.value = date.formatDate(Date.now(), "YYYY-MM-DD");
@@ -416,6 +417,10 @@ export default {
     // };
 
     // eodComputation();
+
+    if (route.params.queue) {
+      addCheckupRecord();
+    }
 
     return {
       RecordDetails,
