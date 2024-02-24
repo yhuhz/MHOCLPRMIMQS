@@ -42,7 +42,7 @@ import { RecordDetails } from 'src/composables/Patients';
           </p>
         </div>
         <div class="q-px-md">
-          <div class="flex justify-between items-baseline">
+          <!-- <div class="flex justify-between items-baseline">
             <p class="text-primary text-weight-bold">Dentist</p>
             <q-select
               hide-bottom-space
@@ -60,7 +60,7 @@ import { RecordDetails } from 'src/composables/Patients';
               disable
               style="width: 200px"
             />
-          </div>
+          </div> -->
           <div class="flex justify-between items-baseline">
             <p class="text-primary text-weight-bold">Temperature</p>
             <q-input
