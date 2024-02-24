@@ -299,7 +299,7 @@
                 no-caps
                 unelevated
                 class="button-100 action-btn"
-                @click="checkPatientQueue(props.row.patient_id)"
+                @click="checkPatientQueue(props.row.patient_id, props.row.sex)"
               >
                 <q-menu
                   transition-show="jump-down"

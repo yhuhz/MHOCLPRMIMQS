@@ -52,11 +52,12 @@ let CheckPatientQueue = (payload) => {
     axios
       .get(pathlink, {
         params: {
-          patient_id: payload,
+          patient_id: payload.patient_id,
+          sex: payload.sex,
         },
       })
       .then((response) => {
-        // console.log("Check Queue", response.data);
+        console.log("Check Queue", response.data);
         resolve(response.data);
       })
       .catch((error) => {

@@ -405,14 +405,17 @@ export default {
 
     /**CHECK IF PATIENT IS ON QUEUE**/
     let isPatientOnQueue = ref(false);
-    const checkPatientQueue = (patient_id) => {
-      CheckPatientQueue(patient_id).then((response) => {
-        if (response.status === "success") {
-          isPatientOnQueue.value = false;
-        } else {
-          isPatientOnQueue.value = true;
+    const checkPatientQueue = (patient_id, sex) => {
+      CheckPatientQueue({ patient_id: patient_id, sex: sex }).then(
+        (response) => {
+          if (response.status === "success") {
+            isPatientOnQueue.value = false;
+            departmentArrayQueue.value = response.data;
+          } else {
+            isPatientOnQueue.value = true;
+          }
         }
-      });
+      );
     };
 
     /**ADD TO QUEUE**/
@@ -434,16 +437,16 @@ export default {
       queueOpenModal.value = true;
       patientToQueue.value = patient_info.patient_id;
 
-      if (patient_info.sex === 0) {
-        departmentArrayQueue.value = ["Front Desk", "Dental", "Immunization"];
-      } else {
-        departmentArrayQueue.value = [
-          "Front Desk",
-          "Dental",
-          "Prenatal",
-          "Immunization",
-        ];
-      }
+      // if (patient_info.sex === 0) {
+      //   departmentArrayQueue.value = ["Front Desk", "Dental", "Immunization"];
+      // } else {
+      //   departmentArrayQueue.value = [
+      //     "Front Desk",
+      //     "Dental",
+      //     "Prenatal",
+      //     "Immunization",
+      //   ];
+      // }
     };
 
     let dept = [
