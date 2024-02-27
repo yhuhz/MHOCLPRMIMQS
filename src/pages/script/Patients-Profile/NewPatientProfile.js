@@ -10,6 +10,8 @@ import {
   PatientDetails,
   FindPatientAddress,
 } from "src/composables/Patients";
+
+import { GetQueue } from "src/composables/Queue";
 import { useRoute } from "vue-router";
 import { useQuasar, SessionStorage, Loading, date } from "quasar";
 import _ from "lodash";

@@ -16,7 +16,7 @@ let GetQueue = () => {
     axios
       .get(pathlink)
       .then((response) => {
-        console.log("Get data from DB to queue");
+        // console.log("Get data from DB to queue");
         // console.log(response.data.data);
         Queue.value = response.data.data;
         resolve(response.data);
@@ -76,7 +76,7 @@ let GetLastQueueNumber = (payload) => {
         },
       })
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         LastQueueNumber.value = response.data.data;
         resolve(response.data);
       })

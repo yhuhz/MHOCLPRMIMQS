@@ -72,6 +72,7 @@ import {
   GetLastQueueNumber,
   LastQueueNumber,
   AddToQueue,
+  GetQueue,
 } from "src/composables/Queue";
 import { Loading } from "quasar";
 
@@ -109,15 +110,17 @@ export default {
       ];
     }
 
-    GetLastQueueNumber({
-      department:
-        patient_info.pwd_id || patient_info.senior_citizen_id
-          ? null
-          : departmentQueue.value,
-      priority: patient_info.pwd_id || patient_info.senior_citizen_id ? 1 : 0,
-    }).then((response) => {
-      queueNumber.value = LastQueueNumber.value;
-    });
+    // GetLastQueueNumber({
+    //   department:
+    //     patient_info.pwd_id || patient_info.senior_citizen_id
+    //       ? null
+    //       : departmentQueue.value,
+    //   priority: patient_info.pwd_id || patient_info.senior_citizen_id ? 1 : 0,
+    // }).then((response) => {
+    //   queueNumber.value = LastQueueNumber.value;
+    // });
+
+    let queueFrontDesk = ref(null);
 
     const departmentChange = () => {
       if (departmentQueue.value === "Front Desk") {
@@ -151,7 +154,16 @@ export default {
         queueNumber.value = LastQueueNumber.value;
         departmentQueue.value = dept[departmentQueue.value];
       });
+
+      if (departmentQueue.value === 5) {
+        GetQueue().then((response) => {
+          queueFrontDesk.value = response.data.Front_Desk.length;
+          console.log(response.data.Front_Desk.length);
+        });
+      }
     };
+
+    departmentChange();
 
     const addToQueue = () => {
       if (departmentQueue.value === "Front Desk") {
@@ -183,6 +195,17 @@ export default {
               ? "Patient added to queue successfully"
               : "Failed to add patient to queue",
         });
+
+        if (departmentQueue.value === 5 && queueFrontDesk.value === 0) {
+          router.push({
+            name: "patient-details",
+            params: {
+              id: patient_info.patient_id,
+              queue: queueNumber.value,
+              department_queue: "OPD",
+            },
+          });
+        }
 
         (departmentQueue.value = "Front Desk"), (queueNumber.value = null);
         closeDialog();
