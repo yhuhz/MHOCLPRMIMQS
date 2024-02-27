@@ -54,19 +54,50 @@ export default {
     watch(
       () => _.cloneDeep(RecordDetails.value),
       () => {
-        editForm.value = false;
-        isEditCheckup.value = false;
-        selectedCheckup.value =
-          RecordArrays.value.length !== 0
-            ? RecordArrays.value[0].checkup_date
-            : null;
-        RecordArrays.value.length === 0
-          ? (prenatal_checkup.value = [])
-          : RecordArrays.value.forEach((r) => {
-              if (r.checkup_date === selectedCheckup.value) {
-                prenatal_checkup.value = r;
-              }
-            });
+        /**IF THERE'S A BUG, REMOVE THE IF CONDITION**/
+        if (!route.params.queue) {
+          editForm.value = false;
+          isEditCheckup.value = false;
+
+          selectedCheckup.value =
+            RecordArrays.value.length !== 0
+              ? RecordArrays.value[0].checkup_date
+              : null;
+          RecordArrays.value.length === 0
+            ? (prenatal_checkup.value = [])
+            : RecordArrays.value.forEach((r) => {
+                if (r.checkup_date === selectedCheckup.value) {
+                  prenatal_checkup.value = r;
+                }
+              });
+        } else {
+          // selectedCheckup.value =
+          //   RecordArrays.value.length !== 0
+          //     ? RecordArrays.value[0].checkup_date
+          //     : null;
+          // RecordArrays.value.length === 0
+          //   ? (prenatal_checkup.value = [])
+          //   : RecordArrays.value.forEach((r) => {
+          //       if (r.checkup_date === selectedCheckup.value) {
+          //         prenatal_checkup.value = r;
+          //       }
+          //     });
+        }
+
+        // editForm.value = false;
+        // isEditCheckup.value = false;
+
+        // selectedCheckup.value =
+        //   RecordArrays.value.length !== 0
+        //     ? RecordArrays.value[0].checkup_date
+        //     : null;
+        // RecordArrays.value.length === 0
+        //   ? (prenatal_checkup.value = [])
+        //   : RecordArrays.value.forEach((r) => {
+        //       if (r.checkup_date === selectedCheckup.value) {
+        //         prenatal_checkup.value = r;
+        //       }
+        //     });
 
         patientRecordInfo.value = {
           prenatal_id: route.params.record_id,

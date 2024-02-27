@@ -31,7 +31,6 @@ export default {
       previous_full_term: null,
       previous_premature: null,
       date_added: date.formatDate(new Date(), "YYYY-MM-DD"),
-      midwifes_notes: null,
       status: 0,
     });
 

@@ -177,6 +177,7 @@ import { RecordDetails } from 'src/composables/Patients';
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.last_menstruation"
+              :style="$q.screen.width > 1366 ? '' : 'width: 180px'"
               :rules="[(val) => (val && val.length > 0) || 'Required field']"
             >
               <template v-slot:append v-if="editForm">
@@ -240,7 +241,7 @@ import { RecordDetails } from 'src/composables/Patients';
               input-style="padding: 0"
               input-class="text-right text-primary"
               v-model="patientRecordInfo.tetanus_vaccine"
-              :rules="[(val) => (val && val.length > 0) || 'Required field']"
+              :style="$q.screen.width > 1366 ? '' : 'width: 180px'"
             >
               <template v-slot:append v-if="editForm">
                 <q-icon name="event" class="cursor-pointer">
@@ -410,10 +411,8 @@ import { RecordDetails } from 'src/composables/Patients';
                     input-style="padding: 0"
                     input-class="text-right text-primary"
                     label="°C"
-                    :rules="[
-                      (val) =>
-                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
-                    ]"
+                    :style="$q.screen.width > 1366 ? '' : 'width: 180px'"
+                    :rules="[(val) => val === 0 || (val && !isNaN(val)) || '']"
                   />
                 </div>
                 <div class="flex items-baseline justify-between q-px-md">
@@ -430,8 +429,7 @@ import { RecordDetails } from 'src/composables/Patients';
                       input-class="text-right text-primary"
                       style="width: 70px"
                       :rules="[
-                        (val) =>
-                          val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                        (val) => val === 0 || (val && !isNaN(val)) || '',
                       ]"
                     />
                     <label class="text-primary text-bold q-px-sm">/</label>
@@ -444,8 +442,7 @@ import { RecordDetails } from 'src/composables/Patients';
                       input-class="text-right text-primary"
                       style="width: 70px"
                       :rules="[
-                        (val) =>
-                          val === 0 || (val && !isNaN(val)) || 'Numbers only',
+                        (val) => val === 0 || (val && !isNaN(val)) || '',
                       ]"
                     />
                   </div>
@@ -462,10 +459,8 @@ import { RecordDetails } from 'src/composables/Patients';
                     input-style="padding: 0"
                     input-class="text-right text-primary"
                     label="cm"
-                    :rules="[
-                      (val) =>
-                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
-                    ]"
+                    :style="$q.screen.width > 1366 ? '' : 'width: 180px'"
+                    :rules="[(val) => val === 0 || (val && !isNaN(val)) || '']"
                     @update:model-value="updateBMI"
                   />
                 </div>
@@ -481,10 +476,8 @@ import { RecordDetails } from 'src/composables/Patients';
                     input-style="padding: 0"
                     input-class="text-right text-primary"
                     label="kg"
-                    :rules="[
-                      (val) =>
-                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
-                    ]"
+                    :style="$q.screen.width > 1366 ? '' : 'width: 180px'"
+                    :rules="[(val) => val === 0 || (val && !isNaN(val)) || '']"
                     @update:model-value="updateBMI"
                   />
                 </div>
@@ -499,6 +492,7 @@ import { RecordDetails } from 'src/composables/Patients';
                     dense
                     input-style="padding: 0"
                     input-class="text-right text-primary"
+                    :style="$q.screen.width > 1366 ? '' : 'width: 180px'"
                   />
                 </div>
                 <div class="flex items-baseline justify-between q-px-md">
@@ -513,10 +507,8 @@ import { RecordDetails } from 'src/composables/Patients';
                     input-style="padding: 0"
                     input-class="text-right text-primary"
                     label="bpm"
-                    :rules="[
-                      (val) =>
-                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
-                    ]"
+                    :style="$q.screen.width > 1366 ? '' : 'width: 180px'"
+                    :rules="[(val) => val === 0 || (val && !isNaN(val)) || '']"
                   />
                 </div>
                 <div class="flex items-baseline justify-between q-px-md">
@@ -531,10 +523,8 @@ import { RecordDetails } from 'src/composables/Patients';
                     input-style="padding: 0"
                     input-class="text-right text-primary"
                     label="%"
-                    :rules="[
-                      (val) =>
-                        val === 0 || (val && !isNaN(val)) || 'Numbers only',
-                    ]"
+                    :style="$q.screen.width > 1366 ? '' : 'width: 180px'"
+                    :rules="[(val) => val === 0 || (val && !isNaN(val)) || '']"
                   />
                 </div>
 
@@ -550,6 +540,7 @@ import { RecordDetails } from 'src/composables/Patients';
                     input-style="padding: 0"
                     input-class="text-right text-primary"
                     label="Weeks"
+                    :style="$q.screen.width > 1366 ? '' : 'width: 180px'"
                   />
                 </div>
 
@@ -565,9 +556,8 @@ import { RecordDetails } from 'src/composables/Patients';
                     input-style="padding: 0"
                     input-class="text-right text-primary"
                     label="cm"
-                    :rules="[
-                      (val) => val === 0 || !isNaN(val) || 'Numbers only',
-                    ]"
+                    :style="$q.screen.width > 1366 ? '' : 'width: 180px'"
+                    :rules="[(val) => val === 0 || !isNaN(val) || '']"
                   />
                 </div>
 
@@ -629,11 +619,9 @@ import { RecordDetails } from 'src/composables/Patients';
                     dense
                     input-style="padding: 0"
                     input-class="text-right text-primary"
+                    :style="$q.screen.width > 1366 ? '' : 'width: 180px'"
                     :rules="[
-                      (val) =>
-                        val === 0 ||
-                        (val && val.length > 0) ||
-                        'Required field',
+                      (val) => val === 0 || (val && val.length > 0) || '',
                     ]"
                   >
                     <template v-slot:append v-if="isEditCheckup">
