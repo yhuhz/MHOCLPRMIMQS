@@ -11,7 +11,11 @@
         <!-- Patient Queue -->
         <fieldset
           class="column queue q-pa-md q-mr-lg shadow-5"
-          v-if="keySession && keySession.department !== 4"
+          v-if="
+            keySession &&
+            keySession.department !== 4 &&
+            keySession.username !== 'setupAdmin'
+          "
         >
           <div
             style="
@@ -316,7 +320,11 @@
           <div class="to-do-grid">
             <div
               class="to-do-box shadow-5"
-              v-if="keySession && keySession.department === 6"
+              v-if="
+                keySession &&
+                keySession.department === 6 &&
+                keySession.username !== 'setupAdmin'
+              "
               @click="$router.push({ name: 'dashboard' })"
             >
               <q-icon name="bar_chart" size="100px" class="to-do-label" />
@@ -327,6 +335,7 @@
             <div
               class="to-do-box shadow-5"
               @click="$router.push({ name: 'search-patients' })"
+              v-if="keySession.username !== 'setupAdmin'"
             >
               <q-icon name="group" size="100px" class="to-do-label" />
               <label class="text-center to-do-label"
@@ -350,6 +359,7 @@
             <div
               class="to-do-box shadow-5"
               @click="$router.push({ name: 'search-records' })"
+              v-if="keySession.username !== 'setupAdmin'"
             >
               <q-icon
                 name="medical_information"
@@ -364,6 +374,7 @@
             <div
               class="to-do-box shadow-5"
               @click="$router.push({ name: 'household-records' })"
+              v-if="keySession.username !== 'setupAdmin'"
             >
               <q-icon name="home" size="100px" class="to-do-label" />
               <label class="text-center to-do-label"
@@ -374,6 +385,7 @@
             <div
               class="to-do-box shadow-5"
               @click="$router.push({ name: 'pwd-records' })"
+              v-if="keySession.username !== 'setupAdmin'"
             >
               <q-icon name="accessible" size="100px" class="to-do-label" />
               <label class="text-center to-do-label">View PWD Records</label>
@@ -382,6 +394,7 @@
             <div
               class="to-do-box shadow-5"
               @click="$router.push({ name: 'senior-citizen-records' })"
+              v-if="keySession.username !== 'setupAdmin'"
             >
               <q-icon name="elderly" size="100px" class="to-do-label" />
               <label class="text-center to-do-label"
@@ -395,7 +408,8 @@
               v-if="
                 keySession &&
                 keySession.department !== 1 &&
-                keySession.department !== 2
+                keySession.department !== 2 &&
+                keySession.username !== 'setupAdmin'
               "
             >
               <q-icon name="pregnant_woman" size="100px" class="to-do-label" />
@@ -410,7 +424,8 @@
                 keySession &&
                 (keySession.department === 4 ||
                   (keySession.department === 6 &&
-                    keySession.permission_level === 1))
+                    keySession.permission_level === 1)) &&
+                keySession.username !== 'setupAdmin'
               "
               @click="$router.push({ name: 'medicine-inventory' })"
             >
@@ -426,7 +441,8 @@
                 keySession &&
                 (keySession.department === 4 ||
                   (keySession.department === 6 &&
-                    keySession.permission_level === 1))
+                    keySession.permission_level === 1)) &&
+                keySession.username !== 'setupAdmin'
               "
               @click="$router.push({ name: 'medicine-release' })"
             >
@@ -446,7 +462,8 @@
                 keySession &&
                 (keySession.department === 4 ||
                   (keySession.department === 6 &&
-                    keySession.permission_level === 1))
+                    keySession.permission_level === 1)) &&
+                keySession.username !== 'setupAdmin'
               "
               @click="$router.push({ name: 'supply-inventory' })"
             >
@@ -462,7 +479,8 @@
                 keySession &&
                 (keySession.department === 4 ||
                   (keySession.department === 6 &&
-                    keySession.permission_level === 1))
+                    keySession.permission_level === 1)) &&
+                keySession.username !== 'setupAdmin'
               "
               @click="$router.push({ name: 'supply-release' })"
             >
@@ -479,7 +497,8 @@
               v-if="
                 keySession &&
                 keySession.department === 6 &&
-                keySession.permission_level === 1
+                keySession.permission_level === 1 &&
+                keySession.username !== 'setupAdmin'
               "
               @click="$router.push({ name: 'manage-users' })"
             >
@@ -491,7 +510,11 @@
 
             <div
               class="to-do-box shadow-5"
-              v-if="keySession && keySession.department === 6"
+              v-if="
+                keySession &&
+                keySession.department === 6 &&
+                keySession.username !== 'setupAdmin'
+              "
               @click="$router.push({ name: 'reports' })"
             >
               <q-icon name="description" size="100px" class="to-do-label" />
@@ -503,7 +526,8 @@
               v-if="
                 keySession &&
                 keySession.department === 6 &&
-                keySession.permission_level === 1
+                keySession.permission_level === 1 &&
+                keySession.username !== 'setupAdmin'
               "
               @click="backupDB"
             >

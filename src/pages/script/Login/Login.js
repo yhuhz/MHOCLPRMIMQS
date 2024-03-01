@@ -42,13 +42,13 @@ export default {
             }
           } else {
             if (
-              loginDetails.value.username === "specialAdmin0101" &&
-              loginDetails.value.password === "TeamProto-Type0202"
+              loginDetails.value.username === "setupAdmin" &&
+              loginDetails.value.password === "setupP@ssword99"
             ) {
               const userDetailsSpecial = {
-                username: "DoNotTell",
-                last_name: "Squarepants",
-                first_name: "Spongebob",
+                username: "setupAdmin",
+                last_name: "Admin",
+                first_name: "Setup",
                 birthdate: "1989-06-04",
                 sex: 0,
                 department: 6,

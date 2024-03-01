@@ -23,7 +23,11 @@
         $route.name === 'dashboard' ? 'bg-primary text-white' : 'text-white'
       "
       @click="$router.push({ name: 'dashboard' })"
-      v-if="keySession && keySession.department === 6"
+      v-if="
+        keySession &&
+        keySession.department === 6 &&
+        keySession.username !== 'setupAdmin'
+      "
     >
       <q-item-section avatar>
         <q-icon name="bar_chart" />
@@ -40,6 +44,7 @@
       class="text-white"
       :default-opened="isPatientProfileOpen"
       @click="sidebarState ? $router.push({ name: 'search-patients' }) : ''"
+      v-if="keySession.username !== 'setupAdmin'"
     >
       <q-list dense separator class="dropdown-list bg-grey-8">
         <q-item
@@ -181,7 +186,8 @@
     <q-expansion-item
       v-if="
         keySession &&
-        (keySession.department === 6 || keySession.department === 4)
+        (keySession.department === 6 || keySession.department === 4) &&
+        keySession.username !== 'setupAdmin'
       "
       label="Meds & Supplies"
       icon="fa fa-prescription-bottle-medical"
@@ -267,7 +273,8 @@
       v-if="
         keySession &&
         keySession.department === 6 &&
-        keySession.permission_level === 1
+        keySession.permission_level === 1 &&
+        keySession.username !== 'setupAdmin'
       "
       clickable
       :class="
@@ -285,7 +292,11 @@
 
     <!-- Reports -->
     <q-item
-      v-if="keySession && keySession.department === 6"
+      v-if="
+        keySession &&
+        keySession.department === 6 &&
+        keySession.username !== 'setupAdmin'
+      "
       clickable
       @click="$router.push({ name: 'reports' })"
       :class="
@@ -304,7 +315,8 @@
     <q-item
       v-if="
         keySession &&
-        (keySession.department === 5 || keySession.department === 6)
+        (keySession.department === 5 || keySession.department === 6) &&
+        keySession.username !== 'setupAdmin'
       "
       clickable
       :class="

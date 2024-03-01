@@ -27,7 +27,12 @@
             style="width: 230px"
           >
             <q-list separator dense>
-              <q-item clickable class="drop-list" @click="editUser = true">
+              <q-item
+                v-if="keySession.username !== 'setupAdmin'"
+                clickable
+                class="drop-list"
+                @click="editUser = true"
+              >
                 <q-item-section> Account </q-item-section>
                 <q-item-section avatar>
                   <q-icon name="person" />
@@ -229,7 +234,12 @@
                 </q-card>
               </q-dialog>
 
-              <q-item clickable class="drop-list" @click="changePass = true">
+              <q-item
+                v-if="keySession.username !== 'setupAdmin'"
+                clickable
+                class="drop-list"
+                @click="changePass = true"
+              >
                 <q-item-section> Change Password </q-item-section>
                 <q-item-section avatar>
                   <q-icon name="key" />
