@@ -166,6 +166,14 @@ export default {
           search_category: "Household ID",
           search_string: route.params.household_id,
         },
+        filter: {
+          age: age.value,
+          sex: gender_array_model.value,
+          status: status_array_model.value,
+          date_added: dateAdded.value,
+          barangay: brgy_array_model.value,
+          outside_camalig: outsideCamaligCheckbox.value,
+        },
       };
 
       Loading.show();
