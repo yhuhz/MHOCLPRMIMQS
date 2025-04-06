@@ -42,11 +42,7 @@
           @update:model-value="departmentChange"
         />
         <q-btn
-          :color="
-            patient_info.senior_citizen_id || patient_info.pwd_id
-              ? 'amber-9'
-              : 'primary'
-          "
+          :color="patient_info.senior_citizen_id || patient_info.pwd_id ? 'amber-9' : 'primary'"
           :label="
             patient_info.senior_citizen_id || patient_info.pwd_id
               ? 'Add to Priority Queue'
@@ -62,29 +58,24 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { ToggleDialogState } from "../../composables/Triggers";
-import { IDList } from "../../composables/IDS";
-import { DeletePatient } from "../../composables/Patients";
-import { useQuasar } from "quasar";
-import { useRoute, useRouter } from "vue-router";
-import {
-  GetLastQueueNumber,
-  LastQueueNumber,
-  AddToQueue,
-  GetQueue,
-} from "src/composables/Queue";
-import { Loading } from "quasar";
+import { ref } from 'vue'
+import { ToggleDialogState } from '../../composables/Triggers.js'
+import { IDList } from '../../composables/IDS'
+import { DeletePatient } from '../../composables/Patients'
+import { useQuasar } from 'quasar'
+import { useRoute, useRouter } from 'vue-router'
+import { GetLastQueueNumber, LastQueueNumber, AddToQueue, GetQueue } from 'src/composables/Queue'
+import { Loading } from 'quasar'
 
 export default {
   setup() {
-    const $q = useQuasar();
-    const route = useRoute();
-    const router = useRouter();
+    const $q = useQuasar()
+    const route = useRoute()
+    const router = useRouter()
 
     const closeDialog = () => {
-      ToggleDialogState();
-    };
+      ToggleDialogState()
+    }
 
     // let patient_info = {
     //   patient_id: "05132301",
@@ -93,21 +84,16 @@ export default {
     //   sex: 0,
     // };
 
-    let patient_info = IDList.value.id;
+    let patient_info = IDList.value.id
 
-    let queueNumber = ref(null);
-    let departmentArrayQueue = ref([]);
-    let departmentQueue = ref("Front Desk");
+    let queueNumber = ref(null)
+    let departmentArrayQueue = ref([])
+    let departmentQueue = ref('Front Desk')
 
     if (patient_info.sex === 0) {
-      departmentArrayQueue.value = ["Front Desk", "Dental", "Immunization"];
+      departmentArrayQueue.value = ['Front Desk', 'Dental', 'Immunization']
     } else {
-      departmentArrayQueue.value = [
-        "Front Desk",
-        "Dental",
-        "Prenatal",
-        "Immunization",
-      ];
+      departmentArrayQueue.value = ['Front Desk', 'Dental', 'Prenatal', 'Immunization']
     }
 
     // GetLastQueueNumber({
@@ -120,97 +106,83 @@ export default {
     //   queueNumber.value = LastQueueNumber.value;
     // });
 
-    let queueFrontDesk = ref(null);
+    let queueFrontDesk = ref(null)
 
     const departmentChange = () => {
-      if (departmentQueue.value === "Front Desk") {
-        departmentQueue.value = 5;
-      } else if (departmentQueue.value === "Dental") {
-        departmentQueue.value = 2;
-      } else if (departmentQueue.value === "Prenatal") {
-        departmentQueue.value = 3;
-      } else if (departmentQueue.value === "Immunization") {
-        departmentQueue.value = 7;
+      if (departmentQueue.value === 'Front Desk') {
+        departmentQueue.value = 5
+      } else if (departmentQueue.value === 'Dental') {
+        departmentQueue.value = 2
+      } else if (departmentQueue.value === 'Prenatal') {
+        departmentQueue.value = 3
+      } else if (departmentQueue.value === 'Immunization') {
+        departmentQueue.value = 7
       }
 
-      let dept = [
-        "",
-        "OPD",
-        "Dental",
-        "Prenatal",
-        "",
-        "Front Desk",
-        "",
-        "Immunization",
-      ];
+      let dept = ['', 'OPD', 'Dental', 'Prenatal', '', 'Front Desk', '', 'Immunization']
 
       GetLastQueueNumber({
         department:
-          patient_info.pwd_id || patient_info.senior_citizen_id
-            ? null
-            : departmentQueue.value,
+          patient_info.pwd_id || patient_info.senior_citizen_id ? null : departmentQueue.value,
         priority: patient_info.pwd_id || patient_info.senior_citizen_id ? 1 : 0,
       }).then((response) => {
-        queueNumber.value = LastQueueNumber.value;
-        departmentQueue.value = dept[departmentQueue.value];
-      });
+        queueNumber.value = LastQueueNumber.value
+        departmentQueue.value = dept[departmentQueue.value]
+      })
 
       if (departmentQueue.value === 5) {
         GetQueue().then((response) => {
-          queueFrontDesk.value = response.data.Front_Desk.length;
-          console.log(response.data.Front_Desk.length);
-        });
+          queueFrontDesk.value = response.data.Front_Desk.length
+          console.log(response.data.Front_Desk.length)
+        })
       }
-    };
+    }
 
-    departmentChange();
+    departmentChange()
 
     const addToQueue = () => {
-      if (departmentQueue.value === "Front Desk") {
-        departmentQueue.value = 5;
-      } else if (departmentQueue.value === "Dental") {
-        departmentQueue.value = 2;
-      } else if (departmentQueue.value === "Prenatal") {
-        departmentQueue.value = 3;
-      } else if (departmentQueue.value === "Immunization") {
-        departmentQueue.value = 7;
+      if (departmentQueue.value === 'Front Desk') {
+        departmentQueue.value = 5
+      } else if (departmentQueue.value === 'Dental') {
+        departmentQueue.value = 2
+      } else if (departmentQueue.value === 'Prenatal') {
+        departmentQueue.value = 3
+      } else if (departmentQueue.value === 'Immunization') {
+        departmentQueue.value = 7
       }
 
-      Loading.show();
+      Loading.show()
       AddToQueue({
         patient_id: patient_info.patient_id,
         department: departmentQueue.value,
         queue_number: queueNumber.value,
-        is_priority:
-          patient_info.pwd_id || patient_info.senior_citizen_id ? 1 : 0,
+        is_priority: patient_info.pwd_id || patient_info.senior_citizen_id ? 1 : 0,
       }).then((response) => {
-        Loading.hide();
+        Loading.hide()
 
-        let status = response.status === "success" ? 0 : 1;
+        let status = response.status === 'success' ? 0 : 1
         $q.notify({
-          type: status === 0 ? "positive" : "negative",
-          classes: "text-white",
+          type: status === 0 ? 'positive' : 'negative',
+          classes: 'text-white',
           message:
-            status === 0
-              ? "Patient added to queue successfully"
-              : "Failed to add patient to queue",
-        });
+            status === 0 ? 'Patient added to queue successfully' : 'Failed to add patient to queue',
+        })
 
         if (departmentQueue.value === 5 && queueFrontDesk.value === 0) {
           router.push({
-            name: "patient-details",
+            name: 'patient-details',
             params: {
               id: patient_info.patient_id,
               queue: queueNumber.value,
-              department_queue: "OPD",
+              department_queue: 'OPD',
             },
-          });
+          })
         }
 
-        (departmentQueue.value = "Front Desk"), (queueNumber.value = null);
-        closeDialog();
-      });
-    };
+        ;(departmentQueue.value = 'Front Desk'), (queueNumber.value = null)
+        closeDialog()
+      })
+    }
 
     return {
       patient_info,
@@ -220,7 +192,7 @@ export default {
       departmentQueue,
       departmentChange,
       addToQueue,
-    };
+    }
   },
-};
+}
 </script>

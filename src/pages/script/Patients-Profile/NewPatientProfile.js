@@ -1,44 +1,41 @@
-import { ref, watch } from "vue";
-import {
-  FindHouseholdByName,
-  FindHouseholdByID,
-} from "src/composables/Household";
+import { ref, watch } from 'vue'
+import { FindHouseholdByName, FindHouseholdByID } from 'src/composables/Household'
 import {
   AddPatient,
   FindPatient,
   EditPatient,
   PatientDetails,
   FindPatientAddress,
-} from "src/composables/Patients";
+} from 'src/composables/Patients'
 
-import { GetQueue } from "src/composables/Queue";
-import { useRoute } from "vue-router";
-import { useQuasar, SessionStorage, Loading, date } from "quasar";
-import _ from "lodash";
-import MHCDialog from "../../../components/MHCDialog.vue";
-import AddPatientSuccess from "../../Components/AddPatientSuccess";
-import { ToggleDialogState } from "../../../composables/Triggers";
-import { SetIDS } from "src/composables/IDS";
+import { GetQueue } from 'src/composables/Queue'
+import { useRoute } from 'vue-router'
+import { useQuasar, SessionStorage, Loading, date } from 'quasar'
+import _ from 'lodash'
+import MHCDialog from '../../../components/MHCDialog.vue'
+import AddPatientSuccess from '../../Components/AddPatientSuccess.vue'
+import { ToggleDialogState } from '../../../composables/Triggers.js'
+import { SetIDS } from 'src/composables/IDS'
 
 export default {
   components: { MHCDialog, AddPatientSuccess },
   setup() {
-    const $q = useQuasar();
-    const route = useRoute();
-    let keySession = SessionStorage.getItem("cred");
+    const $q = useQuasar()
+    const route = useRoute()
+    let keySession = SessionStorage.getItem('cred')
 
-    PatientDetails.value = [];
+    PatientDetails.value = []
 
     // Patient ID and household
-    let statusList = ["Active", "Deceased", "Archived"];
+    let statusList = ['Active', 'Deceased', 'Archived']
 
-    let sexArray = ["Male", "Female"];
+    let sexArray = ['Male', 'Female']
 
     // Personl Information
     let personalInformation = ref({
       patient_id: null,
       household_id: null,
-      status: "Active",
+      status: 'Active',
       last_name: null,
       first_name: null,
       middle_name: null,
@@ -46,9 +43,9 @@ export default {
       birthdate: null,
       phone_number: null,
       sex: null,
-    });
+    })
 
-    let address = ref(null);
+    let address = ref(null)
 
     const changeHousehold = () => {
       if (personalInformation.value.household_id !== null) {
@@ -56,24 +53,23 @@ export default {
           household_id: personalInformation.value.household_id,
         }).then((response) => {
           address.value =
-            (response.data.address_line !== null &&
-            response.data.address_line !== ""
-              ? response.data.address_line + ", "
-              : "") +
+            (response.data.address_line !== null && response.data.address_line !== ''
+              ? response.data.address_line + ', '
+              : '') +
             response.data.barangay +
-            "," +
+            ',' +
             response.data.municipality +
-            ", " +
-            response.data.province;
-        });
+            ', ' +
+            response.data.province
+        })
       } else {
-        address.value = null;
+        address.value = null
       }
-    };
+    }
 
     // PWD and Senior Citizens
-    let isPWD = ref(false);
-    let isSeniorCitizen = ref(false);
+    let isPWD = ref(false)
+    let isSeniorCitizen = ref(false)
     // let pwd = ref({
     //   pwd_id: isPWD.value === true ? "No ID" : null,
     //   disability: null,
@@ -82,27 +78,25 @@ export default {
     let pwd = ref({
       pwd_id: null,
       disability: null,
-    });
-    let senior_citizen_id = ref(
-      isSeniorCitizen.value === true ? "No ID" : null
-    );
-    let scDisable = ref(true);
+    })
+    let senior_citizen_id = ref(isSeniorCitizen.value === true ? 'No ID' : null)
+    let scDisable = ref(true)
 
     let disabilityArray = [
-      "Psychosocial Disability",
-      "Chronic Illness Disability",
-      "Learning Disability",
-      "Mental Disability",
-      "Visual Disability",
-      "Orthopedic Disability",
-      "Communication Disability",
-    ];
+      'Psychosocial Disability',
+      'Chronic Illness Disability',
+      'Learning Disability',
+      'Mental Disability',
+      'Visual Disability',
+      'Orthopedic Disability',
+      'Communication Disability',
+    ]
 
     const onReset = () => {
       // Personl Information
       personalInformation.value = {
         household_id: null,
-        status: "Active",
+        status: 'Active',
         last_name: null,
         first_name: null,
         middle_name: null,
@@ -110,42 +104,42 @@ export default {
         birthdate: null,
         phone_number: null,
         sex: null,
-      };
+      }
 
       // PWD and Senior Citizens
-      isPWD.value = false;
-      isSeniorCitizen.value = false;
+      isPWD.value = false
+      isSeniorCitizen.value = false
       pwd.value = {
         pwd_id: null,
         disability: null,
-      };
-      senior_citizen_id.value = null;
+      }
+      senior_citizen_id.value = null
 
       //Address
-      address.value = null;
-    };
+      address.value = null
+    }
 
     /**FOR EDIT**/
     if (route.params.id) {
-      Loading.show();
+      Loading.show()
       FindPatient({ patient_id: route.params.id }).then((response) => {
-        Loading.hide();
-      });
+        Loading.hide()
+      })
 
       watch(
         () => _.cloneDeep(PatientDetails.value),
         () => {
-          let info = PatientDetails.value;
+          let info = PatientDetails.value
 
           address.value =
-            (info.address_line !== null && info.address_line !== ""
-              ? info.address_line + ", "
-              : "") +
+            (info.address_line !== null && info.address_line !== ''
+              ? info.address_line + ', '
+              : '') +
             info.barangay +
-            ", " +
+            ', ' +
             info.municipality +
-            ", " +
-            info.province;
+            ', ' +
+            info.province
           //Personal Info
           personalInformation.value = {
             patient_id: info.patient_id,
@@ -158,208 +152,174 @@ export default {
             birthdate: info.birthdate,
             phone_number: info.phone_number,
             sex: sexArray[info.sex],
-          };
+          }
 
           // PWD and Senior Citizens
-          isPWD.value = info.pwd_id != null ? true : false;
-          isSeniorCitizen.value = info.senior_citizen_id != null ? true : false;
+          isPWD.value = info.pwd_id != null ? true : false
+          isSeniorCitizen.value = info.senior_citizen_id != null ? true : false
           pwd.value = {
             pwd_id: info.pwd_id,
             disability: info.disability,
-          };
-          senior_citizen_id.value = info.senior_citizen_id;
+          }
+          senior_citizen_id.value = info.senior_citizen_id
 
           let age_now = Math.floor(
-            date.getDateDiff(
-              new Date(),
-              personalInformation.value.birthdate,
-              "days"
-            ) / 365
-          );
-          scDisable.value = age_now <= 60 ? true : false;
-          isSeniorCitizen.value = age_now <= 60 ? false : true;
-        }
-      );
+            date.getDateDiff(new Date(), personalInformation.value.birthdate, 'days') / 365,
+          )
+          scDisable.value = age_now <= 60 ? true : false
+          isSeniorCitizen.value = age_now <= 60 ? false : true
+        },
+      )
     }
 
     let updateBirthdate = () => {
       let age_now = Math.floor(
-        date.getDateDiff(
-          new Date(),
-          personalInformation.value.birthdate,
-          "days"
-        ) / 365
-      );
-      scDisable.value = age_now <= 60 ? true : false;
-      isSeniorCitizen.value = age_now <= 60 ? false : true;
-      senior_citizen_id.value = age_now <= 60 ? null : "No ID";
-    };
+        date.getDateDiff(new Date(), personalInformation.value.birthdate, 'days') / 365,
+      )
+      scDisable.value = age_now <= 60 ? true : false
+      isSeniorCitizen.value = age_now <= 60 ? false : true
+      senior_citizen_id.value = age_now <= 60 ? null : 'No ID'
+    }
 
-    let householdOptions = ref([]);
+    let householdOptions = ref([])
 
     const householdFilterFunction = (val, update, abort) => {
       if (val.length > 0) {
         update(() => {
           if (!isNaN(val)) {
             FindHouseholdByID({ search_string: val }).then((response) => {
-              householdOptions.value = [];
-              if (response.status === "success") {
-                let Household = ref([]);
-                Household.value = response.data;
+              householdOptions.value = []
+              if (response.status === 'success') {
+                let Household = ref([])
+                Household.value = response.data
                 Household.value.forEach((h) => {
                   let selectValues = {
                     household_name:
-                      (h.household_id < 10 ? "0" : "") +
-                      h.household_id +
-                      " - " +
-                      h.household_name,
+                      (h.household_id < 10 ? '0' : '') + h.household_id + ' - ' + h.household_name,
                     household_id: h.household_id,
-                  };
-                  householdOptions.value.push(selectValues);
-                });
+                  }
+                  householdOptions.value.push(selectValues)
+                })
               }
-            });
+            })
           } else {
-            const needle = String(val.toLowerCase());
+            const needle = String(val.toLowerCase())
             FindHouseholdByName({ search_string: needle }).then((response) => {
-              householdOptions.value = [];
-              if (response.status === "success") {
-                let Household = ref([]);
-                Household.value = response.data;
+              householdOptions.value = []
+              if (response.status === 'success') {
+                let Household = ref([])
+                Household.value = response.data
                 Household.value.forEach((h) => {
                   let selectValues = {
                     household_name:
-                      (h.household_id < 10 ? "0" : "") +
-                      h.household_id +
-                      " - " +
-                      h.household_name,
+                      (h.household_id < 10 ? '0' : '') + h.household_id + ' - ' + h.household_name,
                     household_id: h.household_id,
-                  };
-                  householdOptions.value.push(selectValues);
-                });
+                  }
+                  householdOptions.value.push(selectValues)
+                })
               }
-            });
+            })
           }
-        });
+        })
       } else {
-        abort();
+        abort()
       }
-    };
+    }
 
     const onChangePWD = () => {
       if (isPWD.value === false) {
         pwd.value = {
           pwd_id: null,
           disability: null,
-        };
+        }
       } else {
         pwd.value = {
           pwd_id: null,
           disability: null,
-        };
+        }
       }
-    };
+    }
 
     const onChangeSC = () => {
       if (isSeniorCitizen.value === false) {
-        senior_citizen_id.value = null;
+        senior_citizen_id.value = null
       } else {
-        senior_citizen_id.value = "No ID";
+        senior_citizen_id.value = 'No ID'
       }
-    };
+    }
 
     const addPatient = () => {
-      if (
-        personalInformation.value.household_id &&
-        personalInformation.value.sex
-      ) {
-        personalInformation.value.added_by = keySession.user_id;
-        personalInformation.value.sex = sexArray.indexOf(
-          personalInformation.value.sex
-        );
-        personalInformation.value.status = statusList.indexOf(
-          personalInformation.value.status
-        );
+      if (personalInformation.value.household_id && personalInformation.value.sex) {
+        personalInformation.value.added_by = keySession.user_id
+        personalInformation.value.sex = sexArray.indexOf(personalInformation.value.sex)
+        personalInformation.value.status = statusList.indexOf(personalInformation.value.status)
 
         let payload = {
           personal_info: personalInformation.value,
           pwd: pwd.value,
           senior_citizen: senior_citizen_id.value,
-        };
+        }
 
-        Loading.show();
+        Loading.show()
         AddPatient(payload).then((response) => {
-          personalInformation.value.sex = "Male";
-          personalInformation.value.status = statusList[0];
-          Loading.hide();
+          personalInformation.value.sex = 'Male'
+          personalInformation.value.status = statusList[0]
+          Loading.hide()
 
-          let status = response.status === "success" ? 0 : 1;
+          let status = response.status === 'success' ? 0 : 1
 
           $q.notify({
-            type: status === 0 ? "positive" : "negative",
-            classes: "text-white",
+            type: status === 0 ? 'positive' : 'negative',
+            classes: 'text-white',
             message:
-              status === 0
-                ? "Patient record added successfully"
-                : "Failed to add patient record",
-          });
+              status === 0 ? 'Patient record added successfully' : 'Failed to add patient record',
+          })
 
-          status === 0 && onReset();
+          status === 0 && onReset()
 
-          SetIDS(response.data);
-          ToggleDialogState();
-        });
+          SetIDS(response.data)
+          ToggleDialogState()
+        })
       }
-    };
+    }
 
     const editPatientRecord = () => {
-      if (
-        personalInformation.value.household_id &&
-        personalInformation.value.sex
-      ) {
-        personalInformation.value.added_by = keySession.user_id;
-        personalInformation.value.sex = sexArray.indexOf(
-          personalInformation.value.sex
-        );
-        personalInformation.value.status = statusList.indexOf(
-          personalInformation.value.status
-        );
+      if (personalInformation.value.household_id && personalInformation.value.sex) {
+        personalInformation.value.added_by = keySession.user_id
+        personalInformation.value.sex = sexArray.indexOf(personalInformation.value.sex)
+        personalInformation.value.status = statusList.indexOf(personalInformation.value.status)
 
         let payload = {
           personal_info: personalInformation.value,
           pwd: pwd.value,
           senior_citizen: senior_citizen_id.value,
-        };
+        }
 
-        Loading.show();
+        Loading.show()
         EditPatient(payload).then((response) => {
-          personalInformation.value.sex =
-            sexArray[personalInformation.value.sex];
-          personalInformation.value.status =
-            statusList[personalInformation.value.status];
-          Loading.hide();
+          personalInformation.value.sex = sexArray[personalInformation.value.sex]
+          personalInformation.value.status = statusList[personalInformation.value.status]
+          Loading.hide()
 
-          let status = response.status === "success" ? 0 : 1;
+          let status = response.status === 'success' ? 0 : 1
 
           $q.notify({
-            type: status === 0 ? "positive" : "negative",
-            classes: "text-white",
+            type: status === 0 ? 'positive' : 'negative',
+            classes: 'text-white',
             message:
-              status === 0
-                ? "Patient record edited successfully"
-                : "Failed to edit patient record",
-          });
-        });
+              status === 0 ? 'Patient record edited successfully' : 'Failed to edit patient record',
+          })
+        })
       }
-    };
+    }
 
     const onSubmit = () => {
       if (route.params.id) {
-        editPatientRecord();
+        editPatientRecord()
       } else {
-        addPatient();
+        addPatient()
       }
-    };
+    }
 
     return {
       route,
@@ -380,6 +340,6 @@ export default {
       address,
       changeHousehold,
       disabilityArray,
-    };
+    }
   },
-};
+}

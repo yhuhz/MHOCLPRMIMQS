@@ -1,132 +1,132 @@
-import { ref } from "vue";
-import { useQuasar, Loading, date, SessionStorage } from "quasar";
-import DeleteUserConfirmation from "../../Components/DeleteUserConfirmation.vue";
-import { ToggleDialogState } from "../../../composables/Triggers";
-import MHCDialog from "../../../components/MHCDialog.vue";
-import { SetIDS } from "src/composables/IDS";
+import { ref } from 'vue'
+import { useQuasar, Loading, date, SessionStorage } from 'quasar'
+import DeleteUserConfirmation from '../../Components/DeleteUserConfirmation.vue'
+import { ToggleDialogState } from '../../../composables/Triggers.js'
+import MHCDialog from '../../../components/MHCDialog.vue'
+import { SetIDS } from 'src/composables/IDS'
 import {
   GetUsers,
   UsersList,
   ResetPassword,
   AddUser,
   UpdateUser,
-} from "src/composables/Manage_Users";
+} from 'src/composables/Manage_Users'
 
 export default {
   components: { MHCDialog, DeleteUserConfirmation },
   setup() {
-    const $q = useQuasar();
+    const $q = useQuasar()
 
-    let keySession = SessionStorage.getItem("cred");
+    let keySession = SessionStorage.getItem('cred')
     if (keySession === null) {
-      router.push({ name: "login" });
+      router.push({ name: 'login' })
     }
 
     /*** Table ***/
     const columns = ref([
       {
-        name: "user_id",
-        align: "left",
-        label: "ID",
-        field: "user_id",
+        name: 'user_id',
+        align: 'left',
+        label: 'ID',
+        field: 'user_id',
         sortable: true,
       },
       {
-        name: "name",
-        align: "left",
-        label: "Name",
+        name: 'name',
+        align: 'left',
+        label: 'Name',
         field: (row) =>
           row.first_name +
-          " " +
-          (row.middle_name ? row.middle_name + " " : " ") +
+          ' ' +
+          (row.middle_name ? row.middle_name + ' ' : ' ') +
           row.last_name +
-          (row.suffix ? row.suffix + " " : ""),
+          (row.suffix ? row.suffix + ' ' : ''),
         sortable: true,
       },
       {
-        name: "username",
-        align: "left",
-        label: "Username",
-        field: "username",
+        name: 'username',
+        align: 'left',
+        label: 'Username',
+        field: 'username',
         sortable: true,
       },
       {
-        name: "department",
-        align: "left",
-        label: "Department",
+        name: 'department',
+        align: 'left',
+        label: 'Department',
         field: (row) => filtersDepartment[row.department - 1],
         sortable: true,
       },
       {
-        name: "job_title",
-        align: "left",
-        label: "Job Title",
-        field: "job_title",
+        name: 'job_title',
+        align: 'left',
+        label: 'Job Title',
+        field: 'job_title',
         sortable: true,
       },
       {
-        name: "permission_level",
-        align: "left",
-        label: "Permission",
+        name: 'permission_level',
+        align: 'left',
+        label: 'Permission',
         field: (row) => filtersPermission[row.permission_level - 1],
         sortable: true,
       },
       {
-        name: "phone_number",
-        align: "left",
-        label: "Phone Number",
-        field: "phone_number",
+        name: 'phone_number',
+        align: 'left',
+        label: 'Phone Number',
+        field: 'phone_number',
         sortable: true,
       },
       {
-        name: "status",
-        align: "left",
-        label: "Status",
+        name: 'status',
+        align: 'left',
+        label: 'Status',
         field: (row) => statusList[row.status],
         sortable: true,
-        classes: "hidden",
-        headerClasses: "hidden",
+        classes: 'hidden',
+        headerClasses: 'hidden',
       },
       {
-        name: "action",
-        align: "left",
-        label: "",
-        field: "action",
+        name: 'action',
+        align: 'left',
+        label: '',
+        field: 'action',
       },
-    ]);
+    ])
 
-    let showFilterModal = ref(false);
-    let isAddNewUser = ref(false);
+    let showFilterModal = ref(false)
+    let isAddNewUser = ref(false)
 
     /**SEARCH FILTER**/
-    let selectedSearchBy = ref("Name");
-    let searchBy = ref(["Name", "Username", "User ID", "Phone Number"]);
-    let searchString = ref(null);
+    let selectedSearchBy = ref('Name')
+    let searchBy = ref(['Name', 'Username', 'User ID', 'Phone Number'])
+    let searchString = ref(null)
 
     /**FILTERS**/
 
     //Status
-    let statusList = ["Active", "Suspended", "Deleted"];
-    let selectedFilterStatus = ref([0]);
+    let statusList = ['Active', 'Suspended', 'Deleted']
+    let selectedFilterStatus = ref([0])
 
     //Department
     let filtersDepartment = [
-      "Outpatient Department",
-      "Dental",
-      "Prenatal and Immunization",
-      "Pharmacy",
-      "Front Desk",
-      "Admin Office",
-    ];
-    let selectedFiltersDepartment = ref([0, 1, 2, 3, 4, 5, 6]);
+      'Outpatient Department',
+      'Dental',
+      'Prenatal and Immunization',
+      'Pharmacy',
+      'Front Desk',
+      'Admin Office',
+    ]
+    let selectedFiltersDepartment = ref([0, 1, 2, 3, 4, 5, 6])
 
     //Permission Level
-    let filtersPermission = ["Administrator", "Edit and View", "View Only"];
+    let filtersPermission = ['Administrator', 'Edit and View', 'View Only']
 
-    let selectedFiltersPermission = ref([1, 2, 3]);
+    let selectedFiltersPermission = ref([1, 2, 3])
 
     //Date Added
-    let dateAdded = ref([]);
+    let dateAdded = ref([])
 
     //Search
     const getUsers = () => {
@@ -141,26 +141,26 @@ export default {
           date_added: dateAdded.value,
           status: selectedFilterStatus.value,
         },
-      };
-      Loading.show();
+      }
+      Loading.show()
       GetUsers(payload).then((response) => {
-        Loading.hide();
-      });
-    };
+        Loading.hide()
+      })
+    }
 
-    getUsers();
+    getUsers()
 
     /**ADD USER**/
-    let sexArray = ["Male", "Female"];
-    let permissionArray = ref(["Administrator", "Edit and View", "View Only"]);
+    let sexArray = ['Male', 'Female']
+    let permissionArray = ref(['Administrator', 'Edit and View', 'View Only'])
     let departmentArray = ref([
-      "Outpatient Department",
-      "Dental",
-      "Prenatal and Immunization",
-      "Pharmacy",
-      "Front Desk",
-      "Admin Office",
-    ]);
+      'Outpatient Department',
+      'Dental',
+      'Prenatal and Immunization',
+      'Pharmacy',
+      'Front Desk',
+      'Admin Office',
+    ])
     let newUserInfo = ref({
       last_name: null,
       first_name: null,
@@ -173,77 +173,76 @@ export default {
       job_title: null,
       permission_level: null,
       status: statusList[0],
-    });
+    })
 
-    let isPermissionDisabled = ref(true);
+    let isPermissionDisabled = ref(true)
     const changeDepartment = () => {
-      if (newUserInfo.value.department !== "Admin Office") {
-        permissionArray.value = ["Edit and View", "View Only"];
+      if (newUserInfo.value.department !== 'Admin Office') {
+        permissionArray.value = ['Edit and View', 'View Only']
       } else {
-        permissionArray.value = ["Administrator", "Edit and View", "View Only"];
+        permissionArray.value = ['Administrator', 'Edit and View', 'View Only']
       }
-      newUserInfo.value.permission_level = null;
-      isPermissionDisabled.value = false;
-    };
+      newUserInfo.value.permission_level = null
+      isPermissionDisabled.value = false
+    }
 
     const changePermission = () => {
-      if (newUserInfo.value.permission_level === "Administrator") {
+      if (newUserInfo.value.permission_level === 'Administrator') {
         departmentArray.value = [
-          "Outpatient Department",
-          "Dental",
-          "Prenatal and Immunization",
-          "Pharmacy",
-          "Front Desk",
-          "Admin Office",
-        ];
+          'Outpatient Department',
+          'Dental',
+          'Prenatal and Immunization',
+          'Pharmacy',
+          'Front Desk',
+          'Admin Office',
+        ]
       } else {
         departmentArray.value = [
-          "Outpatient Department",
-          "Dental",
-          "Prenatal and Immunization",
-          "Pharmacy",
-          "Front Desk",
-        ];
+          'Outpatient Department',
+          'Dental',
+          'Prenatal and Immunization',
+          'Pharmacy',
+          'Front Desk',
+        ]
       }
-    };
+    }
 
-    let isAddUserSuccess = ref(false);
+    let isAddUserSuccess = ref(false)
     let userSuccess = ref({
       userID: null,
       username: null,
       password: null,
-    });
+    })
 
-    let isAddUserFail = ref(false);
+    let isAddUserFail = ref(false)
 
     const addUser = () => {
-      newUserInfo.value.department =
-        filtersDepartment.indexOf(newUserInfo.value.department) + 1;
+      newUserInfo.value.department = filtersDepartment.indexOf(newUserInfo.value.department) + 1
 
       newUserInfo.value.permission_level =
-        filtersPermission.indexOf(newUserInfo.value.permission_level) + 1;
+        filtersPermission.indexOf(newUserInfo.value.permission_level) + 1
 
-      newUserInfo.value.status = statusList.indexOf(newUserInfo.value.status);
+      newUserInfo.value.status = statusList.indexOf(newUserInfo.value.status)
 
       // console.log(newUserInfo.value);
-      Loading.show();
+      Loading.show()
 
       AddUser(newUserInfo.value).then((response) => {
-        Loading.hide();
+        Loading.hide()
 
-        if (response.status === "success") {
-          userSuccess.value.userID = response.data.user_id;
-          userSuccess.value.username = response.data.username;
-          userSuccess.value.password = response.data.password;
+        if (response.status === 'success') {
+          userSuccess.value.userID = response.data.user_id
+          userSuccess.value.username = response.data.username
+          userSuccess.value.password = response.data.password
 
-          isAddUserSuccess.value = true;
+          isAddUserSuccess.value = true
         } else {
-          isAddUserFail.value = true;
+          isAddUserFail.value = true
         }
 
-        onReset();
-      });
-    };
+        onReset()
+      })
+    }
 
     const onReset = () => {
       newUserInfo.value = {
@@ -257,46 +256,46 @@ export default {
         department: null,
         job_title: null,
         permission_level: null,
-        status: "Active",
-      };
-    };
+        status: 'Active',
+      }
+    }
 
     /**RESET PASSWORD**/
-    let isResetPassword = ref(false);
-    let resetPasswordID = ref(null);
-    let isPasswordSuccess = ref(false);
-    let isPasswordFail = ref(false);
-    let successMessage = ref(null);
+    let isResetPassword = ref(false)
+    let resetPasswordID = ref(null)
+    let isPasswordSuccess = ref(false)
+    let isPasswordFail = ref(false)
+    let successMessage = ref(null)
 
     let openResetPassword = (user_id) => {
-      isResetPassword.value = true;
-      resetPasswordID.value = user_id;
-    };
+      isResetPassword.value = true
+      resetPasswordID.value = user_id
+    }
 
     const resetPassword = () => {
-      Loading.show();
+      Loading.show()
       ResetPassword({
-        mode: "Reset Password",
+        mode: 'Reset Password',
         user_id: resetPasswordID.value,
       }).then((response) => {
-        Loading.hide();
+        Loading.hide()
 
-        if (response.status === "success") {
-          isPasswordSuccess.value = true;
-          successMessage.value = response.data;
-          onReset();
+        if (response.status === 'success') {
+          isPasswordSuccess.value = true
+          successMessage.value = response.data
+          onReset()
         } else {
-          isPasswordFail.value = true;
+          isPasswordFail.value = true
         }
-      });
-    };
+      })
+    }
 
     /**EDIT MEDICINE RECORD**/
-    let isEditUser = ref(false);
-    let editUserInfo = ref({});
+    let isEditUser = ref(false)
+    let editUserInfo = ref({})
 
     const editUserModal = (record) => {
-      isEditUser.value = true;
+      isEditUser.value = true
 
       editUserInfo.value = {
         user_id: record.user_id,
@@ -312,84 +311,80 @@ export default {
         job_title: record.job_title,
         permission_level: filtersPermission[record.permission_level - 1],
         status: statusList[record.status],
-      };
+      }
 
-      if (editUserInfo.value.permission_level === "Administrator") {
-        departmentArray.value = ["Admin Office"];
+      if (editUserInfo.value.permission_level === 'Administrator') {
+        departmentArray.value = ['Admin Office']
       } else {
         departmentArray.value = [
-          "Outpatient Department",
-          "Dental",
-          "Prenatal and Immunization",
-          "Pharmacy",
-          "Front Desk",
-          "Admin Office",
-        ];
+          'Outpatient Department',
+          'Dental',
+          'Prenatal and Immunization',
+          'Pharmacy',
+          'Front Desk',
+          'Admin Office',
+        ]
       }
 
-      if (editUserInfo.value.department !== "Admin Office") {
-        permissionArray.value = ["Edit and View", "View Only"];
+      if (editUserInfo.value.department !== 'Admin Office') {
+        permissionArray.value = ['Edit and View', 'View Only']
       } else {
-        permissionArray.value = ["Administrator", "Edit and View", "View Only"];
+        permissionArray.value = ['Administrator', 'Edit and View', 'View Only']
       }
-    };
+    }
 
     const editChangePermission = () => {
-      if (editUserInfo.value.permission_level === "Administrator") {
-        departmentArray.value = ["Admin Office"];
+      if (editUserInfo.value.permission_level === 'Administrator') {
+        departmentArray.value = ['Admin Office']
       } else {
         departmentArray.value = [
-          "Outpatient Department",
-          "Dental",
-          "Prenatal and Immunization",
-          "Pharmacy",
-          "Front Desk",
-          "Admin Office",
-        ];
+          'Outpatient Department',
+          'Dental',
+          'Prenatal and Immunization',
+          'Pharmacy',
+          'Front Desk',
+          'Admin Office',
+        ]
       }
-    };
+    }
 
     const editChangeDepartment = () => {
-      if (editUserInfo.value.department !== "Admin Office") {
-        permissionArray.value = ["Edit and View", "View Only"];
+      if (editUserInfo.value.department !== 'Admin Office') {
+        permissionArray.value = ['Edit and View', 'View Only']
       } else {
-        permissionArray.value = ["Administrator", "Edit and View", "View Only"];
+        permissionArray.value = ['Administrator', 'Edit and View', 'View Only']
       }
-      editUserInfo.value.permission_level = null;
-    };
+      editUserInfo.value.permission_level = null
+    }
 
     const editUser = () => {
-      Loading.show();
+      Loading.show()
 
-      editUserInfo.value.department =
-        filtersDepartment.indexOf(editUserInfo.value.department) + 1;
+      editUserInfo.value.department = filtersDepartment.indexOf(editUserInfo.value.department) + 1
 
       editUserInfo.value.permission_level =
-        filtersPermission.indexOf(editUserInfo.value.permission_level) + 1;
+        filtersPermission.indexOf(editUserInfo.value.permission_level) + 1
 
-      editUserInfo.value.status = statusList.indexOf(editUserInfo.value.status);
+      editUserInfo.value.status = statusList.indexOf(editUserInfo.value.status)
 
       UpdateUser(editUserInfo.value).then((response) => {
-        Loading.hide();
-        isEditUser.value = false;
-        let status = response.status === "success" ? 0 : 1;
+        Loading.hide()
+        isEditUser.value = false
+        let status = response.status === 'success' ? 0 : 1
 
         $q.notify({
-          type: status === 0 ? "positive" : "negative",
-          classes: "text-white",
-          message:
-            status === 0
-              ? "User info edited successfully"
-              : "Failed to edit user info",
-        });
-      });
-    };
+          type: status === 0 ? 'positive' : 'negative',
+          classes: 'text-white',
+          message: status === 0 ? 'User info edited successfully' : 'Failed to edit user info',
+        })
+      })
+    }
 
     /**DELETE MEDICINE RECORD**/
     const openDialog = (user_id) => {
-      SetIDS(user_id);
-      ToggleDialogState();
-    };
+      SetIDS(user_id)
+      ToggleDialogState()
+    }
 
     return {
       selectedSearchBy,
@@ -433,6 +428,6 @@ export default {
       departmentArray,
       editChangeDepartment,
       editChangePermission,
-    };
+    }
   },
-};
+}

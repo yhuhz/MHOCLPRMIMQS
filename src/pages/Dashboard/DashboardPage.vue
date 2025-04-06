@@ -1,4 +1,4 @@
-import { DashboardData } from 'src/composables/Dashboard';
+import { DashboardData } from 'src/composables/Dashboard.js';
 
 <template>
   <div class="dashboard">
@@ -24,21 +24,18 @@ import { DashboardData } from 'src/composables/Dashboard';
           class="q-pt-md dashboard-card"
           style="background-color: #f1d356"
           @click="
-            chartToRender = 1;
-            renderChart();
+            () => {
+              chartToRender = 1
+              renderChart()
+            }
           "
         >
           <div class="flex justify-around items-center">
             <div>
-              <p
-                class="q-mb-none text-weight-bold text-white"
-                style="font-size: 24px"
-              >
+              <p class="q-mb-none text-weight-bold text-white" style="font-size: 24px">
                 {{ DashboardData.patient_count }}
               </p>
-              <p class="text-weight-bold text-white" style="font-size: 16px">
-                New Patients
-              </p>
+              <p class="text-weight-bold text-white" style="font-size: 16px">New Patients</p>
             </div>
             <q-icon size="100px" name="group" class="new-patients-card-icon" />
           </div>
@@ -58,21 +55,18 @@ import { DashboardData } from 'src/composables/Dashboard';
           class="q-pt-md dashboard-card"
           style="background-color: #4d96ff"
           @click="
-            chartToRender = 2;
-            renderChart();
+            () => {
+              chartToRender = 2
+              renderChart()
+            }
           "
         >
           <div class="flex justify-around items-center">
             <div>
-              <p
-                class="q-mb-none text-weight-bold text-white"
-                style="font-size: 24px"
-              >
+              <p class="q-mb-none text-weight-bold text-white" style="font-size: 24px">
                 {{ totalinStockMedicine }}
               </p>
-              <p class="text-weight-bold text-white" style="font-size: 16px">
-                Medicines
-              </p>
+              <p class="text-weight-bold text-white" style="font-size: 16px">Medicines</p>
             </div>
             <q-icon size="100px" name="mdi-pill" class="medicines-card-icon" />
           </div>
@@ -92,21 +86,18 @@ import { DashboardData } from 'src/composables/Dashboard';
           class="q-pt-md dashboard-card"
           style="background-color: #ff6b6b"
           @click="
-            chartToRender = 3;
-            renderChart();
+            () => {
+              chartToRender = 3
+              renderChart()
+            }
           "
         >
           <div class="flex justify-around items-center">
             <div>
-              <p
-                class="q-mb-none text-weight-bold text-white"
-                style="font-size: 24px"
-              >
+              <p class="q-mb-none text-weight-bold text-white" style="font-size: 24px">
                 {{ totalinStockSupply }}
               </p>
-              <p class="text-weight-bold text-white" style="font-size: 16px">
-                Supplies
-              </p>
+              <p class="text-weight-bold text-white" style="font-size: 16px">Supplies</p>
             </div>
             <q-icon size="100px" name="mdi-needle" class="supplies-card-icon" />
           </div>
@@ -126,27 +117,20 @@ import { DashboardData } from 'src/composables/Dashboard';
           class="q-pt-md dashboard-card"
           style="background-color: #6bcb77"
           @click="
-            chartToRender = 4;
-            renderChart();
+            () => {
+              chartToRender = 4
+              renderChart()
+            }
           "
         >
           <div class="flex justify-around items-center">
             <div>
-              <p
-                class="q-mb-none text-weight-bold text-white"
-                style="font-size: 24px"
-              >
+              <p class="q-mb-none text-weight-bold text-white" style="font-size: 24px">
                 {{ DashboardData.disease_count }}
               </p>
-              <p class="text-weight-bold text-white" style="font-size: 16px">
-                Disease
-              </p>
+              <p class="text-weight-bold text-white" style="font-size: 16px">Disease</p>
             </div>
-            <q-icon
-              size="100px"
-              name="monitor_heart"
-              class="disease-card-icon"
-            />
+            <q-icon size="100px" name="monitor_heart" class="disease-card-icon" />
           </div>
           <div
             class="cursor-pointer text-white text-center view-graph"
@@ -172,7 +156,7 @@ import { DashboardData } from 'src/composables/Dashboard';
 <script src="../script/Dashboard/Dashboard.js"></script>
 
 <style lang="scss">
-@import "../styles/dashboard/dashboard.scss";
+@import '../styles/dashboard/dashboard.scss';
 
 .chartDiv,
 #myChart {

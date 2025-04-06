@@ -1,182 +1,178 @@
-import { ref } from "vue";
-import { GetPatients, SC } from "src/composables/Patients";
-import MHCDialog from "../../../../components/MHCDialog.vue";
-import DeletePatientConfirmation from "../../../Components/DeletePatientConfirmation";
-import { ToggleDialogState } from "../../../../composables/Triggers";
-import { SetIDS } from "src/composables/IDS";
-import { Loading, useQuasar, SessionStorage } from "quasar";
-import { exportFile } from "quasar";
-import { useRouter } from "vue-router";
+import { ref } from 'vue'
+import { GetPatients, SC } from 'src/composables/Patients'
+import MHCDialog from '../../../../components/MHCDialog.vue'
+import DeletePatientConfirmation from '../../../Components/DeletePatientConfirmation.vue'
+import { ToggleDialogState } from '../../../../composables/Triggers.js'
+import { SetIDS } from 'src/composables/IDS'
+import { Loading, useQuasar, SessionStorage } from 'quasar'
+import { exportFile } from 'quasar'
+import { useRouter } from 'vue-router'
 import {
   AddToQueue,
   GetLastQueueNumber,
   LastQueueNumber,
   CheckPatientQueue,
-} from "src/composables/Queue";
+} from 'src/composables/Queue'
 
 export default {
   components: { MHCDialog, DeletePatientConfirmation },
   setup() {
-    const $q = useQuasar();
-    const router = useRouter();
+    const $q = useQuasar()
+    const router = useRouter()
 
     //SESSION KEYS
-    let keySession = SessionStorage.getItem("cred");
+    let keySession = SessionStorage.getItem('cred')
     if (keySession == NaN || keySession == null) {
-      router.push({ name: "login" });
+      router.push({ name: 'login' })
     }
 
-    let searchBy = ref(["Senior Citizen ID", "Patient ID", "Name"]);
-    let selectedSearchBy = ref("Senior Citizen ID");
-    let searchValue = ref(null);
-    let downloadDisable = ref(true);
-    let sexArray = ["Male", "Female"];
+    let searchBy = ref(['Senior Citizen ID', 'Patient ID', 'Name'])
+    let selectedSearchBy = ref('Senior Citizen ID')
+    let searchValue = ref(null)
+    let downloadDisable = ref(true)
+    let sexArray = ['Male', 'Female']
 
-    let showFilterModal = ref(false);
-    let statusList = ref(["Active", "Deceased"]);
+    let showFilterModal = ref(false)
+    let statusList = ref(['Active', 'Deceased'])
 
     let barangayList = [
-      "Anoling",
-      "Baligang",
-      "Bantonan",
-      "Brgy. 1 (Pob)",
-      "Brgy.2 (Pob)",
-      "Brgy.3 (Pob)",
-      "Brgy.4 (Pob)",
-      "Brgy.5 (Pob)",
-      "Brgy.6 (Pob)",
-      "Brgy.7 (Pob)",
-      "Bariw",
-      "Binanderahan",
-      "Binitayan",
-      "Bongabong",
-      "Cabagñan",
-      "Cabraran Pequeño",
-      "Caguiba",
-      "Calabidongan",
-      "Comun",
-      "Cotmon",
-      "Del Rosario",
-      "Gapo",
-      "Gotob",
-      "Ilawod",
-      "Iluluan",
-      "Libod",
-      "Ligban",
-      "Mabunga",
-      "Magogon",
-      "Manawan",
-      "Maninila",
-      "Mina",
-      "Miti",
-      "Palanog",
-      "Panoypoy",
-      "Pariaan",
-      "Quinartilan",
-      "Quirangay",
-      "Quitinday",
-      "Salugan",
-      "Solong",
-      "Sua",
-      "Sumlang",
-      "Tagaytay",
-      "Tagoytoy",
-      "Taladong",
-      "Taloto",
-      "Taplacon",
-      "Tinago",
-      "Tumpa",
-    ];
+      'Anoling',
+      'Baligang',
+      'Bantonan',
+      'Brgy. 1 (Pob)',
+      'Brgy.2 (Pob)',
+      'Brgy.3 (Pob)',
+      'Brgy.4 (Pob)',
+      'Brgy.5 (Pob)',
+      'Brgy.6 (Pob)',
+      'Brgy.7 (Pob)',
+      'Bariw',
+      'Binanderahan',
+      'Binitayan',
+      'Bongabong',
+      'Cabagñan',
+      'Cabraran Pequeño',
+      'Caguiba',
+      'Calabidongan',
+      'Comun',
+      'Cotmon',
+      'Del Rosario',
+      'Gapo',
+      'Gotob',
+      'Ilawod',
+      'Iluluan',
+      'Libod',
+      'Ligban',
+      'Mabunga',
+      'Magogon',
+      'Manawan',
+      'Maninila',
+      'Mina',
+      'Miti',
+      'Palanog',
+      'Panoypoy',
+      'Pariaan',
+      'Quinartilan',
+      'Quirangay',
+      'Quitinday',
+      'Salugan',
+      'Solong',
+      'Sua',
+      'Sumlang',
+      'Tagaytay',
+      'Tagoytoy',
+      'Taladong',
+      'Taloto',
+      'Taplacon',
+      'Tinago',
+      'Tumpa',
+    ]
 
-    let age = ref([60, 100]);
+    let age = ref([60, 100])
 
-    let dateAdded = ref([]);
+    let dateAdded = ref([])
 
-    let gender_array_model = ref([0, 1]);
-    let status_array_model = ref([0]);
-    let brgy_array_model = ref(barangayList);
+    let gender_array_model = ref([0, 1])
+    let status_array_model = ref([0])
+    let brgy_array_model = ref(barangayList)
 
-    let brgy_checkbox_disable = ref(false);
-    let genderList = ["Male", "Female"];
+    let brgy_checkbox_disable = ref(false)
+    let genderList = ['Male', 'Female']
 
-    let outsideCamaligCheckbox = ref(true);
+    let outsideCamaligCheckbox = ref(true)
 
     const select_all_brgy = () => {
-      brgy_array_model.value = barangayList;
-      outsideCamaligCheckbox.value = true;
-    };
+      brgy_array_model.value = barangayList
+      outsideCamaligCheckbox.value = true
+    }
     const select_none_brgy = () => {
-      brgy_array_model.value = [];
-      outsideCamaligCheckbox.value = false;
-    };
+      brgy_array_model.value = []
+      outsideCamaligCheckbox.value = false
+    }
 
     const deletePatientRecord = (patient_id) => {
-      SetIDS(patient_id);
-      ToggleDialogState();
-    };
+      SetIDS(patient_id)
+      ToggleDialogState()
+    }
 
     const columns = ref([
       {
-        name: "senior_citizen_id",
-        align: "left",
-        label: "Senior Citizen ID",
-        field: "senior_citizen_id",
+        name: 'senior_citizen_id',
+        align: 'left',
+        label: 'Senior Citizen ID',
+        field: 'senior_citizen_id',
         sortable: true,
       },
       {
-        name: "name",
-        align: "left",
-        label: "Name",
-        field: (row) =>
-          row.first_name +
-          " " +
-          row.last_name +
-          (row.suffix ? " " + row.suffix : ""),
+        name: 'name',
+        align: 'left',
+        label: 'Name',
+        field: (row) => row.first_name + ' ' + row.last_name + (row.suffix ? ' ' + row.suffix : ''),
         sortable: true,
       },
       {
-        name: "household",
-        align: "left",
-        label: "Household",
-        field: "household_name",
+        name: 'household',
+        align: 'left',
+        label: 'Household',
+        field: 'household_name',
         sortable: true,
       },
       {
-        name: "barangay",
-        align: "left",
-        label: "Barangay",
-        field: "barangay",
+        name: 'barangay',
+        align: 'left',
+        label: 'Barangay',
+        field: 'barangay',
         sortable: true,
       },
       {
-        name: "sex",
-        align: "left",
-        label: "Sex",
+        name: 'sex',
+        align: 'left',
+        label: 'Sex',
         field: (row) => sexArray[row.sex],
         sortable: true,
       },
       {
-        name: "birth date",
-        align: "left",
-        label: "Birth date",
-        field: "birthdate",
+        name: 'birth date',
+        align: 'left',
+        label: 'Birth date',
+        field: 'birthdate',
         sortable: true,
       },
       {
-        name: "age",
-        align: "left",
-        label: "Age",
-        field: "age",
+        name: 'age',
+        align: 'left',
+        label: 'Age',
+        field: 'age',
         sortable: true,
       },
       {
-        name: "action",
-        align: "left",
-        label: "",
-        field: "",
+        name: 'action',
+        align: 'left',
+        label: '',
+        field: '',
         sortable: false,
       },
-    ]);
+    ])
 
     const getSC = () => {
       let payload = {
@@ -190,23 +186,22 @@ export default {
           barangay: brgy_array_model.value,
           outside_camalig: outsideCamaligCheckbox.value,
         },
-      };
+      }
 
-      Loading.show();
+      Loading.show()
       GetPatients({ search_by: payload, sc: true }).then((response) => {
-        Loading.hide();
-      });
-    };
+        Loading.hide()
+      })
+    }
 
-    getSC();
+    getSC()
     /**EXPORT TABLE**/
     const wrapCsvValue = (val, formatFn, row) => {
-      let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
+      let formatted = formatFn !== void 0 ? formatFn(val, row) : val
 
-      formatted =
-        formatted === void 0 || formatted === null ? "" : String(formatted);
+      formatted = formatted === void 0 || formatted === null ? '' : String(formatted)
 
-      formatted = formatted.split('"').join('""');
+      formatted = formatted.split('"').join('""')
       /**
        * Excel accepts \n and \r in strings, but some other CSV parsers do not
        * Uncomment the next two lines to escape new lines
@@ -214,8 +209,8 @@ export default {
       // .split('\n').join('\\n')
       // .split('\r').join('\\r')
 
-      return `"${formatted}"`;
-    };
+      return `"${formatted}"`
+    }
 
     const exportTable = () => {
       // naive encoding to csv format
@@ -225,110 +220,103 @@ export default {
             columns.value
               .map((col) =>
                 wrapCsvValue(
-                  typeof col.field === "function"
+                  typeof col.field === 'function'
                     ? col.field(row)
                     : row[col.field === void 0 ? col.name : col.field],
                   col.format,
-                  row
-                )
+                  row,
+                ),
               )
-              .join(",")
-          )
+              .join(','),
+          ),
         )
-        .join("\r\n");
+        .join('\r\n')
 
-      const status = exportFile(
-        "Senior Citizens Records.csv",
-        content,
-        "text/csv"
-      );
+      const status = exportFile('Senior Citizens Records.csv', content, 'text/csv')
 
       if (status !== true) {
         $q.notify({
-          message: "Browser denied file download...",
-          color: "negative",
-          icon: "warning",
-        });
+          message: 'Browser denied file download...',
+          color: 'negative',
+          icon: 'warning',
+        })
       }
-    };
+    }
 
     /**CHECK IF PATIENT IS ON QUEUE**/
-    let isPatientOnQueue = ref(false);
+    let isPatientOnQueue = ref(false)
     const checkPatientQueue = (patient_id) => {
       CheckPatientQueue(patient_id).then((response) => {
-        if (response.status === "success") {
-          isPatientOnQueue.value = false;
+        if (response.status === 'success') {
+          isPatientOnQueue.value = false
         } else {
-          isPatientOnQueue.value = true;
+          isPatientOnQueue.value = true
         }
-      });
-    };
+      })
+    }
 
     /**ADD TO QUEUE**/
-    let queueOpenModal = ref(false);
-    let patientToQueue = ref(null);
-    let queueNumber = ref(null);
-    let departmentArrayQueue = ref([]);
-    let departmentQueue = ref("Front Desk");
+    let queueOpenModal = ref(false)
+    let patientToQueue = ref(null)
+    let queueNumber = ref(null)
+    let departmentArrayQueue = ref([])
+    let departmentQueue = ref('Front Desk')
 
     const openQueueModal = (patient_info) => {
-      departmentQueue.value = "Front Desk";
+      departmentQueue.value = 'Front Desk'
       GetLastQueueNumber({
         department: null,
         priority: 1,
       }).then((response) => {
-        queueNumber.value = LastQueueNumber.value;
-      });
+        queueNumber.value = LastQueueNumber.value
+      })
 
-      queueOpenModal.value = true;
-      patientToQueue.value = patient_info.patient_id;
+      queueOpenModal.value = true
+      patientToQueue.value = patient_info.patient_id
 
-      departmentArrayQueue.value = ["Front Desk", "Dental", "Immunization"];
-    };
+      departmentArrayQueue.value = ['Front Desk', 'Dental', 'Immunization']
+    }
 
     const departmentChange = () => {
       GetLastQueueNumber({
         department: null,
         priority: 1,
       }).then((response) => {
-        queueNumber.value = LastQueueNumber.value;
-      });
-    };
+        queueNumber.value = LastQueueNumber.value
+      })
+    }
 
     const addToQueue = () => {
-      if (departmentQueue.value === "Front Desk") {
-        departmentQueue.value = 5;
-      } else if (departmentQueue.value === "Dental") {
-        departmentQueue.value = 2;
-      } else if (departmentQueue.value === "Immunization") {
-        departmentQueue.value = 7;
+      if (departmentQueue.value === 'Front Desk') {
+        departmentQueue.value = 5
+      } else if (departmentQueue.value === 'Dental') {
+        departmentQueue.value = 2
+      } else if (departmentQueue.value === 'Immunization') {
+        departmentQueue.value = 7
       }
 
-      Loading.show();
+      Loading.show()
       AddToQueue({
         patient_id: patientToQueue.value,
         department: departmentQueue.value,
         queue_number: queueNumber.value,
         is_priority: 1,
       }).then((response) => {
-        Loading.hide();
+        Loading.hide()
 
-        let status = response.status === "success" ? 0 : 1;
+        let status = response.status === 'success' ? 0 : 1
         $q.notify({
-          type: status === 0 ? "positive" : "negative",
-          classes: "text-white",
+          type: status === 0 ? 'positive' : 'negative',
+          classes: 'text-white',
           message:
-            status === 0
-              ? "Patient added to queue successfully"
-              : "Failed to add patient to queue",
-        });
-
-        (departmentQueue.value = "OPD"),
+            status === 0 ? 'Patient added to queue successfully' : 'Failed to add patient to queue',
+        })
+        ;(departmentQueue.value = 'OPD'),
           (patientToQueue.value = null),
           (queueNumber.value = null),
-          (queueOpenModal.value = false);
-      });
-    };
+          (queueOpenModal.value = false)
+      })
+    }
 
     return {
       searchBy,
@@ -364,6 +352,6 @@ export default {
       checkPatientQueue,
       isPatientOnQueue,
       deletePatientRecord,
-    };
+    }
   },
-};
+}

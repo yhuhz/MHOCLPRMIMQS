@@ -12,24 +12,22 @@
 
 <script>
 import { ref, toRef } from 'vue'
-import { DialogState } from '../composables/Triggers'
+import { DialogState } from '../composables/Triggers.js'
 
-  export default {
-    props: {
-      params: Object,
-      content: Object
-    },
-    setup(props) {
-      let parameter = toRef(props, 'params')
-      let component = toRef(props, 'content')
+export default {
+  props: {
+    params: Object,
+    content: Object,
+  },
+  setup(props) {
+    let parameter = toRef(props, 'params')
+    let component = toRef(props, 'content')
 
-
-      return {
-        parameter,
-        component,
-        DialogState
-      }
+    return {
+      parameter,
+      component,
+      DialogState,
     }
-
-  }
+  },
+}
 </script>

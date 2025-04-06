@@ -1,8 +1,6 @@
-# MHOCLPRMIMQS
-Municipal Health Office of Camalig LAN-Based Patient Record and Medicine Inventory Management with Queueing System
-# Municipal Health Office of Camalig LAN-Based Patient Record and Medicine Inventory Management with Queueing System (mhoclprmimqs)
+# Quasar App (quasar-project)
 
-This is a capstone project of the 4th Year IT Students at Forbes College
+A Quasar Project
 
 ## Install the dependencies
 ```bash
@@ -31,7 +29,6 @@ yarn format
 # or
 npm run format
 ```
-
 
 
 ### Build the app for production
