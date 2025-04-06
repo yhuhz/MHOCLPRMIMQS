@@ -1,0 +1,43 @@
+.drop-list {
+  color: #5f8d4e;
+  transition: all 0.3s;
+}
+.drop-list:hover {
+  background-color: #5f8d4e;
+  color: #fff;
+}
+.drop-list-delete {
+  color: #D75555;
+  transition: all 0.3s;
+}
+.drop-list-delete:hover {
+  background-color: #D75555;
+  color: #fff
+}
+
+.date-added {
+  margin-right: 150px;
+
+  .line {
+    display: flex;
+    flex: 1;
+    height: 0.125rem;
+    background: #5f8d4e;
+    margin-top: 18px;
+  }
+}
+
+.brgy {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.action-btn, .download-btn {
+  font-size: 0.813rem;
+  padding: 0.188rem 0;
+}
+
+.download-btn {
+  padding: 0.5rem 0;
+}
+

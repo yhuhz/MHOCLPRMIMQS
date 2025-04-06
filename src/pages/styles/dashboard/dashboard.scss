@@ -1,0 +1,29 @@
+.dashboard {
+  .dashboard-card {
+    width: 24%;
+    margin-left: 5px;
+    margin-right: 5px;
+    // // padding: 30px 20px;
+
+    .new-patients-card-icon {
+      color: #debb2a;
+    }
+
+    .medicines-card-icon {
+      color: #2977e8;
+    }
+
+    .supplies-card-icon {
+      color: #d75555;
+    }
+
+    .disease-card-icon {
+      color: #55a15e;
+    }
+
+    .view-graph {
+      font-size: 12px;
+      margin-top: 30px;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .system-name {
+    font-size: 24px;
+  }
+
+  .login-card {
+    max-width: 450px;
+
+    // .login-btn {
+    //   background-color: #5F8D4E;
+    //   color: #fff;
+    // }
+  }
+}
