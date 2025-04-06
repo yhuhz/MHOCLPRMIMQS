@@ -3,19 +3,6 @@ import _ from "lodash";
 import { throttle } from "lodash";
 import { DashboardData, GetDashboardData } from "src/composables/Dashboard";
 import { useQuasar, SessionStorage, Loading } from "quasar";
-import {
-  GetQueueSpecific,
-  QueueSpecific,
-  CallNextPatient,
-  DonePatient,
-  RemovePatientFromQueue,
-} from "src/composables/Queue";
-import {
-  BackupDatabase,
-  RestoreDatabase,
-  GetDBList,
-  DBList,
-} from "src/composables/Database";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import RemoveFromQueue from "../../Components/RemoveFromQueue";
 import { ToggleDialogState } from "../../../composables/Triggers";
@@ -73,10 +60,10 @@ export default {
       dept.value = 7;
     }
 
-    Loading.show();
+    /* Loading.show();
     GetQueueSpecific(dept.value).then((response) => {
       Loading.hide();
-    });
+    }); */
 
     const getDepartments = () => {
       currentPatient.value = null;
@@ -96,86 +83,181 @@ export default {
       }
 
       Loading.show();
-      GetQueueSpecific(dept.value).then((response) => {
-        Loading.hide();
+      patientList.forEach((patient) => {
+        if (patient.department === dept.value) {
+          if (patient.is_priority === 1) {
+            priorityPatients.value.push(patient);
+          } else {
+            otherPatients.value.push(patient);
+          }
+        }
       });
+      Loading.hide();
     };
 
     const removeFromQueue = (queue_id) => {
-      SetIDS(queue_id);
       ToggleDialogState();
     };
 
     let isRemoveFromCurrentQueue = ref(false);
     const removeCurrentPatient = () => {
-      Loading.show();
-      RemovePatientFromQueue({ queue_id: currentPatient.value.queue_id }).then(
-        (response) => {
-          isRemoveFromCurrentQueue.value = false;
-          Loading.hide();
-
-          if (response.status === "success") {
-            currentPatient.value = null;
-          }
-        }
-      );
+      currentPatient.value = null;
     };
 
-    let currentPatient = ref(null);
+    let currentPatient = ref({
+      patient_id: "DF1345",
+      queue_id: 1,
+      first_name: "Juan",
+      last_name: "Bautista",
+      middle_name: "Dela Cruz",
+      suffix: "",
+      is_current: 1,
+      is_priority: 0,
+      department: 1,
+    });
+
+    let patientList = [
+      {
+        patient_id: "DF1351",
+        queue_id: 7,
+        first_name: "Emilio",
+        last_name: "Aguinaldo",
+        middle_name: "Garcia",
+        suffix: "",
+        is_current: 0,
+        is_priority: 1,
+        department: 2,
+      },
+      {
+        patient_id: "DF1352",
+        queue_id: 8,
+        first_name: "Andres",
+        last_name: "Bonifacio",
+        middle_name: "Cruz",
+        suffix: "",
+        is_current: 0,
+        is_priority: 1,
+        department: 3,
+      },
+      {
+        patient_id: "DF1353",
+        queue_id: 9,
+        first_name: "Gregoria",
+        last_name: "Silang",
+        middle_name: "Lopez",
+        suffix: "",
+        is_current: 0,
+        is_priority: 1,
+        department: 5,
+      },
+      {
+        patient_id: "DF1354",
+        queue_id: 10,
+        first_name: "Apolinario",
+        last_name: "Mabini",
+        middle_name: "Santos",
+        suffix: "",
+        is_current: 0,
+        is_priority: 1,
+        department: 1,
+      },
+      {
+        patient_id: "DF1355",
+        queue_id: 11,
+        first_name: "Melchora",
+        last_name: "Aquino",
+        middle_name: "Torres",
+        suffix: "",
+        is_current: 0,
+        is_priority: 1,
+        department: 2,
+      },
+      {
+        patient_id: "DF1356",
+        queue_id: 12,
+        first_name: "Francisco",
+        last_name: "Balagtas",
+        middle_name: "Reyes",
+        suffix: "",
+        is_current: 0,
+        is_priority: 1,
+        department: 1,
+      },
+      {
+        patient_id: "DF1346",
+        queue_id: 2,
+        first_name: "Maria",
+        last_name: "Reyes",
+        middle_name: "Santos",
+        suffix: "",
+        is_current: 0,
+        is_priority: 1,
+        department: 1,
+      },
+      {
+        patient_id: "DF1347",
+        queue_id: 3,
+        first_name: "Jose",
+        last_name: "Luna",
+        middle_name: "Garcia",
+        suffix: "",
+        is_current: 0,
+        is_priority: 1,
+        department: 2,
+      },
+      {
+        patient_id: "DF1348",
+        queue_id: 4,
+        first_name: "Ana",
+        last_name: "Rivera",
+        middle_name: "Mendoza",
+        suffix: "",
+        is_current: 0,
+        is_priority: 1,
+        department: 2,
+      },
+      {
+        patient_id: "DF1349",
+        queue_id: 5,
+        first_name: "Carlos",
+        last_name: "Ramos",
+        middle_name: "Fernandez",
+        suffix: "Jr.",
+        is_current: 0,
+        is_priority: 1,
+        department: 3,
+      },
+      {
+        patient_id: "DF1350",
+        queue_id: 6,
+        first_name: "Luisa",
+        last_name: "Valdez",
+        middle_name: "Torres",
+        suffix: "",
+        is_current: 0,
+        is_priority: 0,
+        department: 5,
+      },
+    ];
     let priorityPatients = ref([]);
     let otherPatients = ref([]);
 
-    watch(
-      () => _.cloneDeep(QueueSpecific.value),
-      () => {
-        priorityPatients.value = [];
-        otherPatients.value = [];
-        QueueSpecific.value.forEach((q) => {
-          if (q.is_current === 1) {
-            currentPatient.value = q;
-          } else if (q.is_current === 0 && q.is_priority === 1) {
-            priorityPatients.value.push(q);
-          } else if (q.is_current === 0 && q.is_priority === 0) {
-            otherPatients.value.push(q);
-          }
-        });
-      }
-    );
-
     const callInNextPriority = () => {
       Loading.show();
-      CallNextPatient({
-        current_patient:
-          currentPatient.value !== null ? currentPatient.value.queue_id : null,
-        next_patient: priorityPatients.value[0].queue_id,
-        department: dept.value,
-        priority: 1,
-      }).then((response) => {
-        Loading.hide();
-        priorityPatients.value = [];
-        otherPatients.value = [];
-        GetQueueSpecific(dept.value);
-      });
+      currentPatient.value = priorityPatients.value[0];
+      priorityPatients.value.shift();
+      Loading.hide();
     };
 
     const callInNextPatient = () => {
       Loading.show();
-      CallNextPatient({
-        current_patient:
-          currentPatient.value !== null ? currentPatient.value.queue_id : null,
-        next_patient: otherPatients.value[0].queue_id,
-        department: dept.value,
-        priority: 0,
-      }).then((response) => {
-        Loading.hide();
-        priorityPatients.value = [];
-        otherPatients.value = [];
-        GetQueueSpecific(dept.value);
-      });
+      currentPatient.value = priorityPatients.value[0];
+      priorityPatients.value.shift();
+      Loading.hide();
     };
 
     const doneCurrentPatient = () => {
-      Loading.show();
+      /* Loading.show();
       DonePatient({
         current_patient: currentPatient.value.queue_id,
         department: dept.value,
@@ -187,7 +269,7 @@ export default {
         priorityPatients.value = [];
         otherPatients.value = [];
         GetQueueSpecific(dept.value);
-      });
+      }); */
     };
 
     let showPriority = ref(false);
@@ -196,53 +278,25 @@ export default {
     /** DATABASE **/
     let isRestoreDB = ref(false);
     let selectedDB = ref(null);
+    let DBList = ["DB1", "DB2", "DB3"];
 
     const backupDB = () => {
-      BackupDatabase().then((response) => {
-        if (response.status === "success") {
-          $q.notify({
-            type: "positive",
-            classes: "text-white",
-            message: "Database backed up successfully",
-          });
-        } else {
-          $q.notify({
-            type: "negative",
-            classes: "text-white",
-            message: "Failed to back up database",
-          });
-        }
+      $q.notify({
+        type: "positive",
+        classes: "text-white",
+        message: "Database backed up successfully",
       });
     };
 
     const openRestoreDBModal = () => {
       isRestoreDB.value = true;
-      Loading.show();
-      GetDBList().then((response) => {
-        Loading.hide();
-        selectedDB.value = response.data[0];
-      });
     };
 
     const restoreDB = () => {
-      Loading.show();
-      RestoreDatabase({ db: selectedDB.value }).then((response) => {
-        Loading.hide();
-        if (response.status === "success") {
-          $q.notify({
-            type: "positive",
-            classes: "text-white",
-            message: "Database restored successfully",
-          });
-        } else {
-          $q.notify({
-            type: "negative",
-            classes: "text-white",
-            message: "Failed to restore database",
-          });
-        }
-
-        isRestoreDB.value = false;
+      $q.notify({
+        type: "positive",
+        classes: "text-white",
+        message: "Database restored successfully",
       });
     };
 
@@ -250,7 +304,6 @@ export default {
       departmentList,
       selectedDepartment,
       getDepartments,
-      QueueSpecific,
       keySession,
       removeFromQueue,
       currentPatient,

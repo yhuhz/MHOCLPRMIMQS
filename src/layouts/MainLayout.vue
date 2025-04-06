@@ -68,7 +68,7 @@
                           outlined
                           dense
                           class="q-mt-xs"
-                          :rules="[(val) => (val && val.length > 6) || '']"
+                          :rules="[(val) => (val && val.length > 0) || '']"
                           @update:model-value="checkUsername"
                         />
                       </div>
@@ -422,7 +422,6 @@ import { defineComponent, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import MainMenu from "components/MainMenu.vue";
 import {
-  LoginCredential,
   FindUser,
   UpdateUserAccount,
   ChangePassword,
@@ -455,6 +454,8 @@ export default defineComponent({
     if (keySession === null) {
       router.push({ name: "login" });
     }
+
+    console.log(keySession);
 
     // Get current date and time
     let now = ref();
@@ -527,71 +528,59 @@ export default defineComponent({
     let editUserDetails = ref({});
 
     let name = ref(null);
-    watch(
-      () => _.cloneDeep(LoginCredential.value[0]),
-      () => {
-        let userInfo = ref(LoginCredential.value[0]);
-        name.value = [
-          userInfo.value.first_name,
-          userInfo.value.middle_name,
-          userInfo.value.last_name,
-          userInfo.value.suffix,
-        ]
-          .filter(Boolean)
-          .join(" ");
+    let LoginCredential = [
+      {
+        first_name: "Guest",
+        last_name: "User",
+        middle_name: "",
+        suffix: "",
+        user_id: 10,
+        username: "Guest",
+        birthdate: "2024-12-15",
+        phone_number: "09555456223",
+        sex: 0,
+      },
+    ];
 
-        editUserDetails.value = {
-          user_id: keySession.user_id,
-          username: userInfo.value.username,
-          last_name: userInfo.value.last_name,
-          first_name: userInfo.value.first_name,
-          middle_name: userInfo.value.middle_name,
-          suffix: userInfo.value.suffix,
-          birthdate: userInfo.value.birthdate,
-          phone_number: userInfo.value.phone_number,
-          sex: sexArray[userInfo.value.sex],
-        };
-      }
-    );
+    let userInfo = ref(LoginCredential[0]);
+    name.value = [
+      userInfo.value.first_name,
+      userInfo.value.middle_name,
+      userInfo.value.last_name,
+      userInfo.value.suffix,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    editUserDetails.value = {
+      user_id: keySession.user_id,
+      username: userInfo.value.username,
+      last_name: userInfo.value.last_name,
+      first_name: userInfo.value.first_name,
+      middle_name: userInfo.value.middle_name,
+      suffix: userInfo.value.suffix,
+      birthdate: userInfo.value.birthdate,
+      phone_number: userInfo.value.phone_number,
+      sex: sexArray[userInfo.value.sex],
+    };
 
     /**Check username**/
     let isUsernameAvailable = ref(true);
     const checkUsername = () => {
-      CheckUsername({
-        username: editUserDetails.value.username,
-        user_id: editUserDetails.value.user_id,
-      }).then((response) => {
-        if (response.status === "success") {
-          isUsernameAvailable.value = true;
-        } else {
-          isUsernameAvailable.value = false;
-        }
-      });
+      isUsernameAvailable.value = true;
     };
 
     const updateUser = () => {
-      editUserDetails.value.sex = sexArray.indexOf(editUserDetails.value.sex);
-      UpdateUserAccount(editUserDetails.value).then((response) => {
-        if (response.status === "success") {
-          $q.notify({
-            type: "positive",
-            classes: "text-white",
-            message: "Account edited successfully",
-          });
-
-          editUser.value = false;
-        } else {
-          $q.notify({
-            type: "negative",
-            classes: "text-white",
-            message: "Failed to edit account",
-          });
-        }
+      $q.notify({
+        type: "positive",
+        classes: "text-white",
+        message: "Account edited successfully",
       });
+      editUser.value = false;
     };
 
     const onReset = () => {
-      FindUser(keySession.user_id);
+      editUserDetails.value = LoginCredential[0];
       isUsernameAvailable.value = true;
     };
 
@@ -611,27 +600,12 @@ export default defineComponent({
     };
 
     const changePassword = () => {
-      let payload = {
-        user_id: keySession.user_id,
-        new_password: newPassword.value,
-      };
-      // console.log(payload);
-      ChangePassword(payload).then((response) => {
-        if (response.status === "success") {
-          $q.notify({
-            type: "positive",
-            classes: "text-white",
-            message: "Password changed successfully",
-          });
-          changePass.value = false;
-        } else {
-          $q.notify({
-            type: "negative",
-            classes: "text-white",
-            message: "Failed to change password",
-          });
-        }
+      $q.notify({
+        type: "positive",
+        classes: "text-white",
+        message: "Password changed successfully",
       });
+      changePass.value = false;
     };
 
     const logout = () => {

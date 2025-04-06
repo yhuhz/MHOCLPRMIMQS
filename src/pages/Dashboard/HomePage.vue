@@ -625,6 +625,7 @@
                 class="button-100"
               />
               <q-btn
+                v-close-popup
                 color="negative"
                 label="Yes"
                 no-caps

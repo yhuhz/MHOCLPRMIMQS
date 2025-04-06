@@ -36,7 +36,7 @@
               >
               </q-input>
               <q-input
-                class="q-mb-xl"
+                class="q-mb-md"
                 v-model="loginDetails.password"
                 outlined
                 :type="isShowPassword ? 'password' : 'text'"
@@ -57,6 +57,63 @@
                 </template>
               </q-input>
 
+              <div class="q-mb-lg text-center">
+                <p class="text-bold text-grey-14">
+                  Which department would you like to view?
+                </p>
+
+                <div class="q-gutter-sm text-center">
+                  <q-radio
+                    dense
+                    v-model="loginDetails.deptValue"
+                    checked-icon="task_alt"
+                    unchecked-icon="panorama_fish_eye"
+                    val="1"
+                    label="OPD"
+                  />
+                  <q-radio
+                    dense
+                    v-model="loginDetails.deptValue"
+                    checked-icon="task_alt"
+                    unchecked-icon="panorama_fish_eye"
+                    val="2"
+                    label="Dental"
+                  />
+                  <q-radio
+                    dense
+                    v-model="loginDetails.deptValue"
+                    checked-icon="task_alt"
+                    unchecked-icon="panorama_fish_eye"
+                    val="3"
+                    label="Prenatal"
+                  />
+                  <q-radio
+                    dense
+                    v-model="loginDetails.deptValue"
+                    checked-icon="task_alt"
+                    unchecked-icon="panorama_fish_eye"
+                    val="4"
+                    label="Pharmacy"
+                  />
+                  <q-radio
+                    dense
+                    v-model="loginDetails.deptValue"
+                    checked-icon="task_alt"
+                    unchecked-icon="panorama_fish_eye"
+                    val="5"
+                    label="Front Desk"
+                  />
+                  <q-radio
+                    dense
+                    v-model="loginDetails.deptValue"
+                    checked-icon="task_alt"
+                    unchecked-icon="panorama_fish_eye"
+                    val="6"
+                    label="Office Staff"
+                  />
+                </div>
+              </div>
+
               <!-- Login Button -->
               <div class="flex justify-center">
                 <q-btn
@@ -65,6 +122,11 @@
                   label="Login"
                   no-caps
                   padding="10px 48px"
+                  :disabled="
+                    !loginDetails.username ||
+                    !loginDetails.password ||
+                    !loginDetails.deptValue
+                  "
                 />
               </div>
             </div>
