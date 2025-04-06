@@ -9,7 +9,7 @@ import {
 } from "src/composables/Medicine";
 import _ from "lodash";
 import { useQuasar, SessionStorage, Loading } from "quasar";
-import exportFile from "quasar/src/utils/export-file.js";
+import { exportFile } from "quasar";
 import { SetIDS } from "src/composables/IDS";
 import { useRouter, useRoute } from "vue-router";
 import { LoginCredential, FindUser } from "src/composables/UserAccount";

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "This is a capstone project of the 4th Year IT Students at Forbes College",
   "productName": "MHOCLPRMIMQS",
-  "author": "yhuhz <julius.albert.grajo@gmail.com>",
+  "author": "Julius Grajo, Edmel Ardales, Samuel Esplana, Lynnette Aperin",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.16.9",
-    "axios": "^0.21.1",
+    "axios": "^1.8.4",
     "core-js": "^3.6.5",
-    "quasar": "^2.14.5",
+    "quasar": "^2.18.1",
     "vue": "^3.0.0",
     "vue-chartjs": "^5.2.0",
     "vue-i18n": "^9.0.0",

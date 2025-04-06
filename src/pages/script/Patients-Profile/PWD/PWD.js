@@ -5,7 +5,7 @@ import MHCDialog from "../../../../components/MHCDialog.vue";
 import DeletePatientConfirmation from "../../../Components/DeletePatientConfirmation";
 import { ToggleDialogState } from "../../../../composables/Triggers";
 import { SetIDS } from "src/composables/IDS";
-import exportFile from "quasar/src/utils/export-file.js";
+import { exportFile } from "quasar";
 import { useRouter } from "vue-router";
 import {
   AddToQueue,

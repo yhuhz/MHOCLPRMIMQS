@@ -15,7 +15,7 @@ import DeleteSupplyConfirmation from "../../Components/DeleteSupplyConfirmation.
 import { ToggleDialogState } from "../../../composables/Triggers";
 import MHCDialog from "../../../components/MHCDialog.vue";
 import { SetIDS } from "src/composables/IDS";
-import exportFile from "quasar/src/utils/export-file.js";
+import { exportFile } from "quasar";
 
 export default {
   components: { MHCDialog, DeleteSupplyConfirmation },

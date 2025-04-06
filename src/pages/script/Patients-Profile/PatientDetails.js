@@ -9,7 +9,7 @@ import { GetRecords, PatientRecords } from "src/composables/Records";
 import { FindRecordDetails } from "src/composables/Records";
 import _ from "lodash";
 import { useQuasar, SessionStorage, Loading } from "quasar";
-import exportFile from "quasar/src/utils/export-file.js";
+import { exportFile } from "quasar";
 import { useRoute, useRouter } from "vue-router";
 import {
   RemovePatientFromQueue,

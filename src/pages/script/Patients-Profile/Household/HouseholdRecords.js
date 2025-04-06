@@ -11,7 +11,7 @@ import {
 } from "src/composables/Household";
 import { SetIDS } from "src/composables/IDS";
 import { Loading, useQuasar, SessionStorage } from "quasar";
-import exportFile from "quasar/src/utils/export-file.js";
+import { exportFile } from "quasar";
 import { useRouter } from "vue-router";
 
 export default {

@@ -5,7 +5,7 @@ import DeletePatientConfirmation from "../../../Components/DeletePatientConfirma
 import { ToggleDialogState } from "../../../../composables/Triggers";
 import { SetIDS } from "src/composables/IDS";
 import { Loading, useQuasar, SessionStorage } from "quasar";
-import exportFile from "quasar/src/utils/export-file.js";
+import { exportFile } from "quasar";
 import { useRouter } from "vue-router";
 import {
   AddToQueue,

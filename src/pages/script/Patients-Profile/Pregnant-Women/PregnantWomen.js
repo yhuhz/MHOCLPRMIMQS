@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { GetPatients, Prenatal } from "src/composables/Patients";
 import { Loading, useQuasar, SessionStorage } from "quasar";
-import exportFile from "quasar/src/utils/export-file.js";
+import { exportFile } from "quasar";
 import { useRouter } from "vue-router";
 
 export default {
