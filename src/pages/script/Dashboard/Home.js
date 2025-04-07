@@ -1,9 +1,10 @@
+/* eslint-disable use-isnan */
 import { ref } from 'vue'
 import { useQuasar, SessionStorage, Loading } from 'quasar'
 import MHCDialog from '../../../components/MHCDialog.vue'
 import RemoveFromQueue from '../../Components/RemoveFromQueue.vue'
 import { ToggleDialogState } from '../../../composables/Triggers.js'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 export default {
   components: { MHCDialog, RemoveFromQueue },
@@ -17,10 +18,146 @@ export default {
       router.push({ name: 'login' })
     }
 
+    let currentPatient = ref()
+
+    let patientList = [
+      {
+        patient_id: 'DF1345',
+        queue_number: 1,
+        first_name: 'Juan',
+        last_name: 'Bautista',
+        middle_name: 'Dela Cruz',
+        suffix: '',
+        is_current: 1,
+        is_priority: 0,
+        department: 1,
+      },
+      {
+        patient_id: 'DF1351',
+        queue_number: 7,
+        first_name: 'Emilio',
+        last_name: 'Aguinaldo',
+        middle_name: 'Garcia',
+        suffix: '',
+        is_current: 0,
+        is_priority: 1,
+        department: 2,
+      },
+      {
+        patient_id: 'DF1352',
+        queue_number: 8,
+        first_name: 'Andres',
+        last_name: 'Bonifacio',
+        middle_name: 'Cruz',
+        suffix: '',
+        is_current: 0,
+        is_priority: 1,
+        department: 3,
+      },
+      {
+        patient_id: 'DF1353',
+        queue_number: 9,
+        first_name: 'Gregoria',
+        last_name: 'Silang',
+        middle_name: 'Lopez',
+        suffix: '',
+        is_current: 0,
+        is_priority: 1,
+        department: 5,
+      },
+      {
+        patient_id: 'DF1354',
+        queue_number: 10,
+        first_name: 'Apolinario',
+        last_name: 'Mabini',
+        middle_name: 'Santos',
+        suffix: '',
+        is_current: 0,
+        is_priority: 1,
+        department: 1,
+      },
+      {
+        patient_id: 'DF1355',
+        queue_number: 11,
+        first_name: 'Melchora',
+        last_name: 'Aquino',
+        middle_name: 'Torres',
+        suffix: '',
+        is_current: 0,
+        is_priority: 1,
+        department: 2,
+      },
+      {
+        patient_id: 'DF1356',
+        queue_number: 12,
+        first_name: 'Francisco',
+        last_name: 'Balagtas',
+        middle_name: 'Reyes',
+        suffix: '',
+        is_current: 0,
+        is_priority: 1,
+        department: 1,
+      },
+      {
+        patient_id: 'DF1346',
+        queue_number: 2,
+        first_name: 'Maria',
+        last_name: 'Reyes',
+        middle_name: 'Santos',
+        suffix: '',
+        is_current: 0,
+        is_priority: 1,
+        department: 1,
+      },
+      {
+        patient_id: 'DF1347',
+        queue_number: 3,
+        first_name: 'Jose',
+        last_name: 'Luna',
+        middle_name: 'Garcia',
+        suffix: '',
+        is_current: 0,
+        is_priority: 1,
+        department: 2,
+      },
+      {
+        patient_id: 'DF1348',
+        queue_number: 4,
+        first_name: 'Ana',
+        last_name: 'Rivera',
+        middle_name: 'Mendoza',
+        suffix: '',
+        is_current: 0,
+        is_priority: 1,
+        department: 2,
+      },
+      {
+        patient_id: 'DF1349',
+        queue_number: 5,
+        first_name: 'Carlos',
+        last_name: 'Ramos',
+        middle_name: 'Fernandez',
+        suffix: 'Jr.',
+        is_current: 0,
+        is_priority: 1,
+        department: 3,
+      },
+      {
+        patient_id: 'DF1350',
+        queue_number: 6,
+        first_name: 'Luisa',
+        last_name: 'Valdez',
+        middle_name: 'Torres',
+        suffix: '',
+        is_current: 0,
+        is_priority: 0,
+        department: 5,
+      },
+    ]
+    let priorityPatients = ref([])
+    let otherPatients = ref([])
+
     /**QUEUE**/
-    let payload = {
-      department: keySession && keySession.department,
-    }
     let departmentList = ref([])
 
     if (keySession != NaN || keySession != null) {
@@ -49,11 +186,6 @@ export default {
       dept.value = 7
     }
 
-    /* Loading.show();
-    GetQueueSpecific(dept.value).then((response) => {
-      Loading.hide();
-    }); */
-
     const getDepartments = () => {
       currentPatient.value = null
       priorityPatients.value = []
@@ -74,6 +206,14 @@ export default {
       Loading.show()
       patientList.forEach((patient) => {
         if (patient.department === dept.value) {
+          if (patient.is_current === 1) {
+            currentPatient.value = patient
+            const index = patientList.findIndex((p) => p.patient_id === patient.patient_id)
+            if (index !== -1) {
+              patientList.splice(index, 1)
+            }
+          }
+
           if (patient.is_priority === 1) {
             priorityPatients.value.push(patient)
           } else {
@@ -84,7 +224,9 @@ export default {
       Loading.hide()
     }
 
-    const removeFromQueue = (queue_id) => {
+    getDepartments()
+
+    const removeFromQueue = () => {
       ToggleDialogState()
     }
 
@@ -92,144 +234,6 @@ export default {
     const removeCurrentPatient = () => {
       currentPatient.value = null
     }
-
-    let currentPatient = ref({
-      patient_id: 'DF1345',
-      queue_id: 1,
-      first_name: 'Juan',
-      last_name: 'Bautista',
-      middle_name: 'Dela Cruz',
-      suffix: '',
-      is_current: 1,
-      is_priority: 0,
-      department: 1,
-    })
-
-    let patientList = [
-      {
-        patient_id: 'DF1351',
-        queue_id: 7,
-        first_name: 'Emilio',
-        last_name: 'Aguinaldo',
-        middle_name: 'Garcia',
-        suffix: '',
-        is_current: 0,
-        is_priority: 1,
-        department: 2,
-      },
-      {
-        patient_id: 'DF1352',
-        queue_id: 8,
-        first_name: 'Andres',
-        last_name: 'Bonifacio',
-        middle_name: 'Cruz',
-        suffix: '',
-        is_current: 0,
-        is_priority: 1,
-        department: 3,
-      },
-      {
-        patient_id: 'DF1353',
-        queue_id: 9,
-        first_name: 'Gregoria',
-        last_name: 'Silang',
-        middle_name: 'Lopez',
-        suffix: '',
-        is_current: 0,
-        is_priority: 1,
-        department: 5,
-      },
-      {
-        patient_id: 'DF1354',
-        queue_id: 10,
-        first_name: 'Apolinario',
-        last_name: 'Mabini',
-        middle_name: 'Santos',
-        suffix: '',
-        is_current: 0,
-        is_priority: 1,
-        department: 1,
-      },
-      {
-        patient_id: 'DF1355',
-        queue_id: 11,
-        first_name: 'Melchora',
-        last_name: 'Aquino',
-        middle_name: 'Torres',
-        suffix: '',
-        is_current: 0,
-        is_priority: 1,
-        department: 2,
-      },
-      {
-        patient_id: 'DF1356',
-        queue_id: 12,
-        first_name: 'Francisco',
-        last_name: 'Balagtas',
-        middle_name: 'Reyes',
-        suffix: '',
-        is_current: 0,
-        is_priority: 1,
-        department: 1,
-      },
-      {
-        patient_id: 'DF1346',
-        queue_id: 2,
-        first_name: 'Maria',
-        last_name: 'Reyes',
-        middle_name: 'Santos',
-        suffix: '',
-        is_current: 0,
-        is_priority: 1,
-        department: 1,
-      },
-      {
-        patient_id: 'DF1347',
-        queue_id: 3,
-        first_name: 'Jose',
-        last_name: 'Luna',
-        middle_name: 'Garcia',
-        suffix: '',
-        is_current: 0,
-        is_priority: 1,
-        department: 2,
-      },
-      {
-        patient_id: 'DF1348',
-        queue_id: 4,
-        first_name: 'Ana',
-        last_name: 'Rivera',
-        middle_name: 'Mendoza',
-        suffix: '',
-        is_current: 0,
-        is_priority: 1,
-        department: 2,
-      },
-      {
-        patient_id: 'DF1349',
-        queue_id: 5,
-        first_name: 'Carlos',
-        last_name: 'Ramos',
-        middle_name: 'Fernandez',
-        suffix: 'Jr.',
-        is_current: 0,
-        is_priority: 1,
-        department: 3,
-      },
-      {
-        patient_id: 'DF1350',
-        queue_id: 6,
-        first_name: 'Luisa',
-        last_name: 'Valdez',
-        middle_name: 'Torres',
-        suffix: '',
-        is_current: 0,
-        is_priority: 0,
-        department: 5,
-      },
-    ]
-    let priorityPatients = ref([])
-    let otherPatients = ref([])
 
     const callInNextPriority = () => {
       Loading.show()
@@ -240,25 +244,9 @@ export default {
 
     const callInNextPatient = () => {
       Loading.show()
-      currentPatient.value = priorityPatients.value[0]
-      priorityPatients.value.shift()
+      currentPatient.value = otherPatients.value[0]
+      otherPatients.value.shift()
       Loading.hide()
-    }
-
-    const doneCurrentPatient = () => {
-      /* Loading.show();
-      DonePatient({
-        current_patient: currentPatient.value.queue_id,
-        department: dept.value,
-        priority: currentPatient.value.is_priority,
-        done: true,
-      }).then((response) => {
-        Loading.hide();
-        currentPatient.value = null;
-        priorityPatients.value = [];
-        otherPatients.value = [];
-        GetQueueSpecific(dept.value);
-      }); */
     }
 
     let showPriority = ref(false)
@@ -270,7 +258,7 @@ export default {
     let DBList = ['DB1', 'DB2', 'DB3']
 
     const backupDB = () => {
-      $q.notify({
+      $q().notify({
         type: 'positive',
         classes: 'text-white',
         message: 'Database backed up successfully',
@@ -287,6 +275,7 @@ export default {
         classes: 'text-white',
         message: 'Database restored successfully',
       })
+      isRestoreDB.value = false
     }
 
     return {
@@ -305,7 +294,6 @@ export default {
       backupDB,
       restoreDB,
       isRestoreDB,
-      doneCurrentPatient,
       openRestoreDBModal,
       DBList,
       selectedDB,

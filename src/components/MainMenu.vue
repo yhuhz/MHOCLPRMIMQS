@@ -1,3 +1,4 @@
+<!-- eslint-disable -->
 <template>
   <div>
     <!-- Home -->
@@ -19,15 +20,9 @@
     <q-item
       clickable
       exact
-      :class="
-        $route.name === 'dashboard' ? 'bg-primary text-white' : 'text-white'
-      "
+      :class="$route.name === 'dashboard' ? 'bg-primary text-white' : 'text-white'"
       @click="$router.push({ name: 'dashboard' })"
-      v-if="
-        keySession &&
-        keySession.department === 6 &&
-        keySession.username !== 'setupAdmin'
-      "
+      v-if="keySession && keySession.department === 6 && keySession.username !== 'setupAdmin'"
     >
       <q-item-section avatar>
         <q-icon name="bar_chart" />
@@ -73,11 +68,7 @@
         </q-item>
 
         <q-item
-          v-if="
-            keySession &&
-            keySession.department === 5 &&
-            keySession.permission_level != 3
-          "
+          v-if="keySession && keySession.department === 5 && keySession.permission_level != 3"
           clickable
           class="list-text text-white"
           @click="$router.push({ name: 'add-edit-patient-record' })"
@@ -90,9 +81,7 @@
           <q-item-section avatar>
             <q-icon size="xs" name="eva-plus-square-outline" class="q-ml-md" />
           </q-item-section>
-          <q-item-section class="q-ml-md"
-            >Add New Patient Record</q-item-section
-          >
+          <q-item-section class="q-ml-md">Add New Patient Record</q-item-section>
         </q-item>
 
         <q-item
@@ -168,11 +157,7 @@
               ? 'bg-primary list-text text-white'
               : 'list-text text-white'
           "
-          v-if="
-            keySession &&
-            keySession.department !== 1 &&
-            keySession.department !== 2
-          "
+          v-if="keySession && keySession.department !== 1 && keySession.department !== 2"
         >
           <q-item-section avatar>
             <q-icon size="xs" name="fa fa-person-pregnant" class="q-ml-md" />
@@ -207,8 +192,7 @@
         <q-item
           clickable
           :class="
-            $route.name === 'medicine-inventory' ||
-            $route.name === 'medicine-inventory-details'
+            $route.name === 'medicine-inventory' || $route.name === 'medicine-inventory-details'
               ? 'bg-primary list-text text-white'
               : 'list-text text-white'
           "
@@ -238,8 +222,7 @@
         <q-item
           clickable
           :class="
-            $route.name === 'supply-inventory' ||
-            $route.name === 'supply-inventory-details'
+            $route.name === 'supply-inventory' || $route.name === 'supply-inventory-details'
               ? 'bg-primary list-text text-white'
               : 'list-text text-white'
           "
@@ -277,9 +260,7 @@
         keySession.username !== 'setupAdmin'
       "
       clickable
-      :class="
-        $route.name === 'manage-users' ? 'bg-primary text-white' : 'text-white'
-      "
+      :class="$route.name === 'manage-users' ? 'bg-primary text-white' : 'text-white'"
       @click="$router.push({ name: 'manage-users' })"
     >
       <q-item-section avatar>
@@ -292,16 +273,10 @@
 
     <!-- Reports -->
     <q-item
-      v-if="
-        keySession &&
-        keySession.department === 6 &&
-        keySession.username !== 'setupAdmin'
-      "
+      v-if="keySession && keySession.department === 6 && keySession.username !== 'setupAdmin'"
       clickable
       @click="$router.push({ name: 'reports' })"
-      :class="
-        $route.name === 'reports' ? 'bg-primary text-white' : 'text-white'
-      "
+      :class="$route.name === 'reports' ? 'bg-primary text-white' : 'text-white'"
     >
       <q-item-section avatar>
         <q-icon name="description" />
@@ -319,11 +294,7 @@
         keySession.username !== 'setupAdmin'
       "
       clickable
-      :class="
-        $route.name === 'queueing-system'
-          ? 'bg-primary text-white'
-          : 'text-white'
-      "
+      :class="$route.name === 'queueing-system' ? 'bg-primary text-white' : 'text-white'"
       @click="queueClick"
     >
       <q-item-section avatar>
@@ -337,88 +308,88 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { SessionStorage } from "quasar";
+import { defineComponent } from 'vue'
+import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { SessionStorage } from 'quasar'
 
 export default defineComponent({
   props: {
     sidebarState: Boolean,
   },
-  name: "MainMenu",
+  name: 'MainMenu',
   setup() {
-    const route = useRoute();
-    const router = useRouter();
+    const route = useRoute()
+    const router = useRouter()
 
-    let keySession = SessionStorage.getItem("cred");
+    let keySession = SessionStorage.getItem('cred')
     if (keySession == NaN || keySession == null) {
-      router.push({ name: "login" });
+      router.push({ name: 'login' })
     }
 
     let patient_route_names = [
-      "search-patients",
-      "search-records",
-      "add-edit-patient-record",
-      "patient-details",
-      "OPD/patient_records",
-      "OPD/patient_records/new",
-      "Prenatal/patient_records",
-      "Prenatal/patient_records/new",
-      "Immunization/patient_records",
-      "Immunization/patient_records/new",
-      "household-records",
-      "pwd-records",
-      "senior-citizen-records",
-      "pregnant-women-records",
-    ];
+      'search-patients',
+      'search-records',
+      'add-edit-patient-record',
+      'patient-details',
+      'OPD/patient_records',
+      'OPD/patient_records/new',
+      'Prenatal/patient_records',
+      'Prenatal/patient_records/new',
+      'Immunization/patient_records',
+      'Immunization/patient_records/new',
+      'household-records',
+      'pwd-records',
+      'senior-citizen-records',
+      'pregnant-women-records',
+    ]
 
-    let isPatientProfileOpen = ref(false);
+    let isPatientProfileOpen = ref(false)
 
     patient_route_names.forEach((element, index) => {
       if (route.name === element) {
-        isPatientProfileOpen.value = true;
+        isPatientProfileOpen.value = true
       }
-    });
+    })
 
     let patient_details_route_names = [
-      "patient-details",
-      "OPD/patient_records",
-      "Dental/patient_records",
-      "Dental/patient_records/new",
-      "OPD/patient_records/new",
-      "Prenatal/patient_records",
-      "Prenatal/patient_records/new",
-      "Immunization/patient_records",
-      "Immunization/patient_records/new",
-    ];
+      'patient-details',
+      'OPD/patient_records',
+      'Dental/patient_records',
+      'Dental/patient_records/new',
+      'OPD/patient_records/new',
+      'Prenatal/patient_records',
+      'Prenatal/patient_records/new',
+      'Immunization/patient_records',
+      'Immunization/patient_records/new',
+    ]
 
-    let isPatientDetails = ref(false);
+    let isPatientDetails = ref(false)
 
     patient_details_route_names.forEach((element, index) => {
       if (route.name === element) {
-        isPatientDetails.value = "bg-primary list-text text-white";
+        isPatientDetails.value = 'bg-primary list-text text-white'
       } else {
-        isPatientDetails.value = "list-text text-white";
+        isPatientDetails.value = 'list-text text-white'
       }
-    });
+    })
 
     const queueClick = () => {
       let routeData = router.resolve({
-        name: "queue-view",
-      });
-      window.open(routeData.href, "_blank");
-    };
+        name: 'queue-view',
+      })
+      window.open(routeData.href, '_blank')
+    }
     return {
       isPatientProfileOpen,
       isPatientDetails,
       keySession,
       queueClick,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss">
-@import "../css/Components/MainMenu.scss";
+@import '../css/Components/MainMenu.scss';
 </style>

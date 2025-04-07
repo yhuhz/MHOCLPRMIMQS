@@ -1,50 +1,48 @@
-import { useRouter } from "vue-router";
-import { ref } from "vue";
-import { LoginCredential, Login } from "src/composables/UserAccount";
-import { useQuasar, SessionStorage } from "quasar";
+import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { SessionStorage } from 'quasar'
 
 export default {
   data() {
-    const router = useRouter();
-    const $q = useQuasar();
+    const router = useRouter()
 
     //Session Storage
-    let keySession = SessionStorage.getItem("cred");
+    let keySession = SessionStorage.getItem('cred')
     if (keySession) {
-      router.push({ name: "home" });
+      router.push({ name: 'home' })
     }
 
     let loginDetails = ref({
-      username: "Guest Offline",
-      password: "offlineV3rs!on",
+      username: 'Guest Offline',
+      password: 'offlineV3rs!on',
       deptValue: null,
-    });
+    })
 
     const loginFunction = () => {
       const userDetailsSpecial = {
-        username: "Guest",
-        last_name: "Guest",
-        first_name: "",
-        birthdate: "1989-06-04",
+        username: 'Guest',
+        last_name: 'Guest',
+        first_name: '',
+        birthdate: '1989-06-04',
         sex: 0,
         department: Number(loginDetails.value.deptValue),
-        job_title: "Guest",
-        permission_level: loginDetails.value.deptValue === 6 ? 3 : 2,
+        job_title: 'Guest',
+        permission_level: Number(loginDetails.value.deptValue) == 6 ? 1 : 2,
         status: 0,
-      };
+      }
 
-      SessionStorage.set("cred", userDetailsSpecial);
+      SessionStorage.set('cred', userDetailsSpecial)
       router.push({
-        name: "home",
-      });
-    };
+        name: 'home',
+      })
+    }
 
-    let isShowPassword = ref(true);
+    let isShowPassword = ref(true)
 
     return {
       loginDetails,
       isShowPassword,
       loginFunction,
-    };
+    }
   },
-};
+}

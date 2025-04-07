@@ -24,13 +24,11 @@ export default {
 
     const removeFromQueue = () => {
       $q.notify({
-        type: status === 0 ? 'positive' : 'negative',
+        type: 'positive',
         classes: 'text-white',
-        message:
-          status === 0
-            ? 'Patient removed from queue successfully'
-            : 'Failed to remove patient from queue',
+        message: 'Patient removed from queue successfully',
       })
+      ToggleDialogState()
     }
     return {
       closeDialog,

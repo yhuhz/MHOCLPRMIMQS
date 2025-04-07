@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="login"
-    :style="$q.screen.height > 768 ? 'height: 80vh' : 'height: 100vh'"
-  >
+  <div class="login" :style="$q.screen.height > 768 ? 'height: 80vh' : 'height: 100vh'">
     <div>
       <div class="text-center">
         <h5 class="system-name primary-text-color text-weight-bold q-my-md">
@@ -15,10 +12,7 @@
         <q-card>
           <!--  Text  -->
           <div class="text-center q-pt-lg">
-            <q-img
-              src="../images/MHOLogo.png"
-              style="width: 80px; height: 80px"
-            />
+            <q-img src="../images/MHOLogo.png" style="width: 80px; height: 80px" />
             <h5 class="primary-text-color text-bold q-my-md">Welcome!</h5>
           </div>
           <!-- Input Field -->
@@ -29,10 +23,7 @@
                 v-model="loginDetails.username"
                 outlined
                 label="Username"
-                :rules="[
-                  (val) =>
-                    (val && val.length > 6) || 'Please enter a valid username',
-                ]"
+                :rules="[(val) => (val && val.length > 6) || 'Please enter a valid username']"
               >
               </q-input>
               <q-input
@@ -41,10 +32,7 @@
                 outlined
                 :type="isShowPassword ? 'password' : 'text'"
                 label="Password"
-                :rules="[
-                  (val) =>
-                    (val && val.length > 6) || 'Please enter a valid password',
-                ]"
+                :rules="[(val) => (val && val.length > 6) || 'Please enter a valid password']"
               >
                 <template v-slot:append>
                   <q-icon
@@ -58,9 +46,7 @@
               </q-input>
 
               <div class="q-mb-lg text-center">
-                <p class="text-bold text-grey-14">
-                  Which department would you like to view?
-                </p>
+                <p class="text-bold text-grey-14">Which department would you like to view?</p>
 
                 <div class="q-gutter-sm text-center">
                   <q-radio
@@ -123,12 +109,12 @@
                   no-caps
                   padding="10px 48px"
                   :disabled="
-                    !loginDetails.username ||
-                    !loginDetails.password ||
-                    !loginDetails.deptValue
+                    !loginDetails.username || !loginDetails.password || !loginDetails.deptValue
                   "
                 />
               </div>
+
+              <div class="text-center text-caption text-red-4 q-mt-md">Offline v.1.2</div>
             </div>
           </q-form>
         </q-card>
@@ -140,5 +126,5 @@
 <script src="./script/Login/Login.js"></script>
 
 <style lang="scss">
-@import "./styles/login/login.scss";
+@import './styles/login/login.scss';
 </style>

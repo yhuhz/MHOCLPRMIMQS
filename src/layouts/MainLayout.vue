@@ -1,15 +1,9 @@
+<!-- eslint-disable -->
 <template>
   <q-layout view="hHh Lpr lFf">
     <q-header elevated class="bg-primary">
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="miniState = !miniState"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="miniState = !miniState" />
 
         <q-toolbar-title> MHO Camalig </q-toolbar-title>
 
@@ -21,11 +15,7 @@
             {{ name }}
           </q-toolbar-title>
 
-          <q-menu
-            transition-show="jump-down"
-            transition-hide="jump-up"
-            style="width: 230px"
-          >
+          <q-menu transition-show="jump-down" transition-hide="jump-up" style="width: 230px">
             <q-list separator dense>
               <q-item
                 v-if="keySession.username !== 'setupAdmin'"
@@ -43,21 +33,13 @@
               <q-dialog persistent v-model="editUser">
                 <q-card class="q-pa-lg" style="min-width: 600px">
                   <div class="row justify-end items-center">
-                    <q-btn
-                      v-close-popup
-                      icon="close"
-                      color="negative"
-                      dense
-                      size="sm"
-                    />
+                    <q-btn v-close-popup icon="close" color="negative" dense size="sm" />
                   </div>
                   <div class="flex justify-center items-center">
                     <p class="text-primary q-mr-md">
                       <q-icon name="person" size="lg" class="q-py-none" />
                     </p>
-                    <p class="text-primary text-weight-bold edit-text">
-                      EDIT USER ACCOUNT
-                    </p>
+                    <p class="text-primary text-weight-bold edit-text">EDIT USER ACCOUNT</p>
                   </div>
                   <q-form @submit="updateUser" @reset="onReset">
                     <label>Username <span class="text-negative">*</span></label>
@@ -74,43 +56,29 @@
                       </div>
                     </div>
 
-                    <div
-                      class="row text-negative text-caption"
-                      v-if="!isUsernameAvailable"
-                    >
+                    <div class="row text-negative text-caption" v-if="!isUsernameAvailable">
                       Username already taken
                     </div>
 
                     <div class="row">
                       <div class="col-5 q-mt-md">
-                        <label
-                          >Last Name <span class="text-negative">*</span></label
-                        >
+                        <label>Last Name <span class="text-negative">*</span></label>
                         <q-input
                           v-model="editUserDetails.last_name"
                           outlined
                           dense
                           class="q-mt-xs"
-                          :rules="[
-                            (val) =>
-                              (val && val.length > 0) || 'Required field',
-                          ]"
+                          :rules="[(val) => (val && val.length > 0) || 'Required field']"
                         />
                       </div>
                       <div class="col q-mt-md q-ml-md">
-                        <label
-                          >First Name
-                          <span class="text-negative">*</span></label
-                        >
+                        <label>First Name <span class="text-negative">*</span></label>
                         <q-input
                           v-model="editUserDetails.first_name"
                           outlined
                           dense
                           class="q-mt-xs"
-                          :rules="[
-                            (val) =>
-                              (val && val.length > 0) || 'Required field',
-                          ]"
+                          :rules="[(val) => (val && val.length > 0) || 'Required field']"
                         />
                       </div>
                     </div>
@@ -127,43 +95,23 @@
                       </div>
                       <div class="col-2 q-mt-md q-mx-md">
                         <label>Suffix</label>
-                        <q-input
-                          v-model="editUserDetails.suffix"
-                          outlined
-                          dense
-                          class="q-mt-xs"
-                        />
+                        <q-input v-model="editUserDetails.suffix" outlined dense class="q-mt-xs" />
                       </div>
                       <div class="col q-mt-md">
-                        <label
-                          >Date of Birth
-                          <span class="text-negative">*</span></label
-                        >
+                        <label>Date of Birth <span class="text-negative">*</span></label>
                         <q-input
                           v-model="editUserDetails.birthdate"
                           outlined
                           dense
                           class="q-mt-xs"
-                          :rules="[
-                            (val) =>
-                              (val && val.length > 0) || 'Required field',
-                          ]"
+                          :rules="[(val) => (val && val.length > 0) || 'Required field']"
                         >
                           <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
-                              <q-popup-proxy
-                                transition-show="scale"
-                                transition-hide="scale"
-                              >
+                              <q-popup-proxy transition-show="scale" transition-hide="scale">
                                 <q-date v-model="editUserDetails.birthdate">
                                   <div class="row justify-end items-center">
-                                    <q-btn
-                                      v-close-popup
-                                      color="primary"
-                                      label="Close"
-                                      dense
-                                      flat
-                                    />
+                                    <q-btn v-close-popup color="primary" label="Close" dense flat />
                                   </div>
                                 </q-date>
                               </q-popup-proxy>
@@ -175,19 +123,13 @@
 
                     <div class="row">
                       <div class="col-5 q-mt-md">
-                        <label
-                          >Phone Number
-                          <span class="text-negative">*</span></label
-                        >
+                        <label>Phone Number <span class="text-negative">*</span></label>
                         <q-input
                           v-model="editUserDetails.phone_number"
                           outlined
                           dense
                           class="q-mt-xs"
-                          :rules="[
-                            (val) =>
-                              (val && val.length > 0) || 'Required field',
-                          ]"
+                          :rules="[(val) => (val && val.length > 0) || 'Required field']"
                         />
                       </div>
                       <div class="col q-mt-md q-ml-md">
@@ -254,19 +196,16 @@
                       <p class="text-primary q-mr-md">
                         <q-icon name="key" size="md" />
                       </p>
-                      <p
-                        class="text-primary text-weight-bold"
-                        style="font-size: 1rem"
-                      >
+                      <p class="text-primary text-weight-bold" style="font-size: 1rem">
                         Change Password
                       </p>
                     </div>
 
                     <div class="text-center text-grey-7 text-caption q-mb-md">
                       <label
-                        >Your new password should contain at least 1 uppercase
-                        letter, 1 lowercase letter, a number, a special
-                        character, and must be at least 8 characters</label
+                        >Your new password should contain at least 1 uppercase letter, 1 lowercase
+                        letter, a number, a special character, and must be at least 8
+                        characters</label
                       >
                     </div>
 
@@ -280,20 +219,14 @@
                           :type="showNewPassword ? 'password' : 'text'"
                           class="q-mt-sm"
                           :rules="[
-                            (val) =>
-                              (val && val.length > 6 && passCheck) ||
-                              'Invalid Password',
+                            (val) => (val && val.length > 6 && passCheck) || 'Invalid Password',
                           ]"
                           @update:model-value="passwordCheck()"
                         >
                           <template v-slot:append>
                             <q-icon
                               v-if="newPassword"
-                              :name="
-                                showNewPassword
-                                  ? 'visibility_off'
-                                  : 'visibility'
-                              "
+                              :name="showNewPassword ? 'visibility_off' : 'visibility'"
                               size="xs"
                               class="cursor-pointer"
                               @click="showNewPassword = !showNewPassword"
@@ -316,26 +249,17 @@
                           <template v-slot:append>
                             <q-icon
                               v-if="confirmPassword"
-                              :name="
-                                showConfirmPassword
-                                  ? 'visibility_off'
-                                  : 'visibility'
-                              "
+                              :name="showConfirmPassword ? 'visibility_off' : 'visibility'"
                               size="xs"
                               class="cursor-pointer"
-                              @click="
-                                showConfirmPassword = !showConfirmPassword
-                              "
+                              @click="showConfirmPassword = !showConfirmPassword"
                             />
                           </template>
                         </q-input>
                       </div>
                     </div>
 
-                    <div
-                      class="text-caption text-negative"
-                      v-if="newPassword !== confirmPassword"
-                    >
+                    <div class="text-caption text-negative" v-if="newPassword !== confirmPassword">
                       Passwords do not match
                     </div>
 
@@ -348,8 +272,7 @@
                         no-caps
                         style="width: 150px"
                         :disable="
-                          newPassword !== confirmPassword ||
-                          (!newPassword && !confirmPassword)
+                          newPassword !== confirmPassword || (!newPassword && !confirmPassword)
                         "
                       />
                       <q-btn
@@ -392,10 +315,7 @@
         <q-scroll-area :style="{ height: $q.screen.height - 50 + 'px' }">
           <div class="q-my-lg">
             <div class="flex justify-center items-center q-mb-md">
-              <q-img
-                src="../images/MHOLogo.png"
-                :width="!miniState ? '70px' : '50px'"
-              />
+              <q-img src="../images/MHOLogo.png" :width="!miniState ? '70px' : '50px'" />
             </div>
             <div class="text-center" v-show="!miniState">
               <p class="text-white text-weight-bold" style="font-size: 1.2rem">
@@ -418,131 +338,84 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import MainMenu from "components/MainMenu.vue";
-import {
-  FindUser,
-  UpdateUserAccount,
-  ChangePassword,
-  CheckUsername,
-} from "src/composables/UserAccount.js";
-import _ from "lodash";
-import { useQuasar, SessionStorage } from "quasar";
-import outpatientImage from "../images/outpatient.png";
-import dentalImage from "../images/dental.png";
-import prenatalImage from "../images/prenatal.png";
-import pharmacyImage from "../images/pharmacy.png";
-import frontdeskImage from "../images/frontdesk.png";
-import adminImage from "../images/admin.png";
-import defaultImage from "../images/default.png";
-import { BackupDatabase } from "src/composables/Database";
+/* eslint-disable */
+import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import MainMenu from 'components/MainMenu.vue'
+import { useQuasar, SessionStorage } from 'quasar'
+import outpatientImage from '../images/outpatient.png'
+import dentalImage from '../images/dental.png'
+import prenatalImage from '../images/prenatal.png'
+import pharmacyImage from '../images/pharmacy.png'
+import frontdeskImage from '../images/frontdesk.png'
+import adminImage from '../images/admin.png'
+import defaultImage from '../images/default.png'
+import { BackupDatabase } from 'src/composables/Database'
 
 export default defineComponent({
-  name: "MainLayout",
+  name: 'MainLayout',
 
   components: {
     MainMenu,
   },
 
   setup() {
-    const route = useRoute();
-    const router = useRouter();
-    const $q = useQuasar();
+    const router = useRouter()
+    const $q = useQuasar()
 
-    let keySession = SessionStorage.getItem("cred");
+    let keySession = SessionStorage.getItem('cred')
     if (keySession === null) {
-      router.push({ name: "login" });
+      router.push({ name: 'login' })
     }
 
-    console.log(keySession);
-
-    // Get current date and time
-    let now = ref();
-
-    // Get day of the week (0-6, where 0 is Sunday and 6 is Saturday)
-    let dayOfWeek = ref();
-
-    // Get current time in 24-hour format (e.g. "14:30")
-    let time = ref();
-
-    setInterval(() => {
-      now.value = new Date();
-      dayOfWeek.value = now.value.getDay();
-      time.value = now.value.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-
-      // console.log(time.value == "05:28 AM");
-      if (dayOfWeek.value === 5 && time.value === "04:55 PM") {
-        BackupDatabase().then((response) => {
-          if (response.status === "success") {
-            $q.notify({
-              type: "positive",
-              classes: "text-white",
-              message: "Database backed up successfully",
-            });
-          } else {
-            $q.notify({
-              type: "negative",
-              classes: "text-white",
-              message: "Failed to back up database",
-            });
-          }
-        });
-      }
-    }, 35000); // interval in milliseconds
+    console.log(keySession)
 
     //USER AVATAR
-    let avatarLink = null;
+    let avatarLink = null
 
     if (keySession && keySession.department === 1) {
-      avatarLink = outpatientImage;
+      avatarLink = outpatientImage
     } else if (keySession && keySession.department === 2) {
-      avatarLink = dentalImage;
+      avatarLink = dentalImage
     } else if (keySession && keySession.department === 3) {
-      avatarLink = prenatalImage;
+      avatarLink = prenatalImage
     } else if (keySession && keySession.department === 4) {
-      avatarLink = pharmacyImage;
+      avatarLink = pharmacyImage
     } else if (keySession && keySession.department === 5) {
-      avatarLink = frontdeskImage;
+      avatarLink = frontdeskImage
     } else if (keySession && keySession.department === 6) {
-      avatarLink = adminImage;
+      avatarLink = adminImage
     } else {
-      avatarLink = defaultImage;
+      avatarLink = defaultImage
     }
 
-    //RETRIEVE USER ACCOUNT FROM DB
-    FindUser(keySession ? keySession.user_id : "");
+    const leftDrawerOpen = ref(false)
+    let editUser = ref(false)
+    let changePass = ref(false)
+    let newPassword = ref(null)
+    let showNewPassword = ref(true)
+    let confirmPassword = ref(null)
+    let showConfirmPassword = ref(true)
 
-    const leftDrawerOpen = ref(false);
-    let editUser = ref(false);
-    let changePass = ref(false);
-    let newPassword = ref(null);
-    let showNewPassword = ref(true);
-    let confirmPassword = ref(null);
-    let showConfirmPassword = ref(true);
+    let sexArray = ['Male', 'Female']
+    let editUserDetails = ref({})
 
-    let sexArray = ["Male", "Female"];
-    let editUserDetails = ref({});
-
-    let name = ref(null);
+    let name = ref(null)
     let LoginCredential = [
       {
-        first_name: "Guest",
-        last_name: "User",
-        middle_name: "",
-        suffix: "",
+        first_name: 'Guest',
+        last_name: 'User',
+        middle_name: '',
+        suffix: '',
         user_id: 10,
-        username: "Guest",
-        birthdate: "2024-12-15",
-        phone_number: "09555456223",
+        username: 'Guest',
+        birthdate: '2024-12-15',
+        phone_number: '09555456223',
         sex: 0,
       },
-    ];
+    ]
 
-    let userInfo = ref(LoginCredential[0]);
+    let userInfo = ref(LoginCredential[0])
     name.value = [
       userInfo.value.first_name,
       userInfo.value.middle_name,
@@ -550,7 +423,7 @@ export default defineComponent({
       userInfo.value.suffix,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ')
 
     editUserDetails.value = {
       user_id: keySession.user_id,
@@ -562,62 +435,62 @@ export default defineComponent({
       birthdate: userInfo.value.birthdate,
       phone_number: userInfo.value.phone_number,
       sex: sexArray[userInfo.value.sex],
-    };
+    }
 
     /**Check username**/
-    let isUsernameAvailable = ref(true);
+    let isUsernameAvailable = ref(true)
     const checkUsername = () => {
-      isUsernameAvailable.value = true;
-    };
+      isUsernameAvailable.value = true
+    }
 
     const updateUser = () => {
       $q.notify({
-        type: "positive",
-        classes: "text-white",
-        message: "Account edited successfully",
-      });
-      editUser.value = false;
-    };
+        type: 'positive',
+        classes: 'text-white',
+        message: 'Account edited successfully',
+      })
+      editUser.value = false
+    }
 
     const onReset = () => {
-      editUserDetails.value = LoginCredential[0];
-      isUsernameAvailable.value = true;
-    };
+      editUserDetails.value = LoginCredential[0]
+      isUsernameAvailable.value = true
+    }
 
     /**Password Test**/
     //Password should contain at least 1 uppercase letter, 1 lowercase letter, a number, a special character, and at least 8 characters
-    let passCheck = ref(false);
+    let passCheck = ref(false)
     const passwordCheck = () => {
-      let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!*_\-]).{8,}$/;
-      passCheck.value = passwordRegex.test(newPassword.value);
-      isSamePassword.value = newPassword.value === confirmPassword.value;
-    };
+      let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!*_\-]).{8,}$/
+      passCheck.value = passwordRegex.test(newPassword.value)
+      isSamePassword.value = newPassword.value === confirmPassword.value
+    }
 
-    let isSamePassword = ref(false);
+    let isSamePassword = ref(false)
     //Check if passwords are the same
     const confirmPasswordFunction = () => {
-      isSamePassword.value = newPassword.value === confirmPassword.value;
-    };
+      isSamePassword.value = newPassword.value === confirmPassword.value
+    }
 
     const changePassword = () => {
       $q.notify({
-        type: "positive",
-        classes: "text-white",
-        message: "Password changed successfully",
-      });
-      changePass.value = false;
-    };
+        type: 'positive',
+        classes: 'text-white',
+        message: 'Password changed successfully',
+      })
+      changePass.value = false
+    }
 
     const logout = () => {
-      SessionStorage.clear("cred");
-      router.push({ name: "login" });
-    };
+      SessionStorage.clear('cred')
+      router.push({ name: 'login' })
+    }
 
     return {
       // mainmenu: linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
+        leftDrawerOpen.value = !leftDrawerOpen.value
       },
       miniState: ref(false),
       editUser,
@@ -641,9 +514,9 @@ export default defineComponent({
       isSamePassword,
       isUsernameAvailable,
       checkUsername,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped lang="scss">

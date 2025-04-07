@@ -32,14 +32,14 @@ export default {
       // code to render chart
     }, 500)
 
-    Loading.show()
+    /*     Loading.show()
     GetDashboardData(payload).then((response) => {
       renderChart()
       Loading.hide()
-    })
+    }) */
 
     const setDashboard = () => {
-      totalinStockMedicine.value = 0
+      /*       totalinStockMedicine.value = 0
       totalinStockSupply.value = 0
       let payload = {
         filter: selected.value,
@@ -49,7 +49,7 @@ export default {
       GetDashboardData(payload).then((response) => {
         renderChart()
         Loading.hide()
-      })
+      }) */
     }
 
     /**QUEUE**/

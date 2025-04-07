@@ -11,11 +11,7 @@
         <!-- Patient Queue -->
         <fieldset
           class="column queue q-pa-md q-mr-lg shadow-5"
-          v-if="
-            keySession &&
-            keySession.department !== 4 &&
-            keySession.username !== 'setupAdmin'
-          "
+          v-if="keySession && keySession.department !== 4 && keySession.username !== 'setupAdmin'"
         >
           <div
             style="
@@ -26,9 +22,7 @@
             "
           >
             <!-- <q-icon name="list" size="50px" color="primary" /> -->
-            <label class="text-primary text-bold" style="font-size: 25px"
-              >Patient Queue</label
-            >
+            <label class="text-primary text-bold" style="font-size: 25px">Patient Queue</label>
           </div>
           <q-select
             flat
@@ -38,18 +32,13 @@
             v-model="selectedDepartment"
             @update:model-value="getDepartments"
             class="q-mt-md"
-            :readonly="
-              departmentList && departmentList.length === 1 ? true : false
-            "
+            :readonly="departmentList && departmentList.length === 1 ? true : false"
           />
 
           <div class="q-mt-lg">
             <div>
               <fieldset class="inside-container current">
-                <legend
-                  class="text-bold text-center q-px-sm"
-                  style="color: #55a15e"
-                >
+                <legend class="text-bold text-center q-px-sm" style="color: #55a15e">
                   CURRENT PATIENT
                 </legend>
 
@@ -73,9 +62,7 @@
                               id: currentPatient.patient_id,
                               queue: currentPatient.queue_id,
                               department_queue:
-                                keySession.department === 5
-                                  ? 'OPD'
-                                  : selectedDepartment,
+                                keySession.department === 5 ? 'OPD' : selectedDepartment,
                             },
                           })
                         : ''
@@ -93,14 +80,10 @@
                     {{
                       currentPatient &&
                       currentPatient.first_name +
-                        (currentPatient.middle_name
-                          ? " " + currentPatient.middle_name
-                          : "") +
-                        " " +
+                        (currentPatient.middle_name ? ' ' + currentPatient.middle_name : '') +
+                        ' ' +
                         currentPatient.last_name +
-                        (currentPatient.suffix
-                          ? " " + currentPatient.suffix
-                          : "")
+                        (currentPatient.suffix ? ' ' + currentPatient.suffix : '')
                     }}
                   </div>
                   <div v-if="keySession && keySession.department !== 6">
@@ -120,27 +103,18 @@
                             ? false
                             : true
                         "
-                        @click="
-                          isRemoveFromCurrentQueue = !isRemoveFromCurrentQueue
-                        "
+                        @click="isRemoveFromCurrentQueue = !isRemoveFromCurrentQueue"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div v-else class="text-primary text-center text-bold text-20">
-                  No Patient
-                </div>
+                <div v-else class="text-primary text-center text-bold text-20">No Patient</div>
               </fieldset>
             </div>
 
-            <div
-              class="q-mt-lg text-center"
-              v-if="keySession && keySession.department !== 6"
-            >
-              <label class="text-primary text-bold q-px-sm">
-                Call in Next Patient
-              </label>
+            <div class="q-mt-lg text-center" v-if="keySession && keySession.department !== 6">
+              <label class="text-primary text-bold q-px-sm"> Call in Next Patient </label>
               <div class="q-mt-sm">
                 <q-btn
                   style="width: 100%"
@@ -204,23 +178,16 @@
               class="q-mt-lg text-center inside-container current"
               v-if="keySession && keySession.department === 6"
             >
-              <legend
-                class="text-bold text-center q-px-sm"
-                style="color: #55a15e"
-              >
+              <legend class="text-bold text-center q-px-sm" style="color: #55a15e">
                 PATIENTS IN QUEUE
               </legend>
 
-              <div
-                class="flex justify-between q-mt-sm text-weight-medium text-amber-9"
-              >
+              <div class="flex justify-between q-mt-sm text-weight-medium text-amber-9">
                 <label>Priority Patients:</label>
                 <label>{{ priorityPatients.length }}</label>
               </div>
 
-              <div
-                class="flex justify-between q-mt-sm text-weight-medium text-primary"
-              >
+              <div class="flex justify-between q-mt-sm text-weight-medium text-primary">
                 <label>Non-Priority Patients:</label>
                 <label>{{ otherPatients.length }}</label>
               </div>
@@ -229,11 +196,7 @@
             <!-- List of Patients -->
             <div
               class="q-mt-sm"
-              v-if="
-                keySession &&
-                keySession.department === 5 &&
-                keySession.permission_level !== 3
-              "
+              v-if="keySession && keySession.department === 5 && keySession.permission_level !== 3"
             >
               <div style="text-align: center">
                 <q-btn
@@ -242,9 +205,7 @@
                   dense
                   label="Show Priority Patients"
                   color="primary"
-                  :icon-right="
-                    showPriority ? 'arrow_drop_up' : 'arrow_drop_down'
-                  "
+                  :icon-right="showPriority ? 'arrow_drop_up' : 'arrow_drop_down'"
                   @click="showPriority = !showPriority"
                 />
                 <div v-if="showPriority">
@@ -321,9 +282,7 @@
             <div
               class="to-do-box shadow-5"
               v-if="
-                keySession &&
-                keySession.department === 6 &&
-                keySession.username !== 'setupAdmin'
+                keySession && keySession.department === 6 && keySession.username !== 'setupAdmin'
               "
               @click="$router.push({ name: 'dashboard' })"
             >
@@ -338,18 +297,12 @@
               v-if="keySession.username !== 'setupAdmin'"
             >
               <q-icon name="group" size="100px" class="to-do-label" />
-              <label class="text-center to-do-label"
-                >View Patient Profiles</label
-              >
+              <label class="text-center to-do-label">View Patient Profiles</label>
             </div>
 
             <div
               class="to-do-box shadow-5"
-              v-if="
-                keySession &&
-                keySession.department === 5 &&
-                keySession.permission_level !== 3
-              "
+              v-if="keySession && keySession.department === 5 && keySession.permission_level !== 3"
               @click="$router.push({ name: 'add-edit-patient-record' })"
             >
               <q-icon name="person_add" size="100px" class="to-do-label" />
@@ -361,14 +314,8 @@
               @click="$router.push({ name: 'search-records' })"
               v-if="keySession.username !== 'setupAdmin'"
             >
-              <q-icon
-                name="medical_information"
-                size="100px"
-                class="to-do-label"
-              />
-              <label class="text-center to-do-label"
-                >Search Health Records</label
-              >
+              <q-icon name="medical_information" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label">Search Health Records</label>
             </div>
 
             <div
@@ -377,9 +324,7 @@
               v-if="keySession.username !== 'setupAdmin'"
             >
               <q-icon name="home" size="100px" class="to-do-label" />
-              <label class="text-center to-do-label"
-                >View Household Records</label
-              >
+              <label class="text-center to-do-label">View Household Records</label>
             </div>
 
             <div
@@ -397,9 +342,7 @@
               v-if="keySession.username !== 'setupAdmin'"
             >
               <q-icon name="elderly" size="100px" class="to-do-label" />
-              <label class="text-center to-do-label"
-                >View Senior Citizen Records</label
-              >
+              <label class="text-center to-do-label">View Senior Citizen Records</label>
             </div>
 
             <div
@@ -413,9 +356,7 @@
               "
             >
               <q-icon name="pregnant_woman" size="100px" class="to-do-label" />
-              <label class="text-center to-do-label"
-                >View Pregnancy Records</label
-              >
+              <label class="text-center to-do-label">View Pregnancy Records</label>
             </div>
 
             <div
@@ -423,16 +364,13 @@
               v-if="
                 keySession &&
                 (keySession.department === 4 ||
-                  (keySession.department === 6 &&
-                    keySession.permission_level === 1)) &&
+                  (keySession.department === 6 && keySession.permission_level === 1)) &&
                 keySession.username !== 'setupAdmin'
               "
               @click="$router.push({ name: 'medicine-inventory' })"
             >
               <q-icon name="medication" size="100px" class="to-do-label" />
-              <label class="text-center to-do-label"
-                >View Medicine Inventory</label
-              >
+              <label class="text-center to-do-label">View Medicine Inventory</label>
             </div>
 
             <div
@@ -440,20 +378,13 @@
               v-if="
                 keySession &&
                 (keySession.department === 4 ||
-                  (keySession.department === 6 &&
-                    keySession.permission_level === 1)) &&
+                  (keySession.department === 6 && keySession.permission_level === 1)) &&
                 keySession.username !== 'setupAdmin'
               "
               @click="$router.push({ name: 'medicine-release' })"
             >
-              <q-icon
-                name="volunteer_activism"
-                size="100px"
-                class="to-do-label"
-              />
-              <label class="text-center to-do-label"
-                >View Medicine Release</label
-              >
+              <q-icon name="volunteer_activism" size="100px" class="to-do-label" />
+              <label class="text-center to-do-label">View Medicine Release</label>
             </div>
 
             <div
@@ -461,16 +392,13 @@
               v-if="
                 keySession &&
                 (keySession.department === 4 ||
-                  (keySession.department === 6 &&
-                    keySession.permission_level === 1)) &&
+                  (keySession.department === 6 && keySession.permission_level === 1)) &&
                 keySession.username !== 'setupAdmin'
               "
               @click="$router.push({ name: 'supply-inventory' })"
             >
               <q-icon name="vaccines" size="100px" class="to-do-label" />
-              <label class="text-center to-do-label"
-                >View Supplies Inventory</label
-              >
+              <label class="text-center to-do-label">View Supplies Inventory</label>
             </div>
 
             <div
@@ -478,17 +406,12 @@
               v-if="
                 keySession &&
                 (keySession.department === 4 ||
-                  (keySession.department === 6 &&
-                    keySession.permission_level === 1)) &&
+                  (keySession.department === 6 && keySession.permission_level === 1)) &&
                 keySession.username !== 'setupAdmin'
               "
               @click="$router.push({ name: 'supply-release' })"
             >
-              <q-icon
-                name="fa fa-boxes-packing"
-                size="100px"
-                class="to-do-label"
-              />
+              <q-icon name="fa fa-boxes-packing" size="100px" class="to-do-label" />
               <label class="text-center to-do-label">View Supply Release</label>
             </div>
 
@@ -503,17 +426,13 @@
               @click="$router.push({ name: 'manage-users' })"
             >
               <q-icon name="account_circle" size="100px" class="to-do-label" />
-              <label class="text-center to-do-label"
-                >Manage User Accounts</label
-              >
+              <label class="text-center to-do-label">Manage User Accounts</label>
             </div>
 
             <div
               class="to-do-box shadow-5"
               v-if="
-                keySession &&
-                keySession.department === 6 &&
-                keySession.username !== 'setupAdmin'
+                keySession && keySession.department === 6 && keySession.username !== 'setupAdmin'
               "
               @click="$router.push({ name: 'reports' })"
             >
@@ -537,17 +456,11 @@
 
             <div
               class="to-do-box shadow-5"
-              v-if="
-                keySession &&
-                keySession.department === 6 &&
-                keySession.permission_level === 1
-              "
+              v-if="keySession && keySession.department === 6 && keySession.permission_level === 1"
               @click="openRestoreDBModal"
             >
               <q-icon name="cloud_upload" size="100px" class="to-do-label" />
-              <label class="text-center to-do-label"
-                >Restore Database to last Backup</label
-              >
+              <label class="text-center to-do-label">Restore Database to last Backup</label>
             </div>
 
             <q-dialog persistent v-model="isRestoreDB">
@@ -555,16 +468,10 @@
                 <div class="q-pa-lg text-center" style="width: 400px">
                   <q-icon name="cloud_upload" size="100px" color="primary" />
                   <div>
-                    <p
-                      class="text-primary text-weight-bold text-24 text-center"
-                    >
-                      Are you sure?
-                    </p>
+                    <p class="text-primary text-weight-bold text-24 text-center">Are you sure?</p>
                     <p class="text-grey-7 text-center">
                       This will restore the database to its previous version.
-                      <span class="text-negative text-center"
-                        >This process cannot be undone!</span
-                      >
+                      <span class="text-negative text-center">This process cannot be undone!</span>
                     </p>
                   </div>
 
@@ -573,22 +480,11 @@
                     <p style="font-size: small" class="q-mt-md text-grey-7">
                       Which database version would you like to restore?
                     </p>
-                    <q-select
-                      dense
-                      outlined
-                      :options="DBList"
-                      v-model="selectedDB"
-                    />
+                    <q-select dense outlined :options="DBList" v-model="selectedDB" />
                   </div>
 
                   <div class="flex items-center justify-between q-mt-lg">
-                    <q-btn
-                      v-close-popup
-                      label="Cancel"
-                      no-caps
-                      color="grey-7"
-                      class="button-120"
-                    />
+                    <q-btn v-close-popup label="Cancel" no-caps color="grey-7" class="button-120" />
 
                     <q-btn
                       label="Yes"
@@ -617,13 +513,7 @@
             </div>
 
             <div class="flex justify-around q-mt-md">
-              <q-btn
-                v-close-popup
-                label="Cancel"
-                no-caps
-                color="grey-7"
-                class="button-100"
-              />
+              <q-btn v-close-popup label="Cancel" no-caps color="grey-7" class="button-100" />
               <q-btn
                 v-close-popup
                 color="negative"
